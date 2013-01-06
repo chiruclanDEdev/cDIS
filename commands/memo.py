@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 import _mysql
 
 class memo(Command):

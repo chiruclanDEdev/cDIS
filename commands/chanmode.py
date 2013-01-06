@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class chanmode(Command):
 	help = "Sets modes for your channel"

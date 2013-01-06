@@ -1,4 +1,4 @@
-from pyserv import Command, config
+from chiruserv import Command, config
 from _mysql import escape_string
 
 class accban(Command):

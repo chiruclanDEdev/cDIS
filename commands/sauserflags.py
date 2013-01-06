@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class sauserflags(Command):
 	help = "Changes and shows the userflags of other users"

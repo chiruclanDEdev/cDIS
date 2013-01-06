@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class unbanall(Command):
 	help = "Removes all bans from your channel"

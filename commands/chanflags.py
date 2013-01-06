@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class chanflags(Command):
 	help = "Sets flags for your channel"

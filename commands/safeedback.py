@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class safeedback(Command):
 	help = "Reads the feedback from users"

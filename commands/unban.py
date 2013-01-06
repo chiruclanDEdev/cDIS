@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class unban(Command):
 	help = "Unbans somebody from your channel"

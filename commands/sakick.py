@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class sakick(Command):
 	help = "Kicks someone from the channel"

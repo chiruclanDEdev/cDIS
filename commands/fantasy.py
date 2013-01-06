@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class fantasy(Command):
 	help = "Define the fantasy prefix for your channel"

@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 from fnmatch import fnmatch
 
 class deprotect(Command):

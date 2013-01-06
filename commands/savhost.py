@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class savhost(Command):
 	help = "Manages vhosts of the users"

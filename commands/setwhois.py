@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class setwhois(Command):
 	help = "Sets cool stuff in your whois"

@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class trust(Command):
 	help = "Manage IP trusts for your network"

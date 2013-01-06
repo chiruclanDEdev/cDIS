@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class whois(Command):
 	help = "Shows information about a user"

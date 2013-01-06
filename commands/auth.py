@@ -1,4 +1,4 @@
-from pyserv import Command, config
+from chiruserv import Command, config
 
 class auth(Command):
 	help = "Login with your account at " + config.get("BOT", "nick") + "@"+config.get("SERVICES", "name")

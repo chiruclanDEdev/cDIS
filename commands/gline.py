@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class gline(Command):
 	help = "G-Line actions"

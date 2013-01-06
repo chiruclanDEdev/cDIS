@@ -1,4 +1,4 @@
-from pyserv import Command, config
+from chiruserv import Command, config
 import psutil
 from subprocess import Popen, PIPE
 
@@ -9,7 +9,7 @@ class version(Command):
 		file = open("version", "r")
 		version = file.read()
 		file.close()
-		self.msg(source, "PyServ {0}".format(version))
+		self.msg(source, "ChiruServ {0}".format(version))
 		self.msg(source, "Hash: {0}".format(self.encode_md5(open("list","r").read())))
 		if self.isoper(source):
 			self.msg(source, "Latest commit: {0}".format(Popen("git log --oneline -n 1", shell=True, stdout=PIPE).stdout.read().rstrip()))
@@ -32,6 +32,6 @@ class version(Command):
 			self.msg(source, "Options: {0}".format(', '.join(options)))
 			
 		if self.isoper(source):
-			self.msg(source, "If you're looking for more commands, check this out: https://github.com/Pythonz/PyServ-Commands")
+			self.msg(source, "If you're looking for more commands, check this out: https://github.com/ChiruclanDE/chiruserv-commands")
 			
-		self.msg(source, "Developed by Pythonz (https://github.com/Pythonz). Suggestions to pythonz@chiruclan.de or mechi.community@yahoo.de.")
+		self.msg(source, "Developed by ChiruclanDE (https://bitbucket.org/ChiruclanDE). Suggestions to hosting@chiruclan.de or mechi.community@yahoo.de.")

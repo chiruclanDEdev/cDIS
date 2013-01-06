@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class info(Command):
 	help = "Shows all information about an user"

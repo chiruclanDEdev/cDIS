@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class scanport(Command):
 	help = "Checks host for an open port"

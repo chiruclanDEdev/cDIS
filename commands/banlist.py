@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class banlist(Command):
 	help = "Sends you the banlist of your channel"

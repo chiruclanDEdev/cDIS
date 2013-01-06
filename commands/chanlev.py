@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 from _mysql import escape_string
 
 class chanlev(Command):

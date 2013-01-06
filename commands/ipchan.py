@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class ipchan(Command):
 	help = "Forces an IP to join a channel"

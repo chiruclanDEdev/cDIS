@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class sahello(Command):
 	help = "Creates an account for users"

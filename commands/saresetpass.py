@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 from time import time
 from _mysql import escape_string
 

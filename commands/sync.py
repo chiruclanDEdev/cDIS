@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class sync(Command):
 	nauth = 1

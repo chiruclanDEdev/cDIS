@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class ban(Command):
 	help = "Bans somebody from your channel"
@@ -63,7 +63,7 @@ class ban(Command):
 					self.msg(uid, "Invalid channel: "+arg[0])
 			else:
 				self.msg(uid, "Syntax: BAN <#channel> <hostmask>")
-		except pyserv.error,e:
+		except chiruserv.error,e:
 			pass
 
 	def onFantasy(self, uid, chan, args):

@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class whoami(Command):
 	help = "Shows information about you"

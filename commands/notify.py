@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class notify(Command):
 	help = "Sends a global notify to all users on the network"

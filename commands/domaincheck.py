@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class domaincheck(Command):
 	help = "Shows you a domain lookup result"

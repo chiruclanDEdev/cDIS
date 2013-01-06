@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright by PyServ 2012-2013
+# Copyright by ChiruServ 2012-2013
 
 import sys
 import socket
@@ -813,13 +813,13 @@ class ServiceThread:
 					reload(commands)
 					self.msg(source, "Done.")
 				elif cmd == "update" and self.isoper(source):
-					_web = urllib2.urlopen("https://bitbucket.org/ChiruclanDE/pyserv/raw/master/version")
+					_web = urllib2.urlopen("https://bitbucket.org/ChiruclanDE/ChiruServ/raw/master/version")
 					_version = _web.read()
 					_web.close()
 					
 					if open("version", "r").read() != _version:
 						_updates = len(os.listdir("sql/updates"))
-						_hash = self.encode(open("pyserv.py", "r").read())
+						_hash = self.encode(open("chiruserv.py", "r").read())
 						_modules = list()
 						
 						for module in dir(commands):
@@ -847,7 +847,7 @@ class ServiceThread:
 											
 										file.close()
 										
-						if _hash != self.encode(open("pyserv.py", "r").read()):
+						if _hash != self.encode(open("chiruserv.py", "r").read()):
 							self.msg(source, "Done.")
 							self.msg(source, "Please note that you have to restart the services manually.")
 						else:
@@ -863,7 +863,7 @@ class ServiceThread:
 					else:
 						self.msg(source, "No update available.")
 				elif cmd == "quit" and self.isoper(source):
-					if os.access("pyserv.pid", os.F_OK):
+					if os.access("chiruserv.pid", os.F_OK):
 						if len(arg) == 0:
 							msg = "Services are going offline."
 							self.send(":%s QUIT :%s" % (self.bot, msg))
@@ -872,7 +872,7 @@ class ServiceThread:
 							
 						self.send(":%s SQUIT %s" % (self.services_id, self.services_name))
 						self.con.close()
-						shell("sh pyserv stop")
+						shell("sh chiruserv stop")
 					else:
 						self.msg(source, "You're running the debug mode. You cannot restart via commands!")
 				else:
@@ -884,7 +884,7 @@ class ServiceThread:
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
 			if self.email != "":
-				self.mail("mechi.community@yahoo.de", "From: {0} <{1}>\nTo: PyServ Development <mechi.community@yahoo.de>\nSubject: Bug on {0}\n{2}".format(self.services_description, self.email, str(e)))
+				self.mail("mechi.community@yahoo.de", "From: {0} <{1}>\nTo: ChiruServ Development <mechi.community@yahoo.de>\nSubject: Bug on {0}\n{2}".format(self.services_description, self.email, str(e)))
 				
 			debug(red("*") + " <<MSG-ERROR>> "+str(e))
 			
@@ -2294,9 +2294,9 @@ if __name__ == "__main__":
 				
 			if not failover():
 				if not failover(10):
-					print(green("*") + " PyServ (" + __version__ + ") started (config: " + __config__ + ")")
+					print(green("*") + " ChiruServ (" + __version__ + ") started (config: " + __config__ + ")")
 					Services().run()
-					print(red("*") + " PyServ (" + __version__ + ") stopped (config: " + __config__ + ")")
+					print(red("*") + " ChiruServ (" + __version__ + ") stopped (config: " + __config__ + ")")
 					
 			time.sleep(1)
 	except Exception,e:

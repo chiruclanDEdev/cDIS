@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class settopic(Command):
 	help = "Sets topic for your channel"

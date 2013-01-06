@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class owner(Command):
 	nauth = 1

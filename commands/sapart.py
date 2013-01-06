@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class sapart(Command):
 	help = "Forces a user to part a channel"

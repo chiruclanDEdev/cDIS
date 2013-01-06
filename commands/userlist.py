@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class userlist(Command):
 	help = "Shows you a list of users in that channel"

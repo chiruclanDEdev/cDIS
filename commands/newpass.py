@@ -1,4 +1,4 @@
-from pyserv import Command, config
+from chiruserv import Command, config
 
 class newpass(Command):
 	help = "Changes your password at " + config.get("BOT", "nick") + "@"+config.get("SERVICES", "name")

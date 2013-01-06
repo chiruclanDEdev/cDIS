@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class spamscan(Command):
 	help = "Sets the spam settings of your channel (chanflag s)"

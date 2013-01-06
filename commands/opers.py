@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class opers(Command):
 	help = "Shows all operators available for help"

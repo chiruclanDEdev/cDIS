@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class unbanme(Command):
 	help = "Unbans you from a channel where you are known"

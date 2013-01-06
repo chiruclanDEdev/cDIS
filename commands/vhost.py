@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class vhost(Command):
 	help = "Request a vHost for your account"

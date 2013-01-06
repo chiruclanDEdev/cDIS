@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class feedback(Command):
 	help = "Sends your feedback about us to us"

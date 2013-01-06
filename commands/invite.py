@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class invite(Command):
 	help="Invites you into a channel"

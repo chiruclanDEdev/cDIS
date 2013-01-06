@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class email(Command):
 	help = "Changes your account email"

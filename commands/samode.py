@@ -1,4 +1,4 @@
-from pyserv import Command
+from chiruserv import Command
 
 class samode(Command):
 	help = "Change modes on a channel where you have no rights"
