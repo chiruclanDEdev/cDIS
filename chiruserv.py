@@ -813,7 +813,7 @@ class ServiceThread:
 					reload(commands)
 					self.msg(source, "Done.")
 				elif cmd == "update" and self.isoper(source):
-					_web = urllib2.urlopen("https://bitbucket.org/ChiruclanDE/ChiruServ/raw/master/version")
+					_web = urllib2.urlopen("https://bitbucket.org/ChiruclanDE/chiruserv/raw/master/version")
 					_version = _web.read()
 					_web.close()
 					
