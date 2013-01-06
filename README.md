@@ -1,6 +1,6 @@
-PyServ
-======
-Copyright (C) 2012-2013 PyServ
+ChiruServ
+=========
+Copyright (C) 2012-2013 ChiruServ
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -15,4 +15,4 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 
-**If you're looking for more commands, check out https://github.com/Pythonz/PyServ-Commands!**
+**If you're looking for more commands, check out https://bitbucket.org/ChiruclanDE/chiruserv-commands!**
