@@ -104,11 +104,11 @@ class Services:
 			self.db.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
 			
 			if i == 1:
-				all_variables += "@" + str(i)
+				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
-		
-		self.db.query("EXECUTE query USING " + all_variables)
+				
+		self.db.query("EXECUTE query" + all_variables)
 		result = self.db.store_result()
 		self.db.query("DEALLOCATE PREPARE query")
 		
@@ -1285,11 +1285,11 @@ class ServiceThread:
 			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
 			
 			if i == 1:
-				all_variables += "@" + str(i)
+				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 		
-		Smysql.query("EXECUTE query USING " + all_variables)
+		Smysql.query("EXECUTE query" + all_variables)
 		result = Smysql.store_result()
 		Smysql.query("DEALLOCATE PREPARE query")
 		
@@ -1319,11 +1319,11 @@ class ServiceThread:
 			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
 			
 			if i == 1:
-				all_variables += "@" + str(i)
+				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 		
-		Smysql.query("EXECUTE query USING " + all_variables)
+		Smysql.query("EXECUTE query" + all_variables)
 		result = Smysql.store_result()
 		Smysql.query("DEALLOCATE PREPARE query")
 		
@@ -1722,11 +1722,11 @@ class Command:
 			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
 			
 			if i == 1:
-				all_variables += "@" + str(i)
+				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 		
-		Smysql.query("EXECUTE query USING " + all_variables)
+		Smysql.query("EXECUTE query" + all_variables)
 		result = Smysql.store_result()
 		Smysql.query("DEALLOCATE PREPARE query")
 		
@@ -1756,11 +1756,11 @@ class Command:
 			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
 			
 			if i == 1:
-				all_variables += "@" + str(i)
+				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 		
-		Smysql.query("EXECUTE query USING " + all_variables)
+		Smysql.query("EXECUTE query" + all_variables)
 		result = Smysql.store_result()
 		Smysql.query("DEALLOCATE PREPARE query")
 		
