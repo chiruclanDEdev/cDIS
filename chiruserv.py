@@ -92,9 +92,25 @@ class Services:
 		self.bot_real = config.get("BOT", "real")
 		self.db = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-	def query(self, string):
-		self.db.query(str(string))
+	def query(self, string, *args):
+		self.db.query("SET @s = '" + str(string) + "'")
+		self.db.query("PREPARE query FROM @s")
+		
+		i = 0
+		all_variables = ""
+		
+		for arg in args:
+			i += 1
+			self.db.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			
+			if i == 1:
+				all_variables += "@" + str(i)
+			else:
+				all_variables += ", @" + str(i)
+		
+		self.db.query("EXECUTE query USING " + all_variables)
 		result = self.db.store_result()
+		self.db.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			results = list()
@@ -1245,10 +1261,27 @@ class ServiceThread:
 	def encode_md5(self, string):
 		return hashlib.md5(string).hexdigest()
 
-	def query(self, string):
+	def query(self, string, *args):
 		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
-		Smysql.query(str(string))
+		
+		Smysql.query("SET @s = '" + str(string) + "'")
+		Smysql.query("PREPARE query FROM @s")
+		
+		i = 0
+		all_variables = ""
+		
+		for arg in args:
+			i += 1
+			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			
+			if i == 1:
+				all_variables += "@" + str(i)
+			else:
+				all_variables += ", @" + str(i)
+		
+		Smysql.query("EXECUTE query USING " + all_variables)
 		result = Smysql.store_result()
+		Smysql.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			results = list()
@@ -1260,11 +1293,29 @@ class ServiceThread:
 			return results
 			
 		Smysql.close()
+		return None
 
-	def query_row(self, string):
+	def query_row(self, string, *args):
 		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
-		Smysql.query(str(string))
+		
+		Smysql.query("SET @s = '" + str(string) + "'")
+		Smysql.query("PREPARE query FROM @s")
+		
+		i = 0
+		all_variables = ""
+		
+		for arg in args:
+			i += 1
+			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			
+			if i == 1:
+				all_variables += "@" + str(i)
+			else:
+				all_variables += ", @" + str(i)
+		
+		Smysql.query("EXECUTE query USING " + all_variables)
 		result = Smysql.store_result()
+		Smysql.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			for data in result.fetch_row(maxrows=1, how=1):
@@ -1272,6 +1323,7 @@ class ServiceThread:
 				return data
 				
 		Smysql.close()
+		return None
 
 	def mail(self, receiver, message):
 		try:
@@ -1646,10 +1698,27 @@ class Command:
 			
 		return pflags
 
-	def query(self, string):
+	def query(self, string, *args):
 		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
-		Smysql.query(str(string))
+		
+		Smysql.query("SET @s = '" + str(string) + "'")
+		Smysql.query("PREPARE query FROM @s")
+		
+		i = 0
+		all_variables = ""
+		
+		for arg in args:
+			i += 1
+			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			
+			if i == 1:
+				all_variables += "@" + str(i)
+			else:
+				all_variables += ", @" + str(i)
+		
+		Smysql.query("EXECUTE query USING " + all_variables)
 		result = Smysql.store_result()
+		Smysql.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			results = list()
@@ -1661,11 +1730,29 @@ class Command:
 			return results
 			
 		Smysql.close()
+		return None
 
-	def query_row(self, string):
+	def query_row(self, string, *args):
 		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
-		Smysql.query(str(string))
+		
+		Smysql.query("SET @s = '" + str(string) + "'")
+		Smysql.query("PREPARE query FROM @s")
+		
+		i = 0
+		all_variables = ""
+		
+		for arg in args:
+			i += 1
+			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			
+			if i == 1:
+				all_variables += "@" + str(i)
+			else:
+				all_variables += ", @" + str(i)
+		
+		Smysql.query("EXECUTE query USING " + all_variables)
 		result = Smysql.store_result()
+		Smysql.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			for data in result.fetch_row(maxrows=1, how=1):
@@ -1673,6 +1760,7 @@ class Command:
 				return data
 				
 		Smysql.close()
+		return None
 
 	def uid (self, nick):
 		if nick == self.bot_nick:
