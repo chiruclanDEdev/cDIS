@@ -101,7 +101,7 @@ class Services:
 		
 		for arg in args:
 			i += 1
-			self.db.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			self.db.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
@@ -1282,7 +1282,7 @@ class ServiceThread:
 		
 		for arg in args:
 			i += 1
-			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
@@ -1316,7 +1316,7 @@ class ServiceThread:
 		
 		for arg in args:
 			i += 1
-			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
@@ -1719,7 +1719,7 @@ class Command:
 		
 		for arg in args:
 			i += 1
-			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
@@ -1753,7 +1753,7 @@ class Command:
 		
 		for arg in args:
 			i += 1
-			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(arg) + "'")
+			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
