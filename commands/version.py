@@ -9,7 +9,7 @@ class version(Command):
 		version = file.read()
 		file.close()
 		self.msg(source, "ChiruServ {0}".format(version))
-		self.msg(source, "Hash: {0}".format(Popen("git describe --match init --dirty=+ --abbrev=12 --tags", shell=True, stdout=PIPE).stdout.read().rstrip().split("-")[-1][1:])
+		self.msg(source, "Hash: {0}".format(Popen("git describe --match init --dirty=+ --abbrev=12 --tags", shell=True, stdout=PIPE).stdout.read().rstrip().split("-")[-1][1:]))
 		
 		if self.isoper(source):
 			self.msg(source, "Latest update: {0}".format(Popen("git show -s --format=%%ci", shell=True, stdout=PIPE).stdout.read().rstrip()))
