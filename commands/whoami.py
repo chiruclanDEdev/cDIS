@@ -7,7 +7,7 @@ class whoami(Command):
 	def onCommand(self, source, args):
 		auth = self.auth(source)
 		
-		for user in self.query("select name,email from users where name = '{0}'".format(auth)):
+		for user in self.query("select name,email from users where name = ?", auth):
 			self.msg(source, "-Information for account {0}:".format(user["name"]))
 			online = list()
 			
@@ -22,7 +22,7 @@ class whoami(Command):
 			self.msg(source, "Known on following channels:")
 			self.msg(source, "Channel              Flag")
 			
-			for channel in self.query("select channel,flag from channels where user = '{0}' order by flag,channel".format(user["name"])):
+			for channel in self.query("select channel,flag from channels where user = ? order by flag,channel", user["name"]):
 				self.msg(source, " {0}{1}+{2}".format(channel["channel"], " "*int(20-len(channel["channel"])), channel["flag"]))
 				
 			self.msg(source, "End of list.")

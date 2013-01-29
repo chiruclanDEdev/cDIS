@@ -1,8 +1,7 @@
-from chiruserv import Command
-from _mysql import escape_string
+from chiruserv import Command, config
 
 class remove(Command):
-	help = "Removes Q from your channel"
+	help = "Removes " + config.get("BOT", "nick") + " from your channel"
 	nauth = 1
 
 	def onCommand(self, source, args):
@@ -11,10 +10,10 @@ class remove(Command):
 		if len(arg) == 1:
 			if arg[0].startswith("#"):
 				if self.getflag(source, arg[0]) == "n":
-					for data in self.query("select name from channelinfo where name = '{0}'".format(escape_string(arg[0]))):
-						self.query("delete from channels where channel = '{0}'".format(escape_string(data["name"])))
-						self.query("delete from channelinfo where name = '{0}'".format(escape_string(data["name"])))
-						self.query("delete from banlist where channel = '{0}'".format(escape_string(data["name"])))
+					for data in self.query("select name from channelinfo where name = ?", arg[0]):
+						self.query("delete from channels where channel = ?", data["name"])
+						self.query("delete from channelinfo where name = ?", data["name"])
+						self.query("delete from banlist where channel = ?", data["name"])
 						self.msg(source, "Channel {0} has been deleted.".format(escape_string(data["name"])))
 						self.send(":{0} PART {1} :Channel {1} has been deleted.".format(self.bot, escape_string(data["name"])))
 				else:

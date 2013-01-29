@@ -5,7 +5,6 @@ class vhost(Command):
 	nauth = 1
 
 	def onCommand(self, source, args):
-		from _mysql import escape_string
 		arg = args.split()
 		
 		if len(arg) == 2 and arg[0] == "set":
@@ -30,16 +29,16 @@ class vhost(Command):
 				if vhost.find("@") != -1:
 					vhost = vhost.split("@")[0]
 					
-				for data in self.query("select user from vhosts where vhost = '%s' and user != '%s'" % (escape_string(vhost), self.auth(source))):
+				for data in self.query("select user from vhosts where vhost = ? and user != ?", vhost, self.auth(source)):
 					user = data["user"]
 					entry = True
 					
 				if not entry:
-					self.query("delete from vhosts where user = '%s'" % self.auth(source))
-					self.query("insert into vhosts values ('%s','%s','0')" % (self.auth(source), escape_string(arg[1])))
+					self.query("delete from vhosts where user = ?", self.auth(source))
+					self.query("insert into vhosts values (?, ?, '0')", self.auth(source), arg[1])
 					self.msg(source, "Your new vhost %s has been requested" % arg[1])
 					
-					for data in self.query("select host,username from online where uid = '%s'" % source):
+					for data in self.query("select host,username from online where uid = ?", source):
 						if not self.gateway(source):
 							self.send(":%s CHGIDENT %s %s" % (self.bot, source, data["username"]))
 							self.send(":%s CHGHOST %s %s" % (self.bot, source, data["host"]))
@@ -59,7 +58,7 @@ class vhost(Command):
 			else:
 				self.msg(source, "You did not set a vHost or userflag +x.")
 		elif len(arg) == 1 and arg[0].lower() == "remove":
-			self.query("delete from vhosts where user = '%s'" % self.auth(source))
+			self.query("delete from vhosts where user = ?", self.auth(source))
 			self.vhost(source)
 			self.msg(source, "Done.")
 		else:

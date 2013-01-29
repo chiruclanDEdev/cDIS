@@ -5,17 +5,16 @@ class suspend(Command):
 	oper = 1
 
 	def onCommand(self, uid, args):
-		import _mysql
 		arg = args.split()
 		if len(arg) > 1:
-			channel = _mysql.escape_string(arg[1])
+			channel = arg[1]
 		if len(arg) > 2:
-			reason = _mysql.escape_string(' '.join(arg[2:]))
+			reason = ' '.join(arg[2:])
 		
 		if len(arg) == 2 and arg[0].lower() == "remove":
 			if arg[1].startswith("#"):
 				if self.suspended(channel):
-					self.query("delete from suspended where channel = '%s'" % channel)
+					self.query("delete from suspended where channel = ?", channel)
 					self.msg(uid, "Unsuspended.")
 				else:
 					self.msg(uid, arg[1]+" is not suspended.")
@@ -24,12 +23,12 @@ class suspend(Command):
 		elif len(arg) > 2 and arg[0].lower() == "set":
 			if arg[1].startswith("#"):
 				if not self.suspended(channel):
-					self.query("insert into suspended (`channel`, `reason`) values ('%s', '%s')" % (channel, reason))
+					self.query("insert into suspended (`channel`, `reason`) values (?, ?)", channel, reason)
 					
 					if self.chanexist(channel):
-						self.query("delete from channels where channel = '{0}'".format(channel))
-						self.query("delete from channelinfo where name = '{0}'".format(channel))
-						self.query("delete from banlist where channel = '{0}'".format(channel))
+						self.query("delete from channels where channel = ?", channel)
+						self.query("delete from channelinfo where name = ?", channel)
+						self.query("delete from banlist where channel = ?", channel)
 						self.send(":{0} PART {1} :Channel {1} has been suspended.".format(self.bot, arg[1]))
 						
 					for user in self.userlist(channel):
@@ -38,7 +37,7 @@ class suspend(Command):
 						else:
 							self.msg(arg[1], "This channel is suspended: "+' '.join(arg[2:]))
 				else:
-					self.query("update suspended set reason = '%s' where channel = '%s'" % (reason, channel))
+					self.query("update suspended set reason = ? where channel = ?", reason, channel)
 					
 					for user in self.userlist(channel):
 						if not self.isoper(user):

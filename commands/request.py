@@ -1,8 +1,7 @@
-from chiruserv import Command
-from _mysql import escape_string
+from chiruserv import Command, config
 
 class request(Command):
-	help = "Requests Q for your channel"
+	help = "Requests " + config.get("BOT", "nick") + " for your channel"
 	nauth = 1
 
 	def onCommand(self, source, args):
@@ -12,13 +11,13 @@ class request(Command):
 			if arg[0].startswith("#"):
 				exists = False
 				
-				for data in self.query("select channel from channels where channel = '%s'" % escape_string(arg[0])):
+				for data in self.query("select channel from channels where channel = ?", arg[0]):
 						exists = True
 						
 				if not exists:
 					if not self.suspended(arg[0]):
-						self.query("insert into channelinfo values ('%s', '', '', '', '', '10:5', '!')" % escape_string(arg[0]))
-						self.query("insert into channels values ('%s','%s','n')" % (escape_string(arg[0]), self.auth(source)))
+						self.query("insert into channelinfo values (?, '', '', '', '', '10:5', '!')", arg[0])
+						self.query("insert into channels values (?, ?, 'n')", arg[0], self.auth(source))
 						self.join(arg[0])
 						self.mode(arg[0], "+q {0}".format(source))
 						self.msg(source, "Channel %s has been registered for you" % arg[0])

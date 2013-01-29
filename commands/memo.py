@@ -1,5 +1,4 @@
 from chiruserv import Command
-import _mysql
 
 class memo(Command):
 	help = "Send another user a memo"
@@ -14,8 +13,8 @@ class memo(Command):
 				
 				if self.user(user):
 					sender = self.auth(source)
-					message = _mysql.escape_string(' '.join(arg[1:]))
-					self.query("insert into memo (`user`, `source`, `message`) values ('%s', '%s', '%s')" % (user, sender, message))
+					message = ' '.join(arg[1:])
+					self.query("insert into memo (`user`, `source`, `message`) values (?, ?, ?)", user, sender, message)
 					self.msg(source, "Done.")
 					self.memo(user)
 				else:
@@ -25,8 +24,8 @@ class memo(Command):
 				
 				if self.user(user):
 					sender = self.auth(source)
-					message = _mysql.escape_string(' '.join(arg[1:]))
-					self.query("insert into memo (`user`, `source`, `message`) values ('%s', '%s', '%s')" % (user, sender, message))
+					message = ' '.join(arg[1:])
+					self.query("insert into memo (`user`, `source`, `message`) values (?, ?, ?)", user, sender, message)
 					self.msg(source, "Done.")
 					self.memo(user)
 				else:

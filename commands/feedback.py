@@ -5,16 +5,15 @@ class feedback(Command):
 	nauth = 1
 
 	def onCommand(self, source, args):
-		import _mysql
 		
 		if len(args) > 0:
 			entry = False
 			
-			for data in self.query("select text from feedback where user = '%s'" % self.auth(source)):
+			for data in self.query("select text from feedback where user = ?", self.auth(source)):
 				entry = True
 				
 			if not entry:
-				self.query("insert into feedback values('"+self.auth(source)+"','"+_mysql.escape_string(args)+"')")
+				self.query("insert into feedback values(?, ?)", self.auth(source), args)
 				self.msg(source, "Feedback added to queue.")
 				
 				for op in self.query("select uid from opers"):

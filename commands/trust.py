@@ -5,10 +5,9 @@ class trust(Command):
 	oper = 1
 
 	def onCommand(self, source, args):
-		from _mysql import escape_string
 		arg = args.split()
 		if len(arg) > 1:
-			trip = escape_string(arg[1])
+			trip = arg[1]
 		
 		if len(arg) == 1 and arg[0] == "list":
 			for trust in self.query("select * from trust order by id"):
@@ -16,16 +15,16 @@ class trust(Command):
 		elif len(arg) == 2 and arg[0] == "remove":
 			entry = False
 			
-			for trust in self.query("select * from trust where address = '{0}'".format(trip)):
+			for trust in self.query("select * from trust where address = ?", trip):
 				entry = True
-				self.query("delete from trust where address = '{0}'".format(trust["address"]))
+				self.query("delete from trust where address = ?", trust["address"])
 				
 			if entry:
 				self.msg(source, "Trust for {0} has been deleted.".format(arg[1]))
 				conns = 0
 				nicks = list()
 				
-				for online in self.query("select nick from online where address = '{0}'".format(trip)):
+				for online in self.query("select nick from online where address = ?", trip):
 					nicks.append(online["nick"])
 					conns += 1
 					
@@ -45,20 +44,20 @@ class trust(Command):
 		elif len(arg) == 3 and arg[0] == "set":
 			entry = False
 			
-			for trust in self.query("select * from trust where address = '{0}'".format(trip)):
+			for trust in self.query("select * from trust where address = ?", trip):
 				entry = True
 				
 			if entry:
 				limit = filter(lambda x: x.isdigit(), arg[2])
 				
 				if limit != "":
-					self.query("update trust set `limit` = '{0}' where address = '{1}'".format(limit, trip))
+					self.query("update trust set `limit` = ? where address = ?", limit, trip)
 					self.msg(source, "Trust for {0} has been set to {1}.".format(arg[1], limit))
 					conns = 0
 					nicks = list()
 					invalid = False
 					
-					for online in self.query("select nick from online where address = '{0}'".format(trip)):
+					for online in self.query("select nick from online where address = ?", trip):
 						nicks.append(online["nick"])
 						conns += 1
 						
@@ -74,7 +73,7 @@ class trust(Command):
 						for nick in nicks:
 							self.msg(nick, "Your IP is scratching the connection limit. If you need more connections please request a trust and give us a reason on #help.")
 							
-					for username in self.query("select username from online where address = '{0}'".format(trip)):
+					for username in self.query("select username from online where address = ?", trip):
 						if username["username"].startswith("~"):
 							for nick in nicks:
 								self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))
@@ -86,12 +85,12 @@ class trust(Command):
 				limit = filter(lambda x: x.isdigit(), arg[2])
 				
 				if limit != "":
-					self.query("insert into trust (`address`, `limit`) values ('{1}','{0}')".format(limit, trip))
+					self.query("insert into trust (`address`, `limit`) values (?, ?)", limit, trip)
 					self.msg(source, "Trust for {0} has been set to {1}.".format(arg[1], limit))
 					conns = 0
 					nicks = list()
 					
-					for online in self.query("select nick from online where address = '{0}'".format(trip)):
+					for online in self.query("select nick from online where address = ?", trip):
 						nicks.append(online["nick"])
 						conns += 1
 						
@@ -107,7 +106,7 @@ class trust(Command):
 						for nick in nicks:
 							self.msg(nick, "Your IP is scratching the connection limit. If you need more connections please request a trust and give us a reason on #help.")
 							
-					for username in self.query("select username from online where address = '{0}'".format(trip)):
+					for username in self.query("select username from online where address = ?", trip):
 						if username["username"].startswith("~"):
 							for nick in nicks:
 								self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))

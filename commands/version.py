@@ -1,5 +1,4 @@
-from chiruserv import Command, config
-import psutil
+from chiruserv import Command
 from subprocess import Popen, PIPE
 
 class version(Command):
@@ -10,7 +9,8 @@ class version(Command):
 		version = file.read()
 		file.close()
 		self.msg(source, "ChiruServ {0}".format(version))
-		self.msg(source, "Hash: {0}".format(self.encode_md5(open("list","r").read())))
+		self.msg(source, "Hash: {0}".format(Popen("git describe --match init --dirty=+ --abbrev=12", shell=True, stdout=PIPE).stdout.read().rstrip())
+		self.msg(source, "Last update: {0}".format(Popen("git show -s --format=%ci", shell=True, stdout=PIPE).stdout.read().rstrip()))
 		if self.isoper(source):
 			self.msg(source, "Latest commit: {0}".format(Popen("git log --oneline -n 1", shell=True, stdout=PIPE).stdout.read().rstrip()))
 
@@ -26,7 +26,7 @@ class version(Command):
 			options.append("Failover-Cluster")
 			
 			if self.isoper(source):
-				self.msg(source, "Failover-IP: " + config.get("SERVICES", "address"))
+				self.msg(source, "Failover-IP: " + self.services_address)
 				
 		if len(options) != 0:
 			self.msg(source, "Options: {0}".format(', '.join(options)))
@@ -34,4 +34,4 @@ class version(Command):
 		if self.isoper(source):
 			self.msg(source, "If you're looking for more commands, check this out: https://github.com/ChiruclanDE/chiruserv-commands")
 			
-		self.msg(source, "Developed by ChiruclanDE (https://bitbucket.org/ChiruclanDE). Suggestions to hosting@chiruclan.de or mechi.community@yahoo.de.")
+		self.msg(source, "Developed by ChiruclanDE (https://bitbucket.org/ChiruclanDE). Suggestions to hosting@chiruclan.de.")

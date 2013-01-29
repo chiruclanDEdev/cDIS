@@ -203,6 +203,7 @@ class ServiceThread:
 		self.services_name = config.get("SERVICES", "name")
 		self.services_id = config.get("SERVICES", "id")
 		self.services_description = config.get("SERVICES", "description")
+		self.services_address = config.get("SERVICES", "address")
 		self.debug = config.get("OTHER", "debug")
 		self.email = config.get("OTHER", "email")
 		self.ipv6 = config.getboolean("OTHER", "ipv6")
@@ -224,7 +225,7 @@ class ServiceThread:
 				self.send(":%s PONG %s %s" % (self.services_id, self.services_id, data.split()[2]))
 				self.send(":%s PING %s %s" % (self.services_id, self.services_id, data.split()[2]))
 			elif data.split()[1] == "ENDBURST" and not _connected:
-				self.send(":%s UID %s %s %s %s %s %s 0.0.0.0 %s +Ik :%s" % (self.services_id, self.bot, time.time(), self.bot_nick, self.services_name, self.services_name, self.bot_user, time.time(), self.bot_real))
+				self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, self.bot, time.time(), self.bot_nick, self.services_name, self.services_name, self.bot_user, self.services_address, time.time(), self.bot_real))
 				__builtin__._connected = True
 				self.send(":%s OPERTYPE Service" % self.bot)
 				self.meta(self.bot, "accountname", self.bot_nick)
@@ -1634,6 +1635,7 @@ class Command:
 		self.services_name = config.get("SERVICES", "name")
 		self.services_id = config.get("SERVICES", "id")
 		self.services_description = config.get("SERVICES", "description")
+		self.services_address = config.get("SERVICES", "address")
 		self.debug = config.get("OTHER", "debug")
 		self.email = config.get("OTHER", "email")
 		self.ipv6 = config.getboolean("OTHER", "ipv6")

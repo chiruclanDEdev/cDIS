@@ -28,7 +28,7 @@ class userflags(Command):
 			else:
 				userflags = self.regexflag("+" + self.userflags(uid), arg[0])
 				flags = ''.join([char for char in userflags if char in ''.join(mode)])
-				self.query("update users set flags = '%s' where name = '%s'" % (escape_string(flags), self.auth(uid)))
+				self.query("update users set flags = ? where name = ?", flags, self.auth(uid))
 				self.msg(uid, "Done. Current user flags: +" + flags)
 				if arg[0].find("x") != -1:
 					self.vhost(uid)
