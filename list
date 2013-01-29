@@ -60,7 +60,7 @@ commands/unbanme.py 6efb80cc41cddb0bb940cd2e8747ea07
 commands/userflags.py 4d27e3e4c50175cd4d0735b3808d9f28
 commands/userlist.py 9cd50fa9c9ecbda99d11fac62f5abd4d
 commands/usermode.py 5099d44f3170d6c3414d403d668c90ed
-commands/version.py c7e628a957c2310219856ae31181430d
+commands/version.py 414c1c4e4495173dada0ed43fc466b2a
 commands/vhost.py c215ec59d9db6b571813f4a69ca59037
 commands/voice.py 2723b63f382bb257ba7b9603fd6d39c7
 commands/welcome.py 602bad2746f33c9c8c5a82c5c3aca560
