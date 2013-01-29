@@ -93,7 +93,7 @@ class Services:
 		self.db = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
 	def query(self, string, *args):
-		self.db.query("SET @s = '" + str(string) + "'")
+		self.db.query("SET @s = '" + str(_mysql.escape_string(string)) + "'")
 		self.db.query("PREPARE query FROM @s")
 		
 		i = 0
@@ -1264,7 +1264,7 @@ class ServiceThread:
 	def query(self, string, *args):
 		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-		Smysql.query("SET @s = '" + str(string) + "'")
+		Smysql.query("SET @s = '" + str(_mysql.escape_string(string)) + "'")
 		Smysql.query("PREPARE query FROM @s")
 		
 		i = 0
@@ -1298,7 +1298,7 @@ class ServiceThread:
 	def query_row(self, string, *args):
 		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-		Smysql.query("SET @s = '" + str(string) + "'")
+		Smysql.query("SET @s = '" + str(_mysql.escape_string(string)) + "'")
 		Smysql.query("PREPARE query FROM @s")
 		
 		i = 0
@@ -1701,7 +1701,7 @@ class Command:
 	def query(self, string, *args):
 		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-		Smysql.query("SET @s = '" + str(string) + "'")
+		Smysql.query("SET @s = '" + str(_mysql.escape_string(string)) + "'")
 		Smysql.query("PREPARE query FROM @s")
 		
 		i = 0
@@ -1735,7 +1735,7 @@ class Command:
 	def query_row(self, string, *args):
 		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-		Smysql.query("SET @s = '" + str(string) + "'")
+		Smysql.query("SET @s = '" + str(_mysql.escape_string(string)) + "'")
 		Smysql.query("PREPARE query FROM @s")
 		
 		i = 0
