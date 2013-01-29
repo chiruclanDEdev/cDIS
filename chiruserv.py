@@ -337,7 +337,7 @@ class ServiceThread:
 						messages = 10
 						seconds = [6, 5]
 						
-						for dump in self.query("select spamscan from channelinfo where name = '%s'" % _mysql.escape_string(pchan)):
+						for dump in self.query("select spamscan from channelinfo where name = ?", pchan):
 							messages = int(dump["spamscan"].split(":")[0])
 							seconds = [int(dump["spamscan"].split(":")[1]) + 1, int(dump["spamscan"].split(":")[1])]
 							
@@ -361,7 +361,7 @@ class ServiceThread:
 				if data.split()[2].startswith("#") and self.chanflag("l", data.split()[2]):
 					self.log(data.split()[0][1:], "notice", data.split()[2], ' '.join(data.split()[3:]))
 			elif data.split()[1] == "NICK":
-				self.query("update online set nick = '%s' where uid = '%s'" % (_mysql.escape_string(data.split()[2]), str(data.split()[0])[1:]))
+				self.query("update online set nick = ? where uid = ?", data.split()[2], str(data.split()[0])[1:])
 			elif data.split()[1] == "KICK":
 				arg = data.split()
 				knick = arg[0][1:]
@@ -372,26 +372,26 @@ class ServiceThread:
 				if ktarget == self.bot:
 					self.join(kchan)
 				else:
-					self.query("delete from chanlist where channel = '{0}' and uid = '{1}'".format(_mysql.escape_string(kchan), ktarget))
+					self.query("delete from chanlist where channel = ? and uid = ?", kchan, ktarget)
 			elif data.split()[1] == "QUIT":
-				for qchan in self.query("select * from chanlist where uid = '{0}'".format(data.split()[0][1:])):
+				for qchan in self.query("select * from chanlist where uid = ?", data.split()[0][1:]):
 					if self.chanflag("l", qchan["channel"]):
 						if len(data.split()) == 2:
 							self.log(qchan["uid"], "quit", qchan["channel"])
 						else:
 							self.log(qchan["uid"], "quit", qchan["channel"], ' '.join(data.split()[2:])[1:])
 							
-				self.query("delete from chanlist where uid = '{0}'".format(data.split()[0][1:]))
-				self.query("delete from temp_nick where nick = '%s'" % _mysql.escape_string(str(data.split()[0])[1:]))
-				self.query("delete from gateway where uid = '%s'" % str(data.split()[0])[1:])
-				self.query("delete from online where uid = '%s'" % str(data.split()[0])[1:])
+				self.query("delete from chanlist where uid = ?", data.split()[0][1:])
+				self.query("delete from temp_nick where nick = ?", str(data.split()[0])[1:])
+				self.query("delete from gateway where uid = ?", str(data.split()[0])[1:])
+				self.query("delete from online where uid = ?", str(data.split()[0])[1:])
 			elif data.split()[1] == "TOPIC":
 				if len(data.split()) > 1:
 					if self.chanflag("l", data.split()[2]):
 						self.log(data.split()[0][1:], "topic", data.split()[2], ' '.join(data.split()[3:]))
 						
 					if self.chanflag("t", data.split()[2]):
-						for channel in self.query("select topic from channelinfo where name = '{0}'".format(_mysql.escape_string(data.split()[2]))):
+						for channel in self.query("select topic from channelinfo where name = ?", data.split()[2]):
 							self.send(":{0} TOPIC {1} :{2}".format(self.bot, data.split()[2], channel["topic"]))
 							
 							if self.chanflag("l", data.split()[2]):
@@ -402,7 +402,7 @@ class ServiceThread:
 					
 				if self.chanflag("m", data.split()[2]) and len(data.split()) == 5:
 					if data.split()[2].startswith("#"):
-						for channel in self.query("select name,modes from channelinfo where name = '{0}'".format(_mysql.escape_string(data.split()[2]))):
+						for channel in self.query("select name,modes from channelinfo where name = ?", data.split()[2]):
 							self.mode(channel["name"], channel["modes"])
 							
 				if len(data.split()) > 5:
@@ -425,11 +425,11 @@ class ServiceThread:
 									if fnmatch.fnmatch(ban, "*!*@*"):
 										entry = False
 										
-										for sql in self.query("select ban from banlist where ban = '%s' and channel = '%s'" % (_mysql.escape_string(ban), _mysql.escape_string(data.split()[2]))):
+										for sql in self.query("select ban from banlist where ban = ? and channel = ?", ban, data.split()[2]):
 											entry = True
 											
 										if not entry and ban != "*!*@*":
-											self.query("insert into banlist (`channel`, `ban`) values ('%s','%s')" % (_mysql.escape_string(data.split()[2]), _mysql.escape_string(ban)))
+											self.query("insert into banlist (`channel`, `ban`) values (?, ?)", data.split()[2], ban)
 											self.msg(data.split()[0][1:], "Done.")
 										elif ban == "*!*@*":
 											self.msg(data.split()[2], "ACTION is angry about %s, because he tried to set a *!*@* ban." % self.nick(data.split()[0][1:]), True)
@@ -452,11 +452,11 @@ class ServiceThread:
 										if fnmatch.fnmatch(ban, "*!*@*"):
 											entry = False
 											
-											for sql in self.query("select ban from banlist where channel = '%s' and ban = '%s'" % (_mysql.escape_string(data.split()[2]), _mysql.escape_string(ban))):
+											for sql in self.query("select ban from banlist where channel = ? and ban = ?", data.split()[2], ban):
 												entry = True
 												
 											if entry:
-												self.query("delete from banlist where channel = '%s' and ban = '%s'" % (_mysql.escape_string(data.split()[2]), _mysql.escape_string(ban)))
+												self.query("delete from banlist where channel = ? and ban = ?", data.split()[2], ban)
 												self.msg(data.split()[0][1:], "Done.")
 							else:
 								self.mode(data.split()[2], "+{0} {1}".format("b"*len(data.split()[5:]), ' '.join(data.split()[5:])))
@@ -517,7 +517,7 @@ class ServiceThread:
 						for user in data.split()[5:]:
 							fm_chan = data.split()[2]
 							
-							for flag in self.query("select flag from channels where channel = '%s' and user = '%s'" % (_mysql.escape_string(data.split()[2]), self.auth(user))):
+							for flag in self.query("select flag from channels where channel = ? and user = ?", data.split()[2], self.auth(user)):
 								if flag["flag"] == "n" or flag["flag"] == "q":
 									self.mode(fm_chan, "+qo {0} {0}".format(user))
 								elif flag["flag"] == "a":
@@ -533,7 +533,7 @@ class ServiceThread:
 			elif data.split()[1] == "JOIN":
 				juid = data.split()[0][1:]
 				jchan = data.split()[2][1:]
-				self.query("insert into chanlist value ('%s', '%s')" % (juid, _mysql.escape_string(jchan)))
+				self.query("insert into chanlist value (?, ?)", juid, jchan)
 				
 				if self.suspended(jchan):
 					self.kick(jchan, juid, "Suspended: "+self.suspended(jchan))
@@ -548,7 +548,7 @@ class ServiceThread:
 				fjoin_user = self.auth(juid)
 				hasflag = False
 				
-				for flag in self.query("select flag from channels where channel = '%s' and user = '%s'" % (_mysql.escape_string(jchan), _mysql.escape_string(fjoin_user))):
+				for flag in self.query("select flag from channels where channel = ? and user = ?", jchan, fjoin_user):
 					if flag["flag"] == "n" or flag["flag"] == "q":
 						self.mode(jchan, "+qo " + juid + " " + juid)
 						hasflag = True
@@ -572,7 +572,7 @@ class ServiceThread:
 					if self.chanflag("v", jchan):
 						self.mode(jchan, "+v %s" % juid)
 						
-				for welcome in self.query("select name,welcome from channelinfo where name = '{0}'".format(_mysql.escape_string(jchan))):
+				for welcome in self.query("select name,welcome from channelinfo where name = ?", jchan):
 					if self.chanflag("w", jchan):
 						self.msg(juid, "[{0}] {1}".format(welcome["name"], welcome["welcome"]))
 						
@@ -589,7 +589,7 @@ class ServiceThread:
 					if pnick.find(",") != -1:
 						pnick = pnick.split(",")[1]
 						
-					self.query("insert into chanlist value ('{0}','{1}')".format(_mysql.escape_string(pnick), _mysql.escape_string(fjoin_chan)))
+					self.query("insert into chanlist value (?,?)", pnick, fjoin_chan)
 					
 					if self.suspended(fjoin_chan):
 						if not self.isoper(pnick):
@@ -607,7 +607,7 @@ class ServiceThread:
 				fjoin_user = self.auth(fjoin_nick)
 				hasflag = False
 				
-				for flag in self.query("select flag from channels where channel = '%s' and user = '%s'" % (_mysql.escape_string(fjoin_chan), fjoin_user)):
+				for flag in self.query("select flag from channels where channel = ? and user = ?", fjoin_chan, fjoin_user):
 					if flag["flag"] == "n" or flag["flag"] == "q":
 						self.mode(fjoin_chan, "+qo " + fjoin_nick + " " + fjoin_nick)
 						hasflag = True
@@ -631,7 +631,7 @@ class ServiceThread:
 					if self.chanflag("v", fjoin_chan):
 						self.mode(fjoin_chan, "+v %s" % fjoin_nick)
 						
-				for welcome in self.query("select name,welcome from channelinfo where name = '{0}'".format(_mysql.escape_string(fjoin_chan))):
+				for welcome in self.query("select name,welcome from channelinfo where name = ?", fjoin_chan):
 					if self.chanflag("w", fjoin_chan):
 						self.msg(fjoin_nick, "[{0}] {1}".format(welcome["name"], welcome["welcome"].replace(":topic:", self.gettopic(fjoin_chan))))
 						
@@ -641,11 +641,11 @@ class ServiceThread:
 				pnick = data.split()[0][1:]
 				pchan = data.split()[2]
 				
-				for parted in self.query("select channel from ipchan where ip = '%s' and channel = '%s'" % (self.getip(pnick), _mysql.escape_string(pchan))):
+				for parted in self.query("select channel from ipchan where ip = ? and channel = ?", self.getip(pnick), pchan):
 					self.send(":%s SVSJOIN %s %s" % (self.bot, pnick, parted["channel"]))
 					self.msg(pnick, "Your IP is forced to be in "+parted["channel"])
 					
-				self.query("delete from chanlist where uid = '{0}' and channel = '{1}'".format(pnick, _mysql.escape_string(pchan)))
+				self.query("delete from chanlist where uid = ? and channel = ?", pnick, pchan)
 				
 				if self.chanflag("l", pchan):
 					if len(data.split()) == 3:
@@ -654,7 +654,7 @@ class ServiceThread:
 						self.log(pnick, "part", pchan, ' '.join(data.split()[3:])[1:])
 			elif data.split()[1] == "OPERTYPE":
 				uid = data.split()[0][1:]
-				self.query("insert into opers values ('%s')" % uid)
+				self.query("insert into opers values (?)", uid)
 			elif data.split()[1] == "METADATA":
 				if len(data.split()) == 5 and len(data.split()[4]) != 1:
 					uid = data.split()[2]
@@ -676,7 +676,7 @@ class ServiceThread:
 					if smodes.find("B") != -1:
 						crypthost = self.encode_md5(data.split()[0][1:] + ":" + self.nick(data.split()[0][1:]) + "!" + self.userhost(data.split()[0][1:]))
 						self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, data.split()[0][1:], crypthost, '.'.join(self.services_name.split(".")[-2:])))
-						self.query("insert into gateway values ('%s')" % data.split()[0][1:])
+						self.query("insert into gateway values (?)", data.split()[0][1:])
 						
 				smodes = data.split()[3]
 				
@@ -688,23 +688,23 @@ class ServiceThread:
 						
 					if smodes.find("B") != -1:
 						self.send(":%s CHGHOST %s %s" % (self.bot, data.split()[0][1:], self.gethost(data.split()[0][1:])))
-						self.query("delete from gateway where uid = '%s'" % data.split()[0][1:])
+						self.query("delete from gateway where uid = ?", data.split()[0][1:])
 			elif data.split()[1] == "UID":
-				self.query("delete from temp_nick where nick = '%s'" % data.split()[2])
-				self.query("delete from gateway where uid = '%s'" % data.split()[2])
-				self.query("delete from online where uid = '%s'" % data.split()[2])
-				self.query("delete from online where nick = '%s'" % data.split()[4])
-				self.query("insert into online values ('%s','%s','%s','%s','%s')" % (data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7]))
+				self.query("delete from temp_nick where nick = ?", data.split()[2])
+				self.query("delete from gateway where uid = ?", data.split()[2])
+				self.query("delete from online where uid = ?", data.split()[2])
+				self.query("delete from online where nick = ?", data.split()[4])
+				self.query("insert into online values (?, ?, ?, ?, ?)", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
 				conns = 0
 				nicks = list()
 				
-				for connection in self.query("select nick from online where address = '%s'" % data.split()[8]):
+				for connection in self.query("select nick from online where address = ?", data.split()[8]):
 					nicks.append(connection["nick"])
 					conns += 1
 					
 				limit = 3
 				
-				for trust in self.query("select `limit` from trust where address = '%s'" % data.split()[8]):
+				for trust in self.query("select `limit` from trust where address = ?", data.split()[8]):
 					limit = int(trust["limit"])
 					
 					if data.split()[7].startswith("~"):
@@ -722,13 +722,13 @@ class ServiceThread:
 					for nick in nicks:
 						self.msg(nick, "Your IP is scratching the connection limit. If you need more connections please request a trust and give us a reason on #help.")
 						
-				for ip in self.query("select channel from ipchan where ip = '%s'" % data.split()[8]):
+				for ip in self.query("select channel from ipchan where ip = ?", data.split()[8]):
 					self.send(":%s SVSJOIN %s %s" % (self.bot, data.split()[2], ip["channel"]))
 					
 				if data.split()[10].find("B") != -1:
 					crypthost = self.encode_md5(data.split()[2] + ":" + self.nick(data.split()[2]) + "!" + self.userhost(data.split()[2]))
 					self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, data.split()[2], crypthost, '.'.join(self.services_name.split(".")[-2:])))
-					self.query("insert into gateway values ('%s')" % data.split()[2])
+					self.query("insert into gateway values (?)", data.split()[2])
 					
 			__builtin__.spamscan = spamscan
 		except Exception:
@@ -738,8 +738,8 @@ class ServiceThread:
 			
 	def metadata(self, uid, string, content):
 		if string == "accountname":
-			self.query("delete from temp_nick where nick = '%s'" % uid)
-			self.query("insert into temp_nick values ('%s','%s')" % (uid, content))
+			self.query("delete from temp_nick where nick = ?", uid)
+			self.query("insert into temp_nick values (?, ?)", uid, content)
 			self.msg(uid, "You are now logged in as %s" % content)
 			self.vhost(uid)
 			self.flag(uid)
@@ -960,12 +960,22 @@ class ServiceThread:
 			return rData
 			
 		return pflags
+		
+	def metadata(self, uid, string, content):
+		if string == "accountname":
+			self.query("delete from temp_nick where nick = ?", uid)
+			self.query("insert into temp_nick values (?, ?)", uid, content)
+			self.msg(uid, "You are now logged in as %s" % content)
+			self.vhost(uid)
+			self.flag(uid)
+			self.memo(content)
+
 
 	def uid (self, nick):
 		if nick == self.bot_nick:
 			return self.bot
 			
-		for data in self.query("select uid from online where nick = '{0}'".format(_mysql.escape_string(nick))):
+		for data in self.query("select uid from online where nick = ?", nick):
 			return str(data["uid"])
 			
 		return nick
@@ -974,7 +984,7 @@ class ServiceThread:
 		if source == self.bot:
 			return self.bot_nick
 			
-		for data in self.query("select nick from online where uid = '%s'" % _mysql.escape_string(source)):
+		for data in self.query("select nick from online where uid = ?", source):
 			return str(data["nick"])
 			
 		return source
@@ -983,13 +993,13 @@ class ServiceThread:
 		if user.lower() == self.bot_nick.lower():
 			return self.bot_nick
 			
-		for data in self.query("select name from users where name = '%s'" % _mysql.escape_string(user)):
+		for data in self.query("select name from users where name = ?", user):
 			return str(data["name"])
 			
 		return False
 
 	def banned(self, user):
-		for data in self.query("select * from users where name = '%s' and suspended != '0'" % user):
+		for data in self.query("select * from users where name = ? and suspended != '0'", user):
 			return data["suspended"]
 			
 		return False
@@ -997,7 +1007,7 @@ class ServiceThread:
 	def gateway (self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select uid from gateway where uid = '%s'" % uid):
+		for data in self.query("select uid from gateway where uid = ?", uid):
 			return True
 			
 		return False
@@ -1013,7 +1023,7 @@ class ServiceThread:
 		self.msg(target, command.upper()+" "*int(20-len(command))+description)
 
 	def ison(self, user):
-		for data in self.query("select * from temp_nick where user = '%s'" % user):
+		for data in self.query("select * from temp_nick where user = ?", user):
 			return True
 			
 		return False
@@ -1022,7 +1032,7 @@ class ServiceThread:
 		user = self.auth(target)
 		
 		if self.ison(user):
-			for data in self.query("select modes from users where name = '%s'" % user):
+			for data in self.query("select modes from users where name = ?", user):
 				self.mode(target, data["modes"])
 				
 				if data["modes"].find("+") != -1:
@@ -1033,7 +1043,7 @@ class ServiceThread:
 						
 					if modes.find("B") != -1:
 						if not self.gateway(target):
-							self.query("insert into gateway values ('%s')" % target)
+							self.query("insert into gateway values (?)", target)
 							self.vhost(target)
 							
 				if data["modes"].find("-") != -1:
@@ -1044,7 +1054,7 @@ class ServiceThread:
 						
 					if modes.find("B") != -1:
 						if self.gateway(target):
-							self.query("delete from gateway where uid = '%s'" % target)
+							self.query("delete from gateway where uid = ?", target)
 							self.vhost(target)
 
 	def userflags(self, target):
@@ -1053,14 +1063,14 @@ class ServiceThread:
 		if user == 0:
 			user = target
 			
-		for data in self.query("select flags from users where name = '%s'" % user):
+		for data in self.query("select flags from users where name = ?", user):
 			return data["flags"]
 
 	def userflag(self, target, flag):
 		user = self.auth(target)
 		
 		if self.ison(user):
-			for data in self.query("select flags from users where name = '%s'" % user):
+			for data in self.query("select flags from users where name = ?", user):
 				if str(data["flags"]).find(flag) != -1:
 					return True
 		else:
@@ -1088,7 +1098,7 @@ class ServiceThread:
 		self.send(":%s METADATA %s %s :%s" % (self.services_id, target, meta, content))
 
 	def auth(self, target):
-		for data in self.query("select user from temp_nick where nick = '%s'" % target):
+		for data in self.query("select user from temp_nick where nick = ?", target):
 			return data["user"]
 			
 		return 0
@@ -1096,13 +1106,13 @@ class ServiceThread:
 	def sid(self, nick):
 		nicks = list()
 		
-		for data in self.query("select nick from temp_nick where user = '%s'" % _mysql.escape_string(nick)):
+		for data in self.query("select nick from temp_nick where user = ?", nick):
 			nicks.append(data["nick"])
 			
 		return nicks
 
 	def memo(self, user):
-		for data in self.query("select source,message from memo where user = '%s'" % _mysql.escape_string(user)):
+		for data in self.query("select source,message from memo where user = ?", user):
 			online = False
 			
 			for source in self.sid(user):
@@ -1110,17 +1120,17 @@ class ServiceThread:
 				self.msg(source, "[Memo] From: %s, Message: %s" % (data["source"], data["message"]))
 				
 			if online:
-				self.query("delete from memo where user = '%s' and source = '%s' and message = '%s'" % (_mysql.escape_string(user), _mysql.escape_string(data["source"]), _mysql.escape_string(data["message"])))
+				self.query("delete from memo where user = ? and source = ? and message = ?", user, data["source"], data["message"])
 
 	def chanexist(self, channel):
-		for data in self.query("select name from channelinfo where name = '%s'" % _mysql.escape_string(channel)):
+		for data in self.query("select name from channelinfo where name = ?", channel):
 			return True
 			
 		return False
 		
 	def gettopic(self, channel):
 		if self.chanexist(channel):
-			for data in self.query("select topic from channelinfo where name = '" + _mysql.escape_string(channel) + "'"):
+			for data in self.query("select topic from channelinfo where name = ?", channel):
 				return data["topic"]
 				
 		return ""
@@ -1141,13 +1151,13 @@ class ServiceThread:
 	def killcount(self):
 		kills = int(self.statistics()["kills"])
 		kills += 1
-		self.query("update statistics set `value` = '%s' where attribute = 'kills'" % kills)
+		self.query("update statistics set `value` = ? where attribute = 'kills'", kills)
 		return kills
 
 	def kickcount(self):
 		kicks = int(self.statistics()["kicks"])
 		kicks += 1
-		self.query("update statistics set `value` = '%s' where attribute = 'kicks'" % kicks)
+		self.query("update statistics set `value` = ? where attribute = 'kicks'", kicks)
 		return kicks
 
 	def kill(self, target, reason="You're violating network rules"):
@@ -1158,7 +1168,7 @@ class ServiceThread:
 		if not self.gateway(target):
 			entry = False
 			
-			for data in self.query("select vhost from vhosts where user = '%s' and active = '1'" % self.auth(target)):
+			for data in self.query("select vhost from vhosts where user = ? and active = '1'", self.auth(target)):
 				entry = True
 				vhost = str(data["vhost"])
 				
@@ -1193,7 +1203,7 @@ class ServiceThread:
 		account = self.auth(target)
 		if account != 0:
 			if channel != "":
-				for flag in self.query("select flag,channel from channels where user = '%s' and channel = '%s'" % (_mysql.escape_string(account), _mysql.escape_string(channel))):
+				for flag in self.query("select flag,channel from channels where user = ? and channel = ?", account, channel):
 					if flag["flag"] == "n" or flag["flag"] == "q":
 						self.mode(flag["channel"], "+qo " + target + " " + target)
 					elif flag["flag"] == "a":
@@ -1207,7 +1217,7 @@ class ServiceThread:
 					elif flag["flag"] == "b":
 						self.kick(flag["channel"], target, "Banned.")
 			else:
-				for flag in self.query("select flag,channel from channels where user = '%s' order by channel" % _mysql.escape_string(account)):
+				for flag in self.query("select flag,channel from channels where user = ? order by channel", account):
 					if flag["flag"] == "n" or flag["flag"] == "q":
 						self.mode(flag["channel"], "+qo " + target + " " + target)
 					elif flag["flag"] == "a":
@@ -1226,7 +1236,7 @@ class ServiceThread:
 		
 		if self.ison(user):
 			if self.userflag(target, "a"):
-				for data in self.query("select channel,flag from channels where user = '%s'" % user):
+				for data in self.query("select channel,flag from channels where user = ?", user):
 					channel = data["channel"]
 					flag = data["flag"]
 					
@@ -1234,14 +1244,14 @@ class ServiceThread:
 						self.send(":%s SVSJOIN %s %s" % (self.bot, target, channel))
 
 	def getflag(self, target, channel):
-		for data in self.query("select user from temp_nick where nick = '%s'" % _mysql.escape_string(target)):
-			for flag in self.query("select flag from channels where channel = '%s' and user = '%s'" % (_mysql.escape_string(channel), data["user"])):
+		for data in self.query("select user from temp_nick where nick = ?" % target):
+			for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["user"]):
 				return flag["flag"]
 				
 		return 0
 
 	def chanflag(self, flag, channel):
-		for data in self.query("select flags from channelinfo where name = '{0}'".format(channel)):
+		for data in self.query("select flags from channelinfo where name = ?", channel):
 			if data["flags"].find(flag) != -1:
 				return True
 				
@@ -1250,7 +1260,7 @@ class ServiceThread:
 	def isoper(self, target):
 		isoper = False
 		
-		for data in self.query("select * from opers where uid = '%s'" % target):
+		for data in self.query("select * from opers where uid = ?", target):
 			isoper = True
 			
 		return isoper
@@ -1426,12 +1436,12 @@ class ServiceThread:
 				self.send(":{uid} KICK {channel} {target} :{reason}".format(uid=self.bot, target=uid, channel=channel, reason=reason))
 				self.kickcount()
 				
-			self.query("delete from chanlist where channel = '{0}' and uid = '{1}'".format(channel, uid))
+			self.query("delete from chanlist where channel = ? and uid = ?", channel, uid)
 
 	def userlist(self, channel):
 		uid = list()
 		
-		for user in self.query("select uid from chanlist where channel = '%s'" % channel):
+		for user in self.query("select uid from chanlist where channel = ?", channel):
 			uid.append(user["uid"])
 			
 		return uid
@@ -1439,7 +1449,7 @@ class ServiceThread:
 	def onchan(self, channel, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select * from chanlist where channel = '%s' and uid = '%s'" % (channel, uid)):
+		for data in self.query("select * from chanlist where channel = ? and uid = ?", channel, uid):
 			return True
 			
 		return False
@@ -1447,7 +1457,7 @@ class ServiceThread:
 	def getident(self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select username from online where uid = '%s'" % _mysql.escape_string(uid)):
+		for data in self.query("select username from online where uid = ?", uid):
 			return data["username"]
 			
 		return 0
@@ -1455,7 +1465,7 @@ class ServiceThread:
 	def gethost(self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select host from online where uid = '%s'" % _mysql.escape_string(uid)):
+		for data in self.query("select host from online where uid = ?", uid):
 			return data["host"]
 			
 		return 0
@@ -1466,13 +1476,13 @@ class ServiceThread:
 		nick = None
 		username = None
 		
-		for data in self.query("select nick,username,host from online where uid = '%s'" % uid):
+		for data in self.query("select nick,username,host from online where uid = ?", uid):
 			nick = data["nick"]
 			username = data["username"]
 			masks.append(data["nick"]+"!"+data["username"]+"@"+data["host"])
 			
 		if self.auth(uid) != 0:
-			for data in self.query("select vhost from vhosts where user = '%s' and active = '1'" % self.auth(uid)):
+			for data in self.query("select vhost from vhosts where user = ? and active = '1'", self.auth(uid)):
 				if str(data["vhost"]).find("@") != -1:
 					masks.append(nick+"!"+data["vhost"])
 				else:
@@ -1499,7 +1509,7 @@ class ServiceThread:
 						self.kick(channel, user, "Banned.")
 
 	def enforcebans(self, channel):
-		for data in self.query("select ban from banlist where channel = '%s'" % channel):
+		for data in self.query("select ban from banlist where channel = ?", channel):
 			if data["ban"] != "*!*@*":
 				for user in self.userlist(channel):
 					if self.gateway(user):
@@ -1539,7 +1549,7 @@ class ServiceThread:
 	def getip(self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select address from online where uid = '%s'" % uid):
+		for data in self.query("select address from online where uid = ?", uid):
 			return data["address"]
 			
 		return 0
@@ -1550,13 +1560,13 @@ class ServiceThread:
 		if uid != self.bot and target.lower() != self.bot_nick.lower():
 			ip = self.getip(uid)
 			
-			for data in self.query("select uid from online where address = '%s'" % self.getip(uid)):
+			for data in self.query("select uid from online where address = ?", self.getip(uid)):
 				self.send(":"+self.bot+" KILL "+data["uid"]+" :G-lined")
 				
 			self.send(":"+self.bot+" GLINE *@"+ip+" 1800 :"+reason)
 
 	def suspended(self, channel):
-		for data in self.query("select reason from suspended where channel = '%s'" % _mysql.escape_string(channel)):
+		for data in self.query("select reason from suspended where channel = ?", channel):
 			return data["reason"]
 			
 		return False
@@ -1564,13 +1574,13 @@ class ServiceThread:
 	def userhost(self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select username,host from online where uid = '%s'" % uid):
+		for data in self.query("select username,host from online where uid = ?", uid):
 			return data["username"]+"@"+data["host"]
 			
 		return 0
 
 	def getvhost(self, target):
-		for data in self.query("select vhost from vhosts where user = '%s' and active = '1'" % target):
+		for data in self.query("select vhost from vhosts where user = ? and active = '1'", target):
 			return data["vhost"]
 			
 		if self.userflag(target, "x"):
@@ -1590,7 +1600,7 @@ class ServiceThread:
 
 	def fantasy(self, channel):
 		if self.chanexist(channel):
-			for data in self.query("select fantasy from channelinfo where name = '%s'" % _mysql.escape_string(channel)):
+			for data in self.query("select fantasy from channelinfo where name = ?", channel):
 				return data["fantasy"]
 				
 		return False
@@ -1762,12 +1772,22 @@ class Command:
 		Smysql.close()
 		return None
 
+	def metadata(self, uid, string, content):
+		if string == "accountname":
+			self.query("delete from temp_nick where nick = ?", uid)
+			self.query("insert into temp_nick values (?, ?)", uid, content)
+			self.msg(uid, "You are now logged in as %s" % content)
+			self.vhost(uid)
+			self.flag(uid)
+			self.memo(content)
+
+
 	def uid (self, nick):
 		if nick == self.bot_nick:
 			return self.bot
 			
-		for data in self.query("select uid from online where nick = '{0}'".format(_mysql.escape_string(nick))):
-			return data["uid"]
+		for data in self.query("select uid from online where nick = ?", nick):
+			return str(data["uid"])
 			
 		return nick
 
@@ -1775,8 +1795,8 @@ class Command:
 		if source == self.bot:
 			return self.bot_nick
 			
-		for data in self.query("select nick from online where uid = '%s'" % _mysql.escape_string(source)):
-			return data["nick"]
+		for data in self.query("select nick from online where uid = ?", source):
+			return str(data["nick"])
 			
 		return source
 
@@ -1784,13 +1804,13 @@ class Command:
 		if user.lower() == self.bot_nick.lower():
 			return self.bot_nick
 			
-		for data in self.query("select name from users where name = '%s'" % _mysql.escape_string(user)):
+		for data in self.query("select name from users where name = ?", user):
 			return str(data["name"])
 			
 		return False
 
 	def banned(self, user):
-		for data in self.query("select * from users where name = '%s' and suspended != '0'" % user):
+		for data in self.query("select * from users where name = ? and suspended != '0'", user):
 			return data["suspended"]
 			
 		return False
@@ -1798,10 +1818,14 @@ class Command:
 	def gateway (self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select uid from gateway where uid = '%s'" % uid):
+		for data in self.query("select uid from gateway where uid = ?", uid):
 			return True
 			
 		return False
+
+	def send(self, text):
+		self.con.send(text+"\n")
+		debug(blue("*") + " " + text)
 
 	def push(self, target, message):
 		self.send(":{uid} PUSH {target} ::{message}".format(uid=self.services_id, target=target, message=message))
@@ -1810,7 +1834,7 @@ class Command:
 		self.msg(target, command.upper()+" "*int(20-len(command))+description)
 
 	def ison(self, user):
-		for data in self.query("select * from temp_nick where user = '%s'" % user):
+		for data in self.query("select * from temp_nick where user = ?", user):
 			return True
 			
 		return False
@@ -1819,7 +1843,7 @@ class Command:
 		user = self.auth(target)
 		
 		if self.ison(user):
-			for data in self.query("select modes from users where name = '%s'" % user):
+			for data in self.query("select modes from users where name = ?", user):
 				self.mode(target, data["modes"])
 				
 				if data["modes"].find("+") != -1:
@@ -1830,7 +1854,7 @@ class Command:
 						
 					if modes.find("B") != -1:
 						if not self.gateway(target):
-							self.query("insert into gateway values ('%s')" % target)
+							self.query("insert into gateway values (?)", target)
 							self.vhost(target)
 							
 				if data["modes"].find("-") != -1:
@@ -1841,7 +1865,7 @@ class Command:
 						
 					if modes.find("B") != -1:
 						if self.gateway(target):
-							self.query("delete from gateway where uid = '%s'" % target)
+							self.query("delete from gateway where uid = ?", target)
 							self.vhost(target)
 
 	def userflags(self, target):
@@ -1850,14 +1874,14 @@ class Command:
 		if user == 0:
 			user = target
 			
-		for data in self.query("select flags from users where name = '%s'" % user):
+		for data in self.query("select flags from users where name = ?", user):
 			return data["flags"]
 
 	def userflag(self, target, flag):
 		user = self.auth(target)
 		
 		if self.ison(user):
-			for data in self.query("select flags from users where name = '%s'" % user):
+			for data in self.query("select flags from users where name = ?", user):
 				if str(data["flags"]).find(flag) != -1:
 					return True
 		else:
@@ -1885,7 +1909,7 @@ class Command:
 		self.send(":%s METADATA %s %s :%s" % (self.services_id, target, meta, content))
 
 	def auth(self, target):
-		for data in self.query("select user from temp_nick where nick = '%s'" % target):
+		for data in self.query("select user from temp_nick where nick = ?", target):
 			return data["user"]
 			
 		return 0
@@ -1893,13 +1917,13 @@ class Command:
 	def sid(self, nick):
 		nicks = list()
 		
-		for data in self.query("select nick from temp_nick where user = '%s'" % _mysql.escape_string(nick)):
+		for data in self.query("select nick from temp_nick where user = ?", nick):
 			nicks.append(data["nick"])
 			
 		return nicks
 
 	def memo(self, user):
-		for data in self.query("select source,message from memo where user = '%s'" % _mysql.escape_string(user)):
+		for data in self.query("select source,message from memo where user = ?", user):
 			online = False
 			
 			for source in self.sid(user):
@@ -1907,17 +1931,17 @@ class Command:
 				self.msg(source, "[Memo] From: %s, Message: %s" % (data["source"], data["message"]))
 				
 			if online:
-				self.query("delete from memo where user = '%s' and source = '%s' and message = '%s'" % (_mysql.escape_string(user), _mysql.escape_string(data["source"]), _mysql.escape_string(data["message"])))
+				self.query("delete from memo where user = ? and source = ? and message = ?", user, data["source"], data["message"])
 
 	def chanexist(self, channel):
-		for data in self.query("select name from channelinfo where name = '%s'" % _mysql.escape_string(channel)):
+		for data in self.query("select name from channelinfo where name = ?", channel):
 			return True
 			
 		return False
 		
 	def gettopic(self, channel):
 		if self.chanexist(channel):
-			for data in self.query("select topic from channelinfo where name = '" + _mysql.escape_string(channel) + "'"):
+			for data in self.query("select topic from channelinfo where name = ?", channel):
 				return data["topic"]
 				
 		return ""
@@ -1938,13 +1962,13 @@ class Command:
 	def killcount(self):
 		kills = int(self.statistics()["kills"])
 		kills += 1
-		self.query("update statistics set `value` = '%s' where attribute = 'kills'" % kills)
+		self.query("update statistics set `value` = ? where attribute = 'kills'", kills)
 		return kills
 
 	def kickcount(self):
 		kicks = int(self.statistics()["kicks"])
 		kicks += 1
-		self.query("update statistics set `value` = '%s' where attribute = 'kicks'" % kicks)
+		self.query("update statistics set `value` = ? where attribute = 'kicks'", kicks)
 		return kicks
 
 	def kill(self, target, reason="You're violating network rules"):
@@ -1955,7 +1979,7 @@ class Command:
 		if not self.gateway(target):
 			entry = False
 			
-			for data in self.query("select vhost from vhosts where user = '%s' and active = '1'" % self.auth(target)):
+			for data in self.query("select vhost from vhosts where user = ? and active = '1'", self.auth(target)):
 				entry = True
 				vhost = str(data["vhost"])
 				
@@ -1990,7 +2014,7 @@ class Command:
 		account = self.auth(target)
 		if account != 0:
 			if channel != "":
-				for flag in self.query("select flag,channel from channels where user = '%s' and channel = '%s'" % (_mysql.escape_string(account), _mysql.escape_string(channel))):
+				for flag in self.query("select flag,channel from channels where user = ? and channel = ?", account, channel):
 					if flag["flag"] == "n" or flag["flag"] == "q":
 						self.mode(flag["channel"], "+qo " + target + " " + target)
 					elif flag["flag"] == "a":
@@ -2004,7 +2028,7 @@ class Command:
 					elif flag["flag"] == "b":
 						self.kick(flag["channel"], target, "Banned.")
 			else:
-				for flag in self.query("select flag,channel from channels where user = '%s' order by channel" % _mysql.escape_string(account)):
+				for flag in self.query("select flag,channel from channels where user = ? order by channel", account):
 					if flag["flag"] == "n" or flag["flag"] == "q":
 						self.mode(flag["channel"], "+qo " + target + " " + target)
 					elif flag["flag"] == "a":
@@ -2023,7 +2047,7 @@ class Command:
 		
 		if self.ison(user):
 			if self.userflag(target, "a"):
-				for data in self.query("select channel,flag from channels where user = '%s'" % user):
+				for data in self.query("select channel,flag from channels where user = ?", user):
 					channel = data["channel"]
 					flag = data["flag"]
 					
@@ -2031,14 +2055,14 @@ class Command:
 						self.send(":%s SVSJOIN %s %s" % (self.bot, target, channel))
 
 	def getflag(self, target, channel):
-		for data in self.query("select user from temp_nick where nick = '%s'" % target):
-			for flag in self.query("select flag from channels where channel = '%s' and user = '%s'" % (_mysql.escape_string(channel), data["user"])):
+		for data in self.query("select user from temp_nick where nick = ?" % target):
+			for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["user"]):
 				return flag["flag"]
 				
 		return 0
 
 	def chanflag(self, flag, channel):
-		for data in self.query("select flags from channelinfo where name = '{0}'".format(_mysql.escape_string(channel))):
+		for data in self.query("select flags from channelinfo where name = ?", channel):
 			if data["flags"].find(flag) != -1:
 				return True
 				
@@ -2047,7 +2071,7 @@ class Command:
 	def isoper(self, target):
 		isoper = False
 		
-		for data in self.query("select * from opers where uid = '%s'" % target):
+		for data in self.query("select * from opers where uid = ?", target):
 			isoper = True
 			
 		return isoper
@@ -2149,19 +2173,6 @@ class Command:
 			
 		return "%s seconds" % seconds
 
-	def send(self, text):
-		self.con.send(text+"\n")
-		debug(blue("*") + " " + text)
-
-	def metadata(self, uid, string, content):
-		if string == "accountname":
-			self.query("delete from temp_nick where nick = '%s' or user = '%s'" % (uid, _mysql.escape_string(content)))
-			self.query("insert into temp_nick values ('%s','%s')" % (uid, _mysql.escape_string(content)))
-			self.msg(uid, "You are now logged in as %s" % content)
-			self.vhost(uid)
-			self.flag(uid)
-			self.memo(content)
-
 	def kick(self, channel, target, reason="Requested."):
 		uid = self.uid(target)
 		
@@ -2172,12 +2183,12 @@ class Command:
 				self.send(":{uid} KICK {channel} {target} :{reason}".format(uid=self.bot, target=uid, channel=channel, reason=reason))
 				self.kickcount()
 				
-			self.query("delete from chanlist where channel = '{0}' and uid = '{1}'".format(_mysql.escape_string(channel), uid))
+			self.query("delete from chanlist where channel = ? and uid = ?", channel, uid)
 
 	def userlist(self, channel):
 		uid = list()
 		
-		for user in self.query("select uid from chanlist where channel = '%s'" % channel):
+		for user in self.query("select uid from chanlist where channel = ?", channel):
 			uid.append(user["uid"])
 			
 		return uid
@@ -2185,15 +2196,15 @@ class Command:
 	def onchan(self, channel, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select * from chanlist where channel = '%s' and uid = '%s'" % (_mysql.escape_string(channel), uid)):
+		for data in self.query("select * from chanlist where channel = ? and uid = ?", channel, uid):
 			return True
 			
 		return False
-		
+
 	def getident(self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select username from online where uid = '%s'" % _mysql.escape_string(uid)):
+		for data in self.query("select username from online where uid = ?", uid):
 			return data["username"]
 			
 		return 0
@@ -2201,7 +2212,7 @@ class Command:
 	def gethost(self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select host from online where uid = '%s'" % _mysql.escape_string(uid)):
+		for data in self.query("select host from online where uid = ?", uid):
 			return data["host"]
 			
 		return 0
@@ -2212,13 +2223,13 @@ class Command:
 		nick = None
 		username = None
 		
-		for data in self.query("select nick,username,host from online where uid = '%s'" % uid):
+		for data in self.query("select nick,username,host from online where uid = ?", uid):
 			nick = data["nick"]
 			username = data["username"]
 			masks.append(data["nick"]+"!"+data["username"]+"@"+data["host"])
 			
 		if self.auth(uid) != 0:
-			for data in self.query("select vhost from vhosts where user = '%s' and active = '1'" % self.auth(uid)):
+			for data in self.query("select vhost from vhosts where user = ? and active = '1'", self.auth(uid)):
 				if str(data["vhost"]).find("@") != -1:
 					masks.append(nick+"!"+data["vhost"])
 				else:
@@ -2245,11 +2256,12 @@ class Command:
 						self.kick(channel, user, "Banned.")
 
 	def enforcebans(self, channel):
-		for data in self.query("select ban from banlist where channel = '%s'" % channel):
+		for data in self.query("select ban from banlist where channel = ?", channel):
 			if data["ban"] != "*!*@*":
 				for user in self.userlist(channel):
 					if self.gateway(user):
 						crypthost = self.encode_md5(user + ":" + self.nick(user) + "!" + self.userhost(user))+".gateway."+'.'.join(self.services_name.split(".")[-2:])
+						
 						
 						if fnmatch.fnmatch(self.nick(user)+"!"+self.userhost(user).split("@")[0]+"@"+crypthost, data["ban"]):
 							self.mode(channel, "+b "+data["ban"])
@@ -2266,7 +2278,7 @@ class Command:
 				if fnmatch.fnmatch(ban, "*!*@*") and ban != "*!*@*":
 					for user in self.userlist(channel):
 						if self.gateway(user):
-							crypthost = self.encode_md5(user + ":" + self.nick(user) + "!" + self.userhost(user))+".gateway."+'.'.join(self.services_name.split(".")[-2:])
+							crypthost = self.encode(user + ":" + self.nick(user) + "!" + self.userhost(user))+".gateway."+'.'.join(self.services_name.split(".")[-2:])
 							
 							if fnmatch.fnmatch(self.nick(user)+"!"+self.userhost(user).split("@")[0]+"@"+crypthost, ban):
 								self.kick(channel, user, "Banned.")
@@ -2281,13 +2293,10 @@ class Command:
 				elif ban == "*!*@*":
 					self.mode(channel, "-b *!*@*")
 
-	def unknown(self, target):
-		self.msg(target, "Unknown command "+__name__.split(".")[-1].upper()+". Please try HELP for more information.")
-
 	def getip(self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select address from online where uid = '%s'" % uid):
+		for data in self.query("select address from online where uid = ?", uid):
 			return data["address"]
 			
 		return 0
@@ -2298,13 +2307,13 @@ class Command:
 		if uid != self.bot and target.lower() != self.bot_nick.lower():
 			ip = self.getip(uid)
 			
-			for data in self.query("select uid from online where address = '%s'" % self.getip(uid)):
+			for data in self.query("select uid from online where address = ?", self.getip(uid)):
 				self.send(":"+self.bot+" KILL "+data["uid"]+" :G-lined")
 				
 			self.send(":"+self.bot+" GLINE *@"+ip+" 1800 :"+reason)
 
 	def suspended(self, channel):
-		for data in self.query("select reason from suspended where channel = '%s'" % _mysql.escape_string(channel)):
+		for data in self.query("select reason from suspended where channel = ?", channel):
 			return data["reason"]
 			
 		return False
@@ -2312,13 +2321,13 @@ class Command:
 	def userhost(self, target):
 		uid = self.uid(target)
 		
-		for data in self.query("select username,host from online where uid = '%s'" % uid):
+		for data in self.query("select username,host from online where uid = ?", uid):
 			return data["username"]+"@"+data["host"]
 			
 		return 0
 
 	def getvhost(self, target):
-		for data in self.query("select vhost from vhosts where user = '%s' and active = '1'" % _mysql.escape_string(target)):
+		for data in self.query("select vhost from vhosts where user = ? and active = '1'", target):
 			return data["vhost"]
 			
 		if self.userflag(target, "x"):
@@ -2338,7 +2347,7 @@ class Command:
 
 	def fantasy(self, channel):
 		if self.chanexist(channel):
-			for data in self.query("select fantasy from channelinfo where name = '%s'" % _mysql.escape_string(channel)):
+			for data in self.query("select fantasy from channelinfo where name = ?", channel):
 				return data["fantasy"]
 				
 		return False
