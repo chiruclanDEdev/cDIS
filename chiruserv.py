@@ -2,6 +2,8 @@
 
 # Copyright by ChiruServ 2012-2013
 
+print(red("*") + " Loading modules")
+
 import sys
 import socket
 import os
@@ -18,6 +20,11 @@ import fnmatch
 import ssl
 import modules
 import __builtin__
+
+print(blue("*") + " Pausing 15 seconds for module integration")
+time.sleep(15)
+print(green("*") + " All modules loaded and ready")
+time.sleep(2)
 
 def red(string):
 	return("\033[91m" + string + "\033[0m")
