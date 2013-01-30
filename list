@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 02688d6a66cf2cc965d3e6ef0608f047
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
-chiruserv.py f67e9f1a1f855829fe285c9f7a77e773
+chiruserv.py b741b56a319df32f69e0e8021e4605d3
 config.cfg.dist fda11158a5d1c0bb69d53956361b1028
 commands/__init__.py 91f5e2b4ee7c7b1e74893bc8b1287691
 commands/accban.py 3a36fb56529b60f8ad81daa681b3bab7

@@ -94,7 +94,7 @@ class Services:
 		self.db = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
 	def query(self, string, *args):
-		self.db.query("SET @s = '" + _mysql.escape_string(str(string)) + "'")
+		self.db.query("SET @s = '" + self.db.escape_string(str(string)) + "'")
 		self.db.query("PREPARE query FROM @s")
 		
 		i = 0
@@ -102,7 +102,7 @@ class Services:
 		
 		for arg in args:
 			i += 1
-			self.db.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
+			self.db.query("SET @" + str(i) + " = '" + self.db.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
@@ -1274,26 +1274,26 @@ class ServiceThread:
 		return hashlib.md5(string).hexdigest()
 
 	def query(self, string, *args):
-		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
+		conn = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-		Smysql.query("SET @s = '" + _mysql.escape_string(str(string)) + "'")
-		Smysql.query("PREPARE query FROM @s")
+		conn.query("SET @s = '" + conn.escape_string(str(string)) + "'")
+		conn.query("PREPARE query FROM @s")
 		
 		i = 0
 		all_variables = ""
 		
 		for arg in args:
 			i += 1
-			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
+			conn.query("SET @" + str(i) + " = '" + conn.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 		
-		Smysql.query("EXECUTE query" + all_variables)
-		result = Smysql.store_result()
-		Smysql.query("DEALLOCATE PREPARE query")
+		conn.query("EXECUTE query" + all_variables)
+		result = conn.store_result()
+		conn.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			results = list()
@@ -1301,40 +1301,40 @@ class ServiceThread:
 			for data in result.fetch_row(maxrows=0, how=1):
 				results.append(data)
 				
-			Smysql.close()
+			conn.close()
 			return results
 			
-		Smysql.close()
+		conn.close()
 		return None
 
 	def query_row(self, string, *args):
-		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
+		conn = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-		Smysql.query("SET @s = '" + _mysql.escape_string(str(string)) + "'")
-		Smysql.query("PREPARE query FROM @s")
+		conn.query("SET @s = '" + conn.escape_string(str(string)) + "'")
+		conn.query("PREPARE query FROM @s")
 		
 		i = 0
 		all_variables = ""
 		
 		for arg in args:
 			i += 1
-			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
+			conn.query("SET @" + str(i) + " = '" + conn.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 		
-		Smysql.query("EXECUTE query" + all_variables)
-		result = Smysql.store_result()
-		Smysql.query("DEALLOCATE PREPARE query")
+		conn.query("EXECUTE query" + all_variables)
+		result = conn.store_result()
+		conn.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			for data in result.fetch_row(maxrows=1, how=1):
-				Smysql.close()
+				conn.close()
 				return data
 				
-		Smysql.close()
+		conn.close()
 		return None
 
 	def mail(self, receiver, message):
@@ -1712,26 +1712,26 @@ class Command:
 		return pflags
 
 	def query(self, string, *args):
-		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
+		conn = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-		Smysql.query("SET @s = '" + _mysql.escape_string(str(string)) + "'")
-		Smysql.query("PREPARE query FROM @s")
+		conn.query("SET @s = '" + conn.escape_string(str(string)) + "'")
+		conn.query("PREPARE query FROM @s")
 		
 		i = 0
 		all_variables = ""
 		
 		for arg in args:
 			i += 1
-			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
+			conn.query("SET @" + str(i) + " = '" + conn.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 		
-		Smysql.query("EXECUTE query" + all_variables)
-		result = Smysql.store_result()
-		Smysql.query("DEALLOCATE PREPARE query")
+		conn.query("EXECUTE query" + all_variables)
+		result = conn.store_result()
+		conn.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			results = list()
@@ -1739,40 +1739,40 @@ class Command:
 			for data in result.fetch_row(maxrows=0, how=1):
 				results.append(data)
 				
-			Smysql.close()
+			conn.close()
 			return results
 			
-		Smysql.close()
+		conn.close()
 		return None
 
 	def query_row(self, string, *args):
-		Smysql = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
+		conn = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
-		Smysql.query("SET @s = '" + _mysql.escape_string(str(string)) + "'")
-		Smysql.query("PREPARE query FROM @s")
+		conn.query("SET @s = '" + conn.escape_string(str(string)) + "'")
+		conn.query("PREPARE query FROM @s")
 		
 		i = 0
 		all_variables = ""
 		
 		for arg in args:
 			i += 1
-			Smysql.query("SET @" + str(i) + " = '" + _mysql.escape_string(str(arg)) + "'")
+			conn.query("SET @" + str(i) + " = '" + conn.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 		
-		Smysql.query("EXECUTE query" + all_variables)
-		result = Smysql.store_result()
-		Smysql.query("DEALLOCATE PREPARE query")
+		conn.query("EXECUTE query" + all_variables)
+		result = conn.store_result()
+		conn.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			for data in result.fetch_row(maxrows=1, how=1):
-				Smysql.close()
+				conn.close()
 				return data
 				
-		Smysql.close()
+		conn.close()
 		return None
 
 	def metadata(self, uid, string, content):
