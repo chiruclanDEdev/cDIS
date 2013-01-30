@@ -86,7 +86,7 @@ modules/mod_privmsg.py 9ddedbeb7150315d8f429c3697a482a4
 modules/mod_quit.py 11efa36ce1864334c86642fc75bba1ca
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
 modules/mod_uid.py 735b004dbcec1169d3d317001c2d7d88
-sql/base/struct.sql 4abf26df61f6d6dd89bfb87d3738e4fd
+sql/base/struct.sql 0a8db0a309ecf443b7b0bc1eef060fd9
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
 sql/updates/12_02-17-2012.sql 0c5d84bf3909b5091defcd77dcb4805f
@@ -106,7 +106,7 @@ sql/updates/24_05-11-2012.sql d6598e5d7b86ae99789553254d49f0c3
 sql/updates/25_07-04-2012.sql edcd01325eb077f027dcaf1c7479d2f1
 sql/updates/26_12-15-2012.sql 61f23daee4ad28a0c6816a57b73a75d8
 sql/updates/27_01-30-2013.sql 6345183a3332d4b5ff30bc95b1b45d2d
-sql/updates/28_01-30-2013.sql f84083993e40d3df176b318ff1f2bb50
+sql/updates/28_01-30-2013.sql 2aa48f153ad9f88bb8e54a22018161c6
 sql/updates/2_02-02-2012.sql 0b38c7109eff565f1dd8be45b12b83c7
 sql/updates/3_02-05-2012.sql 30f5568f7a4ec8ba9f7c7ac790bb1f20
 sql/updates/4_02-05-2012.sql 592c83d9ac209484ead4d29c969751f2
