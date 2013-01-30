@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class domaincheck(Command):
-	help = "Shows you a domain lookup result"
-	oper = 1
+class domaincheck(Module):
+	HELP = "Shows you a domain lookup result"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

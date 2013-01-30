@@ -1,9 +1,9 @@
-from chiruserv import Command
+from chiruserv import Module
 from fnmatch import fnmatch
 
-class deop(Command):
-	help = "Removes op (+o) flag from you or someone on the channel"
-	nauth = 1
+class deop(Module):
+	HELP = "Removes op (+o) flag from you or someone on the channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

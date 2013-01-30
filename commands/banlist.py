@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class banlist(Command):
-	help = "Sends you the banlist of your channel"
-	nauth = 1
+class banlist(Module):
+	HELP = "Sends you the banlist of your channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

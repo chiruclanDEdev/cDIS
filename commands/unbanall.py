@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class unbanall(Command):
-	help = "Removes all bans from your channel"
-	nauth = 1
+class unbanall(Module):
+	HELP = "Removes all bans from your channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

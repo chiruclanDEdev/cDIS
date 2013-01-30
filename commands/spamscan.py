@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class spamscan(Command):
-	help = "Sets the spam settings of your channel (chanflag s)"
-	nauth = 1
+class spamscan(Module):
+	HELP = "Sets the spam settings of your channel (chanflag s)"
+	NEED_AUTH = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

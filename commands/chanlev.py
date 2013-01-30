@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class chanlev(Command):
-	help = "Edit your channel records"
-	nauth = 1
+class chanlev(Module):
+	HELP = "Edit your channel records"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

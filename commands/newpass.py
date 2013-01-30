@@ -1,8 +1,8 @@
-from chiruserv import Command, config
+from chiruserv import Module, config
 
-class newpass(Command):
-	help = "Changes your password at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")
-	nauth = 1
+class newpass(Module):
+	HELP = "Changes your password at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class whois(Command):
-	help = "Shows information about a user"
-	nauth = 1
+class whois(Module):
+	HELP = "Shows information about a user"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

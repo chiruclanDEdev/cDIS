@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class sahello(Command):
-	help = "Creates an account for users"
-	oper = 1
+class sahello(Module):
+	HELP = "Creates an account for users"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class usermode(Command):
-	help = "Shows your usermodes or changes it"
-	nauth = 1
+class usermode(Module):
+	HELP = "Shows your usermodes or changes it"
+	NEED_AUTH = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

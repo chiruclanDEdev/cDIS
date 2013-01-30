@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class kick(Command):
-	help = "Kicks someone from the channel"
-	nauth = 1
+class kick(Module):
+	HELP = "Kicks someone from the channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

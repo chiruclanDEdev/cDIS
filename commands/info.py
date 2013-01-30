@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class info(Command):
-	help = "Shows all information about an user"
-	oper = 1
+class info(Module):
+	HELP = "Shows all information about an user"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

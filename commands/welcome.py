@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class welcome(Command):
-	nauth = 1
-	help = "Sets a welcome message for your channel"
+class welcome(Module):
+	NEED_AUTH = 1
+	HELP = "Sets a welcome message for your channel"
 
 	def onCommand(self, source, args):
 		arg = args.split()

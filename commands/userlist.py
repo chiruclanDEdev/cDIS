@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class userlist(Command):
-	help = "Shows you a list of users in that channel"
-	oper = 1
+class userlist(Module):
+	HELP = "Shows you a list of users in that channel"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

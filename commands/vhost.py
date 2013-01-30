@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class vhost(Command):
-	help = "Request a vHost for your account"
-	nauth = 1
+class vhost(Module):
+	HELP = "Request a vHost for your account"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

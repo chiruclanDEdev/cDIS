@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class email(Command):
-	help = "Changes your account email"
-	nauth = 1
+class email(Module):
+	HELP = "Changes your account email"
+	NEED_AUTH = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

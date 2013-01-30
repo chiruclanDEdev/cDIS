@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class suspend(Command):
-	help = "Suspends a channel"
-	oper = 1
+class suspend(Module):
+	HELP = "Suspends a channel"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

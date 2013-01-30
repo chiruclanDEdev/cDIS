@@ -1,8 +1,8 @@
-from chiruserv import Command, config
+from chiruserv import Module, config
 
-class remove(Command):
-	help = "Removes " + config.get("BOT", "nick") + " from your channel"
-	nauth = 1
+class remove(Module):
+	HELP = "Removes " + config.get("BOT", "nick") + " from your channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

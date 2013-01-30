@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class kill(Command):
-	help = "Kills a user from the network"
-	oper = 1
+class kill(Module):
+	HELP = "Kills a user from the network"
+	NEED_OPER = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

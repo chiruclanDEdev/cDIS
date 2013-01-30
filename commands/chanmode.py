@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class chanmode(Command):
-	help = "Sets modes for your channel"
-	nauth = 1
+class chanmode(Module):
+	HELP = "Sets modes for your channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

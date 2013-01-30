@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class invite(Command):
+class invite(Module):
 	help="Invites you into a channel"
-	nauth = 1
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

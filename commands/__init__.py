@@ -6,7 +6,7 @@ for cmd in os.listdir("commands"):
 		cmd = ' '.join(cmd.split(".")[:-1])
 		
 		if cmd != "__init__":
-			if not sys.modules.has_key("commands."+cmd):
-				exec("import commands."+cmd)
+			if not sys.modules.has_key("commands." + cmd):
+				exec("import commands." + cmd)
 			else:
-				exec("reload(commands."+cmd+")")
+				exec("reload(commands." + cmd + ")")

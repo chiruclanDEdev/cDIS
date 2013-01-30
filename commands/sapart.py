@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class sapart(Command):
-	help = "Forces a user to part a channel"
-	oper = 1
+class sapart(Module):
+	HELP = "Forces a user to part a channel"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

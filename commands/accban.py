@@ -1,8 +1,8 @@
-from chiruserv import Command, config
+from chiruserv import Module, config
 
-class accban(Command):
-	help = "Bans an account from " + config.get("SERVICES", "description")
-	oper = 1
+class accban(Module):
+	HELP = "Bans an account from " + config.get("SERVICES", "description")
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

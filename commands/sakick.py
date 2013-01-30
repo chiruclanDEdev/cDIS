@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class sakick(Command):
-	help = "Kicks someone from the channel"
-	oper = 1
+class sakick(Module):
+	HELP = "Kicks someone from the channel"
+	NEED_OPER = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

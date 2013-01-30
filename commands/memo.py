@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class memo(Command):
-	help = "Send another user a memo"
-	nauth = 1
+class memo(Module):
+	HELP = "Send another user a memo"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

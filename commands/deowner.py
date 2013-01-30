@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class deowner(Command):
-	help = "Removes your owner (+q) flag"
-	nauth = 1
+class deowner(Module):
+	HELP = "Removes your owner (+q) flag"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

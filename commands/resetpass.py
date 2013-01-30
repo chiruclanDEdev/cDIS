@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 from time import time
 
-class resetpass(Command):
-	help = "Reset your lost password"
+class resetpass(Module):
+	HELP = "Reset your lost password"
 
 	def onCommand(self, uid, args):
 		if self.auth(uid) == 0:

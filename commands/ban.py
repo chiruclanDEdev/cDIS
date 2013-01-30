@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class ban(Command):
-	help = "Bans somebody from your channel"
-	nauth = 1
+class ban(Module):
+	HELP = "Bans somebody from your channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, uid, args):
 		from fnmatch import fnmatch

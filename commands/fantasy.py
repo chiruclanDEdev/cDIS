@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class fantasy(Command):
-	help = "Define the fantasy prefix for your channel"
-	nauth = 1
+class fantasy(Module):
+	HELP = "Define the fantasy prefix for your channel"
+	NEED_AUTH = 1
 	
 	def onCommand(self, uid, args):
 		arg = args.split()

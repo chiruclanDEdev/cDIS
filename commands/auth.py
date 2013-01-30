@@ -1,7 +1,7 @@
-from chiruserv import Command, config
+from chiruserv import Module, config
 
-class auth(Command):
-	help = "Login with your account at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")
+class auth(Module):
+	HELP = "Login with your account at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")
 
 	def onCommand(self, source, args):
 		arg = args.split()

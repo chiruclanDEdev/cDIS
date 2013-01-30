@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class feedback(Command):
-	help = "Sends your feedback about us to us"
-	nauth = 1
+class feedback(Module):
+	HELP = "Sends your feedback about us to us"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		

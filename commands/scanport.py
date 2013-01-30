@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class scanport(Command):
-	help = "Checks host for an open port"
-	oper = 1
+class scanport(Module):
+	HELP = "Checks host for an open port"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

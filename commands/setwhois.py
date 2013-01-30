@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class setwhois(Command):
-	help = "Sets cool stuff in your whois"
-	nauth = 1
+class setwhois(Module):
+	HELP = "Sets cool stuff in your whois"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

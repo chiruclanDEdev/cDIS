@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class owner(Command):
-	nauth = 1
-	help = "Sets your owner (+q) flag"
+class owner(Module):
+	NEED_AUTH = 1
+	HELP = "Sets your owner (+q) flag"
 
 	def onCommand(self, source, args):
 		arg = args.split()

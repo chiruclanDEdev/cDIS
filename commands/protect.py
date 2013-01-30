@@ -1,9 +1,9 @@
-from chiruserv import Command
+from chiruserv import Module
 from fnmatch import fnmatch
 
-class protect(Command):
-	help = "Sets admin (+a) flag to you or someone on the channel"
-	nauth = 1
+class protect(Module):
+	HELP = "Sets admin (+a) flag to you or someone on the channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

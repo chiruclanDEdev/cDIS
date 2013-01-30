@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class sync(Command):
-	nauth = 1
-	help = "Syncs your flags on all channels"
+class sync(Module):
+	NEED_AUTH = 1
+	HELP = "Syncs your flags on all channels"
 
 	def onCommand(self, source, args):
 		self.flag(source)

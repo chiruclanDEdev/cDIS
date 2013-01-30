@@ -1,9 +1,9 @@
-from chiruserv import Command
+from chiruserv import Module
 from _mysql import escape_string
 
-class userflags(Command):
-	help = "Changes and shows your userflags"
-	nauth = 1
+class userflags(Module):
+	HELP = "Changes and shows your userflags"
+	NEED_AUTH = 1
 
 	def onCommand(self, uid, args):
 		mode = list()

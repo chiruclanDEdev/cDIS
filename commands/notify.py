@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class notify(Command):
-	help = "Sends a global notify to all users on the network"
-	oper = 1
+class notify(Module):
+	HELP = "Sends a global notify to all users on the network"
+	NEED_OPER = 1
 
 	def onCommand(self, source, args):
 		self.msg("$*", "[{nick}] {message}".format(nick=self.nick(source), message=args))

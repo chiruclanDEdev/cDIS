@@ -1,8 +1,8 @@
-from chiruserv import Command, config
+from chiruserv import Module, config
 
-class request(Command):
-	help = "Requests " + config.get("BOT", "nick") + " for your channel"
-	nauth = 1
+class request(Module):
+	HELP = "Requests " + config.get("BOT", "nick") + " for your channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

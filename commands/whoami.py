@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class whoami(Command):
-	help = "Shows information about you"
-	nauth = 1
+class whoami(Module):
+	HELP = "Shows information about you"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		auth = self.auth(source)

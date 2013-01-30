@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class unbanme(Command):
-	help = "Unbans you from a channel where you are known"
-	nauth = 1
+class unbanme(Module):
+	HELP = "Unbans you from a channel where you are known"
+	NEED_AUTH = 1
 
 	def onCommand(self, uid, args):
 		from fnmatch import fnmatch

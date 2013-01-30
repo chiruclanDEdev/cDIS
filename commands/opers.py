@@ -1,7 +1,7 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class opers(Command):
-	help = "Shows all operators available for help"
+class opers(Module):
+	HELP = "Shows all operators available for help"
 
 	def onCommand(self, uid, args):
 		self.msg(uid, "Available operators:")

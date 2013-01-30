@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class gline(Command):
-	help = "G-Line actions"
-	oper = 1
+class gline(Module):
+	HELP = "G-Line actions"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

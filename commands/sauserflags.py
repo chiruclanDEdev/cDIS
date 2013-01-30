@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class sauserflags(Command):
-	help = "Changes and shows the userflags of other users"
-	oper = 1
+class sauserflags(Module):
+	HELP = "Changes and shows the userflags of other users"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		mode = list()

@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class savhost(Command):
-	help = "Manages vhosts of the users"
-	oper = 1
+class savhost(Module):
+	HELP = "Manages vhosts of the users"
+	NEED_OPER = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

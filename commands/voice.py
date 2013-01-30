@@ -1,9 +1,9 @@
-from chiruserv import Command
+from chiruserv import Module
 from fnmatch import fnmatch
 
-class voice(Command):
-	help = "Sets voice (+v) flag to you or someone on the channel"
-	nauth = 1
+class voice(Module):
+	HELP = "Sets voice (+v) flag to you or someone on the channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

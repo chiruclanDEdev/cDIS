@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class chanflags(Command):
-	help = "Sets flags for your channel"
-	nauth = 1
+class chanflags(Module):
+	HELP = "Sets flags for your channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		mode = list()

@@ -1,9 +1,9 @@
-from chiruserv import Command
+from chiruserv import Module
 from time import time
 
-class saresetpass(Command):
-	help = "Reset your lost password"
-	oper = 1
+class saresetpass(Module):
+	HELP = "Reset your lost password"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class trust(Command):
-	help = "Manage IP trusts for your network"
-	oper = 1
+class trust(Module):
+	HELP = "Manage IP trusts for your network"
+	NEED_OPER = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

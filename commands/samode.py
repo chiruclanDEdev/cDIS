@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class samode(Command):
-	help = "Change modes on a channel where you have no rights"
-	oper = 1
+class samode(Module):
+	HELP = "Change modes on a channel where you have no rights"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

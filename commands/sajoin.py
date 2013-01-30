@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class sajoin(Command):
-	help = "Forces a user to join a channel"
-	oper = 1
+class sajoin(Module):
+	HELP = "Forces a user to join a channel"
+	NEED_OPER = 1
 
 	def onCommand(self, uid, args):
 		arg = args.split()

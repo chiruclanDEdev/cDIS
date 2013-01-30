@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class settopic(Command):
-	help = "Sets topic for your channel"
-	nauth = 1
+class settopic(Module):
+	HELP = "Sets topic for your channel"
+	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

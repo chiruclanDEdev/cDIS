@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 from subprocess import Popen, PIPE
 
-class version(Command):
-	help = "Shows version of services"
+class version(Module):
+	HELP = "Shows version of services"
 
 	def onCommand(self, source, args):
 		file = open("version", "r")

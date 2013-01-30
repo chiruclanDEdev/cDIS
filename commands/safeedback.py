@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 
-class safeedback(Command):
-	help = "Reads the feedback from users"
-	oper = 1
+class safeedback(Module):
+	HELP = "Reads the feedback from users"
+	NEED_OPER = 1
 
 	def onCommand(self, source, args):
 		arg = args.split()

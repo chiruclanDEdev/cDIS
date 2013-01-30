@@ -1,8 +1,8 @@
-from chiruserv import Command
+from chiruserv import Module
 from time import time
 
-class hello(Command):
-	help = "Creates an account for you and sends the data to you"
+class hello(Module):
+	HELP = "Creates an account for you and sends the data to you"
 
 	def onCommand(self, source, args):
 		arg = args.split()
