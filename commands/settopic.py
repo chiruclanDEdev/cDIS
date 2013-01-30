@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class settopic(Module):
+class settopic(CSModules):
 	HELP = "Sets topic for your channel"
 	NEED_AUTH = 1
 

@@ -1,7 +1,7 @@
-from chiruserv import Module
+from chiruserv import CSModules
 from fnmatch import fnmatch
 
-class op(Module):
+class op(CSModules):
 	HELP = "Sets op (+o) flag to you or someone on the channel"
 	NEED_AUTH = 1
 

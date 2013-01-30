@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class email(Module):
+class email(CSModules):
 	HELP = "Changes your account email"
 	NEED_AUTH = 1
 

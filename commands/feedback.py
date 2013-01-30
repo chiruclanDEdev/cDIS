@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class feedback(Module):
+class feedback(CSModules):
 	HELP = "Sends your feedback about us to us"
 	NEED_AUTH = 1
 

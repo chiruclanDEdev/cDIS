@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class ban(Module):
+class ban(CSModules):
 	HELP = "Bans somebody from your channel"
 	NEED_AUTH = 1
 

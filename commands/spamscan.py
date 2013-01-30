@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class spamscan(Module):
+class spamscan(CSModules):
 	HELP = "Sets the spam settings of your channel (chanflag s)"
 	NEED_AUTH = 1
 

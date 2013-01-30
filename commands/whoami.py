@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class whoami(Module):
+class whoami(CSModules):
 	HELP = "Shows information about you"
 	NEED_AUTH = 1
 

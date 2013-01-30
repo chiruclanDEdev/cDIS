@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class savhost(Module):
+class savhost(CSModules):
 	HELP = "Manages vhosts of the users"
 	NEED_OPER = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class general_join(Module):
+class general_join(CSModules):
 	MODULE_CLASS = "JOIN"
 	
 	def onData(self, data):

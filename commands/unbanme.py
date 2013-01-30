@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class unbanme(Module):
+class unbanme(CSModules):
 	HELP = "Unbans you from a channel where you are known"
 	NEED_AUTH = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class scanport(Module):
+class scanport(CSModules):
 	HELP = "Checks host for an open port"
 	NEED_OPER = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class sapart(Module):
+class sapart(CSModules):
 	HELP = "Forces a user to part a channel"
 	NEED_OPER = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class gline(Module):
+class gline(CSModules):
 	HELP = "G-Line actions"
 	NEED_OPER = 1
 

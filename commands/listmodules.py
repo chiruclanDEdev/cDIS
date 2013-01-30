@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class listmodules(Module):
+class listmodules(CSModules):
 	HELP = "Lists all active modules"
 	NEED_OPER = 1
 	

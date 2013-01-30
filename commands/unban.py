@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class unban(Module):
+class unban(CSModules):
 	HELP = "Unbans somebody from your channel"
 	NEED_AUTH = 1
 

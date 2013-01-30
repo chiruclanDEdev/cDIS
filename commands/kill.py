@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class kill(Module):
+class kill(CSModules):
 	HELP = "Kills a user from the network"
 	NEED_OPER = 1
 

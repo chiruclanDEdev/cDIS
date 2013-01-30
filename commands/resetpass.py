@@ -1,7 +1,7 @@
-from chiruserv import Module
+from chiruserv import CSModules
 from time import time
 
-class resetpass(Module):
+class resetpass(CSModules):
 	HELP = "Reset your lost password"
 
 	def onCommand(self, uid, args):

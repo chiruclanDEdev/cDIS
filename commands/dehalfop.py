@@ -1,7 +1,7 @@
-from chiruserv import Module
+from chiruserv import CSModules
 from fnmatch import fnmatch
 
-class dehalfop(Module):
+class dehalfop(CSModules):
 	HELP = "Removes halfop (+h) flag from you or someone on the channel"
 	NEED_AUTH = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class fantasy(Module):
+class fantasy(CSModules):
 	HELP = "Define the fantasy prefix for your channel"
 	NEED_AUTH = 1
 	

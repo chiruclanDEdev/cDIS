@@ -1231,7 +1231,7 @@ class ServiceThread:
 				
 		return False
 
-class Module:
+class CSModules:
 	import sys
 	import os
 	import time

@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class chanmode(Module):
+class chanmode(CSModules):
 	HELP = "Sets modes for your channel"
 	NEED_AUTH = 1
 

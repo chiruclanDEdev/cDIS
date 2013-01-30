@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class general_mode(Module):
+class general_mode(CSModules):
 	MODULE_CLASS = "MODE"
 	
 	def onData(self, data):

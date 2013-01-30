@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class whois(Module):
+class whois(CSModules):
 	HELP = "Shows information about a user"
 	NEED_AUTH = 1
 

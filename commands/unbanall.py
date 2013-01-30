@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class unbanall(Module):
+class unbanall(CSModules):
 	HELP = "Removes all bans from your channel"
 	NEED_AUTH = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class domaincheck(Module):
+class domaincheck(CSModules):
 	HELP = "Shows you a domain lookup result"
 	NEED_OPER = 1
 

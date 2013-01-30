@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class ipchan(Module):
+class ipchan(CSModules):
 	HELP = "Forces an IP to join a channel"
 	NEED_OPER = 1
 

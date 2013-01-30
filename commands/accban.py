@@ -1,6 +1,6 @@
-from chiruserv import Module, config
+from chiruserv import CSModules, config
 
-class accban(Module):
+class accban(CSModules):
 	HELP = "Bans an account from " + config.get("SERVICES", "description")
 	NEED_OPER = 1
 

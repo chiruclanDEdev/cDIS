@@ -1,7 +1,7 @@
-from chiruserv import Module
+from chiruserv import CSModules
 from fnmatch import fnmatch
 
-class voice(Module):
+class voice(CSModules):
 	HELP = "Sets voice (+v) flag to you or someone on the channel"
 	NEED_AUTH = 1
 

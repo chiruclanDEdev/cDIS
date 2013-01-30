@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class deowner(Module):
+class deowner(CSModules):
 	HELP = "Removes your owner (+q) flag"
 	NEED_AUTH = 1
 

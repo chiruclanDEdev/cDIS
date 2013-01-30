@@ -1,7 +1,7 @@
-from chiruserv import Module
+from chiruserv import CSModules
 from fnmatch import fnmatch
 
-class halfop(Module):
+class halfop(CSModules):
 	HELP = "Sets halfop (+h) flag to you or someone on the channel"
 	NEED_AUTH = 1
 

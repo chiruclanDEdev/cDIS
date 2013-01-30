@@ -1,6 +1,6 @@
-from chiruserv import Module, config
+from chiruserv import CSModules, config
 
-class auth(Module):
+class auth(CSModules):
 	HELP = "Login with your account at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")
 
 	def onCommand(self, source, args):

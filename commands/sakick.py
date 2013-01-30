@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class sakick(Module):
+class sakick(CSModules):
 	HELP = "Kicks someone from the channel"
 	NEED_OPER = 1
 

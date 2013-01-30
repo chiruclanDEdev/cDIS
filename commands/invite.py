@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class invite(Module):
+class invite(CSModules):
 	help="Invites you into a channel"
 	NEED_AUTH = 1
 
