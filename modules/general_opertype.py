@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class general_opertype(Module):
+class general_opertype(CSModules):
 	MODULE_CLASS = "OPERTYPE"
 	
 	def onData(self, data):

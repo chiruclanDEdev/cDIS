@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class general_privmsg(Module):
+class general_privmsg(CSModules):
 	MODULE_CLASS = "PRIVMSG"
 	
 	def onData(self, data):

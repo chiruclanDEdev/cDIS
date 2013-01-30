@@ -1,6 +1,6 @@
-from chiruserv import Module
+from chiruserv import CSModules
 
-class general_part(Module):
+class general_part(CSModules):
 	MODULE_CLASS = "PART"
 	
 	def onData(self, data):
