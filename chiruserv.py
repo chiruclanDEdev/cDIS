@@ -493,7 +493,6 @@ class ServiceThread:
 							for mods in dir(modules):
 								if os.access("modules/" + mods + ".py", os.F_OK):
 									exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
-									self.query("DELETE FROM `modules` WHERE `name` = ?", mods)
 									
 									m_command = ''
 									
