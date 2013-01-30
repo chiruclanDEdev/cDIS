@@ -1,4 +1,5 @@
 from chiruserv import CServMod
+import __builtin__
 
 class cmd_trust(CServMod):
 	MODULE_CLASS = "COMMAND"
