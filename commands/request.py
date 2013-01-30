@@ -1,6 +1,6 @@
-from chiruserv import CSModules, config
+from chiruserv import CServMod, config
 
-class request(CSModules):
+class request(CServMod):
 	HELP = "Requests " + config.get("BOT", "nick") + " for your channel"
 	NEED_AUTH = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class samode(CSModules):
+class samode(CServMod):
 	HELP = "Change modes on a channel where you have no rights"
 	NEED_OPER = 1
 

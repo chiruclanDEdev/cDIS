@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class notify(CSModules):
+class notify(CServMod):
 	HELP = "Sends a global notify to all users on the network"
 	NEED_OPER = 1
 

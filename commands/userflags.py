@@ -1,7 +1,7 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 from _mysql import escape_string
 
-class userflags(CSModules):
+class userflags(CServMod):
 	HELP = "Changes and shows your userflags"
 	NEED_AUTH = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class memo(CSModules):
+class memo(CServMod):
 	HELP = "Send another user a memo"
 	NEED_AUTH = 1
 

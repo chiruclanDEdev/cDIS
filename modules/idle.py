@@ -1,6 +1,6 @@
 from chiruserv import CServMod
 
-class general_idle(CServMod):
+class idle(CServMod):
 	MODULE_CLASS = "IDLE"
 	
 	def onData(self, data):

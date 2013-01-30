@@ -1,6 +1,6 @@
 from chiruserv import CServMod
 
-class general_notice(CServMod):
+class notice(CServMod):
 	MODULE_CLASS = "NOTICE"
 	
 	def onData(self, data):

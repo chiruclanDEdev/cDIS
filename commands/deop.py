@@ -1,7 +1,7 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 from fnmatch import fnmatch
 
-class deop(CSModules):
+class deop(CServMod):
 	HELP = "Removes op (+o) flag from you or someone on the channel"
 	NEED_AUTH = 1
 

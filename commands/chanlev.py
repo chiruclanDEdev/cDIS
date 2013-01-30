@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class chanlev(CSModules):
+class chanlev(CServMod):
 	HELP = "Edit your channel records"
 	NEED_AUTH = 1
 

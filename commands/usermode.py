@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class usermode(CSModules):
+class usermode(CServMod):
 	HELP = "Shows your usermodes or changes it"
 	NEED_AUTH = 1
 

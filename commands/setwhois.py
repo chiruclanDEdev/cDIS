@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class setwhois(CSModules):
+class setwhois(CServMod):
 	HELP = "Sets cool stuff in your whois"
 	NEED_AUTH = 1
 

@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class owner(CSModules):
+class owner(CServMod):
 	NEED_AUTH = 1
 	HELP = "Sets your owner (+q) flag"
 

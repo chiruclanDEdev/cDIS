@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class chanflags(CSModules):
+class chanflags(CServMod):
 	HELP = "Sets flags for your channel"
 	NEED_AUTH = 1
 

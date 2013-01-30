@@ -1,7 +1,7 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 from fnmatch import fnmatch
 
-class deprotect(CSModules):
+class deprotect(CServMod):
 	HELP = "Removes admin (+a) flag from you or someone on the channel"
 	NEED_AUTH = 1
 

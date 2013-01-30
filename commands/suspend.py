@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class suspend(CSModules):
+class suspend(CServMod):
 	HELP = "Suspends a channel"
 	NEED_OPER = 1
 

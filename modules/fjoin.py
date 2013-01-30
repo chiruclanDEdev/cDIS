@@ -1,6 +1,6 @@
 from chiruserv import CServMod
 
-class general_fjoin(CServMod):
+class fjoin(CServMod):
 	MODULE_CLASS = "FJOIN"
 	
 	def onData(self, data):

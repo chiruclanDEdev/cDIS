@@ -1,6 +1,6 @@
 from chiruserv import CServMod
 
-class general_nick(CServMod):
+class nick(CServMod):
 	MODULE_CLASS = "NICK"
 	
 	def onData(self, data):

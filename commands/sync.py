@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class sync(CSModules):
+class sync(CServMod):
 	NEED_AUTH = 1
 	HELP = "Syncs your flags on all channels"
 

@@ -1,7 +1,7 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 from subprocess import Popen, PIPE
 
-class version(CSModules):
+class version(CServMod):
 	HELP = "Shows version of services"
 
 	def onCommand(self, source, args):

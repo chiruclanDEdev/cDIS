@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class sajoin(CSModules):
+class sajoin(CServMod):
 	HELP = "Forces a user to join a channel"
 	NEED_OPER = 1
 

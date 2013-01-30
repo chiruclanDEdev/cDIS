@@ -1,7 +1,7 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 from fnmatch import fnmatch
 
-class protect(CSModules):
+class protect(CServMod):
 	HELP = "Sets admin (+a) flag to you or someone on the channel"
 	NEED_AUTH = 1
 

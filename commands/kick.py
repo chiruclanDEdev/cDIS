@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class kick(CSModules):
+class kick(CServMod):
 	HELP = "Kicks someone from the channel"
 	NEED_AUTH = 1
 

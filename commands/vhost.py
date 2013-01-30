@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class vhost(CSModules):
+class vhost(CServMod):
 	HELP = "Request a vHost for your account"
 	NEED_AUTH = 1
 

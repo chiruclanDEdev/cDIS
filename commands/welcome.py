@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class welcome(CSModules):
+class welcome(CServMod):
 	NEED_AUTH = 1
 	HELP = "Sets a welcome message for your channel"
 

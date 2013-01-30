@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class sauserflags(CSModules):
+class sauserflags(CServMod):
 	HELP = "Changes and shows the userflags of other users"
 	NEED_OPER = 1
 

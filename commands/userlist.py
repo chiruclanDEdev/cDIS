@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class userlist(CSModules):
+class userlist(CServMod):
 	HELP = "Shows you a list of users in that channel"
 	NEED_OPER = 1
 

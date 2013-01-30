@@ -1,6 +1,6 @@
 from chiruserv import CServMod
 
-class general_kick(CServMod):
+class kick(CServMod):
 	MODULE_CLASS = "KICK"
 	
 	def onData(self, data):

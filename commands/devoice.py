@@ -1,7 +1,7 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 from fnmatch import fnmatch
 
-class devoice(CSModules):
+class devoice(CServMod):
 	HELP = "Removes voice (+v) flag from you or someone on the channel"
 	NEED_AUTH = 1
 

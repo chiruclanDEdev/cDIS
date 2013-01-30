@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class sahello(CSModules):
+class sahello(CServMod):
 	HELP = "Creates an account for users"
 	NEED_OPER = 1
 

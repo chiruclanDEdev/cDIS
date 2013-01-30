@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class opers(CSModules):
+class opers(CServMod):
 	HELP = "Shows all operators available for help"
 
 	def onCommand(self, uid, args):

@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class trust(CSModules):
+class trust(CServMod):
 	HELP = "Manage IP trusts for your network"
 	NEED_OPER = 1
 

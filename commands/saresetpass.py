@@ -1,7 +1,7 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 from time import time
 
-class saresetpass(CSModules):
+class saresetpass(CServMod):
 	HELP = "Reset your lost password"
 	NEED_OPER = 1
 

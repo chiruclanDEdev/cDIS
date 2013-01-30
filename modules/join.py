@@ -1,6 +1,6 @@
 from chiruserv import CServMod
 
-class general_join(CServMod):
+class join(CServMod):
 	MODULE_CLASS = "JOIN"
 	
 	def onData(self, data):

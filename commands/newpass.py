@@ -1,6 +1,6 @@
-from chiruserv import CSModules, config
+from chiruserv import CServMod, config
 
-class newpass(CSModules):
+class newpass(CServMod):
 	HELP = "Changes your password at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")
 	NEED_AUTH = 1
 

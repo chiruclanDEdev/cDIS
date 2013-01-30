@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class banlist(CSModules):
+class banlist(CServMod):
 	HELP = "Sends you the banlist of your channel"
 	NEED_AUTH = 1
 

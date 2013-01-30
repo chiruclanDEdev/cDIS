@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class safeedback(CSModules):
+class safeedback(CServMod):
 	HELP = "Reads the feedback from users"
 	NEED_OPER = 1
 

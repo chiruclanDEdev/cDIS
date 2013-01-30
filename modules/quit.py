@@ -1,6 +1,6 @@
 from chiruserv import CServMod
 
-class general_quit(CServMod):
+class quit(CServMod):
 	MODULE_CLASS = "QUIT"
 	
 	def onData(self, data):

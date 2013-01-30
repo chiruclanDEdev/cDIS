@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class info(CSModules):
+class info(CServMod):
 	HELP = "Shows all information about an user"
 	NEED_OPER = 1
 

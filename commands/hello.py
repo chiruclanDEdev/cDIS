@@ -1,7 +1,7 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 from time import time
 
-class hello(CSModules):
+class hello(CServMod):
 	HELP = "Creates an account for you and sends the data to you"
 
 	def onCommand(self, source, args):

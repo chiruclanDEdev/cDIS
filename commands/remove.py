@@ -1,6 +1,6 @@
-from chiruserv import CSModules, config
+from chiruserv import CServMod, config
 
-class remove(CSModules):
+class remove(CServMod):
 	HELP = "Removes " + config.get("BOT", "nick") + " from your channel"
 	NEED_AUTH = 1
 
