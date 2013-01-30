@@ -16,7 +16,6 @@ import traceback
 import thread
 import fnmatch
 import ssl
-import commands
 import modules
 import __builtin__
 
@@ -237,7 +236,13 @@ class ServiceThread:
 					if os.access("modules/" + mods + ".py", os.F_OK):
 						exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
 						self.query("DELETE FROM `modules` WHERE `name` = ?", mods)
-						self.query("INSERT INTO `modules` (`name`, `class`) VALUES (?, ?)", mods, m_class)
+						
+						m_command = ''
+						
+						if m_class.lower() == "command":
+							exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
+							
+						self.query("INSERT INTO `modules` (`name`, `class`, `command`) VALUES (?, ?, ?)", mods, m_class, m_command)
 			else:
 				for module in self.query("SELECT * FROM `modules` WHERE `class` = ?", data.split()[1]):
 					if os.access("modules/" + module["name"] + ".py", os.F_OK):
@@ -250,34 +255,35 @@ class ServiceThread:
 					iscmd = False
 					cmd = data.split()[3][1:]
 					
-					if os.access("commands/"+cmd.lower()+".py", os.F_OK):
-						iscmd = True
-						exec("oper = commands.%s.%s().NEED_OPER" % (cmd.lower(), cmd.lower()))
-						
-						if oper == 0:
-							exec("cmd_auth = commands.%s.%s().NEED_AUTH" % (cmd.lower(), cmd.lower()))
+					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ?", cmd):
+						if os.access("modules/" + command["name"] + ".py", os.F_OK):
+							iscmd = True
+							exec("oper = modules.%s.%s().NEED_OPER" % (command["name"], command["name"]))
 							
-							if not cmd_auth:
-								if len(data.split()) == 4:
-									exec("thread.start_new_thread(commands.%s.%s().onCommand,('%s', ''))" % (cmd.lower(), cmd.lower(), data.split()[0][1:]))
-								elif len(data.split()) > 4:
-									exec("thread.start_new_thread(commands.%s.%s().onCommand,('%s', '%s'))" % (cmd.lower(), cmd.lower(), data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
-							elif cmd_auth:
-								if self.auth(data.split()[0][1:]):
+							if oper == 0:
+								exec("cmd_auth = modules.%s.%s().NEED_AUTH" % (command["name"], command["name"]))
+								
+								if not cmd_auth:
 									if len(data.split()) == 4:
-										exec("thread.start_new_thread(commands.%s.%s().onCommand,('%s', ''))" % (cmd.lower(), cmd.lower(), data.split()[0][1:]))
+										exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
 									elif len(data.split()) > 4:
-										exec("thread.start_new_thread(commands.%s.%s().onCommand,('%s', '%s'))" % (cmd.lower(), cmd.lower(), data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
+										exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
+								elif cmd_auth:
+									if self.auth(data.split()[0][1:]):
+										if len(data.split()) == 4:
+											exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
+										elif len(data.split()) > 4:
+											exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
+									else:
+										self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+							elif oper == 1:
+								if self.isoper(data.split()[0][1:]):
+									if len(data.split()) == 4:
+										exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
+									if len(data.split()) > 4:
+										exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
 								else:
-									self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
-						elif oper == 1:
-							if self.isoper(data.split()[0][1:]):
-								if len(data.split()) == 4:
-									exec("thread.start_new_thread(commands.%s.%s().onCommand,('%s', ''))" % (cmd.lower(), cmd.lower(), data.split()[0][1:]))
-								if len(data.split()) > 4:
-									exec("thread.start_new_thread(commands.%s.%s().onCommand,('%s', '%s'))" % (cmd.lower(), cmd.lower(), data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
-							else:
-								self.msg(data.split()[0][1:], "You do not have sufficient privileges to use '{0}'".format(data.split()[3][1:].upper()))
+									self.msg(data.split()[0][1:], "You do not have sufficient privileges to use '{0}'".format(data.split()[3][1:].upper()))
 								
 					if not iscmd:
 						self.message(data.split()[0][1:], ' '.join(data.split()[3:])[1:])
@@ -295,34 +301,35 @@ class ServiceThread:
 							if len(data.split()) > 4:
 								args = ' '.join(data.split()[4:]).replace("'", "\\'")
 								
-							if os.access("commands/"+cmd.lower()+".py", os.F_OK):
-								iscmd = True
-								exec("oper = commands.%s.%s().NEED_OPER" % (cmd.lower(), cmd.lower()))
-								
-								if oper == 0:
-									exec("cmd_auth = commands.%s.%s().NEED_AUTH" % (cmd.lower(), cmd.lower()))
+							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ?", cmd):
+								if os.access("modules/" + command["name"] + ".py", os.F_OK):
+									iscmd = True
+									exec("oper = modules.%s.%s().NEED_OPER" % (command["name"], command["name"]))
 									
-									if not cmd_auth:
-										if len(data.split()) == 4:
-											exec("thread.start_new_thread(commands.%s.%s().onFantasy,('%s', '%s', ''))" % (cmd.lower(), cmd.lower(), fuid, fchan))
-										elif len(data.split()) > 4:
-											exec("thread.start_new_thread(commands.%s.%s().onFantasy,('%s', '%s', '%s'))" % (cmd.lower(), cmd.lower(), fuid, fchan, args))
-									elif cmd_auth:
-										if self.auth(fuid):
+									if oper == 0:
+										exec("cmd_auth = modules.%s.%s().NEED_AUTH" % (command["name"], command["name"]))
+										
+										if not cmd_auth:
 											if len(data.split()) == 4:
-												exec("thread.start_new_thread(commands.%s.%s().onFantasy,('%s', '%s', ''))" % (cmd.lower(), cmd.lower(), fuid, fchan))
+												exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', ''))" % (command["name"], command["name"], fuid, fchan))
 											elif len(data.split()) > 4:
-												exec("thread.start_new_thread(commands.%s.%s().onFantasy,('%s', '%s', '%s'))" % (cmd.lower(), cmd.lower(), fuid, fchan, args))
+												exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', '%s'))" % (command["name"], command["name"], fuid, fchan, args))
+										elif cmd_auth:
+											if self.auth(fuid):
+												if len(data.split()) == 4:
+													exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', ''))" % (command["name"], command["name"], fuid, fchan))
+												elif len(data.split()) > 4:
+													exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', '%s'))" % (command["name"], command["name"], fuid, fchan, args))
+											else:
+												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+									elif oper == 1:
+										if self.isoper(fuid):
+											if len(data.split()) == 4:
+												exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', ''))" % (command["name"], command["name"], fuid, fchan))
+											elif len(data.split()) > 4:
+												exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', '%s'))" % (command["name"], command["name"], fuid, fchan, args))
 										else:
-											self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
-								elif oper == 1:
-									if self.isoper(fuid):
-										if len(data.split()) == 4:
-											exec("thread.start_new_thread(commands.%s.%s().onFantasy,('%s', '%s', ''))" % (cmd.lower(), cmd.lower(), fuid, fchan))
-										elif len(data.split()) > 4:
-											exec("thread.start_new_thread(commands.%s.%s().onFantasy,('%s', '%s', '%s'))" % (cmd.lower(), cmd.lower(), fuid, fchan, args))
-									else:
-										self.msg(fuid, "You do not have sufficient privileges to use '{0}'".format(cmd.upper()))
+											self.msg(fuid, "You do not have sufficient privileges to use '{0}'".format(cmd.upper()))
 										
 						if not iscmd:
 							if len(data.split()) == 4:
@@ -364,59 +371,58 @@ class ServiceThread:
 					else:
 						self.help(source, "HELP", "Shows information about all commands that are available to you")
 						
-					for command in dir(commands):
-						if command != "__init__" and os.access("commands/"+command+".py", os.F_OK):
-							exec("cmd_auth = commands.%s.%s().NEED_AUTH" % (command, command))
-							exec("cmd_oper = commands.%s.%s().NEED_OPER" % (command, command))
-							exec("cmd_help = commands.%s.%s().HELP" % (command, command))
+					opercmdlist = list()
+					
+					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND'"):
+						if os.access("modules/"+command["name"]+".py", os.F_OK):
+							exec("cmd_auth = modules.%s.%s().NEED_AUTH" % (command["name"], command["name"]))
+							exec("cmd_oper = modules.%s.%s().NEED_OPER" % (command["name"], command["name"]))
+							exec("cmd_help = modules.%s.%s().HELP" % (command["name"], command["name"]))
 							
 							if not cmd_auth and not cmd_oper:
 								if len(args) != 0:
-									if fnmatch.fnmatch(command.lower(), "*" + args.lower() + "*"):
-										self.help(source, command, cmd_help)
+									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
+										self.help(source, command["command"], cmd_help)
 								else:
-									self.help(source, command, cmd_help)
+									self.help(source, command["command"], cmd_help)
 							elif cmd_auth and not cmd_oper and self.auth(source):
 								if len(args) != 0:
-									if fnmatch.fnmatch(command.lower(), "*" + args.lower() + "*"):
-										self.help(source, command, cmd_help)
+									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
+										self.help(source, command["command"], cmd_help)
 								else:
-									self.help(source, command, cmd_help)
-									
-					if self.isoper(source):
-						self.msg(source)
-						self.msg(source, "For operators:")
-						
-						for command in dir(commands):
-							if command != "__init__" and os.access("commands/"+command+".py", os.F_OK):
-								exec("cmd_oper = commands.%s.%s().NEED_OPER" % (command, command))
-								exec("cmd_help = commands.%s.%s().HELP" % (command, command))
+									self.help(source, command["command"], cmd_help)
+							elif cmd_oper:
+								opercmdlist.append([command["command"], cmd_help])
 								
-								if cmd_oper and self.isoper(source):
+							if self.isoper(source):
+								self.msg(source)
+								self.msg(source, "For operators:")
+								
+								for opercmd in opercmdlist:
 									if len(args) != 0:
-										if fnmatch.fnmatch(command.lower(), "*" + args.lower() + "*"):
-											self.help(source, command, cmd_help)
+										if fnmatch.fnmatch(opercmd[0].lower(), "*" + args.lower() + "*"):
+											self.help(source, opercmd[0], opercmd[1])
 									else:
-										self.help(source, command, cmd_help)
-										
-						if len(args) != 0:
-							if fnmatch.fnmatch("reload", "*" + args.lower() + "*"):
-								self.help(source, "RELOAD", "Reloads the config")
-						else:
-							self.help(source, "RELOAD", "Reloads the config")
-							
-						if len(args) != 0:
-							if fnmatch.fnmatch("update", "*" + args.lower() + "*"):
-								self.help(source, "UPDATE", "Updates the services")
-						else:
-							self.help(source, "UPDATE", "Updates the services")
-							
-						if len(args) != 0:
-							if fnmatch.fnmatch("quit", "*" + args.lower() + "*"):
-								self.help(source, "QUIT", "Shutdowns the services")
-						else:
-							self.help(source, "QUIT", "Shutdowns the services")
-							
+											self.help(source, opercmd[0], opercmd[1])
+											
+								if len(args) != 0:
+									if fnmatch.fnmatch("reload", "*" + args.lower() + "*"):
+										self.help(source, "RELOAD", "Reloads the config")
+								else:
+									self.help(source, "RELOAD", "Reloads the config")
+									
+								if len(args) != 0:
+									if fnmatch.fnmatch("update", "*" + args.lower() + "*"):
+										self.help(source, "UPDATE", "Updates the services")
+								else:
+									self.help(source, "UPDATE", "Updates the services")
+									
+								if len(args) != 0:
+									if fnmatch.fnmatch("quit", "*" + args.lower() + "*"):
+										self.help(source, "QUIT", "Shutdowns the services")
+								else:
+									self.help(source, "QUIT", "Shutdowns the services")
+									
 						self.msg(source)
 						
 					self.msg(source, "End of list.")
@@ -425,14 +431,19 @@ class ServiceThread:
 					self.debug = config.get("OTHER", "debug")
 					self.email = config.get("OTHER", "email")
 					self.regmail = config.get("OTHER", "regmail")
-					reload(commands)
 					reload(modules)
 					
 					self.query("TRUNCATE `modules`")
 					for mods in dir(modules):
 						if os.access("modules/" + mods + ".py", os.F_OK):
 							exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
-							self.query("INSERT INTO `modules` (`name`, `class`) VALUES (?, ?)", mods, m_class)
+							
+							m_command = ''
+							
+							if m_class.lower() == "command":
+								exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
+								
+							self.query("INSERT INTO `modules` (`name`, `class`, `command`) VALUES (?, ?, ?)", mods, m_class, m_command)
 							
 					self.msg(source, "Done.")
 				elif cmd == "update" and self.isoper(source):
@@ -443,18 +454,6 @@ class ServiceThread:
 					if open("version", "r").read() != _version:
 						_updates = len(os.listdir("sql/updates"))
 						_hash = self.encode(open("chiruserv.py", "r").read())
-						_cmdlist = list()
-						
-						for cmds in dir(commands):
-							if os.access("commands/"+cmds+".py", os.F_OK):
-								_cmdlist.append(cmds)
-								
-						_modlist = list()
-						
-						for mods in dir(modules):
-							if os.access("modules/" + mods + ".py", os.F_OK):
-								_modlist.append(mods)
-								
 						self.msg(source, "{0} -> {1}".format(open("version", "r").read(), _version))
 #						shell("git add config.cfg")
 #						shell("git commit -m 'Save'")
@@ -481,13 +480,6 @@ class ServiceThread:
 							self.msg(source, "Please note that you have to restart the services manually.")
 						else:
 							self.msg(source, "Reload ...")
-							reload(commands)
-							
-							for cmds in _cmdlist:
-								if not os.access("commands/"+cmds+".py", os.F_OK):
-									exec("del commands."+cmds)
-									exec("""del sys.modules["commands.%s"]""" % cmds)
-									
 							reload(modules)
 									
 							for mod in _modlist:
@@ -496,11 +488,17 @@ class ServiceThread:
 									exec("""del sys.modules["modules.%s"]""" % mod)
 									
 							self.query("TRUNCATE `modules`")
-							
 							for mods in dir(modules):
 								if os.access("modules/" + mods + ".py", os.F_OK):
 									exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
-									self.query("INSERT INTO `modules` (`name`, `class`) VALUES (?, ?)", mods, m_class)
+									self.query("DELETE FROM `modules` WHERE `name` = ?", mods)
+									
+									m_command = ''
+									
+									if m_class.lower() == "command":
+										exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
+										
+									self.query("INSERT INTO `modules` (`name`, `class`, `command`) VALUES (?, ?, ?)", mods, m_class, m_command)
 									
 							self.msg(source, "Done.")
 					else:
