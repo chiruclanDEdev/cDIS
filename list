@@ -83,7 +83,7 @@ modules/mod_part.py 62c6f8c01698044d85c43483431e9af7
 modules/mod_privmsg.py 2b157593995dcf7b2df074b5f1856d45
 modules/mod_quit.py 11efa36ce1864334c86642fc75bba1ca
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
-modules/mod_uid.py 735b004dbcec1169d3d317001c2d7d88
+modules/mod_uid.py 0391091f302a69b65aa18bbfbe90465c
 sql/base/struct.sql 0a8db0a309ecf443b7b0bc1eef060fd9
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
