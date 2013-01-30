@@ -484,11 +484,6 @@ class ServiceThread:
 							self.msg(source, "Reload ...")
 							reload(modules)
 									
-							for mod in _modlist:
-								if not os.access("modules/" + mod + ".py", os.F_OK):
-									exec("del modules." + mod)
-									exec("""del sys.modules["modules.%s"]""" % mod)
-									
 							self.query("TRUNCATE `modules`")
 							for mods in dir(modules):
 								if os.access("modules/" + mods + ".py", os.F_OK):
