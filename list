@@ -31,7 +31,7 @@ modules/cmd_invite.py b350f453be43ac98c5f401dcca40a92c
 modules/cmd_ipchan.py f6924638d9d371a7926f64b2c0229019
 modules/cmd_kick.py 5e93c33dd6c48e5aca6913046540a314
 modules/cmd_kill.py c9a5d7c16c9ca5fe90fd42a5b95cd3a9
-modules/cmd_listcommands.py f5445f001ec17d85cedee349c0f71999
+modules/cmd_listcommands.py 52591128e9091130b1f1b57038e2a82e
 modules/cmd_listmodules.py efda0b144d00d6f98f2bcb171419a376
 modules/cmd_memo.py 183efdef3266749ddb9564322bdd6e64
 modules/cmd_newpass.py 81dee1b8a26413e4f720a184d4660ff4

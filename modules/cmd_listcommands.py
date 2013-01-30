@@ -4,7 +4,7 @@ class cmd_listcommands(CServMod):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "LISTCOMMANDS"
 	HELP = "Lists all active commands"
-	NEED_OPER 1
+	NEED_OPER = 1
 	
 	def onCommand(self, uid, args):
 		self.msg(uid, "-=- Lists all loaded modules -=-")
