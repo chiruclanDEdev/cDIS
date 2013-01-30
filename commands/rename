@@ -1,5 +1,0 @@
-for filename in *
-do
-	echo "$filename -> cmd_$filename"
-	mv $filename cmd_$filename
-done;

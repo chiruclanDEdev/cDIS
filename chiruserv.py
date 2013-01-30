@@ -394,34 +394,34 @@ class ServiceThread:
 							elif cmd_oper:
 								opercmdlist.append([command["command"], cmd_help])
 								
-							if self.isoper(source):
-								self.msg(source)
-								self.msg(source, "For operators:")
-								
-								for opercmd in opercmdlist:
-									if len(args) != 0:
-										if fnmatch.fnmatch(opercmd[0].lower(), "*" + args.lower() + "*"):
-											self.help(source, opercmd[0], opercmd[1])
-									else:
-											self.help(source, opercmd[0], opercmd[1])
-											
-								if len(args) != 0:
-									if fnmatch.fnmatch("reload", "*" + args.lower() + "*"):
-										self.help(source, "RELOAD", "Reloads the config")
-								else:
-									self.help(source, "RELOAD", "Reloads the config")
+					if self.isoper(source):
+						self.msg(source)
+						self.msg(source, "For operators:")
+						
+						for opercmd in opercmdlist:
+							if len(args) != 0:
+								if fnmatch.fnmatch(opercmd[0].lower(), "*" + args.lower() + "*"):
+									self.help(source, opercmd[0], opercmd[1])
+							else:
+									self.help(source, opercmd[0], opercmd[1])
 									
-								if len(args) != 0:
-									if fnmatch.fnmatch("update", "*" + args.lower() + "*"):
-										self.help(source, "UPDATE", "Updates the services")
-								else:
-									self.help(source, "UPDATE", "Updates the services")
-									
-								if len(args) != 0:
-									if fnmatch.fnmatch("quit", "*" + args.lower() + "*"):
-										self.help(source, "QUIT", "Shutdowns the services")
-								else:
-									self.help(source, "QUIT", "Shutdowns the services")
+						if len(args) != 0:
+							if fnmatch.fnmatch("reload", "*" + args.lower() + "*"):
+								self.help(source, "RELOAD", "Reloads the config")
+						else:
+							self.help(source, "RELOAD", "Reloads the config")
+							
+						if len(args) != 0:
+							if fnmatch.fnmatch("update", "*" + args.lower() + "*"):
+								self.help(source, "UPDATE", "Updates the services")
+						else:
+							self.help(source, "UPDATE", "Updates the services")
+							
+						if len(args) != 0:
+							if fnmatch.fnmatch("quit", "*" + args.lower() + "*"):
+								self.help(source, "QUIT", "Shutdowns the services")
+						else:
+							self.help(source, "QUIT", "Shutdowns the services")
 									
 						self.msg(source)
 						
