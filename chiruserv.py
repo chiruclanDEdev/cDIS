@@ -1235,18 +1235,18 @@ class Module:
 	import sys
 	import os
 	import time
+	import ConfigParser
 	import hashlib
 	import smtplib
 	import _mysql
 	import traceback
 	import fnmatch
-	import time
 	import __builtin__
 	
 	HELP = "unknown"
 	NEED_OPER = 0
 	NEED_AUTH = 0
-	MODULE_CLASS = "Command"
+	MODULE_CLASS = ""
 
 	def __init__(self):
 		self.con = con
