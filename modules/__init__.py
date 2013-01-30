@@ -1,12 +1,12 @@
 import os
 import sys
 
-for cmd in os.listdir("modules"):
-	if cmd.endswith(".py"):
-		cmd = ' '.join(cmd.split(".")[:-1])
+for mod in os.listdir("modules"):
+	if mod.endswith(".py"):
+		mod = ' '.join(mod.split(".")[:-1])
 		
-		if cmd != "__init__":
-			if not sys.modules.has_key("modules." + cmd):
-				exec("import modules." + cmd)
+		if mod != "__init__":
+			if not sys.modules.has_key("modules." + mod):
+				exec("import modules." + mod)
 			else:
-				exec("reload(modules." + cmd + ")")
+				exec("reload(modules." + mod + ")")
