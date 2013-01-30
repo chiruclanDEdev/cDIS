@@ -869,7 +869,7 @@ class ServiceThread:
 						self.send(":%s SVSJOIN %s %s" % (self.bot, target, channel))
 
 	def getflag(self, target, channel):
-		for data in self.query("select user from temp_nick where nick = ?" % target):
+		for data in self.query("select user from temp_nick where nick = ?", target):
 			for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["user"]):
 				return flag["flag"]
 				
@@ -1686,7 +1686,7 @@ class CServMod:
 						self.send(":%s SVSJOIN %s %s" % (self.bot, target, channel))
 
 	def getflag(self, target, channel):
-		for data in self.query("select user from temp_nick where nick = ?" % target):
+		for data in self.query("select user from temp_nick where nick = ?", target):
 			for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["user"]):
 				return flag["flag"]
 				
