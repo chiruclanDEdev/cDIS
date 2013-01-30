@@ -7,7 +7,7 @@ class cmd_listcommands(CServMod):
 	NEED_OPER = 1
 	
 	def onCommand(self, uid, args):
-		self.msg(uid, "-=- Lists all loaded modules -=-")
+		self.msg(uid, "-=- Lists all loaded commands -=-")
 		
 		for data in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND'"):
 			idname_space = " " * (10 - len(str(data["id"])))
