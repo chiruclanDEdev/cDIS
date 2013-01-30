@@ -1,5 +1,5 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
-README.md 02688d6a66cf2cc965d3e6ef0608f047
+README.md c1d7516bf77c78f5bf1acdf637d178ac
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
 chiruserv.py 1918f82d00d4f2369f2a741824ffda10
 config.cfg.dist d8a748fdd03227393d381b8dfc8c19d5
@@ -63,7 +63,7 @@ modules/cmd_unbanme.py f250ce9e35889f5fe7b54a8586e5dc6c
 modules/cmd_userflags.py deda171ec2047bdaba276f697bde27dd
 modules/cmd_userlist.py f688d9e8877c609000567234f95a57cc
 modules/cmd_usermode.py 86e155dded563fab298784f7511cace6
-modules/cmd_version.py f75d10af7ebe67e61b8e714bec016526
+modules/cmd_version.py 32d27ab184c594bc68302a9cd1ca33d9
 modules/cmd_vhost.py 02970b5b39bb611ec5b3b6fefb0ddf0e
 modules/cmd_voice.py a85fa42e6977f7a9f6af39bf9e60d934
 modules/cmd_welcome.py 48df64873522d92c411a1cc91afdb349

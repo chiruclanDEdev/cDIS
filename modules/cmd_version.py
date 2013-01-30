@@ -28,6 +28,6 @@ class cmd_version(CServMod):
 			self.msg(source, "Options: {0}".format(', '.join(options)))
 			
 		if self.isoper(source):
-			self.msg(source, "If you're looking for more commands, check this out: https://bitbucket.org/ChiruclanDE/chiruserv-commands")
+			self.msg(source, "If you're looking for more modules, check this out: https://bitbucket.org/ChiruclanDE/chiruserv-modules")
 			
 		self.msg(source, "Developed by ChiruclanDE (https://bitbucket.org/ChiruclanDE). Suggestions to hosting@chiruclan.de.")
