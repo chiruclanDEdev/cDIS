@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class general_topic(CSModules):
+class general_topic(CServMod):
 	MODULE_CLASS = "TOPIC"
 	
 	def onData(self, data):

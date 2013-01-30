@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class general_idle(CSModules):
+class general_idle(CServMod):
 	MODULE_CLASS = "IDLE"
 	
 	def onData(self, data):

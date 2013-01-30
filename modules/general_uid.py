@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class general_uid(CSModules):
+class general_uid(CServMod):
 	MODULE_CLASS = "UID"
 	
 	def onData(self, data):

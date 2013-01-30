@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class general_notice(CSModules):
+class general_notice(CServMod):
 	MODULE_CLASS = "NOTICE"
 	
 	def onData(self, data):

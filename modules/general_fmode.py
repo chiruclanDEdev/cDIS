@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class general_fmode(CSModules):
+class general_fmode(CServMod):
 	MODULE_CLASS = "FMODE"
 	
 	def onData(self, data):

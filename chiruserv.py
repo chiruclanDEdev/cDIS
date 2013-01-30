@@ -3,11 +3,6 @@
 # Copyright by ChiruServ 2012-2013
 
 import sys
-
-sys.path.append(".")
-sys.path.append("commands")
-sys.path.append("modules")
-
 import socket
 import os
 import ConfigParser
@@ -173,6 +168,7 @@ class ServiceThread:
 	import sys
 	import socket
 	import os
+	import ConfigParser
 	import time
 	import hashlib
 	import smtplib
@@ -1236,7 +1232,7 @@ class ServiceThread:
 				
 		return False
 
-class CSModules:
+class CServMod:
 	import sys
 	import os
 	import time

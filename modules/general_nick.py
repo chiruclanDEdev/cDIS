@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class general_nick(CSModules):
+class general_nick(CServMod):
 	MODULE_CLASS = "NICK"
 	
 	def onData(self, data):

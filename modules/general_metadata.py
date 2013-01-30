@@ -1,6 +1,6 @@
-from chiruserv import CSModules
+from chiruserv import CServMod
 
-class general_metadata(CSModules):
+class general_metadata(CServMod):
 	MODULE_CLASS = "METADATA"
 	
 	def onData(self, data):
