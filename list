@@ -56,7 +56,7 @@ modules/cmd_setwhois.py 35314c6d5bc7b7b814b9f65234bf5061
 modules/cmd_spamscan.py 011eaf7f2604d9e9d1be43ea1fd436c8
 modules/cmd_suspend.py b31850d90ef6b4eebad7147f6f598676
 modules/cmd_sync.py 52a7dcef6d56a4084b7add89b8b42aa1
-modules/cmd_trust.py cba6b0d1379c1714ceea1db85092aebf
+modules/cmd_trust.py 731ad249254170265b42579efd424cce
 modules/cmd_unban.py c9ce87fa2dfa9ff39987ec4c1db020b4
 modules/cmd_unbanall.py 369169980b5168d428cfa2bbec0a147f
 modules/cmd_unbanme.py f250ce9e35889f5fe7b54a8586e5dc6c
@@ -80,7 +80,7 @@ modules/mod_nick.py d803228d8f5716dc1f9368d30f75ce75
 modules/mod_notice.py 60072685a84cf30c52d239dcf5068af6
 modules/mod_opertype.py 8d30347aa08a81127c3eb92110e5bec0
 modules/mod_part.py 62c6f8c01698044d85c43483431e9af7
-modules/mod_privmsg.py 9ddedbeb7150315d8f429c3697a482a4
+modules/mod_privmsg.py 2b157593995dcf7b2df074b5f1856d45
 modules/mod_quit.py 11efa36ce1864334c86642fc75bba1ca
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
 modules/mod_uid.py 735b004dbcec1169d3d317001c2d7d88

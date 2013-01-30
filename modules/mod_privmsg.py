@@ -1,4 +1,5 @@
 from chiruserv import CServMod
+import __builtin__
 
 class mod_privmsg(CServMod):
 	MODULE_CLASS = "PRIVMSG"
