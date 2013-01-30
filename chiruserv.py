@@ -17,7 +17,7 @@ import thread
 import fnmatch
 import ssl
 import commands
-#import modules
+import modules
 import __builtin__
 
 def red(string):
@@ -239,7 +239,7 @@ class ServiceThread:
 						self.query("DELETE FROM `modules` WHERE `name` = ?", mods)
 						self.query("INSERT INTO `modules` (`name`, `class`) VALUES (?, ?)", mods, m_class)
 			else:
-				for modules in query("SELECT * FROM `modules` WHERE `class` = ?", data.split()[1]):
+				for modules in self.query("SELECT * FROM `modules` WHERE `class` = ?", data.split()[1]):
 					if os.access("modules/" + modules["name"] + ".py", os.F_OK):
 						exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(module["name"]))
 						if m_class.lower() == data.split()[1].lower():
