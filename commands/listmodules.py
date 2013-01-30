@@ -11,6 +11,6 @@ class listmodules(CServMod):
 			idname_space = " " * (10 - len(str(data["id"])))
 			nameclass_space = " " * (40 - len(data["name"]))
 			
-			self.msg(uid, "ID: {id} {idname_space} {name} {nameclass_space} {class}".format(id=str(data["id"]), idname_space=idname_space, name=data["name"], nameclass_space=nameclass_space, class=data["class"]))
+			self.msg(uid, "ID: {id} {idname_space} {name} {nameclass_space} {tclass}".format(id=str(data["id"]), idname_space=idname_space, name=data["name"], nameclass_space=nameclass_space, tclass=data["class"]))
 			
 		self.msg(uid, "-=- End of list -=-")
