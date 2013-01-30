@@ -17,7 +17,7 @@ import thread
 import fnmatch
 import ssl
 import commands
-import modules
+#import modules
 import __builtin__
 
 def red(string):
