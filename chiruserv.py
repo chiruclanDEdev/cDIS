@@ -2,6 +2,15 @@
 
 # Copyright by ChiruServ 2012-2013
 
+def red(string):
+	return("\033[91m" + string + "\033[0m")
+
+def blue(string):
+	return("\033[94m" + string + "\033[0m")
+
+def green(string):
+	return("\033[92m" + string + "\033[0m")
+
 print(red("*") + " Loading modules")
 
 import sys
@@ -25,15 +34,6 @@ print(blue("*") + " Pausing 15 seconds for module integration")
 time.sleep(15)
 print(green("*") + " All modules loaded and ready")
 time.sleep(2)
-
-def red(string):
-	return("\033[91m" + string + "\033[0m")
-
-def blue(string):
-	return("\033[94m" + string + "\033[0m")
-
-def green(string):
-	return("\033[92m" + string + "\033[0m")
 
 try:
 	if not os.access("logs", os.F_OK):
