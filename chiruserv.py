@@ -3,6 +3,11 @@
 # Copyright by ChiruServ 2012-2013
 
 import sys
+
+sys.path.append(".")
+sys.path.append("commands")
+sys.path.append("modules")
+
 import socket
 import os
 import ConfigParser
