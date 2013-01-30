@@ -42,4 +42,4 @@ class mod_uid(CServMod):
 		if data.split()[10].find("B") != -1:
 			crypthost = self.encode_md5(data.split()[2] + ":" + self.nick(data.split()[2]) + "!" + self.userhost(data.split()[2]))
 			self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, data.split()[2], crypthost, '.'.join(self.services_name.split(".")[-2:])))
-					self.query("insert into gateway values (?)", data.split()[2])
+			self.query("insert into gateway values (?)", data.split()[2])
