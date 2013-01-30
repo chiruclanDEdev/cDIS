@@ -127,16 +127,7 @@ class Services:
 			self.query("truncate modules")
 			shell("rm -rf logs/*")
 			
-			for mods in dir(modules):
-				if os.access("modules/" + mods + ".py", os.F_OK):
-					exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
-					
-					m_command = ''
-					
-					if m_class.lower() == "command":
-						exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
-						
-					self.query("INSERT INTO `modules` (`name`, `class`, `command`) VALUES (?, ?, ?)", mods, m_class, m_command)
+
 				
 			if self.ipv6 and socket.has_ipv6:
 				if self.ssl:
@@ -157,6 +148,17 @@ class Services:
 			__builtin__.spamscan = {}
 			__builtin__._connected = False
 			__builtin__.config = config
+			
+			for mods in dir(modules):
+				if os.access("modules/" + mods + ".py", os.F_OK):
+					exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
+					
+					m_command = ''
+					
+					if m_class.lower() == "command":
+						exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
+						
+					self.query("INSERT INTO `modules` (`name`, `class`, `command`) VALUES (?, ?, ?)", mods, m_class, m_command)
 			
 			while 1:
 				recv = self.con.recv(25600)
