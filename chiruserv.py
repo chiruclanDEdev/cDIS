@@ -55,16 +55,6 @@ def perror(text):
 		file.close()
 	except: pass
 
-def status():
-	try:
-		sock = socket.socket()
-		sock.bind((config.get("SERVICES", "address"), 5556))
-		sock.listen(1024)
-		while 1:
-			time.sleep(1)
-		sock.close()
-	except: pass
-
 class Services:
 	def __init__(self):
 		self.mysql_host = config.get("MYSQL", "host")
@@ -85,33 +75,32 @@ class Services:
 		self.email = config.get("OTHER", "email")
 		self.ipv6 = config.getboolean("OTHER", "ipv6")
 		self.ssl = config.getboolean("OTHER", "ssl")
-		self.status = config.getboolean("FAILOVER", "active")
 		self.regmail = config.get("OTHER", "regmail")
 		self.bot = "%sAAAAAA" % self.services_id
 		self.bot_nick = config.get("BOT", "nick").split()[0]
 		self.bot_user = config.get("BOT", "user").split()[0]
 		self.bot_real = config.get("BOT", "real")
-		self.db = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
 		
 	def query(self, string, *args):
-		self.db.query("SET @s = '" + self.db.escape_string(str(string)) + "'")
-		self.db.query("PREPARE query FROM @s")
+		conn = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
+		conn.query("SET @s = '" + conn.escape_string(str(string)) + "'")
+		conn.query("PREPARE query FROM @s")
 		
 		i = 0
 		all_variables = ""
 		
 		for arg in args:
 			i += 1
-			self.db.query("SET @" + str(i) + " = '" + self.db.escape_string(str(arg)) + "'")
+			conn.query("SET @" + str(i) + " = '" + conn.escape_string(str(arg)) + "'")
 			
 			if i == 1:
 				all_variables += " USING @" + str(i)
 			else:
 				all_variables += ", @" + str(i)
 				
-		self.db.query("EXECUTE query" + all_variables)
-		result = self.db.store_result()
-		self.db.query("DEALLOCATE PREPARE query")
+		conn.query("EXECUTE query" + all_variables)
+		result = conn.store_result()
+		conn.query("DEALLOCATE PREPARE query")
 		
 		if result:
 			results = list()
@@ -119,8 +108,10 @@ class Services:
 			for data in result.fetch_row(maxrows=0, how=1):
 				results.append(data)
 				
+			conn.close()
 			return results
 			
+		conn.close()
 		return None
 		
 	def send(self, text):
@@ -134,11 +125,8 @@ class Services:
 			self.query("truncate online")
 			self.query("truncate chanlist")
 			shell("rm -rf logs/*")
-			
-			if self.status:
-				thread.start_new_thread(status,())
 				
-			if self.ipv6:
+			if self.ipv6 and socket.has_ipv6:
 				if self.ssl:
 					self.con = ssl.wrap_socket(socket.socket(socket.AF_INET6, socket.SOCK_STREAM))
 				else:
@@ -209,7 +197,6 @@ class ServiceThread:
 		self.email = config.get("OTHER", "email")
 		self.ipv6 = config.getboolean("OTHER", "ipv6")
 		self.ssl = config.getboolean("OTHER", "ssl")
-		self.status = config.getboolean("FAILOVER", "active")
 		self.regmail = config.get("OTHER", "regmail")
 		self.bot = "%sAAAAAA" % self.services_id
 		self.bot_nick = config.get("BOT", "nick").split()[0]
@@ -1641,7 +1628,6 @@ class Command:
 		self.email = config.get("OTHER", "email")
 		self.ipv6 = config.getboolean("OTHER", "ipv6")
 		self.ssl = config.getboolean("OTHER", "ssl")
-		self.status = config.getboolean("FAILOVER", "active")
 		self.regmail = config.get("OTHER", "regmail")
 		self.bot = "%sAAAAAA" % self.services_id
 		self.bot_nick = config.get("BOT", "nick").split()[0]
@@ -2368,19 +2354,6 @@ class error(Exception):
 			pass
 		finally:
 			return repr(self.value)
-		
-def failover(timeout=1, inet=socket.AF_INET, stream=socket.SOCK_STREAM):
-	try:
-		if config.getboolean("FAILOVER", "active") and config.get("FAILOVER", "address") != "":
-			sock = socket.socket(inet, stream)
-			sock.settimeout(timeout)
-			sock.connect((config.get("FAILOVER", "address"), 5556))
-			sock.close()
-			return True
-		else:
-			return False
-	except:
-		return False
 
 if __name__ == "__main__":
 	try:
@@ -2392,12 +2365,11 @@ if __name__ == "__main__":
 			else:
 				__config__ = sys.argv[1]
 				
-			if not failover():
-				if not failover(10):
-					print(green("*") + " ChiruServ (" + __version__ + ") started (config: " + __config__ + ")")
-					Services().run()
-					print(red("*") + " ChiruServ (" + __version__ + ") stopped (config: " + __config__ + ")")
-					
+			time.sleep(9)
+			print(green("*") + " ChiruServ (" + __version__ + ") started (config: " + __config__ + ")")
+			Services().run()
+			print(red("*") + " ChiruServ (" + __version__ + ") stopped (config: " + __config__ + ")")
+			
 			time.sleep(1)
 	except Exception,e:
 		print(red("*") + " " + str(e))
