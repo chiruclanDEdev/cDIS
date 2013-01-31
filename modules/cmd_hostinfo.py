@@ -2,6 +2,7 @@ from chiruserv import CServMod
 from socket import getfqdn, getaddrinfo
 
 class cmd_hostinfo(CServMod):
+	MODULE_CLASS = "COMMAND"
 	COMMAND = "HOSTINFO"
 	HELP = "Get information about a domain or IP"
 	NEED_OPER = 1
