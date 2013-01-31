@@ -8,20 +8,23 @@ class cmd_hostinfo(CServMod):
 	NEED_OPER = 1
 	
 	def onCommand(self, uid, args):
-		msg(nick, "-=- Get Domain/IP information -=-")
-		msg(nick)
-		msg(nick, "Host: " + getfqdn(args))
-		
-		ip = "0.0.0.0"
-		
-		for data in getaddrinfo(args, None):
-			if ip != data[4][0]:
-				ip = data[4][0]
-				
-				if ip.find(":") != -1:
-					msg(nick, "IPv6: " + ip)
-				else:
-					msg(nick, "IP: " + ip)
+		if len(args.split()) == 1:
+			self.msg(nick, "-=- Get Domain/IP information -=-")
+			self.msg(nick)
+			msg(nick, "Host: " + getfqdn(args))
+			
+			ip = "0.0.0.0"
+			
+			for data in getaddrinfo(args, None):
+				if ip != data[4][0]:
+					ip = data[4][0]
 					
-		msg(nick)
-		msg(nick, "-=- End of Domain/IP information -=-")
+					if ip.find(":") != -1:
+						self.msg(nick, "IPv6: " + ip)
+					else:
+						self.msg(nick, "IP: " + ip)
+						
+			self.msg(nick)
+			self.msg(nick, "-=- End of Domain/IP information -=-")
+		else:
+			self.msg(nick, "Syntax: " + COMMAND + " <hostname/ip>")
