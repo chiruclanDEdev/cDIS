@@ -11,7 +11,7 @@ class cmd_hostinfo(CServMod):
 		if len(args.split()) == 1:
 			self.msg(uid, "-=- Get Domain/IP information -=-")
 			self.msg(uid)
-			msg(uid, "Host: " + getfqdn(args))
+			self.msg(uid, "Host: " + getfqdn(args))
 			
 			ip = "0.0.0.0"
 			
