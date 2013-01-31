@@ -24,7 +24,7 @@ modules/cmd_feedback.py 74bed43d9ef7b7c820a545db8b87c8d8
 modules/cmd_gline.py 0e19c2d15bd8077f2484726a4477e9bc
 modules/cmd_halfop.py d146d3a2631deddb1e2e841bc72deffc
 modules/cmd_hello.py 5b372d8c507b67383aa300cc01e71826
-modules/cmd_hostinfo.py 1efb44c4718b099f8ddb6cff2ea7bf62
+modules/cmd_hostinfo.py 51f3ddbb9acce53d476d0bc30b0049c6
 modules/cmd_info.py 20d15dd8b03929c6268be69e40b38a65
 modules/cmd_invite.py b350f453be43ac98c5f401dcca40a92c
 modules/cmd_ipchan.py f6924638d9d371a7926f64b2c0229019

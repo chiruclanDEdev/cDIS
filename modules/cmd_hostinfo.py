@@ -27,4 +27,4 @@ class cmd_hostinfo(CServMod):
 			self.msg(uid)
 			self.msg(uid, "-=- End of Domain/IP information -=-")
 		else:
-			self.msg(uid, "Syntax: " + COMMAND + " <hostname/ip>")
+			self.msg(uid, "Syntax: HOSTINFO <hostname/ip>")
