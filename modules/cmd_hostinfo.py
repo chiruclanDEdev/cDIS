@@ -11,19 +11,22 @@ class cmd_hostinfo(CServMod):
 		if len(args.split()) == 1:
 			self.msg(uid, "-=- Get Domain/IP information -=-")
 			self.msg(uid)
-			self.msg(uid, "Host: " + getfqdn(args))
-			
-			ip = "0.0.0.0"
-			
-			for data in getaddrinfo(args, None):
-				if ip != data[4][0]:
-					ip = data[4][0]
-					
-					if ip.find(":") != -1:
-						self.msg(uid, "IPv6: " + ip)
-					else:
-						self.msg(uid, "IP: " + ip)
+			try:
+				self.msg(uid, "Host: " + getfqdn(args))
+				
+				ip = "0.0.0.0"
+				
+				for data in getaddrinfo(args, None):
+					if ip != data[4][0]:
+						ip = data[4][0]
 						
+						if ip.find(":") != -1:
+							self.msg(uid, "IPv6: " + ip)
+						else:
+							self.msg(uid, "IP: " + ip)
+			except Exception:
+				self.msg(uid, "Seems like something has gone wrong.")
+				
 			self.msg(uid)
 			self.msg(uid, "-=- End of Domain/IP information -=-")
 		else:
