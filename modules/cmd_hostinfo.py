@@ -9,9 +9,9 @@ class cmd_hostinfo(CServMod):
 	
 	def onCommand(self, uid, args):
 		if len(args.split()) == 1:
-			self.msg(nick, "-=- Get Domain/IP information -=-")
-			self.msg(nick)
-			msg(nick, "Host: " + getfqdn(args))
+			self.msg(uid, "-=- Get Domain/IP information -=-")
+			self.msg(uid)
+			msg(uid, "Host: " + getfqdn(args))
 			
 			ip = "0.0.0.0"
 			
@@ -20,11 +20,11 @@ class cmd_hostinfo(CServMod):
 					ip = data[4][0]
 					
 					if ip.find(":") != -1:
-						self.msg(nick, "IPv6: " + ip)
+						self.msg(uid, "IPv6: " + ip)
 					else:
-						self.msg(nick, "IP: " + ip)
+						self.msg(uid, "IP: " + ip)
 						
-			self.msg(nick)
-			self.msg(nick, "-=- End of Domain/IP information -=-")
+			self.msg(uid)
+			self.msg(uid, "-=- End of Domain/IP information -=-")
 		else:
-			self.msg(nick, "Syntax: " + COMMAND + " <hostname/ip>")
+			self.msg(uid, "Syntax: " + COMMAND + " <hostname/ip>")
