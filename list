@@ -38,7 +38,7 @@ modules/cmd_op.py 8a20f1ece04eb33abd33467e85ed7577
 modules/cmd_opers.py 48b6428b8374261d7da07fee6c815292
 modules/cmd_owner.py 12451ac4093d10f2d1a75b82621b3c9f
 modules/cmd_protect.py 6506bb5d271df74ece75ec52b18a1984
-modules/cmd_remove.py 831895947722192e9a6e8a9886b19158
+modules/cmd_remove.py b30acd4591656070b39d7396212dc262
 modules/cmd_request.py 7aa9e27cc154e99dfd2437a907c1def9
 modules/cmd_resetpass.py 7133bedbaabd547e4ee664d143b4157b
 modules/cmd_safeedback.py 46644af5e6666a6fa2784c07fe12bcbc
@@ -60,7 +60,7 @@ modules/cmd_trust.py 731ad249254170265b42579efd424cce
 modules/cmd_unban.py c9ce87fa2dfa9ff39987ec4c1db020b4
 modules/cmd_unbanall.py 369169980b5168d428cfa2bbec0a147f
 modules/cmd_unbanme.py f250ce9e35889f5fe7b54a8586e5dc6c
-modules/cmd_userflags.py deda171ec2047bdaba276f697bde27dd
+modules/cmd_userflags.py 2a73933c574f219eba81db0af2902d48
 modules/cmd_userlist.py f688d9e8877c609000567234f95a57cc
 modules/cmd_usermode.py 86e155dded563fab298784f7511cace6
 modules/cmd_version.py 32d27ab184c594bc68302a9cd1ca33d9

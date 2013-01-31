@@ -1,5 +1,4 @@
 from chiruserv import CServMod
-from _mysql import escape_string
 
 class cmd_userflags(CServMod):
 	MODULE_CLASS = "COMMAND"
