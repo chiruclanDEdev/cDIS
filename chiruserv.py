@@ -975,7 +975,8 @@ class ServiceThread:
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
 			else:
-				sender = self.nick(source)+"!"+self.userhost(source)
+				hostmask = self.hostmask(source)
+				sender = self.nick(source)+"!"+hostmask[len(hostmask)-1]
 				
 			result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
 			for row in result:
@@ -1733,7 +1734,8 @@ class CServMod:
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
 			else:
-				sender = self.nick(source)+"!"+self.userhost(source)
+				hostmask = self.hostmask(source)
+				sender = self.nick(source)+"!"+hostmask[len(hostmask)-1]
 				
 			result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
 			for row in result:
