@@ -12,6 +12,5 @@ class mod_quit(CServMod):
 					self.log(qchan["uid"], "quit", qchan["channel"], ' '.join(data.split()[2:])[1:])
 					
 		self.query("delete from chanlist where uid = ?", data.split()[0][1:])
-		self.query("delete from temp_nick where nick = ?", str(data.split()[0])[1:])
 		self.query("delete from gateway where uid = ?", str(data.split()[0])[1:])
 		self.query("delete from online where uid = ?", str(data.split()[0])[1:])

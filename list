@@ -1,12 +1,12 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md c1d7516bf77c78f5bf1acdf637d178ac
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
-chiruserv.py 1918f82d00d4f2369f2a741824ffda10
+chiruserv.py d909511de87255631094780b7db62170
 config.cfg.dist d8a748fdd03227393d381b8dfc8c19d5
 docs/inspircd-needed-modules.txt ff4441098de066c2b47e95fbbbcffe1e
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
 modules/cmd_accban.py 1a136a820efb9ed62330b3f25b8e0da8
-modules/cmd_auth.py 504bdf7174764a48bf3415a5b4af163c
+modules/cmd_auth.py 6a2ec0869fd330ef4b4c7f01c6a8560e
 modules/cmd_ban.py 94fa1d8f28afae058de2ab362dba7877
 modules/cmd_banlist.py bff9b3d1802804c705416efb5c0d04ac
 modules/cmd_chanflags.py ad3891acb9196f768636f486cf09e256
@@ -81,10 +81,10 @@ modules/mod_nick.py d803228d8f5716dc1f9368d30f75ce75
 modules/mod_notice.py 60072685a84cf30c52d239dcf5068af6
 modules/mod_opertype.py 8d30347aa08a81127c3eb92110e5bec0
 modules/mod_privmsg.py 2b157593995dcf7b2df074b5f1856d45
-modules/mod_quit.py 11efa36ce1864334c86642fc75bba1ca
+modules/mod_quit.py d72e6d5e0e650423c362acca73639ac4
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
-modules/mod_uid.py 9bc3c00af36347975d447beccbb2a097
-sql/base/struct.sql 0a8db0a309ecf443b7b0bc1eef060fd9
+modules/mod_uid.py a9fa9262e3e98fa3b4eeac5429375b1e
+sql/base/struct.sql ec750687587e6b813f140270c9d9f837
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
 sql/updates/12_02-17-2012.sql 0c5d84bf3909b5091defcd77dcb4805f
@@ -105,6 +105,7 @@ sql/updates/25_07-04-2012.sql edcd01325eb077f027dcaf1c7479d2f1
 sql/updates/26_12-15-2012.sql 61f23daee4ad28a0c6816a57b73a75d8
 sql/updates/27_01-30-2013.sql 6345183a3332d4b5ff30bc95b1b45d2d
 sql/updates/28_01-30-2013.sql 2aa48f153ad9f88bb8e54a22018161c6
+sql/updates/29_02-27-2013.sql b87063dcf32bdd88889e63846da443c4
 sql/updates/2_02-02-2012.sql 0b38c7109eff565f1dd8be45b12b83c7
 sql/updates/3_02-05-2012.sql 30f5568f7a4ec8ba9f7c7ac790bb1f20
 sql/updates/4_02-05-2012.sql 592c83d9ac209484ead4d29c969751f2

@@ -4,7 +4,6 @@ class mod_uid(CServMod):
 	MODULE_CLASS = "UID"
 	
 	def onData(self, data):
-		self.query("delete from temp_nick where nick = ?", data.split()[2])
 		self.query("delete from gateway where uid = ?", data.split()[2])
 		self.query("delete from online where uid = ?", data.split()[2])
 		self.query("delete from online where nick = ?", data.split()[4])

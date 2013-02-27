@@ -120,7 +120,6 @@ class Services:
 
 	def run(self):
 		try:
-			self.query("truncate temp_nick")
 			self.query("truncate opers")
 			self.query("truncate online")
 			self.query("truncate chanlist")
@@ -346,8 +345,7 @@ class ServiceThread:
 			
 	def metadata(self, uid, string, content):
 		if string == "accountname":
-			self.query("delete from temp_nick where nick = ?", uid)
-			self.query("insert into temp_nick values (?, ?)", uid, content)
+            self.query("update `online` set `account` = ? where `uid` = ?", content, uid)
 			self.msg(uid, "You are now logged in as %s" % content)
 			self.vhost(uid)
 			self.flag(uid)
@@ -584,8 +582,7 @@ class ServiceThread:
 		
 	def metadata(self, uid, string, content):
 		if string == "accountname":
-			self.query("delete from temp_nick where nick = ?", uid)
-			self.query("insert into temp_nick values (?, ?)", uid, content)
+			self.query("update `online` set `account` = ? where `uid` = ?", content, uid)
 			self.msg(uid, "You are now logged in as %s" % content)
 			self.vhost(uid)
 			self.flag(uid)
@@ -644,7 +641,7 @@ class ServiceThread:
 		self.msg(target, command.upper()+" "*int(20-len(command))+description)
 
 	def ison(self, user):
-		for data in self.query("select * from temp_nick where user = ?", user):
+		for data in self.query("select nick from online where account = ? LIMIT 1", user):
 			return True
 			
 		return False
@@ -719,15 +716,15 @@ class ServiceThread:
 		self.send(":%s METADATA %s %s :%s" % (self.services_id, target, meta, content))
 
 	def auth(self, target):
-		for data in self.query("select user from temp_nick where nick = ?", target):
-			return data["user"]
+		for data in self.query("select account from online where uid = ?", target):
+			return data["account"]
 			
 		return 0
 
-	def sid(self, nick):
+	def sid(self, target):
 		nicks = list()
 		
-		for data in self.query("select nick from temp_nick where user = ?", nick):
+		for data in self.query("select nick from online where uid = ?", target):
 			nicks.append(data["nick"])
 			
 		return nicks
@@ -865,8 +862,8 @@ class ServiceThread:
 						self.send(":%s SVSJOIN %s %s" % (self.bot, target, channel))
 
 	def getflag(self, target, channel):
-		for data in self.query("select user from temp_nick where nick = ?", target):
-			for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["user"]):
+		for data in self.query("select account from online where uid = ?", target):
+			for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["account"]):
 				return flag["flag"]
 				
 		return 0
@@ -1401,8 +1398,7 @@ class CServMod:
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":
-			self.query("delete from temp_nick where nick = ?", uid)
-			self.query("insert into temp_nick values (?, ?)", uid, content)
+            self.query("update `online` set `account` = ? where `uid` = ?", content, uid)
 			self.msg(uid, "You are now logged in as %s" % content)
 			self.vhost(uid)
 			self.flag(uid)
@@ -1461,7 +1457,7 @@ class CServMod:
 		self.msg(target, command.upper()+" "*int(20-len(command))+description)
 
 	def ison(self, user):
-		for data in self.query("select * from temp_nick where user = ?", user):
+		for data in self.query("select uid from online where account = ? LIMIT 1", user):
 			return True
 			
 		return False
@@ -1536,15 +1532,15 @@ class CServMod:
 		self.send(":%s METADATA %s %s :%s" % (self.services_id, target, meta, content))
 
 	def auth(self, target):
-		for data in self.query("select user from temp_nick where nick = ?", target):
-			return data["user"]
+		for data in self.query("select account from online where uid = ?", target):
+			return data["account"]
 			
 		return 0
 
-	def sid(self, nick):
+	def sid(self, target):
 		nicks = list()
 		
-		for data in self.query("select nick from temp_nick where user = ?", nick):
+		for data in self.query("select nick from online where uid = ?", target):
 			nicks.append(data["nick"])
 			
 		return nicks
@@ -1682,8 +1678,8 @@ class CServMod:
 						self.send(":%s SVSJOIN %s %s" % (self.bot, target, channel))
 
 	def getflag(self, target, channel):
-		for data in self.query("select user from temp_nick where nick = ?", target):
-			for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["user"]):
+		for data in self.query("select account from online where uid = ?", target):
+			for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["account"]):
 				return flag["flag"]
 				
 		return 0
