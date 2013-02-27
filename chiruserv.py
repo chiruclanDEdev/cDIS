@@ -345,7 +345,7 @@ class ServiceThread:
 			
 	def metadata(self, uid, string, content):
 		if string == "accountname":
-            self.query("update `online` set `account` = ? where `uid` = ?", content, uid)
+			self.query("update `online` set `account` = ? where `uid` = ?", content, uid)
 			self.msg(uid, "You are now logged in as %s" % content)
 			self.vhost(uid)
 			self.flag(uid)
@@ -1398,7 +1398,7 @@ class CServMod:
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":
-            self.query("update `online` set `account` = ? where `uid` = ?", content, uid)
+			self.query("update `online` set `account` = ? where `uid` = ?", content, uid)
 			self.msg(uid, "You are now logged in as %s" % content)
 			self.vhost(uid)
 			self.flag(uid)
