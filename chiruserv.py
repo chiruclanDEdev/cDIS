@@ -1019,7 +1019,7 @@ class ServiceThread:
 				if not escaped_action:
 					self.push(source, line.rstrip())
 				else:
-					self.push(source, "*!@ NOTICE "+channel+" :"+line.rstrip())
+					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :"+line.rstrip())
 					
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
 			file.close()
@@ -1787,7 +1787,7 @@ class CServMod:
 				if not escaped_action:
 					self.push(source, line.rstrip())
 				else:
-					self.push(source, "*!@ NOTICE "+channel+" :"+line.rstrip())
+					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :"+line.rstrip())
 					
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
 			file.close()
