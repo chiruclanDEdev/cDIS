@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md c1d7516bf77c78f5bf1acdf637d178ac
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
-chiruserv.py 86299c15e12b42f49d5b5915244bd33d
+chiruserv.py 50650fb9dd2d28852715791cdae1b264
 config.cfg.dist d8a748fdd03227393d381b8dfc8c19d5
 docs/inspircd-needed-modules.txt ff4441098de066c2b47e95fbbbcffe1e
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69

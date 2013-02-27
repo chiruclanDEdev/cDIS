@@ -976,7 +976,7 @@ class ServiceThread:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
 			else:
 				hostmask = self.hostmask(source)
-				sender = self.nick(source)+"!"+hostmask[len(hostmask)-1]
+				sender = hostmask[len(hostmask)-1]
 				
 			result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
 			for row in result:
@@ -1101,6 +1101,7 @@ class ServiceThread:
 		masks = list()
 		nick = None
 		username = None
+		account = self.auth(uid)
 		
 		for data in self.query("select nick,username,host from online where uid = ?", uid):
 			nick = data["nick"]
@@ -1108,14 +1109,14 @@ class ServiceThread:
 			masks.append(data["nick"]+"!"+data["username"]+"@"+data["host"])
 			
 		if self.auth(uid) != 0:
-			for data in self.query("select vhost from vhosts where user = ? and active = '1'", self.auth(uid)):
+			for data in self.query("select vhost from vhosts where user = ? and active = '1'", account):
 				if str(data["vhost"]).find("@") != -1:
 					masks.append(nick+"!"+data["vhost"])
 				else:
 					masks.append(nick+"!"+username+"@"+data["vhost"])
 					
 			if self.userflag(uid, "x"):
-				masks.append(nick + "!" + username + "@" + target + ".users." + self.getservicedomain())
+				masks.append(nick + "!" + username + "@" + account + ".users." + self.getservicedomain())
 					
 		return masks
 
@@ -1735,7 +1736,7 @@ class CServMod:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
 			else:
 				hostmask = self.hostmask(source)
-				sender = self.nick(source)+"!"+hostmask[len(hostmask)-1]
+				sender = hostmask[len(hostmask)-1]
 				
 			result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
 			for row in result:
@@ -1860,6 +1861,7 @@ class CServMod:
 		masks = list()
 		nick = None
 		username = None
+		account = self.auth(uid)
 		
 		for data in self.query("select nick,username,host from online where uid = ?", uid):
 			nick = data["nick"]
@@ -1867,14 +1869,14 @@ class CServMod:
 			masks.append(data["nick"]+"!"+data["username"]+"@"+data["host"])
 			
 		if self.auth(uid) != 0:
-			for data in self.query("select vhost from vhosts where user = ? and active = '1'", self.auth(uid)):
+			for data in self.query("select vhost from vhosts where user = ? and active = '1'", account):
 				if str(data["vhost"]).find("@") != -1:
 					masks.append(nick+"!"+data["vhost"])
 				else:
 					masks.append(nick+"!"+username+"@"+data["vhost"])
 					
 			if self.userflag(uid, "x"):
-				masks.append(nick + "!" + username + "@" + target + ".users." + self.getservicedomain())
+				masks.append(nick + "!" + username + "@" + account + ".users." + self.getservicedomain())
 					
 		return masks
 
