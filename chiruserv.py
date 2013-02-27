@@ -120,6 +120,7 @@ class Services:
 
 	def run(self):
 		try:
+			self.query("truncate logs")
 			self.query("truncate opers")
 			self.query("truncate online")
 			self.query("truncate chanlist")
