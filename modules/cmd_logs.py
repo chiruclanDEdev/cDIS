@@ -3,7 +3,7 @@ from chiruserv import CServMod
 class cmd_logs(CServMod):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "LOGS"
-	HELP "View and clear channel logs"
+	HELP = "View and clear channel logs"
 	NEED_AUTH = 1
 	
 	def onCommand(self, uid, args):
