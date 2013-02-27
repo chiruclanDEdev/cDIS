@@ -32,7 +32,7 @@ modules/cmd_kick.py 5e93c33dd6c48e5aca6913046540a314
 modules/cmd_kill.py c9a5d7c16c9ca5fe90fd42a5b95cd3a9
 modules/cmd_listcommands.py 407bf7211609bd01bc59d5f487a7194e
 modules/cmd_listmodules.py efda0b144d00d6f98f2bcb171419a376
-modules/cmd_log.py d05f1756262b5b9262f896f891fec8e9
+modules/cmd_logs.py fd3bf713744148d4acddbd270e4a4228
 modules/cmd_memo.py 183efdef3266749ddb9564322bdd6e64
 modules/cmd_newpass.py 81dee1b8a26413e4f720a184d4660ff4
 modules/cmd_notify.py eb2675a8677eaa3cdbb570a27a41a3f1
