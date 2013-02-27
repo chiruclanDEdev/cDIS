@@ -971,8 +971,6 @@ class ServiceThread:
 					nicks.append(self.nick(nick))
 					
 				text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
-			elif msgtype.lower() == "privmsg":
-				msgtype = "notice"
 				
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
@@ -1011,6 +1009,9 @@ class ServiceThread:
 				if not escaped_action:
 					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
 				else:
+					if row["action"] == "PRIVMSG":
+						row["action"] = "NOTICE"
+						
 					message = row["sender"] + " " + row ["action"] + " " + row["channel"] + " " + row["message"]
 					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE " + row["channel"] + " :" + message)
 					
@@ -1728,8 +1729,6 @@ class CServMod:
 					nicks.append(self.nick(nick))
 					
 				text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
-			elif msgtype.lower() == "privmsg":
-				msgtype = "notice"
 				
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
@@ -1768,6 +1767,9 @@ class CServMod:
 				if not escaped_action:
 					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
 				else:
+					if row["action"] == "PRIVMSG":
+						row["action"] = "NOTICE"
+						
 					message = row["sender"] + " " + row ["action"] + " " + row["channel"] + " " + row["message"]
 					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE " + row["channel"] + " :" + message)
 					

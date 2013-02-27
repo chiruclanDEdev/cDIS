@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md c1d7516bf77c78f5bf1acdf637d178ac
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
-chiruserv.py 73ee085616505109b0d58cf8f5114fa5
+chiruserv.py 3fb4e185ccf503cbefc75c3298b66368
 config.cfg.dist d8a748fdd03227393d381b8dfc8c19d5
 docs/inspircd-needed-modules.txt ff4441098de066c2b47e95fbbbcffe1e
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
@@ -32,7 +32,7 @@ modules/cmd_kick.py 5e93c33dd6c48e5aca6913046540a314
 modules/cmd_kill.py c9a5d7c16c9ca5fe90fd42a5b95cd3a9
 modules/cmd_listcommands.py 407bf7211609bd01bc59d5f487a7194e
 modules/cmd_listmodules.py efda0b144d00d6f98f2bcb171419a376
-modules/cmd_logs.py 05be2309cab2a28a317e43bddadb2e43
+modules/cmd_logs.py 6008ce9a587ad74b10ce88fd7b42c8a5
 modules/cmd_memo.py 183efdef3266749ddb9564322bdd6e64
 modules/cmd_newpass.py 81dee1b8a26413e4f720a184d4660ff4
 modules/cmd_notify.py eb2675a8677eaa3cdbb570a27a41a3f1
