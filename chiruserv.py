@@ -1007,12 +1007,13 @@ class ServiceThread:
 						escaped_action = True
 						
 				if not escaped_action:
-					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
-				else:
 					if row["action"] == "PRIVMSG":
 						row["action"] = "NOTICE"
+						row["message"] = ":" + row["message"]
 						
-					message = row["sender"] + " " + row ["action"] + " " + row["channel"] + " " + row["message"]
+					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
+				else:
+					message = row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"]
 					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE " + row["channel"] + " :" + message)
 					
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
@@ -1765,12 +1766,13 @@ class CServMod:
 						escaped_action = True
 						
 				if not escaped_action:
-					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
-				else:
 					if row["action"] == "PRIVMSG":
 						row["action"] = "NOTICE"
+						row["message"] = ":" + row["message"]
 						
-					message = row["sender"] + " " + row ["action"] + " " + row["channel"] + " " + row["message"]
+					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
+				else:
+					message = row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"]
 					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE " + row["channel"] + " :" + message)
 					
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
