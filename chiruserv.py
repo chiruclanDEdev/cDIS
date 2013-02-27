@@ -999,15 +999,15 @@ class ServiceThread:
 	def showlog(self, source, channel):
 		try:
 			file = open("logs/"+channel, "rb")
-			self.push(source, "!@ PRIVMSG "+channel+" :*** Log start")
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log start")
 			
 			for line in file.readlines():
-				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT":
+				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT" and line.split()[1] != "MODE":
 					self.push(source, line.rstrip())
 				else:
 					self.push(source, "*!@ PRIVMSG "+channel+" :"+line.rstrip())
 					
-			self.push(source, "!@ PRIVMSG "+channel+" :*** Log end")
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log end")
 			file.close()
 		except:
 			pass
@@ -1751,15 +1751,15 @@ class CServMod:
 	def showlog(self, source, channel):
 		try:
 			file = open("logs/"+channel, "rb")
-			self.push(source, "!@ PRIVMSG "+channel+" :*** Log start")
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log start")
 			
 			for line in file.readlines():
-				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT":
+				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT" and line.split()[1] != "MODE":
 					self.push(source, line.rstrip())
 				else:
 					self.push(source, "*!@ PRIVMSG "+channel+" :"+line.rstrip())
 					
-			self.push(source, "!@ PRIVMSG "+channel+" :*** Log end")
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log end")
 			file.close()
 		except:
 			pass
