@@ -999,15 +999,29 @@ class ServiceThread:
 	def showlog(self, source, channel):
 		try:
 			file = open("logs/"+channel, "rb")
-			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log start")
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
+			
+			escaped_actions = list()
+			escaped_actions.append("JOIN")
+			escaped_actions.append("PART")
+			escaped_actions.append("QUIT")
+			escaped_actions.append("MODE")
+			escaped_actions.append("KICK")
+			escaped_actions.append("TOPIC")
 			
 			for line in file.readlines():
-				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT" and line.split()[1] != "MODE" and line.split()[1] != "KICK":
+				escaped_action = False
+				
+				for action in escaped_actions:
+					if line.split()[1] == action:
+						escaped_action = True
+						
+				if not escaped_action:
 					self.push(source, line.rstrip())
 				else:
-					self.push(source, "*!@ PRIVMSG "+channel+" :"+line.rstrip())
+					self.push(source, "*!@ NOTICE "+channel+" :"+line.rstrip())
 					
-			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log end")
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
 			file.close()
 		except:
 			pass
@@ -1722,6 +1736,8 @@ class CServMod:
 					nicks.append(self.nick(nick))
 					
 				text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
+			elif msgtype.lower() == "privmsg":
+				msgtype = "notice"
 				
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
@@ -1751,15 +1767,29 @@ class CServMod:
 	def showlog(self, source, channel):
 		try:
 			file = open("logs/"+channel, "rb")
-			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log start")
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
+			
+			escaped_actions = list()
+			escaped_actions.append("JOIN")
+			escaped_actions.append("PART")
+			escaped_actions.append("QUIT")
+			escaped_actions.append("MODE")
+			escaped_actions.append("KICK")
+			escaped_actions.append("TOPIC")
 			
 			for line in file.readlines():
-				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT" and line.split()[1] != "MODE" and line.split()[1] != "KICK":
+				escaped_action = False
+				
+				for action in escaped_actions:
+					if line.split()[1] == action:
+						escaped_action = True
+						
+				if not escaped_action:
 					self.push(source, line.rstrip())
 				else:
-					self.push(source, "*!@ PRIVMSG "+channel+" :"+line.rstrip())
+					self.push(source, "*!@ NOTICE "+channel+" :"+line.rstrip())
 					
-			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log end")
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
 			file.close()
 		except:
 			pass
