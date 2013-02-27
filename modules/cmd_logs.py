@@ -16,7 +16,7 @@ class cmd_logs(CServMod):
 				if flag == "n" or flag == "q" or flag == "a" or flag == "o" or flag == "h":
 					if arg[1].lower() == "view":
 						self.showlog(uid, arg[0])
-					elif arg[0].lower() == "clear":
+					elif arg[1].lower() == "clear":
 						if flag == "n" or flag == "q" or flag == "a":
 							self.query("DELETE FROM `logs` WHERE `channel` = ?", arg[0])
 							self.msg(uid, "Done.")
@@ -28,3 +28,6 @@ class cmd_logs(CServMod):
 					self.msg(uid, "Denied.")
 		else:
 			self.msg(uid, "Syntax: LOGS <#channel> <view/clear>")
+			
+	def onFantasy(self, uid, chan, args):
+		self.onCommand(uid, chan + " " + args)
