@@ -980,7 +980,7 @@ class ServiceThread:
 				
 			result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
 			for row in result:
-				if row["COUNT(*)"] = 50:
+				if row["COUNT(*)"] == 50:
 					self.query("DELETE FROM `logs` WHERE `channel` = ? LIMIT 1", channel)
 					
 			self.query("INSERT INTO `logs` (`channel`, `sender`, `action`, `message`) VALUES (?, ?, ?, ?)", channel, sender, msgtype.upper(), text)
@@ -1737,7 +1737,7 @@ class CServMod:
 				
 			result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
 			for row in result:
-				if row["COUNT(*)"] = 50:
+				if row["COUNT(*)"] == 50:
 					self.query("DELETE FROM `logs` WHERE `channel` = ? LIMIT 1", channel)
 					
 			self.query("INSERT INTO `logs` (`channel`, `sender`, `action`, `message`) VALUES (?, ?, ?, ?)", channel, sender, msgtype.upper(), text)
