@@ -999,7 +999,7 @@ class ServiceThread:
 			
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
 			
-			result = self.query("SELECT `channel`, `sender`, `action`, `message` FROM `logs` WHERE `channel` = ?", channel)
+			result = self.query("SELECT `channel`, `sender`, `action`, `message` FROM `logs` WHERE `channel` = ? ORDER BY `id`", channel)
 			for row in result:
 				escaped_action = False
 				
@@ -1759,7 +1759,7 @@ class CServMod:
 			
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
 			
-			result = self.query("SELECT `channel`, `sender`, `action`, `message` FROM `logs` WHERE `channel` = ?", channel)
+			result = self.query("SELECT `channel`, `sender`, `action`, `message` FROM `logs` WHERE `channel` = ? ORDER BY `id`", channel)
 			for row in result:
 				escaped_action = False
 				

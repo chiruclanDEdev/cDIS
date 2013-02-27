@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
 
 DROP TABLE IF EXISTS `logs`;
 CREATE TABLE IF NOT EXISTS `logs` (
+	`id` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
 	`channel` varchar(255) not null,
 	`sender` varchar(255) not null,
 	`action` varchar(25) not null,
