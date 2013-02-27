@@ -974,7 +974,7 @@ class ServiceThread:
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
 			else:
-				sender = self.nick(source)+"!"+self.userhost(source)
+				sender = self.nick(source)+"!log@service"
 				
 			file = open("logs/"+channel, "ab+")
 			lines = file.readlines()
@@ -1726,7 +1726,7 @@ class CServMod:
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
 			else:
-				sender = self.nick(source)+"!"+self.userhost(source)
+				sender = self.nick(source)+"!log@service"
 				
 			file = open("logs/"+channel, "ab+")
 			lines = file.readlines()
