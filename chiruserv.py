@@ -716,7 +716,7 @@ class ServiceThread:
 		self.send(":%s METADATA %s %s :%s" % (self.services_id, target, meta, content))
 
 	def auth(self, target):
-		for data in self.query("select account from online where uid = ?", target):
+		for data in self.query("select account from online where uid = ? and account != ''", target):
 			return data["account"]
 			
 		return 0
@@ -1532,7 +1532,7 @@ class CServMod:
 		self.send(":%s METADATA %s %s :%s" % (self.services_id, target, meta, content))
 
 	def auth(self, target):
-		for data in self.query("select account from online where uid = ?", target):
+		for data in self.query("select account from online where uid = ? and account != ''", target):
 			return data["account"]
 			
 		return 0

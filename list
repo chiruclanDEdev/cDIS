@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md c1d7516bf77c78f5bf1acdf637d178ac
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
-chiruserv.py b8f0aa9ba73ee908844fcd63910cd759
+chiruserv.py a5567c85229769f6390d7d1201172800
 config.cfg.dist d8a748fdd03227393d381b8dfc8c19d5
 docs/inspircd-needed-modules.txt ff4441098de066c2b47e95fbbbcffe1e
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
@@ -83,7 +83,7 @@ modules/mod_opertype.py 8d30347aa08a81127c3eb92110e5bec0
 modules/mod_privmsg.py 2b157593995dcf7b2df074b5f1856d45
 modules/mod_quit.py d72e6d5e0e650423c362acca73639ac4
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
-modules/mod_uid.py a9fa9262e3e98fa3b4eeac5429375b1e
+modules/mod_uid.py 9d1307937097d255b4b83cc26ce2a23e
 sql/base/struct.sql ec750687587e6b813f140270c9d9f837
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
