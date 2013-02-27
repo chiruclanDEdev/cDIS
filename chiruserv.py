@@ -1009,7 +1009,6 @@ class ServiceThread:
 				if not escaped_action:
 					if row["action"] == "PRIVMSG":
 						row["action"] = "NOTICE"
-						row["message"] = ":" + row["message"]
 						
 					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
 				else:
@@ -1768,7 +1767,6 @@ class CServMod:
 				if not escaped_action:
 					if row["action"] == "PRIVMSG":
 						row["action"] = "NOTICE"
-						row["message"] = ":" + row["message"]
 						
 					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
 				else:
