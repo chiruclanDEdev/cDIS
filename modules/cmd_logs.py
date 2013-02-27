@@ -30,5 +30,5 @@ class cmd_logs(CServMod):
 			self.msg(uid, "Syntax: LOGS <#channel> <view/clear>")
 			
 	def onFantasy(self, uid, chan, args):
-		self.query("DELETE FROM `logs` WHERE `channel` = ? AND `action` = 'PRIVMSG' AND `message` LIKE ?", chan, self.fantasy(chan) + COMMAND + "%")
+		self.query("DELETE FROM `logs` WHERE `channel` = ? AND `action` = 'PRIVMSG' AND `message` LIKE ?", chan, self.fantasy(chan) + "LOGS %")
 		self.onCommand(uid, chan + " " + args)
