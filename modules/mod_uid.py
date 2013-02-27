@@ -7,7 +7,7 @@ class mod_uid(CServMod):
 		self.query("delete from gateway where uid = ?", data.split()[2])
 		self.query("delete from online where uid = ?", data.split()[2])
 		self.query("delete from online where nick = ?", data.split()[4])
-		self.query("insert into online values (?, ?, ?, ?, ?, '')", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
+		self.query("insert into online values (?, ?, ?, ?, ?)", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
 		conns = 0
 		nicks = list()
 		
