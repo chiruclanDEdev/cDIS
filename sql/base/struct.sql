@@ -116,6 +116,14 @@ CREATE TABLE IF NOT EXISTS `modules` (
 	`command` varchar(255)
 );
 
+DROP TABLE IF EXISTS `logs`;
+CREATE TABLE IF NOT EXISTS `logs` (
+	`channel` varchar(255) not null,
+	`sender` varchar(255) not null,
+	`action` varchar(25) not null,
+	`message` varchar(1024)
+);
+
 DROP TABLE IF EXISTS `statistics`;
 CREATE TABLE IF NOT EXISTS `statistics` (
 	`attribute` varchar(255) not null key,

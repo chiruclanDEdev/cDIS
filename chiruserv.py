@@ -970,37 +970,25 @@ class ServiceThread:
 					nicks.append(self.nick(nick))
 					
 				text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
+			elif msgtype.lower() == "privmsg":
+				msgtype = "notice"
 				
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
 			else:
-				sender = self.nick(source)+"!log@service"
+				sender = self.nick(source)+"!"+self.userhost(source)
 				
-			file = open("logs/"+channel, "ab+")
-			lines = file.readlines()
-			
-			if len(lines) > 100:
-				file.close()
-				file = open("logs/"+channel, "wb")
-				i = 49
-				
-				while i != 0:
-					file.write(lines[-i])
-					i -= 1
+			result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
+			for row in result:
+				if row["COUNT(*)"] = 50:
+					self.query("DELETE FROM `logs` WHERE `channel` = ? LIMIT 1", channel)
 					
-				file.write(sender+" "+msgtype.upper()+" "+channel+" "+text+"\n")
-			else:
-				file.write(sender+" "+msgtype.upper()+" "+channel+" "+text+"\n")
-				
-			file.close()
+			self.query("INSERT INTO `logs` (`channel`, `sender`, `action`, `message`) VALUES (?, ?, ?, ?)", channel, sender, msgtype.upper(), text)
 		except:
 			pass
 
 	def showlog(self, source, channel):
 		try:
-			file = open("logs/"+channel, "rb")
-			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
-			
 			escaped_actions = list()
 			escaped_actions.append("JOIN")
 			escaped_actions.append("PART")
@@ -1009,20 +997,23 @@ class ServiceThread:
 			escaped_actions.append("KICK")
 			escaped_actions.append("TOPIC")
 			
-			for line in file.readlines():
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
+			
+			result = self.query("SELECT `channel`, `sender`, `action`, `message` FROM `logs` WHERE `channel` = ?", channel)
+			for row in result:
 				escaped_action = False
 				
 				for action in escaped_actions:
-					if line.split()[1] == action:
+					if row["action"] == action:
 						escaped_action = True
 						
 				if not escaped_action:
-					self.push(source, line.rstrip())
+					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
 				else:
-					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :"+line.rstrip())
+					message = row["sender"] + " " + row ["action"] + " " + row["channel"] + " " + row["message"]
+					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE " + row["channel"] + " :" + message)
 					
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
-			file.close()
 		except:
 			pass
 
@@ -1742,33 +1733,19 @@ class CServMod:
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
 			else:
-				sender = self.nick(source)+"!log@service"
+				sender = self.nick(source)+"!"+self.userhost(source)
 				
-			file = open("logs/"+channel, "ab+")
-			lines = file.readlines()
-			
-			if len(lines) > 100:
-				file.close()
-				file = open("logs/"+channel, "wb")
-				i = 49
-				
-				while i != 0:
-					file.write(lines[-i])
-					i -= 1
+			result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
+			for row in result:
+				if row["COUNT(*)"] = 50:
+					self.query("DELETE FROM `logs` WHERE `channel` = ? LIMIT 1", channel)
 					
-				file.write(sender+" "+msgtype.upper()+" "+channel+" "+text+"\n")
-			else:
-				file.write(sender+" "+msgtype.upper()+" "+channel+" "+text+"\n")
-				
-			file.close()
+			self.query("INSERT INTO `logs` (`channel`, `sender`, `action`, `message`) VALUES (?, ?, ?, ?)", channel, sender, msgtype.upper(), text)
 		except:
 			pass
 
 	def showlog(self, source, channel):
 		try:
-			file = open("logs/"+channel, "rb")
-			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
-			
 			escaped_actions = list()
 			escaped_actions.append("JOIN")
 			escaped_actions.append("PART")
@@ -1777,20 +1754,23 @@ class CServMod:
 			escaped_actions.append("KICK")
 			escaped_actions.append("TOPIC")
 			
-			for line in file.readlines():
+			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
+			
+			result = self.query("SELECT `channel`, `sender`, `action`, `message` FROM `logs` WHERE `channel` = ?", channel)
+			for row in result:
 				escaped_action = False
 				
 				for action in escaped_actions:
-					if line.split()[1] == action:
+					if row["action"] == action:
 						escaped_action = True
 						
 				if not escaped_action:
-					self.push(source, line.rstrip())
+					self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
 				else:
-					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :"+line.rstrip())
+					message = row["sender"] + " " + row ["action"] + " " + row["channel"] + " " + row["message"]
+					self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE " + row["channel"] + " :" + message)
 					
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
-			file.close()
 		except:
 			pass
 
