@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `vhosts` (
 
 DROP TABLE IF EXISTS `opers`;
 CREATE TABLE IF NOT EXISTS `opers` (
-	`uid` varchar(8)
+	`uid` varchar(9)
 );
 
 DROP TABLE IF EXISTS `feedback`;
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `feedback` (
 
 DROP TABLE IF EXISTS `online`;
 CREATE TABLE IF NOT EXISTS `online` (
-	`uid` varchar(8),
+	`uid` varchar(9),
 	`nick` varchar(255),
 	`address` varchar(255),
 	`host` varchar(255),
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `trust` (
 
 DROP TABLE IF EXISTS `chanlist`;
 CREATE TABLE IF NOT EXISTS `chanlist` (
-	`uid` varchar(8),
+	`uid` varchar(9),
 	`channel` varchar(255)
 );
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `ipchan` (
 
 DROP TABLE IF EXISTS `gateway`;
 CREATE TABLE IF NOT EXISTS `gateway` (
-	`uid` varchar(8)
+	`uid` varchar(9)
 );
 
 DROP TABLE IF EXISTS `glines`;
