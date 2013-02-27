@@ -969,7 +969,7 @@ class ServiceThread:
 				for nick in text.split()[1:]:
 					nicks.append(self.nick(nick))
 					
-				text = "SET {text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
+				text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
 				
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
@@ -1002,7 +1002,7 @@ class ServiceThread:
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log start")
 			
 			for line in file.readlines():
-				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT" and line.split()[1] != "MODE":
+				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT" and line.split()[1] != "MODE" and line.split()[1] != "KICK":
 					self.push(source, line.rstrip())
 				else:
 					self.push(source, "*!@ PRIVMSG "+channel+" :"+line.rstrip())
@@ -1721,7 +1721,7 @@ class CServMod:
 				for nick in text.split()[1:]:
 					nicks.append(self.nick(nick))
 					
-				text = "SET {text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
+				text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
 				
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
@@ -1754,7 +1754,7 @@ class CServMod:
 			self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " PRIVMSG "+channel+" :*** Log start")
 			
 			for line in file.readlines():
-				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT" and line.split()[1] != "MODE":
+				if line.split()[1] != "PART" and line.split()[1] != "JOIN" and line.split()[1] != "QUIT" and line.split()[1] != "MODE" and line.split()[1] != "KICK":
 					self.push(source, line.rstrip())
 				else:
 					self.push(source, "*!@ PRIVMSG "+channel+" :"+line.rstrip())
