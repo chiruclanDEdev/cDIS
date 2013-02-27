@@ -969,7 +969,7 @@ class ServiceThread:
 				for nick in text.split()[1:]:
 					nicks.append(self.nick(nick))
 					
-				text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
+				text = "SET {text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
 				
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
@@ -1721,7 +1721,7 @@ class CServMod:
 				for nick in text.split()[1:]:
 					nicks.append(self.nick(nick))
 					
-				text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
+				text = "SET {text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
 				
 			if source == self.bot_nick:
 				sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
