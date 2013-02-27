@@ -80,7 +80,7 @@ modules/mod_mode.py aba21f8a19a73b0188fe99ae9ed58ae2
 modules/mod_nick.py df14e215a5b8bf2ce87e17b579ebc6e5
 modules/mod_notice.py 60072685a84cf30c52d239dcf5068af6
 modules/mod_opertype.py 8d30347aa08a81127c3eb92110e5bec0
-modules/mod_privmsg.py 2b157593995dcf7b2df074b5f1856d45
+modules/mod_privmsg.py f0b1b398d7cb816fef856a0e344b8d09
 modules/mod_quit.py d72e6d5e0e650423c362acca73639ac4
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
 modules/mod_uid.py 9d1307937097d255b4b83cc26ce2a23e

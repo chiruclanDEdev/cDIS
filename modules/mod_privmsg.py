@@ -1,5 +1,6 @@
 from chiruserv import CServMod
 import __builtin__
+import time
 
 class mod_privmsg(CServMod):
 	MODULE_CLASS = "PRIVMSG"
