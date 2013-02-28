@@ -19,7 +19,7 @@ class cmd_gline(CServMod):
 				for row in result:
 					id = str(row["id"])
 					mask = str(row["mask"])
-					timestamp = self.convert_timestamp(int(row["timestamp"] - current_timestamp))
+					timestamp = self.convert_timestamp(int(int(row["timestamp"])- current_timestamp))
 					
 					id_mask_space = " "*int(10 - len(id))
 					mask_time_space = " "*int(25 - len(mask))
