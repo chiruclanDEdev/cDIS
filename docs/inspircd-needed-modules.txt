@@ -6,7 +6,7 @@ Following modules have to be loaded:
 	- m_namesx.so
 	- m_dnsbl.so
 	
-	- m_customprefix.so with following (or similar but +y have to be for services AND the highest) configuration:
+	- m_customprefix.so with following configuration:
 		<customprefix name="service" letter="y" prefix="*" rank="60000" ranktoset="60000">
 		<customprefix name="founder" letter="q" prefix="~" rank="50000" ranktoset="60000">
 		<customprefix name="admin" letter="a" prefix="&amp;" rank="40000" ranktoset="50000">
@@ -17,6 +17,9 @@ Following modules have to be loaded:
 	- m_chghost.so
 	- m_cap.so
 	- m_botmode.so
+
+Following modules should be loaded, but aren't necessary:
+	- m_xline_db.so
 
 Following modules mustn't be loaded!
 	- m_chanprotect.so
