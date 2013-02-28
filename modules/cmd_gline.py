@@ -31,9 +31,13 @@ class cmd_gline(CServMod):
 				self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")
 		elif len(arg) == 2:
 			if arg[0].lower() == "del":
-				entry = False
+				result = list()
 				
-				result = self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + arg[1])
+				if arg[1].startswith("#"):
+					result = self.query("SELECT `id` FROM `glines` WHERE `id` = ?", arg[1][1:])
+				else:
+					result = self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + arg[1])
+					
 				for row in result:
 					self.query("DELETE FROM `glines` WHERE `id` = ?", row["id"])
 					self.msg(uid, "G-line ID #" + str(row["id"]) + " has been removed.")
