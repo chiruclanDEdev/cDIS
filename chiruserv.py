@@ -359,7 +359,7 @@ class ServiceThread:
 			self.msg(row["uid"], "#" + self.services_description + "# " + content)
 
 	def metadata(self, uid, string, content):
-		if string.lower() == "accountname":
+		if string == "accountname":
 			self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
 			self.msg(uid, "You are now logged in as %s" % content)
 			self.vhost(uid)
@@ -594,7 +594,7 @@ class ServiceThread:
 		return pflags
 		
 	def metadata(self, uid, string, content):
-		if string.lower() == "accountname":
+		if string == "accountname":
 			self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
 			self.msg(uid, "You are now logged in as %s" % content)
 			self.vhost(uid)
