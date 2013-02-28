@@ -9,14 +9,14 @@ class mod_uid(CServMod):
 		self.query("delete from gateway where uid = ?", data.split()[2])
 		self.query("delete from online where uid = ?", data.split()[2])
 		self.query("delete from online where nick = ?", data.split()[4])
+		self.query("insert into online values (?, ?, ?, ?, ?, '')", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
 		
 		result = self.query("SELECT `id`, `mask`, `reason`, `timestamp` FROM `glines` WHERE `mask` = ? AND `timestamp` > ?", "*@"+data.split()[8], current_timestamp)
 		for row in result:
-			bantime = int(int(row["timestamp"]) - int(current_timestamp))
-			self.gline(data.split()[2], row["reason"], str(bantime))
+			bantime = str(int(int(row["timestamp"]) - int(current_timestamp)))
+			self.gline(data.split()[2], row["reason"], bantime)
 			return 0
 			
-		self.query("insert into online values (?, ?, ?, ?, ?, '')", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
 		conns = 0
 		nicks = list()
 		
