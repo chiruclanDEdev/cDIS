@@ -12,7 +12,7 @@ class mod_uid(CServMod):
 		
 		result = self.query("SELECT `id`, `mask`, `reason`, `timestamp` FROM `glines` WHERE `mask` = ? AND `timestamp` > ?", "*@"+data.split()[8], current_timestamp)
 		for row in result:
-			bantime = str(int(int(row["timestamp"]) - int(current_timestamp)))
+			bantime = int(int(row["timestamp"]) - int(current_timestamp))
 			self.gline(data.split()[2], row["reason"], str(bantime))
 			return 0
 			
