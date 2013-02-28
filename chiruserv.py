@@ -356,7 +356,7 @@ class ServiceThread:
 	def send_to_op(self, content):
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
-			self.msg(row["uid"], "":#" + self.services_name + "#: " + content)
+			self.msg(row["uid"], ":#" + self.services_name + "#: " + content)
 
 	def metadata(self, uid, string, content):
 		if string.lower() == "accountname":
@@ -1431,7 +1431,7 @@ class CServMod:
 	def send_to_op(self, content):
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
-			self.msg(row["uid"], "":#" + self.services_name + "#: " + content)
+			self.msg(row["uid"], ":#" + self.services_name + "#: " + content)
 
 	def metadata(self, uid, string, content):
 		if string.lower() == "accountname":
