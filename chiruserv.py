@@ -1208,7 +1208,7 @@ class ServiceThread:
 			for data in self.query("select uid from online where address = ?", self.getip(uid)):
 				self.send(":"+self.bot+" KILL "+data["uid"]+" :G-lined")
 				
-			self.send(":"+self.bot+" GLINE *@"+ip+" "+bantime+" :"+reason)
+			self.send(":"+self.bot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
 
 	def suspended(self, channel):
 		for data in self.query("select reason from suspended where channel = ?", channel):
@@ -1987,7 +1987,7 @@ class CServMod:
 			for data in self.query("select uid from online where address = ?", self.getip(uid)):
 				self.send(":"+self.bot+" KILL "+data["uid"]+" :G-lined")
 				
-			self.send(":"+self.bot+" GLINE *@"+ip+" "+bantime+" :"+reason)
+			self.send(":"+self.bot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
 
 	def suspended(self, channel):
 		for data in self.query("select reason from suspended where channel = ?", channel):
