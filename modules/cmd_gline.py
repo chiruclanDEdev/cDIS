@@ -71,7 +71,7 @@ class cmd_gline(CServMod):
 								
 							etime = int(time.time()) + int(ttime * 60)
 							self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + self.getip(tuid), etime)
-							self.gline(tuid, bantime=str(etime))
+							self.gline(tuid, bantime=str(int(ttime * 60)))
 							self.msg(uid, "Done.")
 						else:
 							self.msg(uid, "Denied.")
@@ -96,7 +96,7 @@ class cmd_gline(CServMod):
 								
 							etime = int(time.time()) + int(ttime * 60)
 							self.query("INSERT INTO `glines` (`mask`, `reason`, `timestamp`) VALUES (?, ?, ?)", "*@" + self.getip(tuid), treason, etime)
-							self.gline(tuid, treason, str(etime))
+							self.gline(tuid, treason, str(int(ttime * 60)))
 							self.msg(uid, "Done.")
 						else:
 							self.msg(uid, "Denied.")
