@@ -360,11 +360,12 @@ class ServiceThread:
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":
-			self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
-			self.msg(uid, "You are now logged in as %s" % content)
-			self.vhost(uid)
-			self.flag(uid)
-			self.memo(content)
+			if self.ison(content, True):
+				self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
+				self.msg(uid, "You are now logged in as %s" % content)
+				self.vhost(uid)
+				self.flag(uid)
+				self.memo(content)
 
 	def message(self, source, text):
 		try:
@@ -595,11 +596,12 @@ class ServiceThread:
 		
 	def metadata(self, uid, string, content):
 		if string == "accountname":
-			self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
-			self.msg(uid, "You are now logged in as %s" % content)
-			self.vhost(uid)
-			self.flag(uid)
-			self.memo(content)
+			if self.ison(uid, True):
+				self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
+				self.msg(uid, "You are now logged in as %s" % content)
+				self.vhost(uid)
+				self.flag(uid)
+				self.memo(content)
 
 
 	def uid (self, nick):
@@ -653,9 +655,13 @@ class ServiceThread:
 	def help(self, target, command, description=""):
 		self.msg(target, command.upper()+" "*int(20-len(command))+description)
 
-	def ison(self, user):
-		for data in self.query("select nick from online where account = ? LIMIT 1", user):
-			return True
+	def ison(self, user, uid=False):
+		if not uid:
+			for data in self.query("select nick from online where account = ? LIMIT 1", user):
+				return True
+		else:
+			for data in self.query("select nick from online where uid = ? LIMIT 1", user):
+				return True
 			
 		return False
 
@@ -1432,12 +1438,13 @@ class CServMod:
 			self.msg(row["uid"], "#" + self.services_description + "# " + content)
 
 	def metadata(self, uid, string, content):
-		if string.lower() == "accountname":
-			self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
-			self.msg(uid, "You are now logged in as %s" % content)
-			self.vhost(uid)
-			self.flag(uid)
-			self.memo(content)
+		if string == "accountname":
+			if self.ison(uid, True):
+				self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
+				self.msg(uid, "You are now logged in as %s" % content)
+				self.vhost(uid)
+				self.flag(uid)
+				self.memo(content)
 
 
 	def uid (self, nick):
@@ -1491,9 +1498,13 @@ class CServMod:
 	def help(self, target, command, description=""):
 		self.msg(target, command.upper()+" "*int(20-len(command))+description)
 
-	def ison(self, user):
-		for data in self.query("select uid from online where account = ? LIMIT 1", user):
-			return True
+	def ison(self, user, uid=False):
+		if not uid:
+			for data in self.query("select nick from online where account = ? LIMIT 1", user):
+				return True
+		else:
+			for data in self.query("select nick from online where uid = ? LIMIT 1", user):
+				return True
 			
 		return False
 
