@@ -13,7 +13,7 @@ class cmd_gline(CServMod):
 		if len(arg) == 1:
 			if arg[0].lower() == "list":
 				current_timestamp = int(time.time())
-				self.msg("-=- List of G-lines -=-")
+				self.msg(uid, "-=- List of G-lines -=-")
 				
 				result = self.query("SELECT `id`, `mask`, `timestamp` FROM `glines`")
 				for row in result:
@@ -24,9 +24,9 @@ class cmd_gline(CServMod):
 					id_mask_space = " "*int(10 - len(id))
 					mask_time_space = " "*int(25 - len(mask))
 					
-					self.msg("ID: {id} {id_mask_space} Hostmask: {mask} {mask_time_space} Time left: {time_left}".format(id=id, id_mask_space=id_mask_space, mask=mask, mask_time_space=mask_time_space, time_left=timestamp))
+					self.msg(uid, "ID: {id} {id_mask_space} Hostmask: {mask} {mask_time_space} Time left: {time_left}".format(id=id, id_mask_space=id_mask_space, mask=mask, mask_time_space=mask_time_space, time_left=timestamp))
 					
-				self.msg("-=- End of list -=-")
+				self.msg(uid, "-=- End of list -=-")
 			else:
 				self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")
 		elif len(arg) == 2:
