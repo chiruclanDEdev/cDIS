@@ -105,7 +105,8 @@ CREATE TABLE IF NOT EXISTS `gateway` (
 DROP TABLE IF EXISTS `glines`;
 CREATE TABLE IF NOT EXISTS `glines` (
 	`id` bigint(20) not null auto_increment key,
-	`mask` varchar(255)
+	`mask` varchar(255),
+	`timestamp` bigint(20) not null
 );
 
 DROP TABLE IF EXISTS `modules`;

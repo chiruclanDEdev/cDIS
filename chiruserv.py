@@ -16,6 +16,7 @@ import traceback
 import thread
 import fnmatch
 import ssl
+import threading
 import modules
 import __builtin__
 
@@ -157,6 +158,8 @@ class Services:
 					
 					if m_class.lower() == "command":
 						exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
+					elif m_class.lower() == "schedule":
+						exec("thread.start_new_thread(modules.{0}.{0}().onSchedule, ())".format(mods))
 						
 					self.query("INSERT INTO `modules` (`name`, `class`, `command`) VALUES (?, ?, ?)", mods, m_class, m_command)
 			
@@ -343,7 +346,13 @@ class ServiceThread:
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
 			debug(red("*") + " <<ERROR>> " + str(e))
-			
+
+	def send_bot(self, content):
+		self.send(":" + self.bot + " " + content)
+
+	def send_serv(self, content):
+		self.send(":" + self.services_id + " " + content)
+
 	def metadata(self, uid, string, content):
 		if string.lower() == "accountname":
 			self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
@@ -1284,6 +1293,9 @@ class CServMod:
 	def onData(self, data):
 		pass
 		
+	def onSchedule(self):
+		pass
+		
 	def regexflag (self, original, pattern, include_negatives = False):
 		pflags = ""
 		nflags = ""
@@ -1404,6 +1416,12 @@ class CServMod:
 				
 		conn.close()
 		return None
+
+	def send_bot(self, content):
+		self.send(":" + self.bot + " " + content)
+
+	def send_serv(self, content):
+		self.send(":" + self.services_id + " " + content)
 
 	def metadata(self, uid, string, content):
 		if string.lower() == "accountname":
