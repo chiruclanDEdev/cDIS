@@ -13,7 +13,7 @@ class mod_uid(CServMod):
 		result = self.query("SELECT `id`, `mask`, `reason`, `timestamp` FROM `glines` WHERE `mask` = ? AND `timestamp` > ?", "*@"+data.split()[8], current_timestamp)
 		for row in result:
 			bantime = str(int(int(row["timestamp"]) - int(current_timestamp)))
-			self.gline(data.split()[2], row["reason"], bantime)
+			self.gline(data.split()[2], row["reason"], str(bantime))
 			return 0
 			
 		self.query("insert into online values (?, ?, ?, ?, ?, '')", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
