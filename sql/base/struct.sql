@@ -106,6 +106,7 @@ DROP TABLE IF EXISTS `glines`;
 CREATE TABLE IF NOT EXISTS `glines` (
 	`id` bigint(20) not null auto_increment key,
 	`mask` varchar(255),
+	`reason` varchar(255) NOT NULL DEFAULT 'You have been violating network rules',
 	`timestamp` bigint(20) not null
 );
 
