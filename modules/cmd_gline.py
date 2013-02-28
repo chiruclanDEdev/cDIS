@@ -64,7 +64,7 @@ class cmd_gline(CServMod):
 					ttime = int(arg[2])
 					
 					if not tuid.lower() == arg[1].lower():
-						if not self.isoper(tuid):
+						if not self.isoper(tuid) and tuid != self.bot:
 							for row in self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + self.getip(tuid)):
 								self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
 								return 0
@@ -89,7 +89,7 @@ class cmd_gline(CServMod):
 					treason = ' '.join(arg[3:])
 					
 					if not tuid.lower() == arg[1].lower():
-						if not self.isoper(tuid):
+						if not self.isoper(tuid) and tuid != self.bot:
 							for row in self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + self.getip(tuid)):
 								self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
 								return 0
