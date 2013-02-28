@@ -530,11 +530,9 @@ class ServiceThread:
 			else:
 				self.msg(source, "Unknown command NULL. Please try HELP for more information.")
 		except Exception:
-			self.msg(source, "An error has occured. The Development-Team has been notified about this problem.")
+			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://bitbucket.org/ChiruclanDE/chiruserv/issues)")
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
-			if self.email != "":
-				self.mail("hosting@chiruclan.de", "From: {0} <{1}>\nTo: ChiruServ Development <hosting@chiruclan.de>\nSubject: Bug on {0}\n{2}".format(self.services_description, self.email, str(e)))
 				
 			debug(red("*") + " <<MSG-ERROR>> "+str(e))
 			
