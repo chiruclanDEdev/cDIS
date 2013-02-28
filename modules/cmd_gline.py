@@ -46,8 +46,6 @@ class cmd_gline(CServMod):
 					self.msg(uid, "ID: {id} {id_mask_space} Hostmask: {mask} {mask_time_space} Time left: {time_left}".format(id=id, id_mask_space=id_mask_space, mask=mask, mask_time_space=mask_time_space, time_left=timestamp))
 					
 				self.msg(uid, "-=- End of list -=-")
-			else:
-				self.msg(uid, "Syntax: GLINE <set/del/list/search> [<user> <time (in minutes)> [<reason>]]")
 			elif arg[0].lower() == "del":
 				result = self.query("SELECT `id`, `mask` FROM `glines` WHERE `id` = ? OR `mask` = ?", arg[1][1:], arg[1])
 					
