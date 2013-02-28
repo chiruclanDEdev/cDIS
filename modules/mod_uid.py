@@ -50,5 +50,3 @@ class mod_uid(CServMod):
 			crypthost = self.encode_md5(data.split()[2] + ":" + self.nick(data.split()[2]) + "!" + self.userhost(data.split()[2]))
 			self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, data.split()[2], crypthost, '.'.join(self.services_name.split(".")[-2:])))
 			self.query("insert into gateway values (?)", data.split()[2])
-			
-		self.send_serv("METADATA " + data.split()[2])
