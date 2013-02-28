@@ -16,5 +16,6 @@ class sched_gline(CServMod):
 				if current_timestamp >= expire_timestamp:
 					self.query("DELETE FROM `glines` WHERE `id` = ?", row["id"])
 					self.send_serv("GLINE " + row["mask"])
+					self.send_to_op("G-line ID #" + str(row["id"]) + " (Hostmask: " + row["mask"] + ") has been removed.")
 					
 			time.sleep(60)

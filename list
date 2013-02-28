@@ -86,7 +86,7 @@ modules/mod_privmsg.py f0b1b398d7cb816fef856a0e344b8d09
 modules/mod_quit.py d72e6d5e0e650423c362acca73639ac4
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
 modules/mod_uid.py 5c7f47c50085516cc9aaabbddf4e8b84
-modules/sched_gline.py dac27338afe28794ee33dbec5e162487
+modules/sched_gline.py fdf84668e78d0f0858614c14fd00f11b
 sql/base/struct.sql f7a1038af7500212772f3fd195b47856
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
