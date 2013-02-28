@@ -8,7 +8,6 @@ class sched_gline(CServMod):
 	def onSchedule(self):
 		while True:
 			current_timestamp = time.time()
-			self.msg("$*", "Running minutely cleanup task...")
 			
 			results = self.query("SELECT `id`, `mask`, `timestamp` FROM `glines`")
 			for row in results:
@@ -18,6 +17,6 @@ class sched_gline(CServMod):
 					self.query("DELETE FROM `glines` WHERE `id` = ?", row["id"])
 					self.send_serv("GLINE " + row["mask"])
 					
-			self.msg("$*", "Minutely cleanup task successful...")
+			self.send_to_op("Cleaned up g-lines...")
 			
 			time.sleep(60)

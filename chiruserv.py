@@ -353,6 +353,11 @@ class ServiceThread:
 	def send_serv(self, content):
 		self.send(":" + self.services_id + " " + content)
 
+	def send_to_op(self, content):
+		result = self.query("SELECT `uid` FROM `opers`")
+		for row in result:
+			self.msg(row["uid"], "":#" + self.services_name + "#: " + content)
+
 	def metadata(self, uid, string, content):
 		if string.lower() == "accountname":
 			self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
@@ -1422,6 +1427,11 @@ class CServMod:
 
 	def send_serv(self, content):
 		self.send(":" + self.services_id + " " + content)
+
+	def send_to_op(self, content):
+		result = self.query("SELECT `uid` FROM `opers`")
+		for row in result:
+			self.msg(row["uid"], "":#" + self.services_name + "#: " + content)
 
 	def metadata(self, uid, string, content):
 		if string.lower() == "accountname":
