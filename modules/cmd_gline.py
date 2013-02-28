@@ -32,7 +32,7 @@ class cmd_gline(CServMod):
 		elif len(arg) == 2:
 			if arg[0].lower() == "search":
 				current_timestamp = int(time.time())
-				self.msg(uid, "-=- List of G-lines -=-")
+				self.msg(uid, "-=- List of G-lines (lookup parameter: " + arg[1] + ") -=-")
 				
 				result = self.query("SELECT `id`, `mask`, `timestamp` FROM `glines` WHERE `id` LIKE ? OR `mask` LIKE ?", "%" + arg[1][1:] + "%", "%" + arg[1] + "%")
 				for row in result:
