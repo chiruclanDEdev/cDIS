@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md c1d7516bf77c78f5bf1acdf637d178ac
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
-chiruserv.py 5102cafa7f742d0712a8906f29d7f5e4
+chiruserv.py 5a207993a9052ae9fd6d0a225d363cc0
 config.cfg.dist d8a748fdd03227393d381b8dfc8c19d5
 docs/inspircd-needed-modules.txt ff4441098de066c2b47e95fbbbcffe1e
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
@@ -21,7 +21,7 @@ modules/cmd_domaincheck.py beb02b37dd475997b2dcd41738b63133
 modules/cmd_email.py e3567554d4b0ce06afb7867e404ba7c9
 modules/cmd_fantasy.py 9278b025dee630576af8c1a6890008b5
 modules/cmd_feedback.py 74bed43d9ef7b7c820a545db8b87c8d8
-modules/cmd_gline.py 0e19c2d15bd8077f2484726a4477e9bc
+modules/cmd_gline.py e3355c47b7e257985dc1a2c7ac789505
 modules/cmd_halfop.py d146d3a2631deddb1e2e841bc72deffc
 modules/cmd_hello.py 5b372d8c507b67383aa300cc01e71826
 modules/cmd_hostinfo.py 77b6719aaae9e4a0c60975b7cabd53ab
@@ -85,8 +85,8 @@ modules/mod_part.py 67c7eb6cf7da04fe9a67da0413725c79
 modules/mod_privmsg.py f0b1b398d7cb816fef856a0e344b8d09
 modules/mod_quit.py d72e6d5e0e650423c362acca73639ac4
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
-modules/mod_uid.py 9d1307937097d255b4b83cc26ce2a23e
-modules/sched_gline.py 0fbac125f09e7a560a989c0161dfaca1
+modules/mod_uid.py 5c7f47c50085516cc9aaabbddf4e8b84
+modules/sched_gline.py dac27338afe28794ee33dbec5e162487
 sql/base/struct.sql f7a1038af7500212772f3fd195b47856
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106

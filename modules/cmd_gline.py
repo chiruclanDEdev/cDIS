@@ -1,4 +1,5 @@
 from chiruserv import CServMod
+import time
 
 class cmd_gline(CServMod):
 	MODULE_CLASS = "COMMAND"
@@ -8,23 +9,86 @@ class cmd_gline(CServMod):
 
 	def onCommand(self, uid, args):
 		arg = args.split()
+		
 		if len(arg) == 1:
-			if self.uid(arg[0]).lower() != arg[0].lower():
-				if not self.isoper(self.uid(arg[0])):
-					self.gline(arg[0])
-					self.msg(uid, "Done.")
-				else:
-					self.msg(uid, "You cannot g-line an irc operator!")
+			if arg[0].lower() == "list":
+				current_timestamp = int(time.time())
+				self.msg("-=- List of G-lines -=-")
+				
+				result = self.query("SELECT `id`, `mask`, `timestamp` FROM `glines`")
+				for row in result:
+					id = str(row["id"])
+					mask = str(row["mask"])
+					timestamp = self.convert_timestamp(int(row["timestamp"] - current_timestamp))
+					
+					id_mask_space = " "*int(10 - len(id))
+					mask_time_space = " "*int(25 - len(mask))
+					
+					self.msg("ID: {id} {id_mask_space} Hostmask: {mask} {mask_time_space} Time left: {time_left}".format(id=id, id_mask_space=id_mask_space, mask=mask, mask_time_space=mask_time_space, time_left=timestamp))
+					
+				self.msg("-=- End of list -=-")
 			else:
-				self.msg(uid, "Cannot find user '" + arg[0] + "' on the network.")
-		elif len(arg) > 1:
-			if self.uid(arg[0]).lower() != arg[0].lower():
-				if not self.isoper(self.uid(arg[0])):
-					self.gline(arg[0], ' '.join(arg[1:]))
-					self.msg(uid, "Done.")
-				else:
-					self.msg(uid, "You cannot g-line an irc operator!")
+				self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")
+		elif len(arg) == 2:
+			if arg[0].lower() == "del":
+				entry = False
+				
+				result = self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + arg[1])
+				for row in result:
+					self.query("DELETE FROM `glines` WHERE `id` = ?", row["id"])
+					self.msg(uid, "G-line ID #" + str(row["id"]) + " has been removed.")
+					
+				self.msg(uid, "Done.")
 			else:
-				self.msg(uid, "Cannot find user '" + arg[0] + "' on the network.")
+				self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")
+		elif len(arg) == 3:
+			if arg[0].lower() == "set":
+				if arg[2].isdigit():
+					tuid = self.uid(arg[1])
+					ttime = int(arg[2])
+					
+					if not tuid.lower() == arg[1].lower():
+						if not self.isoper(tuid):
+							for row in self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + self.getip(tuid)):
+								self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
+								return 0
+								
+							etime = int(time.time()) + int(ttime * 60)
+							self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + self.getip(tuid), etime)
+							self.gline(uid)
+							self.msg(uid, "Done.")
+						else:
+							self.msg(uid, "Denied.")
+					else:
+						self.msg(uid, "Failed. User is not online.")
+				else:
+					self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")
+			else:
+				self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")
+		elif len(arg) > 3:
+			if arg[0].lower() == "set":
+				if arg[2].isdigit():
+					tuid = self.uid(arg[1])
+					ttime = int(arg[2])
+					treason = ' '.join(arg[3:])
+					
+					if not tuid.lower() == arg[1].lower():
+						if not self.isoper(tuid):
+							for row in self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + self.getip(tuid)):
+								self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
+								return 0
+								
+							etime = int(time.time()) + int(ttime * 60)
+							self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + self.getip(tuid), etime)
+							self.gline(uid, treason)
+							self.msg(uid, "Done.")
+						else:
+							self.msg(uid, "Denied.")
+					else:
+						self.msg(uid, "Failed. User not online.")
+				else:
+					self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")
+			else:
+				self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")
 		else:
-			self.msg(uid, "Syntax: GLINE <user> [<reason>]")
+			self.msg(uid, "Syntax: GLINE <set/del/list> [<user> <time (in minutes)> [<reason>]]")

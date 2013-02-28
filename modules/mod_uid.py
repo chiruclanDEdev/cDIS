@@ -1,12 +1,20 @@
 from chiruserv import CServMod
+import time
 
 class mod_uid(CServMod):
 	MODULE_CLASS = "UID"
 	
 	def onData(self, data):
+		current_timestamp = int(time.time())
 		self.query("delete from gateway where uid = ?", data.split()[2])
 		self.query("delete from online where uid = ?", data.split()[2])
 		self.query("delete from online where nick = ?", data.split()[4])
+		
+		result = self.query("SELECT `id`, `mask` FROM `glines` WHERE `mask` = ? AND `timestamp` > ?", "*@"+data.split()[8], current_timestamp)
+		for row in result:
+			self.gline(data.split()[2], "G-line ID #" + str(row["id"]))
+			return 0
+			
 		self.query("insert into online values (?, ?, ?, ?, ?, '')", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
 		conns = 0
 		nicks = list()
