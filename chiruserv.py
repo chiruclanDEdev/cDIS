@@ -283,12 +283,12 @@ class ServiceThread:
 							
 							cmd_auth = command["auth"]
 							
-							if not cmd_auth:
+							if cmd_auth == 0:
 								if len(data.split()) == 4:
 									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
 								elif len(data.split()) > 4:
 									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
-							elif cmd_auth:
+							elif cmd_auth == 1:
 								if self.auth(data.split()[0][1:]):
 									if len(data.split()) == 4:
 										exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
@@ -425,8 +425,7 @@ class ServiceThread:
 										self.help(source, command["command"], cmd_help)
 								else:
 									self.help(source, command["command"], cmd_help)
-									
-							if cmd_auth == 1 and self.auth(source):
+							elif cmd_auth == 1 and self.auth(source):
 								if len(args) != 0:
 									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
 										self.help(source, command["command"], cmd_help)
