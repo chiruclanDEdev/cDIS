@@ -463,7 +463,7 @@ class ServiceThread:
 					self.msg(source, "The following commands are available to you.", obot=True)
 					self.msg(source, obot=True)
 					
-					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 1"):
+					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 1 ORDER BY `command`"):
 						if os.access("modules/"+command["name"]+".py", os.F_OK):
 							cmd_auth = command["auth"]
 							cmd_help = command["help"]

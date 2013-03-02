@@ -7,6 +7,9 @@ class cmd_trust(CServMod):
 	NEED_OPER = 1
 
 	def onCommand(self, source, args):
+		self.msg(source, "Sorry but this system is currently beeing rewritten. Its disabled because the new database structure is already imported.")
+		return 0
+		
 		arg = args.split()
 		if len(arg) > 1:
 			trip = arg[1]

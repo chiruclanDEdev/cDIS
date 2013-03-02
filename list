@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md c1d7516bf77c78f5bf1acdf637d178ac
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
-chiruserv.py 3b9eb0399e0e92b1c7cb0f843a8c54aa
+chiruserv.py c03d78e3abde3b746296c656a3bf0263
 config.cfg.dist 17d8b0f0b00af4c3d2e48faae12b523d
 docs/inspircd-needed-modules.txt 6cba59eefc579015b2cb06e951680143
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
@@ -58,7 +58,7 @@ modules/cmd_setwhois.py 35314c6d5bc7b7b814b9f65234bf5061
 modules/cmd_spamscan.py 011eaf7f2604d9e9d1be43ea1fd436c8
 modules/cmd_suspend.py b31850d90ef6b4eebad7147f6f598676
 modules/cmd_sync.py 52a7dcef6d56a4084b7add89b8b42aa1
-modules/cmd_trust.py 2300e7c9bebe69b6e68337659985da74
+modules/cmd_trust.py 9c141b0ea676d5a83a3d3b81e1679e42
 modules/cmd_unban.py c9ce87fa2dfa9ff39987ec4c1db020b4
 modules/cmd_unbanall.py 369169980b5168d428cfa2bbec0a147f
 modules/cmd_unbanme.py f250ce9e35889f5fe7b54a8586e5dc6c
