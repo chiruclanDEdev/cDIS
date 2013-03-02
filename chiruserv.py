@@ -973,6 +973,9 @@ class ServiceThread:
 		return False
 
 	def isoper(self, target):
+		if self.isserv:
+			return True
+			
 		isoper = False
 		
 		for data in self.query("select * from opers where uid = ?", target):
@@ -1885,6 +1888,9 @@ class CServMod:
 		return False
 
 	def isoper(self, target):
+		if self.isserv:
+			return True
+			
 		isoper = False
 		
 		for data in self.query("select * from opers where uid = ?", target):
