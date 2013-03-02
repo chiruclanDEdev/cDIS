@@ -416,7 +416,7 @@ class ServiceThread:
 						
 					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 0 ORDER BY `command`"):
 						if os.access("modules/"+command["name"]+".py", os.F_OK):
-							cmd_auth = command["auth"]
+							cmd_auth = int(command["auth"])
 							cmd_help = command["help"]
 							
 							if not cmd_auth:
