@@ -441,7 +441,7 @@ class ServiceThread:
 				
 			debug(red("*") + " <<MSG-ERROR>> "+str(e))
 
-	def omessage(source, text):
+	def omessage(self, source, text):
 		try:
 			if not self.isoper(source):
 				return 0
@@ -456,8 +456,8 @@ class ServiceThread:
 					args = ' '.join(text.split()[1:])
 					
 				if cmd == "help":
-					self.msg(source, "The following commands are available to you.")
-					self.msg(source)
+					self.msg(source, "The following commands are available to you.", obot=True)
+					self.msg(source, obot=True)
 					
 					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 1"):
 						if os.access("modules/"+command["name"]+".py", os.F_OK):
@@ -466,31 +466,31 @@ class ServiceThread:
 							
 							if len(args) != 0:
 								if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
-									self.help(source, command["command"], cmd_help)
+									self.help(source, command["command"], cmd_help, obot=True)
 							else:
-								self.help(source, command["command"], cmd_help)
+								self.help(source, command["command"], cmd_help, obot=True)
 								
 					if len(args) != 0:
 						if fnmatch.fnmatch("reload", "*" + args.lower() + "*"):
-							self.help(source, "RELOAD", "Reloads the config")
+							self.help(source, "RELOAD", "Reloads the config", obot=True)
 					else:
-						self.help(source, "RELOAD", "Reloads the config")
+						self.help(source, "RELOAD", "Reloads the config", obot=True)
 						
 					if len(args) != 0:
 						if fnmatch.fnmatch("update", "*" + args.lower() + "*"):
-							self.help(source, "UPDATE", "Updates the services")
+							self.help(source, "UPDATE", "Updates the services", obot=True)
 					else:
-						self.help(source, "UPDATE", "Updates the services")
+						self.help(source, "UPDATE", "Updates the services", obot=True)
 						
 					if len(args) != 0:
 						if fnmatch.fnmatch("quit", "*" + args.lower() + "*"):
-							self.help(source, "QUIT", "Shutdowns the services")
+							self.help(source, "QUIT", "Shutdowns the services", obot=True)
 					else:
-						self.help(source, "QUIT", "Shutdowns the services")
+						self.help(source, "QUIT", "Shutdowns the services", obot=True)
 								
 					self.msg(source)
 					
-					self.msg(source, "End of list.")
+					self.msg(source, "End of list.", obot=True)
 				elif cmd == "reload":
 					config.read("config.cfg")
 					self.debug = config.get("OTHER", "debug")
@@ -517,7 +517,7 @@ class ServiceThread:
 								
 							self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, m_class, m_oper, m_auth, m_command, m_help)
 							
-					self.msg(source, "Done.")
+					self.msg(source, "Done.", obot=True)
 				elif cmd == "update":
 					_web = urllib2.urlopen("https://bitbucket.org/ChiruclanDE/chiruserv/raw/master/version")
 					_version = _web.read()
@@ -526,7 +526,7 @@ class ServiceThread:
 					if open("version", "r").read() != _version:
 						_updates = len(os.listdir("sql/updates"))
 						_hash = self.encode(open("chiruserv.py", "r").read())
-						self.msg(source, "{0} -> {1}".format(open("version", "r").read(), _version))
+						self.msg(source, "{0} -> {1}".format(open("version", "r").read(), _version), obot=True)
 	#					shell("git add config.cfg")
 	#					shell("git commit -m 'Save'")
 						shell("git pull")
@@ -539,7 +539,7 @@ class ServiceThread:
 								
 								for sql in _files:
 									if sql.startswith(str(_updates)+"_"):
-										self.msg(source, " - Insert '{0}'".format(sql))
+										self.msg(source, " - Insert '{0}'".format(sql), obot=True)
 										file = open("sql/updates/"+sql, "r")
 										
 										for line in file.readlines():
@@ -548,10 +548,10 @@ class ServiceThread:
 										file.close()
 										
 						if _hash != self.encode(open("chiruserv.py", "r").read()):
-							self.msg(source, "Done.")
-							self.msg(source, "Please note that you have to restart the services manually.")
+							self.msg(source, "Done.", obot=True)
+							self.msg(source, "Please note that you have to restart the services manually.", obot=True)
 						else:
-							self.msg(source, "Reload ...")
+							self.msg(source, "Reload ...", obot=True)
 							reload(modules)
 									
 							self.query("TRUNCATE `modules`")
@@ -561,22 +561,22 @@ class ServiceThread:
 									
 									m_command = ''
 									m_auth = 0
-									m_oper = 0
 									m_help = ''
+									
+									exec("m_oper = modules.{0}.{0}().NEED_OPER".format(mods))
 									
 									if m_class.lower() == "command":
 										exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
 										exec("m_auth = modules.{0}.{0}().NEED_AUTH".format(mods))
-										exec("m_oper = modules.{0}.{0}().NEED_OPER".format(mods))
 										exec("m_help = modules.{0}.{0}().HELP".format(mods))
 										
 									self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, m_class, m_oper, m_auth, m_command, m_help)
 									
-							self.msg(source, "Done.")
+							self.msg(source, "Done.", obot=True)
 					else:
-						self.msg(source, "Unknown command {0}. Please try HELP for more information.".format(text.split()[0].upper()))
+						self.msg(source, "Unknown command {0}. Please try HELP for more information.".format(text.split()[0].upper()), obot=True)
 				else:
-					self.msg(source, "No update available.")
+					self.msg(source, "No update available.", obot=True)
 			elif cmd == "quit" and self.isoper(source):
 				if os.access("chiruserv.pid", os.F_OK):
 					if len(arg) == 0:
@@ -591,11 +591,11 @@ class ServiceThread:
 					self.con.close()
 					shell("sh chiruserv stop")
 				else:
-					self.msg(source, "You're running the debug mode. You cannot restart via commands!")
+					self.msg(source, "You're running the debug mode. You cannot restart via commands!", obot=True)
 			else:
-				self.msg(source, "Unknown command NULL. Please try HELP for more information.")
+				self.msg(source, "Unknown command NULL. Please try HELP for more information.", obot=True)
 		except Exception:
-			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://bitbucket.org/ChiruclanDE/chiruserv/issues)")
+			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://bitbucket.org/ChiruclanDE/chiruserv/issues)", obot=True)
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
 				
@@ -722,8 +722,8 @@ class ServiceThread:
 	def push(self, target, message):
 		self.send(":{uid} PUSH {target} ::{message}".format(uid=self.services_id, target=target, message=message))
 
-	def help(self, target, command, description=""):
-		self.msg(target, command.upper()+" "*int(20-len(command))+description)
+	def help(self, target, command, description="", obot=False):
+		self.msg(target, command.upper()+" "*int(20-len(command))+description, obot=obot)
 
 	def ison(self, user, uid=False):
 		if not uid:
