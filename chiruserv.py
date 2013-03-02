@@ -1283,7 +1283,7 @@ class ServiceThread:
 	def gline(self, target, reason="", bantime="1800", addentry=False):
 		uid = self.uid(target)
 		
-		if uid != self.bot and target.lower() != self.bot_nick.lower():
+		if uid != self.bot and target.lower() != self.bot_nick.lower() and not self.isoper(uid):
 			ip = self.getip(uid)
 			
 			if addentry:
@@ -2134,7 +2134,7 @@ class CServMod:
 	def gline(self, target, reason="", bantime="1800", addentry=False):
 		uid = self.uid(target)
 		
-		if uid != self.bot and target.lower() != self.bot_nick.lower():
+		if uid != self.bot and target.lower() != self.bot_nick.lower() and not self.isoper(uid):
 			ip = self.getip(uid)
 			
 			if addentry:
