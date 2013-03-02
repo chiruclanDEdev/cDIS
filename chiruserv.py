@@ -281,7 +281,7 @@ class ServiceThread:
 						if os.access("modules/" + command["name"] + ".py", os.F_OK):
 							iscmd = True
 							
-							cmd_auth = command["auth"]
+							cmd_auth = int(command["auth"])
 							
 							if not cmd_auth:
 								if len(data.split()) == 4:
