@@ -284,12 +284,12 @@ class ServiceThread:
 							cmd_auth = command["auth"]
 							command["name"] = command["name"].lower()
 							
-							if cmd_auth == 0:
+							if not cmd_auth:
 								if len(data.split()) == 4:
 									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
 								elif len(data.split()) > 4:
 									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
-							elif cmd_auth == 1:
+							elif cmd_auth:
 								if self.auth(data.split()[0][1:]):
 									if len(data.split()) == 4:
 										exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
@@ -308,7 +308,6 @@ class ServiceThread:
 						for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 1", cmd):
 							if os.access("modules/" + command["name"].lower() + ".py", os.F_OK):
 								iscmd = True
-								command["name"] = command["name"].lower()
 								
 								if len(data.split()) == 4:
 									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
@@ -334,8 +333,6 @@ class ServiceThread:
 							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0", cmd):
 								if os.access("modules/" + command["name"].lower() + ".py", os.F_OK):
 									iscmd = True
-									command["name"] = command["name"].lower()
-									
 									exec("oper = modules.%s.%s().NEED_OPER" % (command["name"], command["name"]))
 									
 									if oper == 0:
