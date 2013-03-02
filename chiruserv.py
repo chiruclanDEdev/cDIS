@@ -414,18 +414,18 @@ class ServiceThread:
 					else:
 						self.help(source, "HELP", "Shows information about all commands that are available to you")
 						
-					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 0"):
+					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 0 ORDER BY `COMMAND`"):
 						if os.access("modules/"+command["name"]+".py", os.F_OK):
 							cmd_auth = command["auth"]
 							cmd_help = command["help"]
 							
-							if cmd_auth == 0:
+							if cmd_auth and self.auth(source):
 								if len(args) != 0:
 									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
 										self.help(source, command["command"], cmd_help)
 								else:
 									self.help(source, command["command"], cmd_help)
-							elif cmd_auth == 1 and self.auth(source):
+							elif not cmd_auth:
 								if len(args) != 0:
 									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
 										self.help(source, command["command"], cmd_help)
