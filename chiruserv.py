@@ -281,7 +281,7 @@ class ServiceThread:
 						if os.access("modules/" + command["name"] + ".py", os.F_OK):
 							iscmd = True
 							
-							exec("cmd_auth = modules.%s.%s().NEED_AUTH" % (command["name"], command["name"]))
+							cmd_auth = command["auth"]
 							
 							if not cmd_auth:
 								if len(data.split()) == 4:
@@ -406,6 +406,7 @@ class ServiceThread:
 					
 				if cmd == "help":
 					self.msg(source, "The following commands are available to you.")
+					self.msg(source)
 					
 					if len(args) != 0:
 						if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
@@ -418,18 +419,21 @@ class ServiceThread:
 							cmd_auth = command["auth"]
 							cmd_help = command["help"]
 							
-							if not cmd_auth:
+							if cmd_auth == 0:
 								if len(args) != 0:
 									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
 										self.help(source, command["command"], cmd_help)
 								else:
 									self.help(source, command["command"], cmd_help)
-							elif cmd_auth and self.auth(source):
+							elif cmd_auth == 1 and self.auth(source):
 								if len(args) != 0:
 									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
 										self.help(source, command["command"], cmd_help)
 								else:
 									self.help(source, command["command"], cmd_help)
+									
+					self.msg(source)
+					self.msg(source, "End of list.")
 				else:
 					self.msg(source, "Unknown command {0}. Please try HELP for more information.".format(text.split()[0].upper()))
 			else:
@@ -574,24 +578,24 @@ class ServiceThread:
 									
 							self.msg(source, "Done.", obot=True)
 					else:
-						self.msg(source, "Unknown command {0}. Please try HELP for more information.".format(text.split()[0].upper()), obot=True)
-				else:
-					self.msg(source, "No update available.", obot=True)
-			elif cmd == "quit" and self.isoper(source):
-				if os.access("chiruserv.pid", os.F_OK):
-					if len(arg) == 0:
-						msg = "Services are going offline."
-						self.send(":%s QUIT :%s" % (self.bot, msg))
-						self.send(":%s QUIT :%s" % (self.obot, msg))
+						self.msg(source, "No update available.", obot=True)
+				elif cmd == "quit" and self.isoper(source):
+					if os.access("chiruserv.pid", os.F_OK):
+						if len(arg) == 0:
+							msg = "Services are going offline."
+							self.send(":%s QUIT :%s" % (self.bot, msg))
+							self.send(":%s QUIT :%s" % (self.obot, msg))
+						else:
+							self.send(":%s QUIT :%s" % (self.bot, args))
+							self.send(":%s QUIT :%s" % (self.obot, args))
+							
+						self.send(":%s SQUIT %s" % (self.services_id, self.services_name))
+						self.con.close()
+						shell("sh chiruserv stop")
 					else:
-						self.send(":%s QUIT :%s" % (self.bot, args))
-						self.send(":%s QUIT :%s" % (self.obot, args))
-						
-					self.send(":%s SQUIT %s" % (self.services_id, self.services_name))
-					self.con.close()
-					shell("sh chiruserv stop")
+						self.msg(source, "You're running the debug mode. You cannot restart via commands!", obot=True)
 				else:
-					self.msg(source, "You're running the debug mode. You cannot restart via commands!", obot=True)
+					self.msg(source, "Unknown command {0}. Please try HELP for more information.".format(text.split()[0].upper()), obot=True)
 			else:
 				self.msg(source, "Unknown command NULL. Please try HELP for more information.", obot=True)
 		except Exception:
