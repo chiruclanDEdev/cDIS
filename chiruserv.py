@@ -165,8 +165,8 @@ class Services:
 					
 					if m_class.lower() == "command":
 						exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
-						exec("m_auth = modules.{0}.{0}().NEED_AUTH".formats(mods))
-						exec("m_help = modules.{0}.{0}().HELP".formats(mods))
+						exec("m_auth = modules.{0}.{0}().NEED_AUTH".format(mods))
+						exec("m_help = modules.{0}.{0}().HELP".format(mods))
 					elif m_class.lower() == "schedule":
 						exec("thread.start_new_thread(modules.{0}.{0}().onSchedule, ())".format(mods))
 						
@@ -511,7 +511,7 @@ class ServiceThread:
 							
 							if m_class.lower() == "command":
 								exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
-								exec("m_auth = modules.{0}.{0}().NEED_AUTH".formats(mods))
+								exec("m_auth = modules.{0}.{0}().NEED_AUTH".format(mods))
 								exec("m_help = modules.{0}.{0}().HELP".format(mods))
 								
 								
@@ -566,7 +566,7 @@ class ServiceThread:
 									
 									if m_class.lower() == "command":
 										exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
-										exec("m_auth = modules.{0}.{0}().NEED_AUTH".formats(mods))
+										exec("m_auth = modules.{0}.{0}().NEED_AUTH".format(mods))
 										exec("m_oper = modules.{0}.{0}().NEED_OPER".format(mods))
 										exec("m_help = modules.{0}.{0}().HELP".format(mods))
 										
