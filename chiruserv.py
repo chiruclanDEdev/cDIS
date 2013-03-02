@@ -425,7 +425,8 @@ class ServiceThread:
 										self.help(source, command["command"], cmd_help)
 								else:
 									self.help(source, command["command"], cmd_help)
-							elif cmd_auth == 1 and self.auth(source):
+									
+							if cmd_auth == 1 and self.auth(source):
 								if len(args) != 0:
 									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
 										self.help(source, command["command"], cmd_help)
