@@ -693,7 +693,7 @@ class ServiceThread:
 	def user (self, user):
 		if user.lower() == self.bot_nick.lower():
 			return self.bot_nick
-		elif user.lower() == self.obot_nick.lower()
+		elif user.lower() == self.obot_nick.lower():
 			return self.obot_nick
 			
 		for data in self.query("select name from users where name = ?", user):
@@ -1605,6 +1605,8 @@ class CServMod:
 	def user (self, user):
 		if user.lower() == self.bot_nick.lower():
 			return self.bot_nick
+		elif user.lower() == self.obot_nick.lower():
+			return self.obot_nick
 			
 		for data in self.query("select name from users where name = ?", user):
 			return str(data["name"])
