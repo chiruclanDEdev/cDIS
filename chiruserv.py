@@ -278,11 +278,10 @@ class ServiceThread:
 					cmd = data.split()[3][1:]
 					
 					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0", cmd):
-						if os.access("modules/" + command["name"].lower() + ".py", os.F_OK):
+						if os.access("modules/" + command["name"] + ".py", os.F_OK):
 							iscmd = True
 							
 							cmd_auth = command["auth"]
-							command["name"] = command["name"].lower()
 							
 							if not cmd_auth:
 								if len(data.split()) == 4:
@@ -306,7 +305,7 @@ class ServiceThread:
 						cmd = data.split()[3][1:]
 						
 						for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 1", cmd):
-							if os.access("modules/" + command["name"].lower() + ".py", os.F_OK):
+							if os.access("modules/" + command["name"] + ".py", os.F_OK):
 								iscmd = True
 								
 								if len(data.split()) == 4:
@@ -331,7 +330,7 @@ class ServiceThread:
 								args = ' '.join(data.split()[4:]).replace("'", "\\'")
 								
 							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0", cmd):
-								if os.access("modules/" + command["name"].lower() + ".py", os.F_OK):
+								if os.access("modules/" + command["name"] + ".py", os.F_OK):
 									iscmd = True
 									exec("oper = modules.%s.%s().NEED_OPER" % (command["name"], command["name"]))
 									
@@ -416,7 +415,7 @@ class ServiceThread:
 						self.help(source, "HELP", "Shows information about all commands that are available to you")
 						
 					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 0 ORDER BY `command`"):
-						if os.access("modules/"+command["name"].lower()+".py", os.F_OK):
+						if os.access("modules/"+command["name"]+".py", os.F_OK):
 							cmd_auth = command["auth"]
 							cmd_help = command["help"]
 							
