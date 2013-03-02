@@ -59,7 +59,8 @@ DROP TABLE IF EXISTS `trust`;
 CREATE TABLE IF NOT EXISTS `trust` (
 	`id` bigint(20) not null auto_increment key,
 	`address` varchar(255),
-	`limit` varchar(255)
+	`limit` varchar(255),
+	`timestamp` bigint(20) not null
 );
 
 DROP TABLE IF EXISTS `chanlist`;
@@ -115,7 +116,10 @@ CREATE TABLE IF NOT EXISTS `modules` (
 	`id` bigint(20) not null auto_increment key,
 	`name` varchar(255),
 	`class` varchar(255),
-	`command` varchar(255)
+	`oper` int(1) not null default 0,
+	`auth` int(1) not null default 0,
+	`command` varchar(255),
+	`help` varchar(255)
 );
 
 DROP TABLE IF EXISTS `logs`;

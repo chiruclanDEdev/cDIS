@@ -4,6 +4,7 @@ import thread
 
 class sched_gline(CServMod):
 	MODULE_CLASS = "SCHEDULE"
+	NEED_OPER = 1
 	
 	def onSchedule(self):
 		while True:

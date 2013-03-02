@@ -26,8 +26,8 @@ class cmd_trust(CServMod):
 				conns = 0
 				nicks = list()
 				
-				for online in self.query("select nick from online where address = ?", trip):
-					nicks.append(online["nick"])
+				for online in self.query("select uid from online where address = ?", trip):
+					nicks.append(online["uid"])
 					conns += 1
 					
 				for nick in nicks:

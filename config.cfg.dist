@@ -23,6 +23,14 @@ nick =
 user = 
 real = 
 
+[OPERBOT]
+nick = 
+user = 
+real = 
+
+[OPERS]
+notifications = True
+
 [OTHER]
 debug = 0
 email = 
