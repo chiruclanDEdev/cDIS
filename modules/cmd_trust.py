@@ -102,7 +102,5 @@ class cmd_trust(CServMod):
 					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
 			else:
 				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
-			else:
-				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
 		else:
 			self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
