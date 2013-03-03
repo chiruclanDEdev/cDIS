@@ -21,7 +21,7 @@ class cmd_ircop(CServMod):
 				self.msg(uid)
 				self.msg(uid, "<= End of list =>")
 			else:
-				self.msg(uid, "Syntax: IRCOP <add|delete|search|list> [<username> [<password>]]")
+				self.msg(uid, "Syntax: IRCOP <add|delete|password|search|list> [<username> [<password> [<newpassword>]]]")
 		elif len(arg) == 2:
 			if arg[0].lower() == "search":
 				self.msg(uid, "<= List of IRC operators (Search pattern: " + arg[1] + ")")
@@ -46,7 +46,7 @@ class cmd_ircop(CServMod):
 				else:
 					self.msg(uid, "No such oper.")
 			else:
-				self.msg(uid, "Syntax: IRCOP <add|delete|search|list> [<username> [<password>]]")
+				self.msg(uid, "Syntax: IRCOP <add|delete|password|search|list> [<username> [<password> [<newpassword>]]]")
 		elif len(arg) == 3:
 			if arg[0].lower() == "add":
 				if not self.isoptype(uid, "netadmin"):
@@ -63,5 +63,37 @@ class cmd_ircop(CServMod):
 					self.send_to_op("#IRCOP# " + arg[1] + " added")
 				else:
 					self.msg(uid, "User " + arg[1] + " already exists.")
+			elif arg[0].lower() == "password":
+				if not self.isoptype(uid, "netadmin"):
+					self.msg(uid, "Denied.")
+					return None
+					
+				username = arg[1]
+				password = sha256(arg[2]).hexdigest()
+				
+				self.query("UPDATE `ircd_opers` SET `password` = ? WHERE `username` = ?", password, username)
+				rows = int(self.query_row("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ? AND `password` = ?", username, password)["COUNT(*)"])
+				
+				if rows == 1:
+					self.msg(uid, "Done.")
+				else:
+					self.msg(uid, "No such oper.")
+			else:
+				self.msg(uid, "Syntax: IRCOP <add|delete|password|search|list> [<username> [<password> [<newpassword>]]]")
+		elif len(arg) == 4:
+			if arg[0].lower() == "password":
+				username = arg[1]
+				oldpass = sha256(arg[2]).hexdigest()
+				newpass = sha256(arg[3]).hexdigest()
+				
+				self.query("UPDATE `ircd_opers` SET `password` = ? WHERE `username` = ? AND `password` = ?", newpass, username, oldpass)
+				rows = int(self.query_row("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ? AND `password` = ?", username, newpass)["COUNT(*)"])
+				
+				if rows == 1:
+					self.msg(uid, "Done.")
+				else:
+					self.msg(uid, "Denied.")
+			else:
+				self.msg(uid, "Syntax: IRCOP <add|delete|password|search|list> [<username> [<password> [<newpassword>]]]")
 		else:
-			self.msg(uid, "Syntax: IRCOP <add|delete|search|list> [<username> [<password>]]")
+			self.msg(uid, "Syntax: IRCOP <add|delete|password|search|list> [<username> [<password> [<newpassword>]]]")
