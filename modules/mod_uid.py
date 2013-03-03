@@ -8,6 +8,7 @@ class mod_uid(CServMod):
 		current_timestamp = int(time.time())
 		self.query("delete from gateway where uid = ?", data.split()[2])
 		self.query("delete from online where uid = ?", data.split()[2])
+		self.query("delete from opers where uid = ?", data.split()[2])
 		self.query("delete from online where nick = ?", data.split()[4])
 		self.query("insert into online values (?, ?, ?, ?, ?, '')", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
 		

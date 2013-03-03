@@ -1386,6 +1386,18 @@ class ServiceThread:
 			return True
 			
 		return False
+		
+	def opertype(self, uid):
+		for row in self.query("SELECT `opertype` FROM `opers` WHERE `uid` = ?", uid):
+			return row["opertype"]
+			
+		return None
+
+	def isoptype(self, uid, type):
+		for row in self.query("SELECT COUNT(*) FROM `opers` WHERE `uid` = ? AND `opertype` = ?", uid, type):
+			return True
+			
+		return False
 
 class CServMod:
 	import sys
@@ -2244,6 +2256,18 @@ class CServMod:
 	def isserv(self, uid):
 		uid = self.uid(uid)
 		if uid == self.bot or uid == self.obot:
+			return True
+			
+		return False
+
+	def opertype(self, uid):
+		for row in self.query("SELECT `opertype` FROM `opers` WHERE `uid` = ?", uid):
+			return row["opertype"]
+			
+		return None
+
+	def isoptype(self, uid, type):
+		for row in self.query("SELECT COUNT(*) FROM `opers` WHERE `uid` = ? AND `opertype` = ?", uid, type):
 			return True
 			
 		return False

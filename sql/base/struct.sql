@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS `vhosts` (
 
 DROP TABLE IF EXISTS `opers`;
 CREATE TABLE IF NOT EXISTS `opers` (
-	`uid` varchar(9)
+	`uid` varchar(9),
+	`opertype` varchar(255) NOT NULL DEFAULT 'GlobalOp'
 );
 
 DROP TABLE IF EXISTS `feedback`;
@@ -122,6 +123,16 @@ CREATE TABLE IF NOT EXISTS `logs` (
 	`sender` varchar(255) not null,
 	`action` varchar(25) not null,
 	`message` varchar(1024)
+);
+
+DROP TABLE IF EXISTS `ircd_opers`;
+CREATE TABLE `ircd_opers` (
+	`id` bigint(20) NOT NULL auto_increment,
+	`username` varchar(255) NOT NULL,
+	`password` varchar(255) NOT NULL,
+	`hostname` varchar(255) NOT NULL DEFAULT '*@*',
+	`type` varchar(255) NOT NULL DEFAULT '',
+	PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS `statistics`;

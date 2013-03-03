@@ -5,4 +5,5 @@ class mod_opertype(CServMod):
 	
 	def onData(self, data):
 		uid = data.split()[0][1:]
-		self.query("insert into opers values (?)", uid)
+		type = data.split()[2]
+		self.query("INSERT INTO `opers` (`uid`, `opertype`) VALUES (?, ?)", uid, type)

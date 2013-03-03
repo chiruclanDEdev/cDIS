@@ -14,3 +14,4 @@ class mod_quit(CServMod):
 		self.query("delete from chanlist where uid = ?", data.split()[0][1:])
 		self.query("delete from gateway where uid = ?", str(data.split()[0])[1:])
 		self.query("delete from online where uid = ?", str(data.split()[0])[1:])
+		self.query("delete from opers where uid = ?", data.split()[0][1:])
