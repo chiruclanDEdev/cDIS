@@ -1394,7 +1394,7 @@ class ServiceThread:
 		return None
 
 	def isoptype(self, uid, type):
-		for row in self.query("SELECT COUNT(*) FROM `opers` WHERE `uid` = ? AND `opertype` = ?", uid, type):
+		for row in self.query("SELECT `uid` FROM `opers` WHERE `uid` = ? AND `opertype` = ?", uid, type):
 			return True
 			
 		return False
@@ -2267,7 +2267,7 @@ class CServMod:
 		return None
 
 	def isoptype(self, uid, type):
-		for row in self.query("SELECT COUNT(*) FROM `opers` WHERE `uid` = ? AND `opertype` = ?", uid, type):
+		for row in self.query("SELECT `uid` FROM `opers` WHERE `uid` = ? AND `opertype` = ?", uid, type):
 			return True
 			
 		return False
