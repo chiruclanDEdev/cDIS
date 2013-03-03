@@ -42,7 +42,7 @@ class cmd_ircop(CServMod):
 				if rows == 1:
 					self.query("DELETE FROM `ircd_opers` WHERE `username` = ? AND `type` = 'GlobalOp'", arg[1])
 					self.msg(uid, "Done.")
-					self.msg(uid, "#IRCOP# " + arg[0] + " removed")
+					self.msg(uid, "#IRCOP# " + arg[1] + " removed")
 				else:
 					self.msg(uid, "No such oper.")
 			else:
@@ -60,8 +60,8 @@ class cmd_ircop(CServMod):
 					
 					self.query("INSERT INTO `ircd_opers` (`username`, `password`) VALUES (?, ?)", arg[1], password)
 					self.msg(uid, "Done.")
-					self.send_to_op("#IRCOP# " + arg[0] + " added")
+					self.send_to_op("#IRCOP# " + arg[1] + " added")
 				else:
-					self.msg(uid, "User " + arg[0] + " already exists.")
+					self.msg(uid, "User " + arg[1] + " already exists.")
 		else:
 			self.msg(uid, "Syntax: IRCOP <add|delete|search|list> [<username> [<password>]]")
