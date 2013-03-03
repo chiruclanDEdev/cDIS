@@ -27,7 +27,7 @@ class cmd_trust(CServMod):
 					
 				self.msg(uid, "-=- End of list -=-")
 			else:
-				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
 		elif len(arg) == 2:
 			if arg[0].lower() == "search":
 				current_timestamp = int(time.time())
@@ -52,14 +52,14 @@ class cmd_trust(CServMod):
 					
 				self.msg(uid, "Done.")
 			else:
-				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
 		elif len(arg) == 3:
 			if arg[0].lower() == "update":
 				if arg[2].isdigit():
 					tuid = arg[1]
 					ttime = int(arg[2])
 					
-					if tuid != "0.0.0.0" and (wmatch(arg[0], "*.*") or wmatch(arg[0], "*:*")):
+					if tuid != "0.0.0.0" and (wmatch(tuid, "*.*") or wmatch(tuid, "*:*")):
 						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", "*@" + self.getip(tuid)):
 							etime = int(time.time()) + int(ttime * 60 * 60 * 24)
 							self.query("UPDATE TRUST `trust` SET `limit` = @2, `timestamp` = @3 WHERE `address` = @1", arg[0], tlimit, etime)
@@ -75,9 +75,9 @@ class cmd_trust(CServMod):
 					else:
 						self.msg(uid, "Denied.")
 				else:
-					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
 			else:
-				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
 		elif len(arg) == 4:
 			if arg[0].lower() == "set":
 				if arg[2].isdigit() and arg[3].isdigit():
@@ -101,8 +101,8 @@ class cmd_trust(CServMod):
 					else:
 						self.msg(uid, "Denied.")
 				else:
-					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
 			else:
-				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
 		else:
-			self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+			self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")

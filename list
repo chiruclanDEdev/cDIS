@@ -58,7 +58,7 @@ modules/cmd_setwhois.py 35314c6d5bc7b7b814b9f65234bf5061
 modules/cmd_spamscan.py 011eaf7f2604d9e9d1be43ea1fd436c8
 modules/cmd_suspend.py b31850d90ef6b4eebad7147f6f598676
 modules/cmd_sync.py 52a7dcef6d56a4084b7add89b8b42aa1
-modules/cmd_trust.py e629a5bf7d3e137c93260897f28fdd3e
+modules/cmd_trust.py 75413a0f5abe90e1f7b94951517c5f84
 modules/cmd_unban.py c9ce87fa2dfa9ff39987ec4c1db020b4
 modules/cmd_unbanall.py 369169980b5168d428cfa2bbec0a147f
 modules/cmd_unbanme.py f250ce9e35889f5fe7b54a8586e5dc6c
