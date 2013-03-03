@@ -158,7 +158,7 @@ class Services:
 					moduleToCall = getattr(modules, mods)
 					classToCall = getattr(moduleToCall, mods)()
 					
-					elif classToCall.MODULE_CLASS == "SCHEDULE":
+					if classToCall.MODULE_CLASS == "SCHEDULE":
 						methodToCall(classToCall, "onSchedule")
 						thread.start_new_thread(methodToCall, ())
 						
