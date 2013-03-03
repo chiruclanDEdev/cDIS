@@ -6,4 +6,5 @@ class mod_opertype(CServMod):
 	def onData(self, data):
 		uid = data.split()[0][1:]
 		type = data.split()[2]
+		self.query("DELETE FROM `opers` WHERE `uid` = ?", uid)
 		self.query("INSERT INTO `opers` (`uid`, `opertype`) VALUES (?, ?)", uid, type)
