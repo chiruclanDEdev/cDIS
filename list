@@ -85,7 +85,7 @@ modules/mod_part.py 67c7eb6cf7da04fe9a67da0413725c79
 modules/mod_privmsg.py f0b1b398d7cb816fef856a0e344b8d09
 modules/mod_quit.py 6c35c882d21f9122acb8ef38f680e7ac
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
-modules/mod_uid.py b652c2ceb07a78559bb22bde520dde3b
+modules/mod_uid.py 5e39b49819b43ebb2047bec9327cfa3c
 modules/sched_gline.py d6a5ca1e8fbd64bd03aade4b9eabea04
 modules/sched_trust.py 75e6e314d06b262e988fb879905a66f6
 sql/base/struct.sql c7970a21214f030681921f08fbea7c22
