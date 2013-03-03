@@ -891,7 +891,7 @@ class ServiceThread:
 		return kicks
 
 	def kill(self, target, reason="You're violating network rules"):
-		if target.lower() != self.bot_nick.lower() and not self.isoper(self.uid(target)):
+		if not self.isoper(self.uid(target)):
 			self.send(":%s KILL %s :Killed (*.%s (%s (#%s)))" % (self.obot, target, self.getservicedomain(), reason, str(self.killcount())))
 
 	def vhost(self, target):
@@ -988,7 +988,7 @@ class ServiceThread:
 		return False
 
 	def isoper(self, target):
-		if self.isserv:
+		if self.isserv():
 			return True
 			
 		isoper = False
@@ -1828,7 +1828,7 @@ class CServMod:
 		return kicks
 
 	def kill(self, target, reason="You're violating network rules"):
-		if target.lower() != self.bot_nick.lower() and not self.isoper(self.uid(target)):
+		if not self.isoper(self.uid(target)):
 			self.send(":%s KILL %s :Killed (*.%s (%s (#%s)))" % (self.obot, target, self.getservicedomain(), reason, str(self.killcount())))
 
 	def vhost(self, target):
@@ -1925,7 +1925,7 @@ class CServMod:
 		return False
 
 	def isoper(self, target):
-		if self.isserv:
+		if self.isserv():
 			return True
 			
 		isoper = False
