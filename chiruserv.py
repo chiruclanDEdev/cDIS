@@ -1407,10 +1407,11 @@ class CServMod:
 	import fnmatch
 	import __builtin__
 	
-	HELP = "unknown"
+	HELP = ''
 	NEED_OPER = 0
 	NEED_AUTH = 0
-	MODULE_CLASS = ""
+	MODULE_CLASS = ''
+	COMMAND = ''
 
 	def __init__(self):
 		self.con = con
