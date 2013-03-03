@@ -286,12 +286,12 @@ class ServiceThread:
 							
 							if not cmd_auth:
 								if len(data.split()) == 4:
-									moduleToCall = getattr(modules, command["name"] + "." + command["name"] + "().onCommand")
-									thread.start_new_thread(moduleToCall, (data.split()[0][1:], ''))
-									#exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
+									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
 								elif len(data.split()) > 4:
-									moduleToCall = getattr(modules, command["name"] + "." + command["name"] + "().onCommand")
-									thread.start_new_thread(moduleToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
+									moduleToCall = getattr(modules, command["name"])
+									classToCall = getattr(moduleToCall, command["name"])()
+									methodToCall = getattr(classToCall, "onCommand")
+									thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
 									#exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
 							elif cmd_auth:
 								if self.auth(data.split()[0][1:]):
