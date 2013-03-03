@@ -495,7 +495,7 @@ class ServiceThread:
 					else:
 						self.help(source, "QUIT", "Shutdowns the services", obot=True)
 								
-					self.msg(source)
+					self.msg(source, obot=True)
 					
 					self.msg(source, "End of list.", obot=True)
 				elif cmd == "reload":
