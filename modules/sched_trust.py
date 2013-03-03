@@ -15,6 +15,6 @@ class sched_trust(CServMod):
 				for res in data:
 					self.checkconnection(res["uid"])
 					
-				self.send_to_op("#Trust# " + row["address"] + " expired")
+				self.send_to_op("#Trust# " + row["address"] + " (Limit: " + str(row["limit"]) + ") expired")
 				
 			time.sleep(3600)

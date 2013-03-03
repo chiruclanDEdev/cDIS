@@ -58,7 +58,7 @@ modules/cmd_setwhois.py 35314c6d5bc7b7b814b9f65234bf5061
 modules/cmd_spamscan.py 011eaf7f2604d9e9d1be43ea1fd436c8
 modules/cmd_suspend.py b31850d90ef6b4eebad7147f6f598676
 modules/cmd_sync.py 52a7dcef6d56a4084b7add89b8b42aa1
-modules/cmd_trust.py 5f1227480d4b41491017474b9ae7c16a
+modules/cmd_trust.py 3eef1b91211b3f3e73619172a967a9d8
 modules/cmd_unban.py c9ce87fa2dfa9ff39987ec4c1db020b4
 modules/cmd_unbanall.py 369169980b5168d428cfa2bbec0a147f
 modules/cmd_unbanme.py f250ce9e35889f5fe7b54a8586e5dc6c
@@ -87,7 +87,7 @@ modules/mod_quit.py d72e6d5e0e650423c362acca73639ac4
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
 modules/mod_uid.py 4d9f96577cdda7f1ef8ef95e19fb1599
 modules/sched_gline.py d6a5ca1e8fbd64bd03aade4b9eabea04
-modules/sched_trust.py 86314ee811f71aa829900b3f7a77a646
+modules/sched_trust.py 75e6e314d06b262e988fb879905a66f6
 sql/base/struct.sql 9b02cfbe2403eeb76db61d3960344c53
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106

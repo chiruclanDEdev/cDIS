@@ -27,7 +27,7 @@ class cmd_trust(CServMod):
 					
 				self.msg(uid, "-=- End of list -=-")
 			else:
-				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limit>]]]")
 		elif len(arg) == 2:
 			if arg[0].lower() == "search":
 				current_timestamp = int(time.time())
@@ -52,7 +52,7 @@ class cmd_trust(CServMod):
 					
 				self.msg(uid, "Done.")
 			else:
-				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limit>]]]")
 		elif len(arg) == 4:
 			if arg[0].lower() == "set":
 				if arg[2].isdigit() and arg[3].isdigit():
@@ -76,7 +76,7 @@ class cmd_trust(CServMod):
 					else:
 						self.msg(uid, "Denied.")
 				else:
-					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
+					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limit>]]]")
 			elif arg[0].lower() == "update":
 				if arg[2].isdigit() and arg[3].isdigit():
 					tuid = arg[1]
@@ -92,15 +92,15 @@ class cmd_trust(CServMod):
 								self.checkconnection(row["uid"])
 								
 							self.msg(uid, "Done.")
-							self.send_to_op("#Trust# " + tuid + " updated (Time left: " + self.convert_timestamp(int(ttime * 60 * 60 * 24)) + ")")
+							self.send_to_op("#Trust# " + tuid + " updated (Limit: " + str(tlimit) + ", Time left: " + self.convert_timestamp(int(ttime * 60 * 60 * 24)) + ")")
 							return 0
 							
 						self.msg("Failed. There is no such record.")
 					else:
 						self.msg(uid, "Denied.")
 				else:
-					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
+					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limit>]]]")
 			else:
-				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limit>]]]")
 		else:
-			self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limti>]]]")
+			self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<address/id> [<time (in days)> [<limit>]]]")
