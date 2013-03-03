@@ -282,7 +282,7 @@ class ServiceThread:
 							if not cmd_auth:
 								if len(data.split()) == 4:
 									moduleToCall = getattr(modules, command["name"])
-									classToCall = getattr(moduleToCall, command["name"]()
+									classToCall = getattr(moduleToCall, command["name"])()
 									methodToCall = getattr(classToCall, "onCommand")
 									thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 								elif len(data.split()) > 4:
@@ -294,7 +294,7 @@ class ServiceThread:
 								if self.auth(data.split()[0][1:]):
 									if len(data.split()) == 4:
 										moduleToCall = getattr(modules, command["name"])
-										classToCall = getattr(moduleToCall, command["name"]()
+										classToCall = getattr(moduleToCall, command["name"])()
 										methodToCall = getattr(classToCall, "onCommand")
 										thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 									elif len(data.split()) > 4:
@@ -318,7 +318,7 @@ class ServiceThread:
 								
 								if len(data.split()) == 4:
 									moduleToCall = getattr(modules, command["name"])
-									classToCall = getattr(moduleToCall, command["name"]()
+									classToCall = getattr(moduleToCall, command["name"])()
 									methodToCall = getattr(classToCall, "onCommand")
 									thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 								elif len(data.split()) > 4:
