@@ -17,33 +17,8 @@ class mod_uid(CServMod):
 			self.gline(data.split()[2], row["reason"], bantime)
 			return 0
 			
-		conns = 0
-		nicks = list()
+		self.checkconnection(data.split()[2])
 		
-		for connection in self.query("select nick from online where address = ?", data.split()[8]):
-			nicks.append(connection["nick"])
-			conns += 1
-			
-		limit = 3
-		
-		for trust in self.query("select `limit` from trust where address = ?", data.split()[8]):
-			limit = int(trust["limit"])
-			
-			if data.split()[7].startswith("~"):
-				for nick in nicks:
-					self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))
-					
-				self.send(":{0} GLINE *@{1} 1800 :You ignored the trust rules. Run an identd before you connect again.".format(self.bot, data.split()[8]))
-				
-		if conns > limit and data.split()[8] != "0.0.0.0" and limit != 0:
-			for nick in nicks:
-				self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))
-				
-			self.send(":{0} GLINE *@{1} 1800 :Connection limit ({2}) reached".format(self.bot, data.split()[8], limit))
-		elif conns == limit and data.split()[8] != "0.0.0.0":
-			for nick in nicks:
-				self.msg(nick, "Your IP is scratching the connection limit. If you need more connections please request a trust and give us a reason on #help.")
-				
 		for ip in self.query("select channel from ipchan where ip = ?", data.split()[8]):
 			self.send(":%s SVSJOIN %s %s" % (self.bot, data.split()[2], ip["channel"]))
 			

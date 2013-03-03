@@ -372,6 +372,9 @@ class ServiceThread:
 
 	def send_bot(self, content):
 		self.send(":" + self.bot + " " + content)
+		
+	def send_obot(self, content):
+		self.send(":" + self.obot + " " + content)
 
 	def send_serv(self, content):
 		self.send(":" + self.services_id + " " + content)
@@ -382,7 +385,7 @@ class ServiceThread:
 			
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
-			self.msg(row["uid"], "#" + self.services_description + "# " + content)
+			self.msg(row["uid"], "-" + self.services_name + "- " + content, obot=True)
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":
@@ -1297,6 +1300,7 @@ class ServiceThread:
 				self.send(":"+self.obot+" KILL "+data["uid"]+" :G-lined")
 				
 			self.send(":"+self.obot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
+			self.send_to_op("#G-line# Added *@" + ip + " (" + str(int(bantime / 60)) + " minutes)")
 
 	def suspended(self, channel):
 		for data in self.query("select reason from suspended where channel = ?", channel):
@@ -1351,6 +1355,7 @@ class ServiceThread:
 			
 		user_ip = self.getip(uid)
 		user_host = self.gethost(uid)
+		user_name = self.userhost(uid).split("@")[0]
 		timestamp = time.time()
 		
 		if user_ip == 0:
@@ -1361,10 +1366,15 @@ class ServiceThread:
 		for row in result:
 			limit = int(row["limit"])
 			
-		if self.getconns > limit:
+			if user_name.startswith("~"):
+				self.msg(uid, "You ignored the trust rules. Please run an identd before you connect again.")
+				self.gline(uid, "Ignored trust rules. Run an identd before connecting again.", addentry=True)
+				return 0
+				
+		if self.getconns(user_ip) > limit:
 			self.gline(uid, "Connection limit ({0}) reached".format(str(limit)), addentry=True)
 			return True
-		elif self.getconns == limit:
+		elif self.getconns(user_ip) == limit:
 			for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", user_ip, user_host):
 				self.msg(nick["uid"], "Your IP is scratching the connection limit. If you need more connections please request a trust.")
 				
@@ -1569,6 +1579,9 @@ class CServMod:
 
 	def send_bot(self, content):
 		self.send(":" + self.bot + " " + content)
+		
+	def send_obot(self, content):
+		self.send(":" + self.obot + " " + content)
 
 	def send_serv(self, content):
 		self.send(":" + self.services_id + " " + content)
@@ -1579,7 +1592,7 @@ class CServMod:
 			
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
-			self.msg(row["uid"], "#" + self.services_description + "# " + content)
+			self.msg(row["uid"], "-" + self.services_name + "- " + content, obot=True)
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":
@@ -2148,6 +2161,7 @@ class CServMod:
 				self.send(":"+self.bot+" KILL "+data["uid"]+" :G-lined")
 				
 			self.send(":"+self.bot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
+			self.send_to_op("#G-line# Added *@" + ip + " (" + str(int(bantime / 60)) + " minutes)")
 
 	def suspended(self, channel):
 		for data in self.query("select reason from suspended where channel = ?", channel):
@@ -2202,6 +2216,7 @@ class CServMod:
 			
 		user_ip = self.getip(uid)
 		user_host = self.gethost(uid)
+		user_name = self.userhost(uid).split("@")[0]
 		timestamp = time.time()
 		
 		if user_ip == 0:
@@ -2212,10 +2227,15 @@ class CServMod:
 		for row in result:
 			limit = int(row["limit"])
 			
-		if self.getconns > limit:
+			if user_name.startswith("~"):
+				self.msg(uid, "You ignored the trust rules. Please run an identd before you connect again.")
+				self.gline(uid, "Ignored trust rules. Run an identd before connecting again.", addentry=True)
+				return 0
+				
+		if self.getconns(user_ip) > limit:
 			self.gline(uid, "Connection limit ({0}) reached".format(str(limit)), addentry=True)
 			return True
-		elif self.getconns == limit:
+		elif self.getconns(user_ip) == limit:
 			for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", user_ip, user_host):
 				self.msg(nick["uid"], "Your IP is scratching the connection limit. If you need more connections please request a trust.")
 				

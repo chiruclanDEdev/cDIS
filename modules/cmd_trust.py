@@ -1,123 +1,108 @@
 from chiruserv import CServMod
+import time
+from fnmatch import fnmatch as wmatch
 
-class cmd_trust(CServMod):
+class cmd_gline(CServMod):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "TRUST"
-	HELP = "Manage IP trusts for your network"
+	HELP = "Manage the IP trusts of your network"
 	NEED_OPER = 1
 
-	def onCommand(self, source, args):
-		self.msg(source, "Sorry but this system is currently beeing rewritten. Its disabled because the new database structure is already imported.")
-		return 0
-		
+	def onCommand(self, uid, args):
 		arg = args.split()
-		if len(arg) > 1:
-			trip = arg[1]
 		
-		if len(arg) == 1 and arg[0] == "list":
-			for trust in self.query("select * from trust order by id"):
-				self.msg(source, "IP: {0} {2} Limit: {1}".format(trust["address"], trust["limit"], ' '*int(23-len(trust["address"]))))
-		elif len(arg) == 2 and arg[0] == "remove":
-			entry = False
-			
-			for trust in self.query("select * from trust where address = ?", trip):
-				entry = True
-				self.query("delete from trust where address = ?", trust["address"])
+		if len(arg) == 1:
+			if arg[0].lower() == "list":
+				current_timestamp = int(time.time())
+				self.msg(uid, "-=- List of Trusts -=-")
 				
-			if entry:
-				self.msg(source, "Trust for {0} has been deleted.".format(arg[1]))
-				conns = 0
-				nicks = list()
-				
-				for online in self.query("select uid from online where address = ?", trip):
-					nicks.append(online["uid"])
-					conns += 1
+				result = self.query("SELECT `id`, `address`, `limit`, `timestamp` FROM `trust`")
+				for row in result:
+					id = str(row["id"])
+					address = str(row["address"])
+					limit = str(row["limit"])
+					timestamp = self.convert_timestamp(int(int(row["timestamp"])- current_timestamp))
 					
-				for nick in nicks:
-					self.msg(self.uid(nick), "Your trust has been set to '3'.")
+					self.msg(uid, "ID: {0}  Address: {1}  Limit: {2}  Time left: {3}".format(id, address, limit, timestamp))
 					
-				if conns > 3 and arg[1] != "0.0.0.0":
-					for nick in nicks:
-						self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))
-						
-					self.send(":{0} GLINE *@{1} 1800 :Connection limit (3) reached".format(self.bot, arg[1]))
-				elif conns == 3 and arg[1] != "0.0.0.0":
-					for nick in nicks:
-						self.msg(nick, "Your IP is scratching the connection limit. If you need more connections please request a trust and give us a reason on #help.")
+				self.msg(uid, "-=- End of list -=-")
 			else:
-				self.msg(source, "Trust for {0} does not exist.".format(arg[1]))
-		elif len(arg) == 3 and arg[0] == "set":
-			entry = False
-			
-			for trust in self.query("select * from trust where address = ?", trip):
-				entry = True
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+		elif len(arg) == 2:
+			if arg[0].lower() == "search":
+				current_timestamp = int(time.time())
+				self.msg(uid, "-=- List of Trusts (lookup parameter: " + arg[1] + ") -=-")
 				
-			if entry:
-				limit = filter(lambda x: x.isdigit(), arg[2])
-				
-				if limit != "":
-					self.query("update trust set `limit` = ? where address = ?", limit, trip)
-					self.msg(source, "Trust for {0} has been set to {1}.".format(arg[1], limit))
-					conns = 0
-					nicks = list()
-					invalid = False
+				result = self.query("SELECT `id`, `address`, `limit`, `timestamp` FROM `trust` WHERE `id` LIKE ? OR `address` LIKE ?", "%" + arg[1][1:] + "%", "%" + arg[1] + "%")
+				for row in result:
+					id = str(row["id"])
+					address = str(row["address"])
+					limit = str(row["limit"])
+					timestamp = self.convert_timestamp(int(int(row["timestamp"])- current_timestamp))
 					
-					for online in self.query("select nick from online where address = ?", trip):
-						nicks.append(online["nick"])
-						conns += 1
-						
-					for nick in nicks:
-						self.msg(self.uid(nick), "Your trust has been set to '{0}'.".format(limit))
-						
-					if conns > int(limit) and arg[1] != "0.0.0.0" and int(limit) != 0:
-						for nick in nicks:
-							self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))
-							
-						self.send(":{0} GLINE *@{1} 1800 :Connection limit ({2}) reached".format(self.bot, arg[1], limit))
-					elif conns == int(limit) and arg[1] != "0.0.0.0" and int(limit) != 0:
-						for nick in nicks:
-							self.msg(nick, "Your IP is scratching the connection limit. If you need more connections please request a trust and give us a reason on #help.")
-							
-					for username in self.query("select username from online where address = ?", trip):
-						if username["username"].startswith("~"):
-							for nick in nicks:
-								self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))
-								
-							self.send(":{0} GLINE *@{1} 1800 :You ignored the trust rules. Run an identd before you connect again.".format(self.bot, arg[1]))
-				else:
-					self.msg(source, "Invalid limit")
+					self.msg(uid, "ID: {0}  Address: {1}  Limit: {2}  Time left: {3}".format(id, address, limit, timestamp))
+					
+				self.msg(uid, "-=- End of list -=-")
+			elif arg[0].lower() == "del":
+				result = self.query("SELECT `id`, `address` FROM `trust` WHERE `address` = ?", arg[1])
+					
+				for row in result:
+					self.query("DELETE FROM `trust` WHERE `id` = ?", row["id"])
+					self.msg(uid, "#Trust# Removed " + str(row["address"]))
+					
+				self.msg(uid, "Done.")
 			else:
-				limit = filter(lambda x: x.isdigit(), arg[2])
-				
-				if limit != "":
-					self.query("insert into trust (`address`, `limit`) values (?, ?)", limit, trip)
-					self.msg(source, "Trust for {0} has been set to {1}.".format(arg[1], limit))
-					conns = 0
-					nicks = list()
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+		elif len(arg) == 3:
+			if arg[0].lower() == "update":
+				if arg[2].isdigit():
+					tuid = arg[1]
+					ttime = int(arg[2])
 					
-					for online in self.query("select nick from online where address = ?", trip):
-						nicks.append(online["nick"])
-						conns += 1
-						
-					for nick in nicks:
-						self.msg(self.uid(nick), "Your trust has been set to '{0}'.".format(limit))
-						
-					if conns > int(limit) and arg[1] != "0.0.0.0" and int(limit) != 0:
-						for nick in nicks:
-							self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))
+					if tuid != "0.0.0.0" and (wmatch(arg[0], "*.*") or wmatch(arg[0], "*:*")):
+						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", "*@" + self.getip(tuid)):
+							etime = int(time.time()) + int(ttime * 60 * 60 * 24)
+							self.query("UPDATE TRUST `trust` SET `limit` = @2, `timestamp` = @3 WHERE `address` = @1", arg[0], tlimit, etime)
 							
-						self.send(":{0} GLINE *@{1} 1800 :Connection limit ({2}) reached".format(self.bot, arg[1], limit))
-					elif conns == int(limit) and arg[1] != "0.0.0.0" and int(limit) != 0:
-						for nick in nicks:
-							self.msg(nick, "Your IP is scratching the connection limit. If you need more connections please request a trust and give us a reason on #help.")
-							
-					for username in self.query("select username from online where address = ?", trip):
-						if username["username"].startswith("~"):
-							for nick in nicks:
-								self.send(":{0} KILL {1} :G-lined".format(self.bot, nick))
+							for row in self.query("SELECT `uid` FROM `online` WHERE `address` = @1 OR `host` = @1", tlimit):
+								self.checkconnection(row["uid"])
 								
-							self.send(":{0} GLINE *@{1} 1800 :You ignored the trust rules. Run an identd before you connect again.".format(self.bot, arg[1]))
+							self.msg(uid, "Done.")
+							self.send_to_op("#Trust# Updated " + tuid + " (Time left: " + self.convert_timestamp(int(ttime * 60 * 60 * 24)) + ")")
+							return 0
+							
+						self.msg("Failed. There is no such record.")
+					else:
+						self.msg(uid, "Denied.")
 				else:
-					self.msg(source, "Invalid limit")
+					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+			else:
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+		elif len(arg) == 4:
+			if arg[0].lower() == "set":
+				if arg[2].isdigit() and arg[3].isdigit():
+					tuid = arg[1]
+					ttime = int(arg[2])
+					tlimit = int(arg[3])
+					
+					if tuid != "0.0.0.0" and (wmatch(arg[0], "*.*") or wmatch(arg[0], "*:*")):
+						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", "*@" + self.getip(tuid)):
+							self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
+							return 0
+							
+						etime = int(time.time()) + int(ttime * 60 * 60 * 24)
+						self.query("INSERT INTO `trust` (`address`, `limit`, `timestamp`) VALUES (?, ?, ?)", arg[0], tlimit, etime)
+						
+						for row in self.query("SELECT `uid` FROM `online` WHERE `address` = @1 OR `host` = @1", tlimit):
+							self.checkconnection(row["uid"])
+							
+						self.msg(uid, "Done.")
+						self.send_to_op("#Trust# Added " + tuid + " (Limit: " + str(tlimit) + ", Time left: " + self.convert_timestamp(int(ttime * 60 * 60 * 24)) + ")")
+					else:
+						self.msg(uid, "Denied.")
+				else:
+					self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
+			else:
+				self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
 		else:
-			self.msg(source, "Syntax: TRUST <list/set/remove> [<address> [<limit>]]")
+			self.msg(uid, "Syntax: TRUST <set/update/del/list/search> [<user> [<time (in days)> [<limi>]]]")
