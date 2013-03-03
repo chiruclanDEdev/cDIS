@@ -892,7 +892,7 @@ class ServiceThread:
 
 	def kill(self, target, reason="You're violating network rules"):
 		if not self.isoper(self.uid(target)):
-			self.send(":%s KILL %s :Killed (*.%s (%s (#%s)))" % (self.obot, target, self.getservicedomain(), reason, str(self.killcount())))
+			self.send(":%s KILL %s :Killed (*.%s (%s (#%s)))" % (self.obot, self.uid(target), self.getservicedomain(), reason, str(self.killcount())))
 
 	def vhost(self, target):
 		if not self.gateway(target):
@@ -1829,7 +1829,7 @@ class CServMod:
 
 	def kill(self, target, reason="You're violating network rules"):
 		if not self.isoper(self.uid(target)):
-			self.send(":%s KILL %s :Killed (*.%s (%s (#%s)))" % (self.obot, target, self.getservicedomain(), reason, str(self.killcount())))
+			self.send(":%s KILL %s :Killed (*.%s (%s (#%s)))" % (self.obot, self.uid(target), self.getservicedomain(), reason, str(self.killcount())))
 
 	def vhost(self, target):
 		if not self.gateway(target):
