@@ -266,7 +266,7 @@ class ServiceThread:
 						classToCall = getattr(moduleToCall, module["name"])()
 						if classToCall.MODULE_CLASS.lower() == data.split()[1].lower():
 							methodToCall = getattr(classToCall, "onData")
-							thread.start_new_thread(methodToCall, (data, )))
+							thread.start_new_thread(methodToCall, (data, ))
 							
 			if data.split()[1] == "PRIVMSG":
 				if data.split()[2] == self.bot:
