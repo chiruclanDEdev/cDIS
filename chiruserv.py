@@ -271,7 +271,7 @@ class ServiceThread:
 					if os.access("modules/" + module["name"] + ".py", os.F_OK):
 						exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(module["name"]))
 						if m_class.lower() == data.split()[1].lower():
-							exec("thread.start_new_thread(modules.{0}.{0}().onData, ('{1}',))".format(module["name"], data))
+							exec("thread.start_new_thread(modules.{0}.{0}().onData, ('{1}',))".format(module["name"], data.replace("'", "\\'")))
 							
 			if data.split()[1] == "PRIVMSG":
 				if data.split()[2] == self.bot:
