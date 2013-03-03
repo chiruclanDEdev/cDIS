@@ -48,7 +48,7 @@ class cmd_trust(CServMod):
 					
 				for row in result:
 					self.query("DELETE FROM `trust` WHERE `id` = ?", row["id"])
-					self.msg(uid, "#Trust# Removed " + str(row["address"]))
+					self.msg(uid, "#Trust# " + str(row["address"]) + " removed")
 					
 				self.msg(uid, "Done.")
 			else:
@@ -68,7 +68,7 @@ class cmd_trust(CServMod):
 								self.checkconnection(row["uid"])
 								
 							self.msg(uid, "Done.")
-							self.send_to_op("#Trust# Updated " + tuid + " (Time left: " + self.convert_timestamp(int(ttime * 60 * 60 * 24)) + ")")
+							self.send_to_op("#Trust# " + tuid + " updated (Time left: " + self.convert_timestamp(int(ttime * 60 * 60 * 24)) + ")")
 							return 0
 							
 						self.msg("Failed. There is no such record.")
@@ -97,7 +97,7 @@ class cmd_trust(CServMod):
 							self.checkconnection(row["uid"])
 							
 						self.msg(uid, "Done.")
-						self.send_to_op("#Trust# Added " + tuid + " (Limit: " + str(tlimit) + ", Time left: " + self.convert_timestamp(int(ttime * 60 * 60 * 24)) + ")")
+						self.send_to_op("#Trust# " + tuid + " added (Limit: " + str(tlimit) + ", Time left: " + self.convert_timestamp(int(ttime * 60 * 60 * 24)) + ")")
 					else:
 						self.msg(uid, "Denied.")
 				else:

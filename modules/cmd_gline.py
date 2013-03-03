@@ -21,10 +21,8 @@ class cmd_gline(CServMod):
 					mask = str(row["mask"])
 					timestamp = self.convert_timestamp(int(int(row["timestamp"])- current_timestamp))
 					
-					id_mask_space = " "*int(10 - len(id))
-					mask_time_space = " "*int(25 - len(mask))
 					
-					self.msg(uid, "ID: {id} {id_mask_space} Hostmask: {mask} {mask_time_space} Time left: {time_left}".format(id=id, id_mask_space=id_mask_space, mask=mask, mask_time_space=mask_time_space, time_left=timestamp))
+					self.msg(uid, "ID: {id}  Hostmask: {mask}  Time left: {time_left}".format(id=id, mask=mask, time_left=timestamp))
 					
 				self.msg(uid, "-=- End of list -=-")
 			else:
@@ -43,7 +41,7 @@ class cmd_gline(CServMod):
 					id_mask_space = " "*int(10 - len(id))
 					mask_time_space = " "*int(25 - len(mask))
 					
-					self.msg(uid, "ID: {id} {id_mask_space} Hostmask: {mask} {mask_time_space} Time left: {time_left}".format(id=id, id_mask_space=id_mask_space, mask=mask, mask_time_space=mask_time_space, time_left=timestamp))
+					self.msg(uid, "ID: {id}  Hostmask: {mask}  Time left: {time_left}".format(id=id, mask=mask, time_left=timestamp))
 					
 				self.msg(uid, "-=- End of list -=-")
 			elif arg[0].lower() == "del":
@@ -52,7 +50,7 @@ class cmd_gline(CServMod):
 				for row in result:
 					self.query("DELETE FROM `glines` WHERE `id` = ?", row["id"])
 					self.send_serv("GLINE " + row["mask"])
-					self.msg(uid, "G-line ID #" + str(row["id"]) + " has been removed.")
+					self.msg(uid, "#G-line# ID #" + str(row["id"]) + " removed")
 					
 				self.msg(uid, "Done.")
 			else:

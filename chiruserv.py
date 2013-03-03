@@ -1293,14 +1293,14 @@ class ServiceThread:
 				rows = int(self.query_row("SELECT COUNT(*) FROM `glines` WHERE `mask` = ?", "*@" + ip)["COUNT(*)"])
 				
 				if rows == 0:
-					etime = int(time.time()) + (bantime)
+					etime = int(time.time()) + int(bantime)
 					self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + ip, etime)
 					
 			for data in self.query("select uid from online where address = ?", self.getip(uid)):
 				self.send(":"+self.obot+" KILL "+data["uid"]+" :G-lined")
 				
 			self.send(":"+self.obot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
-			self.send_to_op("#G-line# Added *@" + ip + " (" + str(int(bantime / 60)) + " minutes)")
+			self.send_to_op("#G-line# *@" + ip + " added (" + self.convert_timestamp(int(bantime)) + ")")
 
 	def suspended(self, channel):
 		for data in self.query("select reason from suspended where channel = ?", channel):
@@ -2154,14 +2154,14 @@ class CServMod:
 				rows = int(self.query_row("SELECT COUNT(*) FROM `glines` WHERE `mask` = ?", "*@" + ip)["COUNT(*)"])
 				
 				if rows == 0:
-					etime = int(time.time()) + (bantime)
+					etime = int(time.time()) + int(bantime)
 					self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + ip, etime)
 					
 			for data in self.query("select uid from online where address = ?", self.getip(uid)):
-				self.send(":"+self.bot+" KILL "+data["uid"]+" :G-lined")
+				self.send(":"+self.obot+" KILL "+data["uid"]+" :G-lined")
 				
-			self.send(":"+self.bot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
-			self.send_to_op("#G-line# Added *@" + ip + " (" + str(int(bantime / 60)) + " minutes)")
+			self.send(":"+self.obot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
+			self.send_to_op("#G-line# *@" + ip + " added (" + self.convert_timestamp(int(bantime)) + ")")
 
 	def suspended(self, channel):
 		for data in self.query("select reason from suspended where channel = ?", channel):
