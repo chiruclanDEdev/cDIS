@@ -60,9 +60,9 @@ class cmd_trust(CServMod):
 					ttime = int(arg[2])
 					
 					if tuid != "0.0.0.0" and (wmatch(tuid, "*.*") or wmatch(tuid, "*:*")):
-						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", "*@" + self.getip(tuid)):
+						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", tuid):
 							etime = int(time.time()) + int(ttime * 60 * 60 * 24)
-							self.query("UPDATE TRUST `trust` SET `limit` = @2, `timestamp` = @3 WHERE `address` = @1", arg[0], tlimit, etime)
+							self.query("UPDATE TRUST `trust` SET `limit` = @2, `timestamp` = @3 WHERE `address` = @1", tuid, tlimit, etime)
 							
 							for row in self.query("SELECT `uid` FROM `online` WHERE `address` = @1 OR `host` = @1", tlimit):
 								self.checkconnection(row["uid"])
@@ -86,12 +86,12 @@ class cmd_trust(CServMod):
 					tlimit = int(arg[3])
 					
 					if tuid != "0.0.0.0" and (wmatch(tuid, "*.*") or wmatch(tuid, "*:*")):
-						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", "*@" + self.getip(tuid)):
+						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", tuid):
 							self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
 							return 0
 							
 						etime = int(time.time()) + int(ttime * 60 * 60 * 24)
-						self.query("INSERT INTO `trust` (`address`, `limit`, `timestamp`) VALUES (?, ?, ?)", arg[0], tlimit, etime)
+						self.query("INSERT INTO `trust` (`address`, `limit`, `timestamp`) VALUES (?, ?, ?)", tuid, tlimit, etime)
 						
 						for row in self.query("SELECT `uid` FROM `online` WHERE `address` = @1 OR `host` = @1", tlimit):
 							self.checkconnection(row["uid"])
