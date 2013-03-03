@@ -85,7 +85,7 @@ class cmd_trust(CServMod):
 					ttime = int(arg[2])
 					tlimit = int(arg[3])
 					
-					if tuid != "0.0.0.0" and (wmatch(arg[0], "*.*") or wmatch(arg[0], "*:*")):
+					if tuid != "0.0.0.0" and (wmatch(tuid, "*.*") or wmatch(tuid, "*:*")):
 						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", "*@" + self.getip(tuid)):
 							self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
 							return 0
