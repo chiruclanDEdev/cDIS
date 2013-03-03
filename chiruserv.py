@@ -252,7 +252,7 @@ class ServiceThread:
 				self.send(":%s OPERTYPE Service" % self.obot)
 				self.meta(self.obot, "accountname", self.obot_nick)
 				self.msg("$*", "Services are now back online. Have a nice day :)", obot=True)
-				self.msg("$*", "Please notify that you have to login manually after a restart!")
+				self.msg("$*", "Please note that you have to login manually after a restart!")
 				
 				for channel in self.query("select name,modes,topic from channelinfo"):
 					self.join(str(channel["name"]))
