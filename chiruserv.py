@@ -159,7 +159,7 @@ class Services:
 					classToCall = getattr(moduleToCall, mods)()
 					
 					if classToCall.MODULE_CLASS == "SCHEDULE":
-						methodToCall(classToCall, "onSchedule")
+						methodToCall = getattr(classToCall, "onSchedule")
 						thread.start_new_thread(methodToCall, ())
 						
 					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP)
