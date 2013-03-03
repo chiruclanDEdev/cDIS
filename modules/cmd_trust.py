@@ -62,9 +62,9 @@ class cmd_trust(CServMod):
 					if tuid != "0.0.0.0" and (wmatch(tuid, "*.*") or wmatch(tuid, "*:*")):
 						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", tuid):
 							etime = int(time.time()) + int(ttime * 60 * 60 * 24)
-							self.query("UPDATE TRUST `trust` SET `limit` = @2, `timestamp` = @3 WHERE `address` = @1", tuid, tlimit, etime)
+							self.query("UPDATE TRUST `trust` SET `timestamp` = ? WHERE `address` = ?", etime, tuid)
 							
-							for row in self.query("SELECT `uid` FROM `online` WHERE `address` = @1 OR `host` = @1", tlimit):
+							for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", tlimit, tlimit):
 								self.checkconnection(row["uid"])
 								
 							self.msg(uid, "Done.")
@@ -93,7 +93,7 @@ class cmd_trust(CServMod):
 						etime = int(time.time()) + int(ttime * 60 * 60 * 24)
 						self.query("INSERT INTO `trust` (`address`, `limit`, `timestamp`) VALUES (?, ?, ?)", tuid, tlimit, etime)
 						
-						for row in self.query("SELECT `uid` FROM `online` WHERE `address` = @1 OR `host` = @1", tlimit):
+						for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", tlimit, tlimit):
 							self.checkconnection(row["uid"])
 							
 						self.msg(uid, "Done.")

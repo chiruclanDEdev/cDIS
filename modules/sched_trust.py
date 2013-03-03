@@ -11,7 +11,7 @@ class sched_trust(CServMod):
 			result = self.query("SELECT `id`, `address`, `limit`, FROM `trust` WHERE `timestamp` <= ?", current_timestamp)
 			for row in result:
 				self.query("DELETE FROM `trust` WHERE `id` = ?", row["id"])
-				data = self.query("SELECT `uid` FROM `online` WHERE `address` = @1 OR `host` = @1", row["address"])
+				data = self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", row["address"], row["address"])
 				for res in data:
 					self.checkconnection(res["uid"])
 					
