@@ -62,7 +62,7 @@ class cmd_trust(CServMod):
 					if tuid != "0.0.0.0" and (wmatch(tuid, "*.*") or wmatch(tuid, "*:*")):
 						for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", tuid):
 							etime = int(time.time()) + int(ttime * 60 * 60 * 24)
-							self.query("UPDATE TRUST `trust` SET `timestamp` = ? WHERE `address` = ?", etime, tuid)
+							self.query("UPDATE `trust` SET `timestamp` = ? WHERE `address` = ?", etime, tuid)
 							
 							for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", tlimit, tlimit):
 								self.checkconnection(row["uid"])
