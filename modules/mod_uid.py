@@ -19,9 +19,6 @@ class mod_uid(CServMod):
 			
 		self.checkconnection(data.split()[2])
 		
-		for ip in self.query("select channel from ipchan where ip = ?", data.split()[8]):
-			self.send(":%s SVSJOIN %s %s" % (self.bot, data.split()[2], ip["channel"]))
-			
 		if data.split()[10].find("B") != -1:
 			crypthost = self.encode_md5(data.split()[2] + ":" + self.nick(data.split()[2]) + "!" + self.userhost(data.split()[2]))
 			self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, data.split()[2], crypthost, '.'.join(self.services_name.split(".")[-2:])))

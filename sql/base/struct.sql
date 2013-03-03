@@ -91,13 +91,6 @@ CREATE TABLE IF NOT EXISTS `suspended` (
 	`reason` varchar(255)
 );
 
-DROP TABLE IF EXISTS `ipchan`;
-CREATE TABLE IF NOT EXISTS `ipchan` (
-	`id` bigint(20) not null auto_increment key,
-	`ip` varchar(255),
-	`channel` varchar(255)
-);
-
 DROP TABLE IF EXISTS `gateway`;
 CREATE TABLE IF NOT EXISTS `gateway` (
 	`uid` varchar(9)

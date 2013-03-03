@@ -27,7 +27,6 @@ modules/cmd_hello.py 5b372d8c507b67383aa300cc01e71826
 modules/cmd_hostinfo.py 77b6719aaae9e4a0c60975b7cabd53ab
 modules/cmd_info.py 20d15dd8b03929c6268be69e40b38a65
 modules/cmd_invite.py b350f453be43ac98c5f401dcca40a92c
-modules/cmd_ipchan.py f6924638d9d371a7926f64b2c0229019
 modules/cmd_kick.py 5e93c33dd6c48e5aca6913046540a314
 modules/cmd_kill.py c9a5d7c16c9ca5fe90fd42a5b95cd3a9
 modules/cmd_listcommands.py 407bf7211609bd01bc59d5f487a7194e
@@ -85,10 +84,10 @@ modules/mod_part.py 67c7eb6cf7da04fe9a67da0413725c79
 modules/mod_privmsg.py f0b1b398d7cb816fef856a0e344b8d09
 modules/mod_quit.py d72e6d5e0e650423c362acca73639ac4
 modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
-modules/mod_uid.py 4d9f96577cdda7f1ef8ef95e19fb1599
+modules/mod_uid.py 5e39b49819b43ebb2047bec9327cfa3c
 modules/sched_gline.py d6a5ca1e8fbd64bd03aade4b9eabea04
 modules/sched_trust.py 75e6e314d06b262e988fb879905a66f6
-sql/base/struct.sql 9b02cfbe2403eeb76db61d3960344c53
+sql/base/struct.sql 13d4c860a78cea30f667dbb6a91ae247
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
 sql/updates/12_02-17-2012.sql 0c5d84bf3909b5091defcd77dcb4805f
@@ -117,6 +116,7 @@ sql/updates/32_02-27-2013.sql bbe896bd6f01315a14d531865d8b1453
 sql/updates/33_02-28-2013.sql 1b00e73152787b0da408352b2757ec0f
 sql/updates/34_02-28-2013.sql 9531ddbab544c515ad9d93f5c910ffea
 sql/updates/35_03-02-2013.sql 09c553128b6f90aae26dc469aeac535f
+sql/updates/36_03-03-2013.sql 85c78dc85468659cf81f6ee4cbf83bea
 sql/updates/3_02-05-2012.sql 30f5568f7a4ec8ba9f7c7ac790bb1f20
 sql/updates/4_02-05-2012.sql 592c83d9ac209484ead4d29c969751f2
 sql/updates/5_02-05-2012.sql 2157b0bba185b64f76e7ff6dc60502b1
