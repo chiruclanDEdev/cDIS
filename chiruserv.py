@@ -499,6 +499,10 @@ class ServiceThread:
 					
 					self.msg(source, "End of list.", obot=True)
 				elif cmd == "reload":
+					if not self.isoptype(source, "netadmin"):
+						self.msg(source, "Denied.", obot=True)
+						return None
+						
 					config.read("config.cfg")
 					self.debug = config.get("OTHER", "debug")
 					self.email = config.get("OTHER", "email")
@@ -526,6 +530,10 @@ class ServiceThread:
 							
 					self.msg(source, "Done.", obot=True)
 				elif cmd == "update":
+					if not self.isoptype(source, "netadmin"):
+						self.msg(source, "Denied.", obot=True)
+						return None
+						
 					_web = urllib2.urlopen("https://bitbucket.org/ChiruclanDE/chiruserv/raw/master/version")
 					_version = _web.read()
 					_web.close()
@@ -583,6 +591,10 @@ class ServiceThread:
 					else:
 						self.msg(source, "No update available.", obot=True)
 				elif cmd == "quit" and self.isoper(source):
+					if not self.isoptype(source, "netadmin"):
+						self.msg(source, "Denied.", obot=True)
+						return None
+						
 					if os.access("chiruserv.pid", os.F_OK):
 						if len(arg) == 0:
 							msg = "Services are going offline."
