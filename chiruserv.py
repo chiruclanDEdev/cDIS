@@ -271,7 +271,7 @@ class ServiceThread:
 					if os.access("modules/" + module["name"] + ".py", os.F_OK):
 						exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(module["name"]))
 						if m_class.lower() == data.split()[1].lower():
-							exec("thread.start_new_thread(modules.{0}.{0}().onData, ('{1}',))".format(module["name"], data.replace("'", "\\'")))
+							exec("thread.start_new_thread(modules.{0}.{0}().onData, (data,))".format(module["name"]))
 							
 			if data.split()[1] == "PRIVMSG":
 				if data.split()[2] == self.bot:
@@ -286,9 +286,13 @@ class ServiceThread:
 							
 							if not cmd_auth:
 								if len(data.split()) == 4:
-									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
+									moduleToCall = getattr(modules, command["name"] + "." + command["name"])()
+									thread.start_new_thread(moduleToCall.onCommand, (data.split()[0][1:], ''))
+									#exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
 								elif len(data.split()) > 4:
-									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
+									moduleToCall = getattr(modules, command["name"] + "." + command["name"])()
+									thread.start_new_thread(moduleToCall.onCommand, (data.split()[0][1:], ' '.join(data.split()[4:])))
+									#exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
 							elif cmd_auth:
 								if self.auth(data.split()[0][1:]):
 									if len(data.split()) == 4:
