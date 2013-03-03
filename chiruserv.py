@@ -988,7 +988,7 @@ class ServiceThread:
 		return False
 
 	def isoper(self, target):
-		if self.isserv():
+		if self.isserv(target):
 			return True
 			
 		isoper = False
@@ -1925,7 +1925,7 @@ class CServMod:
 		return False
 
 	def isoper(self, target):
-		if self.isserv():
+		if self.isserv(target):
 			return True
 			
 		isoper = False
