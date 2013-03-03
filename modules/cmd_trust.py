@@ -2,7 +2,7 @@ from chiruserv import CServMod
 import time
 from fnmatch import fnmatch as wmatch
 
-class cmd_gline(CServMod):
+class cmd_trust(CServMod):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "TRUST"
 	HELP = "Manage the IP trusts of your network"
