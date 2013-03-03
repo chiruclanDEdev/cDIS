@@ -3,7 +3,7 @@ README.md c1d7516bf77c78f5bf1acdf637d178ac
 chiruserv 240dccf0cf3e74fb3fbf3228f7259d63
 chiruserv.py 11a54c0d4ea2f32a0d3118a67f451d72
 config.cfg.dist 17d8b0f0b00af4c3d2e48faae12b523d
-docs/inspircd-needed-modules.txt 6cba59eefc579015b2cb06e951680143
+docs/inspircd-needed-modules.txt 988196dae89448f2add6371ab3275e25
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
 modules/cmd_accban.py 1a136a820efb9ed62330b3f25b8e0da8
 modules/cmd_auth.py ddd8f8c177f3c9832f420dfe81b512b6
