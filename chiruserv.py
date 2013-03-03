@@ -155,22 +155,15 @@ class Services:
 			
 			for mods in dir(modules):
 				if os.access("modules/" + mods + ".py", os.F_OK):
-					exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
+					moduleToCall = getattr(modules, mods)
+					classToCall = getattr(moduleToCall, mods)()
 					
-					m_command = ''
-					m_auth = 0
-					m_help = ''
-					
-					exec("m_oper = modules.{0}.{0}().NEED_OPER".format(mods))
-					
-					if m_class.lower() == "command":
-						exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
-						exec("m_auth = modules.{0}.{0}().NEED_AUTH".format(mods))
-						exec("m_help = modules.{0}.{0}().HELP".format(mods))
-					elif m_class.lower() == "schedule":
-						exec("thread.start_new_thread(modules.{0}.{0}().onSchedule, ())".format(mods))
+					elif classToCall.MODULE_CLASS == "SCHEDULE":
+						methodToCall(classToCall, "onSchedule")
+						thread.start_new_thread(methodToCall, ())
 						
-					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, m_class, m_oper, m_auth, m_command, m_help)
+					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP)
+						
 			
 			while 1:
 				recv = self.con.recv(25600)
@@ -269,9 +262,11 @@ class ServiceThread:
 			else:
 				for module in self.query("SELECT * FROM `modules` WHERE `class` = ?", data.split()[1]):
 					if os.access("modules/" + module["name"] + ".py", os.F_OK):
-						exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(module["name"]))
-						if m_class.lower() == data.split()[1].lower():
-							exec("thread.start_new_thread(modules.{0}.{0}().onData, (data,))".format(module["name"]))
+						moduleToCall = getattr(modules, module["name"])
+						classToCall = getattr(moduleToCall, module["name"])()
+						if classToCall.MODULE_CLASS.lower() == data.split()[1].lower():
+							methodToCall = getattr(classToCall, "onData")
+							thread.start_new_thread(methodToCall, (data, )))
 							
 			if data.split()[1] == "PRIVMSG":
 				if data.split()[2] == self.bot:
@@ -286,19 +281,27 @@ class ServiceThread:
 							
 							if not cmd_auth:
 								if len(data.split()) == 4:
-									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
+									moduleToCall = getattr(modules, command["name"])
+									classToCall = getattr(moduleToCall, command["name"]()
+									methodToCall = getattr(classToCall, "onCommand")
+									thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 								elif len(data.split()) > 4:
 									moduleToCall = getattr(modules, command["name"])
 									classToCall = getattr(moduleToCall, command["name"])()
 									methodToCall = getattr(classToCall, "onCommand")
 									thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-									#exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
 							elif cmd_auth:
 								if self.auth(data.split()[0][1:]):
 									if len(data.split()) == 4:
-										exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
+										moduleToCall = getattr(modules, command["name"])
+										classToCall = getattr(moduleToCall, command["name"]()
+										methodToCall = getattr(classToCall, "onCommand")
+										thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 									elif len(data.split()) > 4:
-										exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
+										moduleToCall = getattr(modules, command["name"])
+										classToCall = getattr(moduleToCall, command["name"])()
+										methodToCall = getattr(classToCall, "onCommand")
+										thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
 								else:
 									self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
 									
@@ -314,10 +317,16 @@ class ServiceThread:
 								iscmd = True
 								
 								if len(data.split()) == 4:
-									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', ''))" % (command["name"], command["name"], data.split()[0][1:]))
+									moduleToCall = getattr(modules, command["name"])
+									classToCall = getattr(moduleToCall, command["name"]()
+									methodToCall = getattr(classToCall, "onCommand")
+									thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 								elif len(data.split()) > 4:
-									exec("thread.start_new_thread(modules.%s.%s().onCommand,('%s', '%s'))" % (command["name"], command["name"], data.split()[0][1:], ' '.join(data.split()[4:]).replace("'", "\\'")))
-						
+									moduleToCall = getattr(modules, command["name"])
+									classToCall = getattr(moduleToCall, command["name"])()
+									methodToCall = getattr(classToCall, "onCommand")
+									thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
+									
 						if not iscmd:
 							self.omessage(data.split()[0][1:], ' '.join(data.split()[3:])[1:])
 							
@@ -337,32 +346,23 @@ class ServiceThread:
 							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0", cmd):
 								if os.access("modules/" + command["name"] + ".py", os.F_OK):
 									iscmd = True
-									exec("oper = modules.%s.%s().NEED_OPER" % (command["name"], command["name"]))
+									moduleToCall = getattr(modules, command["name"])
+									classToCall = getattr(moduleToCall, command["name"])()
+									methodToCall = getattr(classToCall, "onFantasy")
 									
-									if oper == 0:
-										exec("cmd_auth = modules.%s.%s().NEED_AUTH" % (command["name"], command["name"]))
-										
-										if not cmd_auth:
+									if not classToCall.NEED_AUTH:
+										if len(data.split()) == 4:
+											thread.start_new_thread(methodToCall, (fuid, fchan, ''))
+										elif len(data.split()) > 4:
+											thread.start_new_thread(methodToCall, (fuid, fchan, args))
+									elif classToCall.NEED_AUTH:
+										if self.auth(fuid):
 											if len(data.split()) == 4:
-												exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', ''))" % (command["name"], command["name"], fuid, fchan))
+												thread.start_new_thread(methodToCall, (fuid, fchan, ''))
 											elif len(data.split()) > 4:
-												exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', '%s'))" % (command["name"], command["name"], fuid, fchan, args))
-										elif cmd_auth:
-											if self.auth(fuid):
-												if len(data.split()) == 4:
-													exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', ''))" % (command["name"], command["name"], fuid, fchan))
-												elif len(data.split()) > 4:
-													exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', '%s'))" % (command["name"], command["name"], fuid, fchan, args))
-											else:
-												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
-									elif oper == 1:
-										if self.isoper(fuid):
-											if len(data.split()) == 4:
-												exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', ''))" % (command["name"], command["name"], fuid, fchan))
-											elif len(data.split()) > 4:
-												exec("thread.start_new_thread(modules.%s.%s().onFantasy,('%s', '%s', '%s'))" % (command["name"], command["name"], fuid, fchan, args))
+												thread.start_new_thread(methodToCall, (fuid, fchan, args))
 										else:
-											self.msg(fuid, "You do not have sufficient privileges to use '{0}'".format(cmd.upper()))
+											self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
 										
 						if not iscmd:
 							if len(data.split()) == 4:
@@ -517,21 +517,10 @@ class ServiceThread:
 					self.query("TRUNCATE `modules`")
 					for mods in dir(modules):
 						if os.access("modules/" + mods + ".py", os.F_OK):
-							exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
+							moduleToCall = getattr(modules, mods)
+							classToCall = getattr(moduleToCall, mods)()
 							
-							m_command = ''
-							m_auth = 0
-							m_help = ''
-							
-							exec("m_oper = modules.{0}.{0}().NEED_OPER".format(mods))
-							
-							if m_class.lower() == "command":
-								exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
-								exec("m_auth = modules.{0}.{0}().NEED_AUTH".format(mods))
-								exec("m_help = modules.{0}.{0}().HELP".format(mods))
-								
-								
-							self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, m_class, m_oper, m_auth, m_command, m_help)
+							self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP)
 							
 					self.msg(source, "Done.", obot=True)
 				elif cmd == "update":
@@ -577,20 +566,10 @@ class ServiceThread:
 							self.query("TRUNCATE `modules`")
 							for mods in dir(modules):
 								if os.access("modules/" + mods + ".py", os.F_OK):
-									exec("m_class = modules.{0}.{0}().MODULE_CLASS".format(mods))
+									moduleToCall = getattr(modules, mods)
+									classToCall = getattr(moduleToCall, mods)()
 									
-									m_command = ''
-									m_auth = 0
-									m_help = ''
-									
-									exec("m_oper = modules.{0}.{0}().NEED_OPER".format(mods))
-									
-									if m_class.lower() == "command":
-										exec("m_command = modules.{0}.{0}().COMMAND".format(mods))
-										exec("m_auth = modules.{0}.{0}().NEED_AUTH".format(mods))
-										exec("m_help = modules.{0}.{0}().HELP".format(mods))
-										
-									self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, m_class, m_oper, m_auth, m_command, m_help)
+									self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP)
 									
 							self.msg(source, "Done.", obot=True)
 					else:
