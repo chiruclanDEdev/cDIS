@@ -26,14 +26,13 @@ modules/cmd_halfop.py d146d3a2631deddb1e2e841bc72deffc
 modules/cmd_hello.py 5b372d8c507b67383aa300cc01e71826
 modules/cmd_hostinfo.py 77b6719aaae9e4a0c60975b7cabd53ab
 modules/cmd_info.py 20d15dd8b03929c6268be69e40b38a65
-modules/cmd_invite.py b350f453be43ac98c5f401dcca40a92c
+modules/cmd_invite.py 50945cc36b374ca91f7e0112f58e2de6
 modules/cmd_ircop.py 6e22f2e1328736c95c24b9b7fdf2e3d4
 modules/cmd_kick.py 5e93c33dd6c48e5aca6913046540a314
 modules/cmd_kill.py c9a5d7c16c9ca5fe90fd42a5b95cd3a9
 modules/cmd_listcommands.py 407bf7211609bd01bc59d5f487a7194e
 modules/cmd_listmodules.py efda0b144d00d6f98f2bcb171419a376
 modules/cmd_logs.py 05be2309cab2a28a317e43bddadb2e43
-modules/cmd_memo.py 183efdef3266749ddb9564322bdd6e64
 modules/cmd_newpass.py 81dee1b8a26413e4f720a184d4660ff4
 modules/cmd_notify.py eb2675a8677eaa3cdbb570a27a41a3f1
 modules/cmd_op.py 8a20f1ece04eb33abd33467e85ed7577
@@ -88,6 +87,7 @@ modules/mod_topic.py 227000c8dc713744b9f3f73d406b3461
 modules/mod_uid.py 5e39b49819b43ebb2047bec9327cfa3c
 modules/sched_gline.py d6a5ca1e8fbd64bd03aade4b9eabea04
 modules/sched_trust.py 75e6e314d06b262e988fb879905a66f6
+modules/dev/cmd_memo.py a83bb0799d514a199ff039e53981ea39
 sql/base/struct.sql c7970a21214f030681921f08fbea7c22
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106

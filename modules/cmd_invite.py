@@ -3,7 +3,7 @@ from chiruserv import CServMod
 class cmd_invite(CServMod):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "INVITE"
-	help="Invites you into a channel"
+	HELP = "Invites you into a channel"
 	NEED_AUTH = 1
 
 	def onCommand(self, source, args):
