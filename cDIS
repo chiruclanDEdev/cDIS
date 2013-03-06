@@ -19,7 +19,7 @@ case $1 in
 			done
 			if [ $status = "false" ]; then
 				rm -f cDIS.pid
-				sh chiruserv start
+				sh cDIS start
 			else
 				echo "chiruclan.de IRC services ($ver) is already running"
 			fi
@@ -44,7 +44,7 @@ case $1 in
 			sh cDIS stop
 			sh cDIS start
 		else
-			sh chiruserv start
+			sh cDIS start
 		fi
 		;;
 	debug)
