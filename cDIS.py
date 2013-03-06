@@ -536,9 +536,7 @@ class ServiceThread:
 						_updates = len(os.listdir("sql/updates"))
 						_hash = self.encode(open("cDIS.py", "r").read())
 						self.msg(source, "{0} -> {1}".format(open("version", "r").read(), _version), obot=True)
-	#					shell("git add config.cfg")
-	#					shell("git commit -m 'Save'")
-						shell("git pull")
+						shell("git pull origin master")
 						_files = os.listdir("sql/updates")
 						__updates = len(_files)
 						

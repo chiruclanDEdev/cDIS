@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 7389179290d1a66f458f69a56c938de1
 cDIS 62af903f59d7e220587330a4de2e8983
-cDIS.py e8e00d37d0f91edafda3fb87769d6883
+cDIS.py cb9dda053bc7d048a4dba419832646a8
 config.cfg.dist 17d8b0f0b00af4c3d2e48faae12b523d
 docs/inspircd-needed-modules.txt 988196dae89448f2add6371ab3275e25
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
