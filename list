@@ -64,7 +64,7 @@ modules/cmd_unbanme.py 5e0c15e34d72dcf0c711a273dcf43486
 modules/cmd_userflags.py 06c47c77cd6750125eec2c252ba66738
 modules/cmd_userlist.py 1e7075a7b64e596ff7c8ef81c5826e34
 modules/cmd_usermode.py 82769166e73b994c9e1a8e19a5326cf9
-modules/cmd_version.py c0cd0191e98f0ab489d736ffffb23f5a
+modules/cmd_version.py c8491e3ef73cb7e5efad2f9ccd983524
 modules/cmd_vhost.py 01a14aa6ea4f5ac0bc3ca93a0d36505e
 modules/cmd_voice.py bbb83fba0e130505646666dc92a6b905
 modules/cmd_welcome.py 931e2a32b001deace9c1ab05fb1990f0
