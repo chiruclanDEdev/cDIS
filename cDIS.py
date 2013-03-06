@@ -447,7 +447,7 @@ class ServiceThread:
 			else:
 				self.msg(source, "Unknown command NULL. Please try HELP for more information.")
 		except Exception:
-			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://bitbucket.org/ChiruclanDE/chiruserv/issues)")
+			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://github.com/chiruclanDEdev/cDIS/issues)")
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
 				
@@ -528,7 +528,7 @@ class ServiceThread:
 						self.msg(source, "Denied.", obot=True)
 						return None
 						
-					_web = urllib2.urlopen("https://bitbucket.org/ChiruclanDE/chiruserv/raw/master/version")
+					_web = urllib2.urlopen("https://raw.github.com/chiruclanDEdev/cDIS/master/version")
 					_version = _web.read()
 					_web.close()
 					
@@ -598,7 +598,7 @@ class ServiceThread:
 			else:
 				self.msg(source, "Unknown command NULL. Please try HELP for more information.", obot=True)
 		except Exception:
-			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://bitbucket.org/ChiruclanDE/chiruserv/issues)", obot=True)
+			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://github.com/chiruclanDEdev/cDIS/issues)", obot=True)
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
 				
@@ -1395,7 +1395,7 @@ class ServiceThread:
 			
 		return False
 
-class CServMod:
+class cDISModule:
 	import sys
 	import os
 	import time

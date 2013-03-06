@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_invite(CServMod):
+class cmd_invite(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "INVITE"
 	HELP = "Invites you into a channel"

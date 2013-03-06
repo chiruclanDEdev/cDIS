@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_userlist(CServMod):
+class cmd_userlist(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "USERLIST"
 	HELP = "Shows you a list of users in that channel"

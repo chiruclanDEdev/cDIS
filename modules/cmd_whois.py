@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_whois(CServMod):
+class cmd_whois(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "WHOIS"
 	HELP = "Shows information about a user"

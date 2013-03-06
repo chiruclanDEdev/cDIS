@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_domaincheck(CServMod):
+class cmd_domaincheck(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "DOMAINCHECK"
 	HELP = "Shows you a domain lookup result"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_unban(CServMod):
+class cmd_unban(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "UNBAN"
 	HELP = "Unbans somebody from your channel"

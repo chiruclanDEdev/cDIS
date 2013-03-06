@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_suspend(CServMod):
+class cmd_suspend(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SUSPEND"
 	HELP = "Suspends a channel"

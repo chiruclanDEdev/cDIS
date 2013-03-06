@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_spamscan(CServMod):
+class cmd_spamscan(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SPAMSCAN"
 	HELP = "Sets the spam settings of your channel (chanflag s)"

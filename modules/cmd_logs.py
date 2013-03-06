@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_logs(CServMod):
+class cmd_logs(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "LOGS"
 	HELP = "View and clear channel logs"

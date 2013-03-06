@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_usermode(CServMod):
+class cmd_usermode(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "USERMODE"
 	HELP = "Shows your usermodes or changes it"

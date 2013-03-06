@@ -15,4 +15,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 
-**If you're looking for more commands, check out https://bitbucket.org/ChiruclanDE/chiruserv-modules!**
+---
+
+** If you're looking for more commands, check out https://github.com/chiruclanDEdev/cDIS-Modules! **

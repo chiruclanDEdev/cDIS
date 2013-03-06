@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_sapart(CServMod):
+class cmd_sapart(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SAPART"
 	HELP = "Forces a user to part a channel"

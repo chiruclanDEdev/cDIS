@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_deowner(CServMod):
+class cmd_deowner(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "DEOWNER"
 	HELP = "Removes your owner (+q) flag"

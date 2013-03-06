@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class mod_quit(CServMod):
+class mod_quit(cDISModule):
 	MODULE_CLASS = "QUIT"
 	
 	def onData(self, data):

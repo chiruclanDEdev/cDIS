@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from fnmatch import fnmatch
 
-class cmd_op(CServMod):
+class cmd_op(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "OP"
 	HELP = "Sets op (+o) flag to you or someone on the channel"

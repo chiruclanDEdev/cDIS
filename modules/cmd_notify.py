@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_notify(CServMod):
+class cmd_notify(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "NOTIFY"
 	HELP = "Sends a global notify to all users on the network"

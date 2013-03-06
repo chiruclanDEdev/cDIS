@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class mod_opertype(CServMod):
+class mod_opertype(cDISModule):
 	MODULE_CLASS = "OPERTYPE"
 	
 	def onData(self, data):

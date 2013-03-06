@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_sajoin(CServMod):
+class cmd_sajoin(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SAJOIN"
 	HELP = "Forces a user to join a channel"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class mod_fjoin(CServMod):
+class mod_fjoin(cDISModule):
 	MODULE_CLASS = "FJOIN"
 	
 	def onData(self, data):

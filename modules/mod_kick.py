@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class mod_kick(CServMod):
+class mod_kick(cDISModule):
 	MODULE_CLASS = "KICK"
 	
 	def onData(self, data):

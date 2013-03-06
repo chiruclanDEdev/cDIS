@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 import time
 
-class sched_gline(CServMod):
+class sched_gline(cDISModule):
 	MODULE_CLASS = "SCHEDULE"
 	NEED_OPER = 1
 	

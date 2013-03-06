@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class mod_fmode(CServMod):
+class mod_fmode(cDISModule):
 	MODULE_CLASS = "FMODE"
 	
 	def onData(self, data):

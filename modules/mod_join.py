@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class mod_join(CServMod):
+class mod_join(cDISModule):
 	MODULE_CLASS = "JOIN"
 	
 	def onData(self, data):

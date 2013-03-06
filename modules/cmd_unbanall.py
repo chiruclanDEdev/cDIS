@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_unbanall(CServMod):
+class cmd_unbanall(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "UNBANALL"
 	HELP = "Removes all bans from your channel"

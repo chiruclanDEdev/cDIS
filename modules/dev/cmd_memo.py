@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_memo(CServMod):
+class cmd_memo(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "MEMO"
 	HELP = "Read and write memos!"

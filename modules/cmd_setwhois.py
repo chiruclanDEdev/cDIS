@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_setwhois(CServMod):
+class cmd_setwhois(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SETWHOIS"
 	HELP = "Sets cool stuff in your whois"

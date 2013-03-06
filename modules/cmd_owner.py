@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_owner(CServMod):
+class cmd_owner(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "OWNER"
 	NEED_AUTH = 1

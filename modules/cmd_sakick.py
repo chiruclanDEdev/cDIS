@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_sakick(CServMod):
+class cmd_sakick(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SAKICK"
 	HELP = "Kicks someone from the channel"

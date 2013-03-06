@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_whoami(CServMod):
+class cmd_whoami(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "WHOAMI"
 	HELP = "Shows information about you"

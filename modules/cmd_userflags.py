@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_userflags(CServMod):
+class cmd_userflags(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "USERFLAGS"
 	HELP = "Changes and shows your userflags"

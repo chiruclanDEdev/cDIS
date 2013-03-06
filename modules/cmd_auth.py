@@ -1,6 +1,6 @@
-from chiruserv import CServMod, config
+from cDIS import cDISModule, config
 
-class cmd_auth(CServMod):
+class cmd_auth(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "AUTH"
 	HELP = "Login with your account at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")

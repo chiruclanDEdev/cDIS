@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_ban(CServMod):
+class cmd_ban(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "BAN"
 	HELP = "Bans somebody from your channel"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_scanport(CServMod):
+class cmd_scanport(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SCANPORT"
 	HELP = "Checks host for an open port"

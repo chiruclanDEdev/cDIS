@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class mod_topic(CServMod):
+class mod_topic(cDISModule):
 	MODULE_CLASS = "TOPIC"
 	
 	def onData(self, data):

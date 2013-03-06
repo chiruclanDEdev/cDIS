@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_vhost(CServMod):
+class cmd_vhost(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "VHOST"
 	HELP = "Request a vHost for your account"

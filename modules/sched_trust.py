@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 import time
 
-class sched_trust(CServMod):
+class sched_trust(cDISModule):
 	MODULE_CLASS = "SCHEDULE"
 	NEED_OPER = 1
 	

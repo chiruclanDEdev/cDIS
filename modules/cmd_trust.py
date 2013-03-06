@@ -1,8 +1,8 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 import time
 from fnmatch import fnmatch as wmatch
 
-class cmd_trust(CServMod):
+class cmd_trust(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "TRUST"
 	HELP = "Manage the IP trusts of your network"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_banlist(CServMod):
+class cmd_banlist(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "BANLIST"
 	HELP = "Sends you the banlist of your channel"

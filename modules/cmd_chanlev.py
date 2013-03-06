@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_chanlev(CServMod):
+class cmd_chanlev(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "CHANLEV"
 	HELP = "Edit your channel records"

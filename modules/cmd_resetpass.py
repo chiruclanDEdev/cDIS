@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from time import time
 
-class cmd_resetpass(CServMod):
+class cmd_resetpass(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "RESETPASS"
 	HELP = "Reset your lost password"

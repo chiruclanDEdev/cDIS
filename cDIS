@@ -1,0 +1,98 @@
+#!/bin/sh
+ver=$(cat version)
+case $1 in
+	start)
+		if [ ! -f cDIS.pid ]; then
+			rm -f modules/*.pyc
+			if [ -f cDIS.pyc ]; then
+				rm -f cDIS.pyc
+			fi
+			python cDIS.py >> /dev/null &
+			pid=$!
+			echo $pid > cDIS.pid
+			echo "chiruclan.de IRC services ($ver) started into background (PID: $pid)"
+		else
+			pid=$(cat cDIS.pid)
+			status="false"
+			for data in $(ps | grep $pid); do
+				status="true"
+			done
+			if [ $status = "false" ]; then
+				rm -f cDIS.pid
+				sh chiruserv start
+			else
+				echo "chiruclan.de IRC services ($ver) is already running"
+			fi
+		fi
+		;;
+	stop)
+		if [ -f cDIS.pid ]; then
+			pid=$(cat cDIS.pid)
+			kill -9 $pid
+			rm -f cDIS.pid
+			rm -f modules/*.pyc
+			if [ -f cDIS.pyc ]; then
+				rm -f cDIS.pyc
+			fi
+			echo "chiruclan.de IRC services ($ver) is stopped (PID: $pid)"
+		else
+			echo "chiruclan.de IRC services ($ver) is not running"
+		fi
+		;;
+	restart)
+		if [ -f cDIS.pid ]; then
+			sh cDIS stop
+			sh cDIS start
+		else
+			sh chiruserv start
+		fi
+		;;
+	debug)
+		while [ 1 ]; do
+			if [ -f cDIS.pyc ]; then
+				rm -f cDIS.pyc
+			fi
+			rm -f modules/*.pyc
+			python cDIS.py
+			rm -f modules/*.pyc
+			if [ -f cDIS.pyc ]; then
+				rm -f cDIS.pyc
+			fi
+		done
+		;;
+	update)
+		available=$(curl https://raw.github.com/chiruclanDEdev/cDIS/master/version)
+		version=$(cat version)
+		if [ $available != $version ]; then
+			running="false"
+			if [ -f cDIS.pid ]; then
+				sh cDIS stop
+				running="true"
+			fi
+			git rm modules/*.pyc
+			git pull
+			if [ $running = "true" ]; then
+				sh cDIS start
+			fi
+			echo "Done."
+		else
+			echo "No update available."
+		fi
+		;;
+	status)
+		if [ -f cDIS.pid ]; then
+			pid=$(cat cDIS.pid)
+			status="chiruclan.de IRC services ($ver) seems to be crashed"
+			for data in $(ps | grep $pid); do
+				status="chiruclan.de IRC services ($ver) is running"
+			done
+		else
+			status="chiruclan.de IRC services ($ver) is not running"
+		fi
+		echo $status
+		;;
+	*)
+		echo "$0 {start|stop|restart|debug|update|status}"
+		;;
+esac
+	

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_chanflags(CServMod):
+class cmd_chanflags(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "CHANFLAGS"
 	HELP = "Sets flags for your channel"

@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from fnmatch import fnmatch
 
-class cmd_halfop(CServMod):
+class cmd_halfop(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "HALFOP"
 	HELP = "Sets halfop (+h) flag to you or someone on the channel"

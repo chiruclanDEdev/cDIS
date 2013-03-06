@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from fnmatch import fnmatch
 
-class cmd_voice(CServMod):
+class cmd_voice(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "VOICE"
 	HELP = "Sets voice (+v) flag to you or someone on the channel"

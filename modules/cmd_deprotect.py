@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from fnmatch import fnmatch
 
-class cmd_deprotect(CServMod):
+class cmd_deprotect(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "DEPROTECT"
 	HELP = "Removes admin (+a) flag from you or someone on the channel"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_fantasy(CServMod):
+class cmd_fantasy(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "FANTASY"
 	HELP = "Define the fantasy prefix for your channel"

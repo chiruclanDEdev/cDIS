@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from fnmatch import fnmatch
 
-class cmd_dehalfop(CServMod):
+class cmd_dehalfop(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "DEHALFOP"
 	HELP = "Removes halfop (+h) flag from you or someone on the channel"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod, config
+from cDIS import cDISModule, config
 
-class cmd_request(CServMod):
+class cmd_request(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "REQUEST"
 	HELP = "Requests " + config.get("BOT", "nick") + " for your channel"

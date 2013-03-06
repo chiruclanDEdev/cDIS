@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_samode(CServMod):
+class cmd_samode(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SAMODE"
 	HELP = "Change modes on a channel where you have no rights"

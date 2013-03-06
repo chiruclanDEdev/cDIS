@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_safeedback(CServMod):
+class cmd_safeedback(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SAFEEDBACK"
 	HELP = "Reads the feedback from users"

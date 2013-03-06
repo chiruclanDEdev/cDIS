@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_listcommands(CServMod):
+class cmd_listcommands(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "LISTCOMMANDS"
 	HELP = "Lists all active commands"

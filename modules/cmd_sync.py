@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_sync(CServMod):
+class cmd_sync(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SYNC"
 	NEED_AUTH = 1

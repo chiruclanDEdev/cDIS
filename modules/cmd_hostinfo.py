@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from socket import getfqdn, getaddrinfo
 
-class cmd_hostinfo(CServMod):
+class cmd_hostinfo(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "HOSTINFO"
 	HELP = "Get information about a domain or IP"

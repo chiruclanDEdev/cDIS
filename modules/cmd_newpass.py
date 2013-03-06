@@ -1,6 +1,6 @@
-from chiruserv import CServMod, config
+from cDIS import cDISModule, config
 
-class cmd_newpass(CServMod):
+class cmd_newpass(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "NEWPASS"
 	HELP = "Changes your password at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")

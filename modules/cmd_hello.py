@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from time import time
 
-class cmd_hello(CServMod):
+class cmd_hello(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "HELLO"
 	HELP = "Creates an account for you and sends the data to you"

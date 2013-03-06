@@ -1,8 +1,8 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 import __builtin__
 import time
 
-class mod_privmsg(CServMod):
+class mod_privmsg(cDISModule):
 	MODULE_CLASS = "PRIVMSG"
 	
 	def onData(self, data):

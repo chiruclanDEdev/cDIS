@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_email(CServMod):
+class cmd_email(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "EMAIL"
 	HELP = "Changes your account email"

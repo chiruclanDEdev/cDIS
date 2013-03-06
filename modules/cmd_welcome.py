@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_welcome(CServMod):
+class cmd_welcome(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "WELCOME"
 	NEED_AUTH = 1

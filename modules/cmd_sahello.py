@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_sahello(CServMod):
+class cmd_sahello(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SAHELLO"
 	HELP = "Creates an account for users"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_kick(CServMod):
+class cmd_kick(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "KICK"
 	HELP = "Kicks someone from the channel"

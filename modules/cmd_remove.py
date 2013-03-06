@@ -1,6 +1,6 @@
-from chiruserv import CServMod, config
+from cDIS import cDISModule, config
 
-class cmd_remove(CServMod):
+class cmd_remove(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "REMOVE"
 	HELP = "Removes " + config.get("BOT", "nick") + " from your channel"

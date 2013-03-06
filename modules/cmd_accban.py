@@ -1,6 +1,6 @@
-from chiruserv import CServMod, config
+from cDIS import cDISModule, config
 
-class cmd_accban(CServMod):
+class cmd_accban(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "ACCBAN"
 	HELP = "Bans an account from " + config.get("SERVICES", "description")

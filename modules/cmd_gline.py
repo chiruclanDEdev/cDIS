@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 import time
 
-class cmd_gline(CServMod):
+class cmd_gline(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "GLINE"
 	HELP = "G-Line actions"

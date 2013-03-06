@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 import time
 
-class mod_uid(CServMod):
+class mod_uid(cDISModule):
 	MODULE_CLASS = "UID"
 	
 	def onData(self, data):

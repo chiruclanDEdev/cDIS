@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_feedback(CServMod):
+class cmd_feedback(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "FEEDBACK"
 	HELP = "Sends your feedback about us to us"

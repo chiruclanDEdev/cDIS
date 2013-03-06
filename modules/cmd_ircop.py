@@ -1,7 +1,7 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 from hashlib import sha256
 
-class cmd_ircop(CServMod):
+class cmd_ircop(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "IRCOP"
 	HELP = "Manage your IRC operators"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_settopic(CServMod):
+class cmd_settopic(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "SETTOPIC"
 	HELP = "Sets topic for your channel"

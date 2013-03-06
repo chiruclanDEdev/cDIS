@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_chanmode(CServMod):
+class cmd_chanmode(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "CHANMODE"
 	HELP = "Sets modes for your channel"

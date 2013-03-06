@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_info(CServMod):
+class cmd_info(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "INFO"
 	HELP = "Shows all information about an user"

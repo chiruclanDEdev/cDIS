@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_kill(CServMod):
+class cmd_kill(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "KILL"
 	HELP = "Kills a user from the network"

@@ -1,6 +1,6 @@
-from chiruserv import CServMod
+from cDIS import cDISModule
 
-class cmd_opers(CServMod):
+class cmd_opers(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "OPERS"
 	HELP = "Shows all operators available for help"
