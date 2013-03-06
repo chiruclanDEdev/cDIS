@@ -70,7 +70,7 @@ case $1 in
 				running="true"
 			fi
 			git rm modules/*.pyc
-			git pull
+			git pull origin master
 			if [ $running = "true" ]; then
 				sh cDIS start
 			fi
