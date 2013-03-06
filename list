@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 7389179290d1a66f458f69a56c938de1
 cDIS 8c729bde478e96bae4e6ae02256740d3
-cDIS.py 9504ccd47cf49fc8f57879f820ea4c9f
+cDIS.py e8e00d37d0f91edafda3fb87769d6883
 config.cfg.dist 17d8b0f0b00af4c3d2e48faae12b523d
 docs/inspircd-needed-modules.txt 988196dae89448f2add6371ab3275e25
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
@@ -64,7 +64,7 @@ modules/cmd_unbanme.py 5e0c15e34d72dcf0c711a273dcf43486
 modules/cmd_userflags.py 06c47c77cd6750125eec2c252ba66738
 modules/cmd_userlist.py 1e7075a7b64e596ff7c8ef81c5826e34
 modules/cmd_usermode.py 82769166e73b994c9e1a8e19a5326cf9
-modules/cmd_version.py d87b32fc8c9a22b1b1807f1533b0b4ce
+modules/cmd_version.py 264b7380c75a61fb8a95cd28eff80d02
 modules/cmd_vhost.py 01a14aa6ea4f5ac0bc3ca93a0d36505e
 modules/cmd_voice.py bbb83fba0e130505646666dc92a6b905
 modules/cmd_welcome.py 931e2a32b001deace9c1ab05fb1990f0

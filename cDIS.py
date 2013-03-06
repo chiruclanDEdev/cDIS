@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright by ChiruServ 2012-2013
+# Copyright by chiruclan.de IRC services 2012-2013
 
 import sys
 import socket
@@ -534,7 +534,7 @@ class ServiceThread:
 					
 					if open("version", "r").read() != _version:
 						_updates = len(os.listdir("sql/updates"))
-						_hash = self.encode(open("chiruserv.py", "r").read())
+						_hash = self.encode(open("cDIS.py", "r").read())
 						self.msg(source, "{0} -> {1}".format(open("version", "r").read(), _version), obot=True)
 	#					shell("git add config.cfg")
 	#					shell("git commit -m 'Save'")
@@ -556,7 +556,7 @@ class ServiceThread:
 											
 										file.close()
 										
-						if _hash != self.encode(open("chiruserv.py", "r").read()):
+						if _hash != self.encode(open("cDIS.py", "r").read()):
 							self.msg(source, "Done.", obot=True)
 							self.msg(source, "Please note that you have to restart the services manually.", obot=True)
 						else:
@@ -579,7 +579,7 @@ class ServiceThread:
 						self.msg(source, "Denied.", obot=True)
 						return None
 						
-					if os.access("chiruserv.pid", os.F_OK):
+					if os.access("cDIS.pid", os.F_OK):
 						if len(arg) == 0:
 							msg = "Services are going offline."
 							self.send(":%s QUIT :%s" % (self.bot, msg))
@@ -590,7 +590,7 @@ class ServiceThread:
 							
 						self.send(":%s SQUIT %s" % (self.services_id, self.services_name))
 						self.con.close()
-						shell("sh chiruserv stop")
+						shell("sh cDIS stop")
 					else:
 						self.msg(source, "You're running the debug mode. You cannot restart via commands!", obot=True)
 				else:
@@ -2294,9 +2294,9 @@ if __name__ == "__main__":
 				__config__ = sys.argv[1]
 				
 			time.sleep(9)
-			print(green("*") + " ChiruServ (" + __version__ + ") started (config: " + __config__ + ")")
+			print(green("*") + " chiruclan.de IRC services (" + __version__ + ") started (config: " + __config__ + ")")
 			Services().run()
-			print(red("*") + " ChiruServ (" + __version__ + ") stopped (config: " + __config__ + ")")
+			print(red("*") + " chiruclan.de IRC services (" + __version__ + ") stopped (config: " + __config__ + ")")
 			
 			time.sleep(1)
 	except Exception,e:
