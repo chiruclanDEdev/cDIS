@@ -264,6 +264,7 @@ class ServiceThread:
 					if os.access("modules/" + module["name"] + ".py", os.F_OK):
 						moduleToCall = getattr(modules, module["name"])
 						classToCall = getattr(moduleToCall, module["name"])()
+						
 						if classToCall.MODULE_CLASS.lower() == data.split()[1].lower():
 							methodToCall = getattr(classToCall, "onData")
 							thread.start_new_thread(methodToCall, (data, ))
@@ -279,28 +280,20 @@ class ServiceThread:
 							
 							cmd_auth = int(command["auth"])
 							
+							moduleToCall = getattr(modules, command["name"])
+							classToCall = getattr(moduleToCall, command["name"])()
+							methodToCall = getattr(classToCall, "onCommand")
+							
 							if not cmd_auth:
 								if len(data.split()) == 4:
-									moduleToCall = getattr(modules, command["name"])
-									classToCall = getattr(moduleToCall, command["name"])()
-									methodToCall = getattr(classToCall, "onCommand")
 									thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 								elif len(data.split()) > 4:
-									moduleToCall = getattr(modules, command["name"])
-									classToCall = getattr(moduleToCall, command["name"])()
-									methodToCall = getattr(classToCall, "onCommand")
 									thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
 							elif cmd_auth:
 								if self.auth(data.split()[0][1:]):
 									if len(data.split()) == 4:
-										moduleToCall = getattr(modules, command["name"])
-										classToCall = getattr(moduleToCall, command["name"])()
-										methodToCall = getattr(classToCall, "onCommand")
 										thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 									elif len(data.split()) > 4:
-										moduleToCall = getattr(modules, command["name"])
-										classToCall = getattr(moduleToCall, command["name"])()
-										methodToCall = getattr(classToCall, "onCommand")
 										thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
 								else:
 									self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
@@ -316,15 +309,13 @@ class ServiceThread:
 							if os.access("modules/" + command["name"] + ".py", os.F_OK):
 								iscmd = True
 								
+								moduleToCall = getattr(modules, command["name"])
+								classToCall = getattr(moduleToCall, command["name"])()
+								methodToCall = getattr(classToCall, "onCommand")
+								
 								if len(data.split()) == 4:
-									moduleToCall = getattr(modules, command["name"])
-									classToCall = getattr(moduleToCall, command["name"])()
-									methodToCall = getattr(classToCall, "onCommand")
 									thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 								elif len(data.split()) > 4:
-									moduleToCall = getattr(modules, command["name"])
-									classToCall = getattr(moduleToCall, command["name"])()
-									methodToCall = getattr(classToCall, "onCommand")
 									thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
 									
 						if not iscmd:
