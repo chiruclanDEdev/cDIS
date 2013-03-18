@@ -88,7 +88,7 @@ modules/mod_uid.py 351b26ff0355056cae8f5e214329e717
 modules/sched_gline.py eb84c3a6b926f65e5df652e616c8e2fc
 modules/sched_trust.py 06f2f7ad4a62f9e024a1bfb8add35de9
 modules/dev/cmd_memo.py 0bbaea022a1d555e27c0c21486213674
-sql/base/struct.sql c7970a21214f030681921f08fbea7c22
+sql/base/struct.sql 1dd4ab96c1a3d3f051757f42aec775d8
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
 sql/updates/12_02-17-2012.sql 0c5d84bf3909b5091defcd77dcb4805f

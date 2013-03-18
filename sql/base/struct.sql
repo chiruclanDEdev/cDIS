@@ -131,7 +131,7 @@ CREATE TABLE `ircd_opers` (
 	`username` varchar(255) NOT NULL,
 	`password` varchar(255) NOT NULL,
 	`hostname` varchar(255) NOT NULL DEFAULT '*@*',
-	`type` varchar(255) NOT NULL DEFAULT '',
+	`type` varchar(255) NOT NULL DEFAULT 'GlobalOp',
 	PRIMARY KEY (id)
 );
 
