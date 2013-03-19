@@ -13,6 +13,6 @@ class cmd_listcommands(cDISModule):
 			idname_space = " " * (10 - len(str(data["id"])))
 			nameclass_space = " " * (40 - len(data["name"]))
 			
-			self.msg(uid, "ID: {id} {idname_space} Name: {name} {nameclass_space} Command: {tclass}".format(id=str(data["id"]), idname_space=idname_space, name=data["name"].upper(), nameclass_space=nameclass_space, tclass=data["command"].upper()))
+			self.msg(uid, "ID: {id} {idname_space} Name: {name} {nameclass_space} Command: {tclass}".format(id=str(data["id"]), idname_space=idname_space, name=data["name"], nameclass_space=nameclass_space, tclass=data["command"]))
 			
 		self.msg(uid, "-=- End of list -=-")
