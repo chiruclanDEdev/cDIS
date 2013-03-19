@@ -19,8 +19,7 @@ Following modules have to be loaded:
 	- m_botmode.so
 	- m_mysql.so
 	- m_sqloper.so
-
-Following modules should be loaded, but aren't necessary:
+	- m_swhois.so
 	- m_xline_db.so
 
 Following modules mustn't be loaded!
