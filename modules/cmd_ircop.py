@@ -42,7 +42,7 @@ class cmd_ircop(cDISModule):
 				if rows == 1:
 					self.query("DELETE FROM `ircd_opers` WHERE `username` = ? AND `type` = 'GlobalOp'", arg[1])
 					self.msg(uid, "Done.")
-					self.msg(uid, "#IRCOP# " + arg[1] + " removed")
+					self.send_to_op("#IRCOP# " + arg[1] + " removed")
 				else:
 					self.msg(uid, "No such oper.")
 			else:

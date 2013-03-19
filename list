@@ -27,7 +27,7 @@ modules/cmd_hello.py e2c1f9bd9c1450848c991c3408dbd679
 modules/cmd_hostinfo.py 2b7cf1c778e485e418d27219899b9613
 modules/cmd_info.py cbe3e7c7f2e6a4541f67ba7d2689427c
 modules/cmd_invite.py 14a2bf3e0efeb72156c724b6acd1c226
-modules/cmd_ircop.py f39c57cb53edb29725f309a63a2fbbaf
+modules/cmd_ircop.py 1104df850c141451d653342ef3d35500
 modules/cmd_kick.py 808b02f43487113dcfeca2fbda449b0b
 modules/cmd_kill.py 43b29d7f68e0a9b06fbe65217044f7f6
 modules/cmd_listcommands.py b86befa106febabbbec74c8d7f2cff3b
