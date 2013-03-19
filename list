@@ -86,7 +86,7 @@ modules/mod_quit.py 49b7f4194003263e26a6b59af522a51c
 modules/mod_topic.py a18cdaadc2098d12fdb3ca92b492f106
 modules/mod_uid.py 351b26ff0355056cae8f5e214329e717
 modules/sched_gline.py eb84c3a6b926f65e5df652e616c8e2fc
-modules/sched_trust.py 06f2f7ad4a62f9e024a1bfb8add35de9
+modules/sched_trust.py 889d9eba07f5becdeae714df26d79b6a
 modules/dev/cmd_memo.py 0bbaea022a1d555e27c0c21486213674
 sql/base/struct.sql 1dd4ab96c1a3d3f051757f42aec775d8
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
