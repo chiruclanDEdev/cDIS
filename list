@@ -30,8 +30,8 @@ modules/cmd_invite.py 14a2bf3e0efeb72156c724b6acd1c226
 modules/cmd_ircop.py 1104df850c141451d653342ef3d35500
 modules/cmd_kick.py 808b02f43487113dcfeca2fbda449b0b
 modules/cmd_kill.py 43b29d7f68e0a9b06fbe65217044f7f6
-modules/cmd_listcommands.py 03e2d6f795060b2f2adeac5d15d50027
-modules/cmd_listmodules.py d3c6f5fc3a23bd9b5b10ab2ee697e335
+modules/cmd_listcommands.py 91e2b8072664043d7eb7ea98f382470f
+modules/cmd_listmodules.py 83791493eb9c28e261d9681d60023abc
 modules/cmd_logs.py a20600abc4a5110a5bbcc26d384a5254
 modules/cmd_newpass.py f91f3c6d2c571b12e6a948a0a1fbe6fb
 modules/cmd_notify.py 400b445c60dc0c30a51519f4970cc280

@@ -10,8 +10,8 @@ class cmd_listcommands(cDISModule):
 		self.msg(uid, "-=- Lists all loaded commands -=-")
 		
 		for data in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND'"):
-			idname_space = " " * (10 - len(str(data["id"])))
-			nameclass_space = " " * (40 - len(data["name"]))
+			idname_space = " " * (5 - len(str(data["id"])))
+			nameclass_space = " " * (20 - len(data["name"]))
 			
 			self.msg(uid, "ID: {id} {idname_space} Name: {name} {nameclass_space} Command: {tclass}".format(id=str(data["id"]), idname_space=idname_space, name=data["name"], nameclass_space=nameclass_space, tclass=data["command"]))
 			
