@@ -3,7 +3,7 @@ from time import time
 
 class cmd_saresetpass(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SARESETPASS"
+	COMMAND = "RESETPASS"
 	HELP = "Reset your lost password"
 	NEED_OPER = 1
 

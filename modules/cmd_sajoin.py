@@ -2,7 +2,7 @@ from cDIS import cDISModule
 
 class cmd_sajoin(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SAJOIN"
+	COMMAND = "JOIN"
 	HELP = "Forces a user to join a channel"
 	NEED_OPER = 1
 

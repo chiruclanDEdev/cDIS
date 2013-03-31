@@ -2,7 +2,7 @@ from cDIS import cDISModule
 
 class cmd_sapart(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SAPART"
+	COMMAND = "PART"
 	HELP = "Forces a user to part a channel"
 	NEED_OPER = 1
 

@@ -2,7 +2,7 @@ from cDIS import cDISModule
 
 class cmd_samode(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SAMODE"
+	COMMAND = "MODE"
 	HELP = "Change modes on a channel where you have no rights"
 	NEED_OPER = 1
 

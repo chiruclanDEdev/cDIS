@@ -2,7 +2,7 @@ from cDIS import cDISModule
 
 class cmd_sakick(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SAKICK"
+	COMMAND = "KICK"
 	HELP = "Kicks someone from the channel"
 	NEED_OPER = 1
 

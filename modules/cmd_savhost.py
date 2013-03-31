@@ -2,7 +2,7 @@ from cDIS import cDISModule
 
 class cmd_savhost(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SAVHOST"
+	COMMAND = "VHOST"
 	HELP = "Manages vhosts of the users"
 	NEED_OPER = 1
 

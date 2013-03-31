@@ -2,7 +2,7 @@ from cDIS import cDISModule
 
 class cmd_sahello(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SAHELLO"
+	COMMAND = "HELLO"
 	HELP = "Creates an account for users"
 	NEED_OPER = 1
 

@@ -2,7 +2,7 @@ from cDIS import cDISModule
 
 class cmd_safeedback(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SAFEEDBACK"
+	COMMAND = "FEEDBACK"
 	HELP = "Reads the feedback from users"
 	NEED_OPER = 1
 

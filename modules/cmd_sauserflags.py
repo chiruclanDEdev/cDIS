@@ -2,7 +2,7 @@ from cDIS import cDISModule
 
 class cmd_sauserflags(cDISModule):
 	MODULE_CLASS = "COMMAND"
-	COMMAND = "SAUSERFLAGS"
+	COMMAND = "USERFLAGS"
 	HELP = "Changes and shows the userflags of other users"
 	NEED_OPER = 1
 
