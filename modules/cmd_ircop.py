@@ -15,8 +15,8 @@ class cmd_ircop(cDISModule):
 				self.msg(uid, "<= List of IRC operators =>")
 				self.msg(uid)
 				
-				for row in self.query("SELECT `username`, `type` FROM `ircd_opers` ORDER BY `id`"):
-					self.msg(uid, "Username: {0}  Type: {1}".format(row["username"], row["type"]))
+				for row in self.query("SELECT `username`, `type`, `hostname` FROM `ircd_opers` ORDER BY `id`"):
+					self.msg(uid, "Username: {0}  Type: {1}  Hostname: {2}".format(row["username"], row["type"], row["hostname"]))
 					
 				self.msg(uid)
 				self.msg(uid, "<= End of list =>")
@@ -27,8 +27,8 @@ class cmd_ircop(cDISModule):
 				self.msg(uid, "<= List of IRC operators (Search pattern: " + arg[1] + ")")
 				self.msg(uid)
 				
-				for row in self.query("SELECT `username`, `type` FROM `ircd_opers` WHERE `username` LIKE ? ORDER BY `id`", "%" + arg[1] + "%"):
-					self.msg(uid, "Username: {0}  Type: {1}".format(row["username"], row["type"]))
+				for row in self.query("SELECT `username`, `type`, `hostname` FROM `ircd_opers` WHERE `username` LIKE ? ORDER BY `id`", "%" + arg[1] + "%"):
+					self.msg(uid, "Username: {0}  Type: {1}  Hostname: {2}".format(row["username"], row["type"], row["hostname"]))
 					
 				self.msg(uid)
 				self.msg(uid, "<= End of list =>")
