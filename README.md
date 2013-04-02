@@ -1,6 +1,6 @@
-ChiruServ
-=========
-Copyright (C) 2012-2013 ChiruServ
+chiruclan.de IRC services
+=========================
+Copyright (C) 2012-2013 chiruclan.de IRC services
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
