@@ -305,42 +305,43 @@ class ServiceThread:
 						if not iscmd:
 							self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 								
-					if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
-						if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
-							iscmd = False
-							fuid = data.split()[0][1:]
-							cmd = self.fantasy(data.split()[2])
+				if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
+					if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
+						botuid = self.services_id + bots.get("3", "uuid")
+						iscmd = False
+						fuid = data.split()[0][1:]
+						cmd = self.fantasy(data.split()[2])
+						
+						if len(data.split()[3]) > int(1+len(self.fantasy(data.split()[2]))):
+							fchan = data.split()[2]
+							cmd = data.split()[3][int(1+len(self.fantasy(fchan))):]
 							
-							if len(data.split()[3]) > int(1+len(self.fantasy(data.split()[2]))):
-								fchan = data.split()[2]
-								cmd = data.split()[3][int(1+len(self.fantasy(fchan))):]
+							if len(data.split()) > 4:
+								args = ' '.join(data.split()[4:]).replace("'", "\\'")
 								
-								if len(data.split()) > 4:
-									args = ' '.join(data.split()[4:]).replace("'", "\\'")
+							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0 AND `bot` = '3'", cmd):
+								if os.access("modules/" + command["name"] + ".py", os.F_OK):
+									iscmd = True
+									moduleToCall = getattr(modules, command["name"])
+									classToCall = getattr(moduleToCall, command["name"])()
+									methodToCall = getattr(classToCall, "onFantasy")
 									
-								for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0 AND `bot` = ?", cmd, bot):
-									if os.access("modules/" + command["name"] + ".py", os.F_OK):
-										iscmd = True
-										moduleToCall = getattr(modules, command["name"])
-										classToCall = getattr(moduleToCall, command["name"])()
-										methodToCall = getattr(classToCall, "onFantasy")
-										
-										if not classToCall.NEED_AUTH:
+									if not classToCall.NEED_AUTH:
+										if len(data.split()) == 4:
+											thread.start_new_thread(methodToCall, (fuid, fchan, ''))
+										elif len(data.split()) > 4:
+											thread.start_new_thread(methodToCall, (fuid, fchan, args))
+									elif classToCall.NEED_AUTH:
+										if self.auth(fuid):
 											if len(data.split()) == 4:
 												thread.start_new_thread(methodToCall, (fuid, fchan, ''))
 											elif len(data.split()) > 4:
 												thread.start_new_thread(methodToCall, (fuid, fchan, args))
-										elif classToCall.NEED_AUTH:
-											if self.auth(fuid):
-												if len(data.split()) == 4:
-													thread.start_new_thread(methodToCall, (fuid, fchan, ''))
-												elif len(data.split()) > 4:
-													thread.start_new_thread(methodToCall, (fuid, fchan, args))
-											else:
-												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
-										
-						if not iscmd:
-							self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
+										else:
+											self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
+									
+					if not iscmd:
+						self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 		except Exception:
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
