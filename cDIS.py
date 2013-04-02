@@ -317,7 +317,7 @@ class ServiceThread:
 							cmd = data.split()[3][int(1+len(self.fantasy(fchan))):]
 							
 							if len(data.split()) > 4:
-								args = ' '.join(data.split()[4:]).replace("'", "\\'")
+								args = ' '.join(data.split()[4:])
 								
 							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0 AND `bot` = '3'", cmd):
 								if os.access("modules/" + command["name"] + ".py", os.F_OK):
