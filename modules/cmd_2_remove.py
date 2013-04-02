@@ -1,4 +1,4 @@
-from cDIS import cDISModule
+from cDIS import cDISModule, bots
 
 class cmd_2_remove(cDISModule):
 	MODULE_CLASS = "COMMAND"
@@ -18,7 +18,7 @@ class cmd_2_remove(cDISModule):
 						self.query("delete from channelinfo where name = ?", data["name"])
 						self.query("delete from banlist where channel = ?", data["name"])
 						self.msg(source, "Channel {0} has been deleted.".format(data["name"]))
-						self.send(":{0} PART {1} :Channel {1} has been deleted.".format(self.bot, data["name"]))
+						self.send(":{0} PART {1} :Channel {1} has been deleted.".format(self.services_id + bots.get("3", "uuid"), data["name"]))
 				else:
 					self.msg(source, "Denied.")
 			else:
