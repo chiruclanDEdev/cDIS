@@ -15,9 +15,9 @@ class cmd_1_help(cDISModule):
 		if len(arg) == 0:
 			for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? ORDER BY `command`", self.BOT_ID):
 				if os.access("modules/"+command["name"]+".py", os.F_OK):
-					cmd_auth = command["auth"]
+					cmd_auth = int(command["auth"])
 					cmd_help = command["help"]
-					cmd_oper = command["oper"]
+					cmd_oper = (command["oper"])
 					
 					if cmd_oper == 0:
 						if cmd_auth == 0:
@@ -29,9 +29,9 @@ class cmd_1_help(cDISModule):
 		else:
 			for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? AND `command` LIKE ?", self.BOT_ID, '%' + args + '%'):
 				if os.access("modules/"+command["name"]+".py", os.F_OK):
-					cmd_auth = command["auth"]
+					cmd_auth = int(command["auth"])
 					cmd_help = command["help"]
-					cmd_oper = command["oper"]
+					cmd_oper = int(command["oper"])
 					
 					if cmd_oper == 0:
 						if cmd_auth == 0:
