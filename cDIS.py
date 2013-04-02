@@ -303,7 +303,7 @@ class ServiceThread:
 										self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
 										
 						if not iscmd:
-							self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+							self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), botuid)
 								
 					if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
 						if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
@@ -337,10 +337,10 @@ class ServiceThread:
 												elif len(data.split()) > 4:
 													thread.start_new_thread(methodToCall, (fuid, fchan, args))
 											else:
-												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), botuid)
 										
 						if not iscmd:
-							self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+							self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), botuid)
 		except Exception:
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
@@ -548,8 +548,11 @@ class ServiceThread:
 				
 		return False
 
-	def msg(self, target, text=" ", action=False):
+	def msg(self, target, text=" ", action=False, uid=""):
 		source = self.bot
+		
+		if uid != "":
+			source = uid
 			
 		if self.userflag(target, "n") and not action:
 			self.send(":%s NOTICE %s :%s" % (source, target, text))
@@ -1475,8 +1478,11 @@ class cDISModule:
 				
 		return False
 
-	def msg(self, target, text=" ", action=False):
+	def msg(self, target, text=" ", action=False, uid=""):
 		source = self.bot
+		
+		if uid != "":
+			source = uid
 			
 		if self.userflag(target, "n") and not action:
 			self.send(":%s NOTICE %s :%s" % (source, target, text))
