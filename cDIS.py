@@ -34,9 +34,12 @@ try:
 		os.mkdir("logs")
 	config = ConfigParser.RawConfigParser()
 	if len(sys.argv) == 1:
-		config.read("config.cfg")
+		config.read("configs/config.cfg")
 	else:
 		config.read(sys.argv[1])
+		
+	bots = ConfigParser.RawConfigParser()
+	bots.read("configs/" + config.get("INCLUDES", "bots"))
 except Exception:
 	et, ev, tb = sys.exc_info()
 	print(red("*") + " <<ERROR>> {0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb)))
@@ -77,14 +80,6 @@ class Services:
 		self.ipv6 = config.getboolean("OTHER", "ipv6")
 		self.ssl = config.getboolean("OTHER", "ssl")
 		self.regmail = config.get("OTHER", "regmail")
-		self.bot = "%sAAAAAA" % self.services_id
-		self.bot_nick = config.get("BOT", "nick").split()[0]
-		self.bot_user = config.get("BOT", "user").split()[0]
-		self.bot_real = config.get("BOT", "real")
-		self.obot = "%sAAAAAB" % self.services_id
-		self.obot_nick = config.get("OPERBOT", "nick").split()[0]
-		self.obot_user = config.get("OPERBOT", "user").split()[0]
-		self.obot_real = config.get("OPERBOT", "real")
 		self.oper_not = config.getboolean("OPERS", "notifications")
 		
 	def query(self, string, *args):
@@ -152,6 +147,7 @@ class Services:
 			__builtin__.spamscan = {}
 			__builtin__._connected = False
 			__builtin__.config = config
+			__builtin__.bots = bots
 			
 			for mods in dir(modules):
 				if os.access("modules/" + mods + ".py", os.F_OK):
@@ -162,7 +158,7 @@ class Services:
 						methodToCall = getattr(classToCall, "onSchedule")
 						thread.start_new_thread(methodToCall, ())
 						
-					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP)
+					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`, `bot`) VALUES (?, ?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
 						
 			
 			while 1:
@@ -217,14 +213,12 @@ class ServiceThread:
 		self.ipv6 = config.getboolean("OTHER", "ipv6")
 		self.ssl = config.getboolean("OTHER", "ssl")
 		self.regmail = config.get("OTHER", "regmail")
-		self.bot = "%sAAAAAA" % self.services_id
-		self.bot_nick = config.get("BOT", "nick").split()[0]
-		self.bot_user = config.get("BOT", "user").split()[0]
-		self.bot_real = config.get("BOT", "real")
-		self.obot = "%sAAAAAB" % self.services_id
-		self.obot_nick = config.get("OPERBOT", "nick").split()[0]
-		self.obot_user = config.get("OPERBOT", "user").split()[0]
-		self.obot_real = config.get("OPERBOT", "real")
+		
+		self.bot = "%sAAAAA1" % self.services_id
+		self.bot_nick = bots.get("1", "nick").split()[0]
+		self.bot_user = bots.get("1", "user").split()[0]
+		self.bot_real = bots.get("1", "real")
+		
 		self.oper_not = config.getboolean("OPERS", "notifications")
 		self.con = con
 		
@@ -238,13 +232,14 @@ class ServiceThread:
 				self.send(":%s PING %s %s" % (self.services_id, self.services_id, data.split()[2]))
 			elif data.split()[1] == "ENDBURST" and not _connected:
 				__builtin__._connected = True
-				self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, self.bot, time.time(), self.bot_nick, self.services_name, self.services_name, self.bot_user, self.services_address, time.time(), self.bot_real))
-				self.send(":%s OPERTYPE Service" % self.bot)
-				self.meta(self.bot, "accountname", self.bot_nick)
-				self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, self.obot, time.time(), self.obot_nick, self.services_name, self.services_name, self.obot_user, self.services_address, time.time(), self.obot_real))
-				self.send(":%s OPERTYPE Service" % self.obot)
-				self.meta(self.obot, "accountname", self.obot_nick)
-				self.msg("$*", "Services are now back online. Have a nice day :)", obot=True)
+				
+				for bot in bots.sections():
+					botuid = self.services_id + "AAAAAA"[0:int(-1 - len(bots.get(bot, "nick")))] + bot
+					self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, botuid, time.time(), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, time.time(), bots.get(bot, "real")))
+					self.send(":%s OPERTYPE Service" % botuid)
+					self.meta(self.bot, "accountname", bots.get(bot, "nick"))
+					
+				self.msg("$*", "Services are now back online. Have a nice day :)")
 				self.msg("$*", "Please note that you have to login manually after a restart!")
 				
 				for channel in self.query("select name,modes,topic from channelinfo"):
@@ -270,90 +265,76 @@ class ServiceThread:
 							thread.start_new_thread(methodToCall, (data, ))
 							
 			if data.split()[1] == "PRIVMSG":
-				if data.split()[2] == self.bot:
-					iscmd = False
-					cmd = data.split()[3][1:]
+				for bot in bots.sections():
+					botuid = self.services_id + "AAAAAA"[0:int(-1 - len(bot))] + bot
 					
-					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0", cmd):
-						if os.access("modules/" + command["name"] + ".py", os.F_OK):
-							iscmd = True
-							
-							cmd_auth = int(command["auth"])
-							
-							moduleToCall = getattr(modules, command["name"])
-							classToCall = getattr(moduleToCall, command["name"])()
-							methodToCall = getattr(classToCall, "onCommand")
-							
-							if not cmd_auth:
-								if len(data.split()) == 4:
-									thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-								elif len(data.split()) > 4:
-									thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-							elif cmd_auth:
-								if self.auth(data.split()[0][1:]):
-									if len(data.split()) == 4:
-										thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-									elif len(data.split()) > 4:
-										thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-								else:
-									self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
-									
-					if not iscmd:
-						self.message(data.split()[0][1:], ' '.join(data.split()[3:])[1:])
-				elif data.split()[2] == self.obot:
-					if self.isoper(data.split()[0][1:]):
+					if data.split()[2] == botuid:
 						iscmd = False
 						cmd = data.split()[3][1:]
 						
-						for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 1", cmd):
+						for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `bot` = ?", cmd, bot):
 							if os.access("modules/" + command["name"] + ".py", os.F_OK):
 								iscmd = True
+								
+								cmd_auth = int(command["auth"])
+								cmd_oper = int(command["oper"])
 								
 								moduleToCall = getattr(modules, command["name"])
 								classToCall = getattr(moduleToCall, command["name"])()
 								methodToCall = getattr(classToCall, "onCommand")
 								
-								if len(data.split()) == 4:
-									thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-								elif len(data.split()) > 4:
-									thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-									
-						if not iscmd:
-							self.omessage(data.split()[0][1:], ' '.join(data.split()[3:])[1:])
-							
-				if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
-					if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
-						iscmd = False
-						fuid = data.split()[0][1:]
-						cmd = self.fantasy(data.split()[2])
-						
-						if len(data.split()[3]) > int(1+len(self.fantasy(data.split()[2]))):
-							fchan = data.split()[2]
-							cmd = data.split()[3][int(1+len(self.fantasy(fchan))):]
-							
-							if len(data.split()) > 4:
-								args = ' '.join(data.split()[4:]).replace("'", "\\'")
-								
-							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0", cmd):
-								if os.access("modules/" + command["name"] + ".py", os.F_OK):
-									iscmd = True
-									moduleToCall = getattr(modules, command["name"])
-									classToCall = getattr(moduleToCall, command["name"])()
-									methodToCall = getattr(classToCall, "onFantasy")
-									
-									if not classToCall.NEED_AUTH:
+								if cmd_oper and self.isoper(data.split()[0][1:]):
+									if len(data.split()) == 4:
+										thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
+									elif len(data.split()) > 4:
+										thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
+								elif not cmd_auth and not cmd_oper:
+									if len(data.split()) == 4:
+										thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
+									elif len(data.split()) > 4:
+										thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
+								elif cmd_auth and not cmd_oper:
+									if self.auth(data.split()[0][1:]):
 										if len(data.split()) == 4:
-											thread.start_new_thread(methodToCall, (fuid, fchan, ''))
+											thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 										elif len(data.split()) > 4:
-											thread.start_new_thread(methodToCall, (fuid, fchan, args))
-									elif classToCall.NEED_AUTH:
-										if self.auth(fuid):
+											thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
+									else:
+										self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+								
+					if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
+						if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
+							iscmd = False
+							fuid = data.split()[0][1:]
+							cmd = self.fantasy(data.split()[2])
+							
+							if len(data.split()[3]) > int(1+len(self.fantasy(data.split()[2]))):
+								fchan = data.split()[2]
+								cmd = data.split()[3][int(1+len(self.fantasy(fchan))):]
+								
+								if len(data.split()) > 4:
+									args = ' '.join(data.split()[4:]).replace("'", "\\'")
+									
+								for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0 AND `bot` = ?", cmd, bot):
+									if os.access("modules/" + command["name"] + ".py", os.F_OK):
+										iscmd = True
+										moduleToCall = getattr(modules, command["name"])
+										classToCall = getattr(moduleToCall, command["name"])()
+										methodToCall = getattr(classToCall, "onFantasy")
+										
+										if not classToCall.NEED_AUTH:
 											if len(data.split()) == 4:
 												thread.start_new_thread(methodToCall, (fuid, fchan, ''))
 											elif len(data.split()) > 4:
 												thread.start_new_thread(methodToCall, (fuid, fchan, args))
-										else:
-											self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+										elif classToCall.NEED_AUTH:
+											if self.auth(fuid):
+												if len(data.split()) == 4:
+													thread.start_new_thread(methodToCall, (fuid, fchan, ''))
+												elif len(data.split()) > 4:
+													thread.start_new_thread(methodToCall, (fuid, fchan, args))
+											else:
+												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
 										
 						if not iscmd:
 							if len(data.split()) == 4:
@@ -368,9 +349,6 @@ class ServiceThread:
 
 	def send_bot(self, content):
 		self.send(":" + self.bot + " " + content)
-		
-	def send_obot(self, content):
-		self.send(":" + self.obot + " " + content)
 
 	def send_serv(self, content):
 		self.send(":" + self.services_id + " " + content)
@@ -381,7 +359,7 @@ class ServiceThread:
 			
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
-			self.msg(row["uid"], "-" + self.services_name + "- " + content, obot=True)
+			self.msg(row["uid"], "-" + self.services_name + "- " + content)
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":
@@ -392,207 +370,6 @@ class ServiceThread:
 				self.flag(uid)
 				self.memo(content)
 
-	def message(self, source, text):
-		try:
-			if len(text.split()) > 0:
-				cmd = text.lower().split()[0]
-				arg = list()
-				args = ""
-				
-				if len(text.split()) > 1:
-					arg = text.split()[1:]
-					args = ' '.join(text.split()[1:])
-					
-				if cmd == "help":
-					self.msg(source, "The following commands are available to you.")
-					self.msg(source)
-					
-					if len(args) != 0:
-						if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
-							self.help(source, "HELP", "Shows information about all commands that are available to you")
-					else:
-						self.help(source, "HELP", "Shows information about all commands that are available to you")
-						
-					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 0 ORDER BY `command`"):
-						if os.access("modules/"+command["name"]+".py", os.F_OK):
-							cmd_auth = int(command["auth"])
-							cmd_help = command["help"]
-							
-							if not cmd_auth:
-								if len(args) != 0:
-									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
-										self.help(source, command["command"], cmd_help)
-								else:
-									self.help(source, command["command"], cmd_help)
-							elif cmd_auth and self.auth(source):
-								if len(args) != 0:
-									if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
-										self.help(source, command["command"], cmd_help)
-								else:
-									self.help(source, command["command"], cmd_help)
-									
-					self.msg(source)
-					self.msg(source, "End of list.")
-				else:
-					self.msg(source, "Unknown command {0}. Please try HELP for more information.".format(text.split()[0].upper()))
-			else:
-				self.msg(source, "Unknown command NULL. Please try HELP for more information.")
-		except Exception:
-			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://github.com/chiruclanDEdev/cDIS/issues)")
-			et, ev, tb = sys.exc_info()
-			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
-				
-			debug(red("*") + " <<MSG-ERROR>> "+str(e))
-
-	def omessage(self, source, text):
-		try:
-			if not self.isoper(source):
-				return 0
-				
-			if len(text.split()) > 0:
-				cmd = text.lower().split()[0]
-				arg = list()
-				args = ""
-				
-				if len(text.split()) > 1:
-					arg = text.split()[1:]
-					args = ' '.join(text.split()[1:])
-					
-				if cmd == "help":
-					self.msg(source, "The following commands are available to you.", obot=True)
-					self.msg(source, obot=True)
-					
-					for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `oper` = 1 ORDER BY `command`"):
-						if os.access("modules/"+command["name"]+".py", os.F_OK):
-							cmd_auth = command["auth"]
-							cmd_help = command["help"]
-							
-							if len(args) != 0:
-								if fnmatch.fnmatch(command["command"].lower(), "*" + args.lower() + "*"):
-									self.help(source, command["command"], cmd_help, obot=True)
-							else:
-								self.help(source, command["command"], cmd_help, obot=True)
-								
-					if len(args) != 0:
-						if fnmatch.fnmatch("reload", "*" + args.lower() + "*"):
-							self.help(source, "RELOAD", "Reloads the config", obot=True)
-					else:
-						self.help(source, "RELOAD", "Reloads the config", obot=True)
-						
-					if len(args) != 0:
-						if fnmatch.fnmatch("update", "*" + args.lower() + "*"):
-							self.help(source, "UPDATE", "Updates the services", obot=True)
-					else:
-						self.help(source, "UPDATE", "Updates the services", obot=True)
-						
-					if len(args) != 0:
-						if fnmatch.fnmatch("quit", "*" + args.lower() + "*"):
-							self.help(source, "QUIT", "Shutdowns the services", obot=True)
-					else:
-						self.help(source, "QUIT", "Shutdowns the services", obot=True)
-								
-					self.msg(source, obot=True)
-					
-					self.msg(source, "End of list.", obot=True)
-				elif cmd == "reload":
-					if not self.isoptype(source, "netadmin"):
-						self.msg(source, "Denied.", obot=True)
-						return None
-						
-					config.read("config.cfg")
-					self.debug = config.get("OTHER", "debug")
-					self.email = config.get("OTHER", "email")
-					self.regmail = config.get("OTHER", "regmail")
-					reload(modules)
-					
-					self.query("TRUNCATE `modules`")
-					for mods in dir(modules):
-						if os.access("modules/" + mods + ".py", os.F_OK):
-							moduleToCall = getattr(modules, mods)
-							classToCall = getattr(moduleToCall, mods)()
-							
-							self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP)
-							
-					self.msg(source, "Done.", obot=True)
-				elif cmd == "update":
-					if not self.isoptype(source, "netadmin"):
-						self.msg(source, "Denied.", obot=True)
-						return None
-						
-					_web = urllib2.urlopen("https://raw.github.com/chiruclanDEdev/cDIS/master/version")
-					_version = _web.read()
-					_web.close()
-					
-					if open("version", "r").read() != _version:
-						_updates = len(os.listdir("sql/updates"))
-						_hash = self.encode(open("cDIS.py", "r").read())
-						self.msg(source, "{0} -> {1}".format(open("version", "r").read(), _version), obot=True)
-						shell("git pull origin master")
-						_files = os.listdir("sql/updates")
-						__updates = len(_files)
-						
-						if __updates > _updates:
-							while _updates != __updates:
-								_updates += 1
-								
-								for sql in _files:
-									if sql.startswith(str(_updates)+"_"):
-										self.msg(source, " - Insert '{0}'".format(sql), obot=True)
-										file = open("sql/updates/"+sql, "r")
-										
-										for line in file.readlines():
-											self.query(line)
-											
-										file.close()
-										
-						if _hash != self.encode(open("cDIS.py", "r").read()):
-							self.msg(source, "Done.", obot=True)
-							self.msg(source, "Please note that you have to restart the services manually.", obot=True)
-						else:
-							self.msg(source, "Reload ...", obot=True)
-							reload(modules)
-									
-							self.query("TRUNCATE `modules`")
-							for mods in dir(modules):
-								if os.access("modules/" + mods + ".py", os.F_OK):
-									moduleToCall = getattr(modules, mods)
-									classToCall = getattr(moduleToCall, mods)()
-									
-									self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`) VALUES (?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP)
-									
-							self.msg(source, "Done.", obot=True)
-					else:
-						self.msg(source, "No update available.", obot=True)
-				elif cmd == "quit" and self.isoper(source):
-					if not self.isoptype(source, "netadmin"):
-						self.msg(source, "Denied.", obot=True)
-						return None
-						
-					if os.access("cDIS.pid", os.F_OK):
-						if len(arg) == 0:
-							msg = "Services are going offline."
-							self.send(":%s QUIT :%s" % (self.bot, msg))
-							self.send(":%s QUIT :%s" % (self.obot, msg))
-						else:
-							self.send(":%s QUIT :%s" % (self.bot, args))
-							self.send(":%s QUIT :%s" % (self.obot, args))
-							
-						self.send(":%s SQUIT %s" % (self.services_id, self.services_name))
-						self.con.close()
-						shell("sh cDIS stop")
-					else:
-						self.msg(source, "You're running the debug mode. You cannot restart via commands!", obot=True)
-				else:
-					self.msg(source, "Unknown command {0}. Please try HELP for more information.".format(text.split()[0].upper()), obot=True)
-			else:
-				self.msg(source, "Unknown command NULL. Please try HELP for more information.", obot=True)
-		except Exception:
-			self.msg(source, "An error has occured. Please notify the Development-Team about that issue. (Bugtracker: https://github.com/chiruclanDEdev/cDIS/issues)", obot=True)
-			et, ev, tb = sys.exc_info()
-			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
-				
-			debug(red("*") + " <<MSG-ERROR>> "+str(e))
-			
 	def regexflag (self, original, pattern, include_negatives = False):
 		pflags = ""
 		nflags = ""
@@ -663,8 +440,6 @@ class ServiceThread:
 	def uid (self, nick):
 		if nick == self.bot_nick:
 			return self.bot
-		elif nick == self.obot_nick:
-			return self.obot
 			
 		for data in self.query("select uid from online where nick = ?", nick):
 			return str(data["uid"])
@@ -674,8 +449,6 @@ class ServiceThread:
 	def nick (self, source):
 		if source == self.bot:
 			return self.bot_nick
-		elif source == self.obot:
-			return self.obot_nick
 			
 		for data in self.query("select nick from online where uid = ?", source):
 			return str(data["nick"])
@@ -685,8 +458,6 @@ class ServiceThread:
 	def user (self, user):
 		if user.lower() == self.bot_nick.lower():
 			return self.bot_nick
-		elif user.lower() == self.obot_nick.lower():
-			return self.obot_nick
 			
 		for data in self.query("select name from users where name = ?", user):
 			return str(data["name"])
@@ -714,8 +485,8 @@ class ServiceThread:
 	def push(self, target, message):
 		self.send(":{uid} PUSH {target} ::{message}".format(uid=self.services_id, target=target, message=message))
 
-	def help(self, target, command, description="", obot=False):
-		self.msg(target, command.upper()+" "*int(20-len(command))+description, obot=obot)
+	def help(self, target, command, description=""):
+		self.msg(target, command.upper()+" "*int(20-len(command))+description)
 
 	def ison(self, user, uid=False):
 		if not uid:
@@ -778,10 +549,8 @@ class ServiceThread:
 				
 		return False
 
-	def msg(self, target, text=" ", action=False, obot=False):
+	def msg(self, target, text=" ", action=False):
 		source = self.bot
-		if obot:
-			source = self.obot
 			
 		if self.userflag(target, "n") and not action:
 			self.send(":%s NOTICE %s :%s" % (source, target, text))
@@ -865,7 +634,7 @@ class ServiceThread:
 
 	def kill(self, target, reason="You're violating network rules"):
 		if not self.isoper(self.uid(target)):
-			self.send(":%s KILL %s :Killed (*.%s (%s (#%s)))" % (self.obot, self.uid(target), self.getservicedomain(), reason, str(self.killcount())))
+			self.send_serv("KILL %s :Killed (*.%s (%s (#%s)))" % (self.uid(target), self.getservicedomain(), reason, str(self.killcount())))
 
 	def vhost(self, target):
 		if not self.gateway(target):
@@ -1282,9 +1051,9 @@ class ServiceThread:
 					self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + ip, etime)
 					
 			for data in self.query("select uid from online where address = ?", self.getip(uid)):
-				self.send(":"+self.obot+" KILL "+data["uid"]+" :G-lined")
+				self.send_serv("KILL "+data["uid"]+" :G-lined")
 				
-			self.send(":"+self.obot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
+			self.send_serv("GLINE *@"+ip+" "+str(bantime)+" :"+reason)
 			self.send_to_op("#G-line# *@" + ip + " added (" + self.convert_timestamp(int(bantime)) + ")")
 
 	def suspended(self, channel):
@@ -1367,7 +1136,7 @@ class ServiceThread:
 
 	def isserv(self, uid):
 		uid = self.uid(uid)
-		if uid == self.bot or uid == self.obot:
+		if uid.startswith(self.services_id):
 			return True
 			
 		return False
@@ -1401,6 +1170,7 @@ class cDISModule:
 	NEED_AUTH = 0
 	MODULE_CLASS = ''
 	COMMAND = ''
+	BOT_ID = '0'
 
 	def __init__(self):
 		self.con = con
@@ -1424,22 +1194,11 @@ class cDISModule:
 		self.ssl = config.getboolean("OTHER", "ssl")
 		self.regmail = config.get("OTHER", "regmail")
 		
-		if self.NEED_OPER == 1:
-			self.bot = "%sAAAAAB" % self.services_id
-			self.bot_nick = config.get("OPERBOT", "nick").split()[0]
-			self.bot_user = config.get("OPERBOT", "user").split()[0]
-			self.bot_real = config.get("OPERBOT", "real")
-		else:
-			self.bot = "%sAAAAAA" % self.services_id
-			self.bot_nick = config.get("BOT", "nick").split()[0]
-			self.bot_user = config.get("BOT", "user").split()[0]
-			self.bot_real = config.get("BOT", "real")
-			
-		self.obot = "%sAAAAAB" % self.services_id
-		self.obot_nick = config.get("OPERBOT", "nick").split()[0]
-		self.obot_user = config.get("OPERBOT", "user").split()[0]
-		self.obot_real = config.get("OPERBOT", "real")
-			
+		self.bot = self.services_id + "AAAAAA"[0:int(-1 - len(self.BOT_ID))] + self.BOT_ID
+		self.bot_nick = bots.get(self.BOT_ID, "nick")
+		self.bot_user = bots.get(self.BOT_ID, "user")
+		self.bot_real = bots.get(self.BOT_ID, "real")
+		
 		self.oper_not = config.getboolean("OPERS", "notifications")
 
 	def onCommand(self, uid, arguments):
@@ -1577,9 +1336,6 @@ class cDISModule:
 
 	def send_bot(self, content):
 		self.send(":" + self.bot + " " + content)
-		
-	def send_obot(self, content):
-		self.send(":" + self.obot + " " + content)
 
 	def send_serv(self, content):
 		self.send(":" + self.services_id + " " + content)
@@ -1590,7 +1346,7 @@ class cDISModule:
 			
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
-			self.msg(row["uid"], "-" + self.services_name + "- " + content, obot=True)
+			self.msg(row["uid"], "-" + self.services_name + "- " + content)
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":
@@ -1623,8 +1379,6 @@ class cDISModule:
 	def user (self, user):
 		if user.lower() == self.bot_nick.lower():
 			return self.bot_nick
-		elif user.lower() == self.obot_nick.lower():
-			return self.obot_nick
 			
 		for data in self.query("select name from users where name = ?", user):
 			return str(data["name"])
@@ -1716,10 +1470,8 @@ class cDISModule:
 				
 		return False
 
-	def msg(self, target, text=" ", action=False, obot=False):
+	def msg(self, target, text=" ", action=False):
 		source = self.bot
-		if obot:
-			source = self.obot
 			
 		if self.userflag(target, "n") and not action:
 			self.send(":%s NOTICE %s :%s" % (source, target, text))
@@ -1803,7 +1555,7 @@ class cDISModule:
 
 	def kill(self, target, reason="You're violating network rules"):
 		if not self.isoper(self.uid(target)):
-			self.send(":%s KILL %s :Killed (*.%s (%s (#%s)))" % (self.obot, self.uid(target), self.getservicedomain(), reason, str(self.killcount())))
+			self.send_serv("KILL %s :Killed (*.%s (%s (#%s)))" % (self.uid(target), self.getservicedomain(), reason, str(self.killcount())))
 
 	def vhost(self, target):
 		if not self.gateway(target):
@@ -1816,21 +1568,21 @@ class cDISModule:
 				if str(data["vhost"]).find("@") != -1:
 					vident = vhost.split("@")[0]
 					vhost = vhost.split("@")[1]
-					self.send(":%s CHGIDENT %s %s" % (self.obot, target, vident))
+					self.send(":%s CHGIDENT %s %s" % (self.bot, target, vident))
 					
-				self.send(":%s CHGHOST %s %s" % (self.obot, target, vhost))
+				self.send(":%s CHGHOST %s %s" % (self.bot, target, vhost))
 				self.msg(target, "Your vhost %s has been activated" % data["vhost"])
 				
 			if not entry:
 				if not self.userflag(target, "x"):
-					self.send(":%s CHGIDENT %s %s" % (self.obot, target, self.getident(target)))
-					self.send(":%s CHGHOST %s %s" % (self.obot, target, self.gethost(target)))
+					self.send(":%s CHGIDENT %s %s" % (self.bot, target, self.getident(target)))
+					self.send(":%s CHGHOST %s %s" % (self.bot, target, self.gethost(target)))
 				else:
-					self.send(":%s CHGIDENT %s %s" % (self.obot, target, self.getident(target)))
-					self.send(":%s CHGHOST %s %s.users.%s" % (self.obot, target, self.auth(target), self.getservicedomain()))
+					self.send(":%s CHGIDENT %s %s" % (self.bot, target, self.getident(target)))
+					self.send(":%s CHGHOST %s %s.users.%s" % (self.bot, target, self.auth(target), self.getservicedomain()))
 		else:
 			username = self.userhost(target).split("@")[0]
-			self.send(":%s CHGIDENT %s %s" % (self.obot, target, username))
+			self.send(":%s CHGIDENT %s %s" % (self.bot, target, username))
 			crypthost = self.encode_md5(target + ":" + self.nick(target) + "!" + self.userhost(target))
 			self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, target, crypthost, self.getservicedomain()))
 			self.msg(target, "Your vhost %s.gateway.%s has been activated" % (crypthost, self.getservicedomain()))
@@ -2156,9 +1908,9 @@ class cDISModule:
 					self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + ip, etime)
 					
 			for data in self.query("select uid from online where address = ?", self.getip(uid)):
-				self.send(":"+self.obot+" KILL "+data["uid"]+" :G-lined")
+				self.send_serv("KILL "+data["uid"]+" :G-lined")
 				
-			self.send(":"+self.obot+" GLINE *@"+ip+" "+str(bantime)+" :"+reason)
+			self.send_serv("GLINE *@"+ip+" "+str(bantime)+" :"+reason)
 			self.send_to_op("#G-line# *@" + ip + " added (" + self.convert_timestamp(int(bantime)) + ")")
 
 	def suspended(self, channel):
@@ -2241,7 +1993,7 @@ class cDISModule:
 
 	def isserv(self, uid):
 		uid = self.uid(uid)
-		if uid == self.bot or uid == self.obot:
+		if uid.startswith(self.services_id):
 			return True
 			
 		return False

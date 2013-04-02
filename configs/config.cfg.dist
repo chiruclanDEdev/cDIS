@@ -1,0 +1,32 @@
+[MYSQL]
+host = 
+port = 
+name = 
+user = 
+passwd = 
+
+[SERVER]
+name = 
+address = 
+port = 
+id = 
+password = 
+
+[SERVICES]
+name = 
+address = 
+id = 
+description = 
+
+[OPERS]
+notifications = True
+
+[OTHER]
+debug = 0
+email = 
+regmail = 1
+ipv6 = False
+ssl = False
+
+[INCLUDES]
+bots = bots.cfg

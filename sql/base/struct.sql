@@ -113,7 +113,8 @@ CREATE TABLE IF NOT EXISTS `modules` (
 	`oper` int(1) not null default 0,
 	`auth` int(1) not null default 0,
 	`command` varchar(255),
-	`help` varchar(255)
+	`help` varchar(255),
+	`bot` varchar(6) not null default '0'
 );
 
 DROP TABLE IF EXISTS `logs`;
