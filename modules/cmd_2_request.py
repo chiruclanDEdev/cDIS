@@ -1,9 +1,9 @@
-from cDIS import cDISModule, config
+from cDIS import cDISModule
 
 class cmd_2_request(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "REQUEST"
-	HELP = "Requests " + config.get("BOT", "nick") + " for your channel"
+	HELP = "Requests the channel service for your channel"
 	NEED_AUTH = 1
 	BOT_ID = '2'
 

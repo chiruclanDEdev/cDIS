@@ -1,9 +1,9 @@
-from cDIS import cDISModule, config
+from cDIS import cDISModule, config, bots
 
 class cmd_3_newpass(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "NEWPASS"
-	HELP = "Changes your password at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")
+	HELP = "Changes your password at " + bots.get("3", "nick") + "@" + config.get("SERVICES", "name")
 	NEED_AUTH = 1
 	BOT_ID = '3'
 

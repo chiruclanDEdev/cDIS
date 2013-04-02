@@ -1,9 +1,9 @@
-from cDIS import cDISModule, config
+from cDIS import cDISModule
 
 class cmd_2_remove(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "REMOVE"
-	HELP = "Removes " + config.get("BOT", "nick") + " from your channel"
+	HELP = "Removes the channel service from your channel"
 	NEED_AUTH = 1
 	BOT_ID = '2'
 

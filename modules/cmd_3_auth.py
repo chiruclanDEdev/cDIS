@@ -1,9 +1,9 @@
-from cDIS import cDISModule, config
+from cDIS import cDISModule, config, bots
 
 class cmd_3_auth(cDISModule):
 	MODULE_CLASS = "COMMAND"
 	COMMAND = "AUTH"
-	HELP = "Login with your account at " + config.get("BOT", "nick") + "@" + config.get("SERVICES", "name")
+	HELP = "Login with your account at " + bots.get("3", "nick") + "@" + config.get("SERVICES", "name")
 	BOT_ID = '3'
 
 	def onCommand(self, source, args):
