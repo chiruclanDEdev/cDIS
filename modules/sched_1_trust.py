@@ -1,7 +1,7 @@
 from cDIS import cDISModule
 import time
 
-class 1_sched_trust(cDISModule):
+class sched_1_trust(cDISModule):
 	MODULE_CLASS = "SCHEDULE"
 	NEED_OPER = 1
 	BOT_ID = '1'

@@ -1,7 +1,7 @@
 from cDIS import cDISModule
 import time
 
-class 1_sched_gline(cDISModule):
+class sched_1_gline(cDISModule):
 	MODULE_CLASS = "SCHEDULE"
 	NEED_OPER = 1
 	BOT_ID = '1'
