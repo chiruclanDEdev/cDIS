@@ -1195,7 +1195,7 @@ class cDISModule:
 		self.regmail = config.get("OTHER", "regmail")
 		
 		if self.BOT_ID == '0':
-			self.bot = self.services_id
+			self.bot = self.services_id + "AAAAA1"
 			self.bot_nick = "cDIS"
 			self.bot_user = "cDIS"
 			self.bot_real = "cDIS"
