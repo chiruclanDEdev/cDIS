@@ -17,7 +17,7 @@ class cmd_4_help(cDISModule):
 				if os.access("modules/"+command["name"]+".py", os.F_OK):
 					cmd_auth = int(command["auth"])
 					cmd_help = command["help"]
-					cmd_oper = (command["oper"])
+					cmd_oper = int(command["oper"])
 					
 					if cmd_oper == 0:
 						if cmd_auth == 0:
@@ -42,6 +42,3 @@ class cmd_4_help(cDISModule):
 						self.help(source, command["command"], cmd_help)
 		
 		self.msg(source, "End of list.")
-
-	def onFantasy(self, source, channel, args):
-		self.onCommand(source, args)

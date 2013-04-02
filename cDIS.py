@@ -249,7 +249,7 @@ class ServiceThread:
 						self.mode(channel["name"], channel["modes"])
 						
 					if self.chanflag("t", channel["name"]):
-						self.send(":{0} TOPIC {1} :{2}".format(self.bot, channel["name"], channel["topic"]))
+						self.send(":{0} TOPIC {1} :{2}".format(self.services_id, channel["name"], channel["topic"]))
 						
 						if self.chanflag("l", channel["name"]):
 							self.log(self.bot_nick, "topic", channel["name"], ":"+channel["topic"])
