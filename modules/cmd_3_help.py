@@ -1,4 +1,5 @@
 from cDIS import cDISModule
+import os
 
 class cmd_3_help(cDISModule):
 	MODULE_CLASS = "COMMAND"
