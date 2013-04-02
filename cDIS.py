@@ -234,7 +234,7 @@ class ServiceThread:
 				__builtin__._connected = True
 				
 				for bot in bots.sections():
-					botuid = self.services_id + bots.get(self.BOT_ID, "uuid")
+					botuid = self.services_id + bots.get(bot, "uuid")
 					self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, botuid, time.time(), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, time.time(), bots.get(bot, "real")))
 					self.send(":%s OPERTYPE Service" % botuid)
 					self.meta(self.bot, "accountname", bots.get(bot, "nick"))
