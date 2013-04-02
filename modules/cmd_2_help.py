@@ -27,7 +27,7 @@ class cmd_2_help(cDISModule):
 					elif cmd_oper == 1 and self.isoper(source):
 						self.help(source, command["command"], cmd_help)
 		else:
-			for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? AND `command` LIKE ?", self.BOT_ID, '%' + args + '%'):
+			for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? AND `command` LIKE ? ORDER BY `command`", self.BOT_ID, '%' + args + '%'):
 				if os.access("modules/"+command["name"]+".py", os.F_OK):
 					cmd_auth = int(command["auth"])
 					cmd_help = command["help"]
@@ -42,3 +42,6 @@ class cmd_2_help(cDISModule):
 						self.help(source, command["command"], cmd_help)
 		
 		self.msg(source, "End of list.")
+
+	def onFantasy(self, source, channel, args):
+		self.onCommand(source, args)

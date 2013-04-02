@@ -1,15 +1,15 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 7389179290d1a66f458f69a56c938de1
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py c920962573b4e6f63b49dd07b6122402
+cDIS.py 8b9f32dc3b26b438627ea95c87af24cd
 configs/bots.cfg.dist 11b706a200a12d2ba537339b04772ac3
 configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
-modules/cmd_1_help.py 176122dd439010850e6973ca1df25ab3
+modules/cmd_1_help.py ebecc54ec26c1d61625066e3c080233b
 modules/cmd_1_notify.py 1364ba4960e100d8331edb29347c99b6
 modules/cmd_1_update.py a6a1629dbb1d3c2e8bfb713372c6b6bb
-modules/cmd_2_help.py 65da58948d4c504fc300f93590f33119
+modules/cmd_2_help.py 20af1b883d0520c717a5cc7447dbcafc
 modules/cmd_2_remove.py 3f00a670b86fa699b62ebb78e1a7f273
 modules/cmd_2_request.py 3396fcdbfcc6fc194019119e1e257a22
 modules/cmd_3_auth.py fd7c84dd4b92b063b3f6a16271a969ea
@@ -28,7 +28,7 @@ modules/cmd_3_fantasy.py cfa3d32f323fccafb49e2d0a0f0ae672
 modules/cmd_3_feedback.py 83510968b08da3e53f76c09f94c65851
 modules/cmd_3_halfop.py 439e67e7508b4192f59e635a5b0f9beb
 modules/cmd_3_hello.py 8ce6f0b0399cc76d032d6a45d8120bb5
-modules/cmd_3_help.py 220e3213bf8979093dc5f7a7a947dfab
+modules/cmd_3_help.py 67e71a89b17bca223b63489bc995c2e0
 modules/cmd_3_invite.py 071e22291f040a1bc7078bfa670073fd
 modules/cmd_3_kick.py 6e25430171aad4944fefe8c3c009404d
 modules/cmd_3_logs.py 0e3624c2bcf8d58f77145cda9cf2422a
@@ -56,7 +56,7 @@ modules/cmd_4_domaincheck.py 47d1a8243055b353d1816cc37556d498
 modules/cmd_4_feedback.py 1f52e7bfbaf416050040ee3d3c3b92cd
 modules/cmd_4_gline.py 5515e9d484de33398e605382cc83dde0
 modules/cmd_4_hello.py b58c51ffc0e683ba3b7440d12c6b84c9
-modules/cmd_4_help.py f9e89772682736024f72cdba3d565079
+modules/cmd_4_help.py 262fb00cbb66edc88972e3222b13a550
 modules/cmd_4_hostinfo.py c5e8728405ae21f5e92bf51c38978baa
 modules/cmd_4_info.py 3de35cfb4c40bf9612e17a736c5e34c0
 modules/cmd_4_ircop.py fd9c069e87853a3da4fe1288bb774006
@@ -75,7 +75,7 @@ modules/cmd_4_trust.py 8eece79917d4b1ba49b0d497ff8fc1f6
 modules/cmd_4_userflags.py fa1df997ace7bddcd5cef2b70b919ce7
 modules/cmd_4_userlist.py 91a7a706f5e3fba5c531f857cf401b2a
 modules/cmd_4_vhost.py 1f18cd8f1af523baec6ec7ba4ae5447d
-modules/cmd_5_help.py 944146163db740a74d3945aefc7b5ab2
+modules/cmd_5_help.py 036f499bf15c4f8bd1c1785485dfd183
 modules/cmd_5_opers.py 7a1ed3ebafd8dc0f0b9ac455ecaac8ea
 modules/cmd_5_version.py e045669985f51a04d697221c9ab91fab
 modules/mod_0_idle.py a60432eb70c96feafa6c53835ec5ea59

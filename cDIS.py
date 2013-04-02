@@ -301,6 +301,9 @@ class ServiceThread:
 											thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
 									else:
 										self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+										
+						if not iscmd:
+							self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
 								
 					if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
 						if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
