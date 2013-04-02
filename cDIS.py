@@ -340,11 +340,7 @@ class ServiceThread:
 												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
 										
 						if not iscmd:
-							if len(data.split()) == 4:
-								self.message(fuid, cmd)
-							elif len(data.split()) > 4:
-								self.message(fuid, cmd + " " + args)
-								
+							self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
 		except Exception:
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
@@ -362,7 +358,7 @@ class ServiceThread:
 			
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
-			self.msg(row["uid"], "-" + self.services_name + "- " + content)
+			self.send_serv("PRIVMSG " + row["uid"] + " :-" + self.services_name + "- " + content)
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":
@@ -1355,7 +1351,7 @@ class cDISModule:
 			
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
-			self.msg(row["uid"], "-" + self.services_name + "- " + content)
+			self.send_serv("PRIVMSG " + row["uid"] + " :-" + self.services_name + "- " + content)
 
 	def metadata(self, uid, string, content):
 		if string == "accountname":

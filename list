@@ -1,14 +1,14 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 7389179290d1a66f458f69a56c938de1
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py c73f3df0a26f30797eab5c925d011afb
+cDIS.py 1fb559e491bc040e9c03824e40936bde
 configs/bots.cfg.dist 11b706a200a12d2ba537339b04772ac3
 configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
 modules/cmd_1_help.py b49855dba1ed1916b97923ff3a4905cf
 modules/cmd_1_notify.py 1364ba4960e100d8331edb29347c99b6
-modules/cmd_1_update.py a6a1629dbb1d3c2e8bfb713372c6b6bb
+modules/cmd_1_update.py 22491ced00f344f1ccdae98985f5f7a1
 modules/cmd_2_help.py bcdbb87f75b3f223483f6ddbb7cc4095
 modules/cmd_2_remove.py 3f00a670b86fa699b62ebb78e1a7f273
 modules/cmd_2_request.py 3396fcdbfcc6fc194019119e1e257a22
@@ -93,8 +93,8 @@ modules/mod_3_notice.py fce6a482ae737fd259a141f423ca1014
 modules/mod_3_part.py 9cb92f52b881c77fce6e3e7917cf963c
 modules/mod_3_privmsg.py 95175e2de6a090f847d1e9f50e3ebd62
 modules/mod_3_topic.py 2d14af5eba6e5f715052a0b0419c5569
-modules/sched_1_gline.py a582863c98ca20496ac8ffee202df541
-modules/sched_1_trust.py e3c8be1f27ca8f06fc17961426a1e85e
+modules/sched_0_gline.py d37c9c9f855d96b199751fb072c682f3
+modules/sched_0_trust.py a20a70cd3a5c37c80066c793f6b654cd
 modules/dev/cmd_memo.py 0bbaea022a1d555e27c0c21486213674
 sql/base/struct.sql d7c356a45a077db9807d99c60bb9f59b
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655

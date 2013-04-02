@@ -1,4 +1,4 @@
-from cDIS import cDISModule
+from cDIS import cDISModule, shell
 import urllib2
 
 class cmd_1_update(cDISModule):

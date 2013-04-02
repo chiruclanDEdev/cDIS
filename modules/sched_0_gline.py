@@ -1,10 +1,10 @@
 from cDIS import cDISModule
 import time
 
-class sched_1_gline(cDISModule):
+class sched_0_gline(cDISModule):
 	MODULE_CLASS = "SCHEDULE"
 	NEED_OPER = 1
-	BOT_ID = '1'
+	BOT_ID = '0'
 	
 	def onSchedule(self):
 		while True:
