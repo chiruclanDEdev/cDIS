@@ -1,29 +1,29 @@
 [1]
+uuid = AAAAAA
 nick = N
 user = TheNBot
 real = The N Bot
-uuid = AAAAAA
 
 [2]
+uuid = AAAAAB
 nick = R
 user = TheRBot
 real = The R Bot
-uuid = AAAAAB
 
 [3]
+uuid = AAAAAC
 nick = C
 user = TheCBot
 real = The C Bot
-uuid = AAAAAC
 
 [4]
+uuid = AAAAAD
 nick = O
 user = TheOBot
 real = The O Bot
-uuid = AAAAAD
 
 [5]
+uuid = AAAAAE
 nick = H
 user = TheHBot
 real = The H Bot
-uuid = AAAAAE
