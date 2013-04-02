@@ -249,7 +249,7 @@ class ServiceThread:
 						self.mode(channel["name"], channel["modes"])
 						
 					if self.chanflag("t", channel["name"]):
-						self.send(":{0} TOPIC {1} :{2}".format(self.services_id, channel["name"], channel["topic"]))
+						self.send(":{0} TOPIC {1} :{2}".format(self.bot, channel["name"], channel["topic"]))
 						
 						if self.chanflag("l", channel["name"]):
 							self.log(self.bot_nick, "topic", channel["name"], ":"+channel["topic"])
@@ -613,7 +613,7 @@ class ServiceThread:
 	def join(self, channel):
 		if self.chanexist(channel) and not self.suspended(channel):
 			self.send(":%s JOIN %s" % (self.services_id + bots.get("3", "uuid"), channel))
-			self.mode(channel, "+ryo {0} {0}".format(self.services_id))
+			self.mode(channel, "+ryo {0} {0}".format(self.bot))
 
 	def statistics(self):
 		stats = dict()
@@ -1540,7 +1540,7 @@ class cDISModule:
 	def join(self, channel):
 		if self.chanexist(channel) and not self.suspended(channel):
 			self.send(":%s JOIN %s" % (self.services_id + bots.get("3", "uuid"), channel))
-			self.mode(channel, "+ryo {0} {0}".format(self.services_id))
+			self.mode(channel, "+ryo {0} {0}".format(self.bot))
 
 	def statistics(self):
 		stats = dict()
