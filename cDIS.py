@@ -214,7 +214,7 @@ class ServiceThread:
 		self.ssl = config.getboolean("OTHER", "ssl")
 		self.regmail = config.get("OTHER", "regmail")
 		
-		self.bot = "%sAAAAA1" % self.services_id
+		self.bot = "%sAAAAAA" % self.services_id
 		self.bot_nick = bots.get("1", "nick").split()[0]
 		self.bot_user = bots.get("1", "user").split()[0]
 		self.bot_real = bots.get("1", "real")
@@ -234,7 +234,7 @@ class ServiceThread:
 				__builtin__._connected = True
 				
 				for bot in bots.sections():
-					botuid = self.services_id + "AAAAAA"[0:int(-1 - len(bots.get(bot, "nick")))] + bot
+					botuid = self.services_id + bots.get(self.BOT_ID, "uuid")
 					self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, botuid, time.time(), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, time.time(), bots.get(bot, "real")))
 					self.send(":%s OPERTYPE Service" % botuid)
 					self.meta(self.bot, "accountname", bots.get(bot, "nick"))
@@ -266,7 +266,7 @@ class ServiceThread:
 							
 			if data.split()[1] == "PRIVMSG":
 				for bot in bots.sections():
-					botuid = self.services_id + "AAAAAA"[0:int(-1 - len(bot))] + bot
+					botuid = self.services_id + bots.get(bot, "uuid")
 					
 					if data.split()[2] == botuid:
 						iscmd = False
@@ -1195,12 +1195,12 @@ class cDISModule:
 		self.regmail = config.get("OTHER", "regmail")
 		
 		if self.BOT_ID == '0':
-			self.bot = self.services_id + "AAAAA1"
+			self.bot = self.services_id
 			self.bot_nick = "cDIS"
 			self.bot_user = "cDIS"
 			self.bot_real = "cDIS"
 		else:
-			self.bot = self.services_id + "AAAAAA"[0:int(-1 - len(self.BOT_ID))] + self.BOT_ID
+			self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
 			self.bot_nick = bots.get(self.BOT_ID, "nick")
 			self.bot_user = bots.get(self.BOT_ID, "user")
 			self.bot_real = bots.get(self.BOT_ID, "real")
