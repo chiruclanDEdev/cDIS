@@ -1194,10 +1194,16 @@ class cDISModule:
 		self.ssl = config.getboolean("OTHER", "ssl")
 		self.regmail = config.get("OTHER", "regmail")
 		
-		self.bot = self.services_id + "AAAAAA"[0:int(-1 - len(self.BOT_ID))] + self.BOT_ID
-		self.bot_nick = bots.get(self.BOT_ID, "nick")
-		self.bot_user = bots.get(self.BOT_ID, "user")
-		self.bot_real = bots.get(self.BOT_ID, "real")
+		if self.BOT_ID == '0':
+			self.bot = self.services_id
+			self.bot_nick = "cDIS"
+			self.bot_user = "cDIS"
+			self.bot_real = "cDIS"
+		else:
+			self.bot = self.services_id + "AAAAAA"[0:int(-1 - len(self.BOT_ID))] + self.BOT_ID
+			self.bot_nick = bots.get(self.BOT_ID, "nick")
+			self.bot_user = bots.get(self.BOT_ID, "user")
+			self.bot_real = bots.get(self.BOT_ID, "real")
 		
 		self.oper_not = config.getboolean("OPERS", "notifications")
 
