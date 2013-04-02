@@ -300,10 +300,10 @@ class ServiceThread:
 										elif len(data.split()) > 4:
 											thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
 									else:
-										self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()))
+										self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 										
 						if not iscmd:
-							self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), botuid)
+							self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 								
 					if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
 						if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
@@ -337,10 +337,10 @@ class ServiceThread:
 												elif len(data.split()) > 4:
 													thread.start_new_thread(methodToCall, (fuid, fchan, args))
 											else:
-												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), botuid)
+												self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 										
 						if not iscmd:
-							self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), botuid)
+							self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 		except Exception:
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
