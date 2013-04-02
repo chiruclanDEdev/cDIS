@@ -1,5 +1,5 @@
 from cDIS import cDISModule, shell
-import urllib2
+import urllib2, os
 
 class cmd_1_update(cDISModule):
 	MODULE_CLASS = "COMMAND"

@@ -8,7 +8,7 @@ docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
 modules/__init__.py c0e73dfb1dff6eb20c5a18625a556b69
 modules/cmd_1_help.py b49855dba1ed1916b97923ff3a4905cf
 modules/cmd_1_notify.py 1364ba4960e100d8331edb29347c99b6
-modules/cmd_1_update.py 22491ced00f344f1ccdae98985f5f7a1
+modules/cmd_1_update.py d534de8031df744330d771c0fa2704c6
 modules/cmd_2_help.py bcdbb87f75b3f223483f6ddbb7cc4095
 modules/cmd_2_remove.py 3f00a670b86fa699b62ebb78e1a7f273
 modules/cmd_2_request.py 3396fcdbfcc6fc194019119e1e257a22
