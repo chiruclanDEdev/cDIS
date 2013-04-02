@@ -613,7 +613,7 @@ class ServiceThread:
 	def join(self, channel):
 		if self.chanexist(channel) and not self.suspended(channel):
 			self.send(":%s JOIN %s" % (self.services_id + bots.get("3", "uuid"), channel))
-			self.mode(channel, "+ryo {0} {0}".format(self.bot))
+			self.mode(channel, "+ryo {0} {0}".format(self.services_id + bots.get("3", "uuid")))
 
 	def statistics(self):
 		stats = dict()
@@ -1540,7 +1540,7 @@ class cDISModule:
 	def join(self, channel):
 		if self.chanexist(channel) and not self.suspended(channel):
 			self.send(":%s JOIN %s" % (self.services_id + bots.get("3", "uuid"), channel))
-			self.mode(channel, "+ryo {0} {0}".format(self.bot))
+			self.mode(channel, "+ryo {0} {0}".format(self.services_id + bots.get("3", "uuid")))
 
 	def statistics(self):
 		stats = dict()
