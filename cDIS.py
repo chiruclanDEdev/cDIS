@@ -1166,6 +1166,7 @@ class cDISModule:
 	import _mysql
 	import traceback
 	import fnmatch
+	import traceback
 	import __builtin__
 	
 	HELP = ''
@@ -1225,14 +1226,17 @@ class cDISModule:
 		
 	def runSchedule(self):
 		if self.TIMER <= 0:
+			debug(red("*") + " <<ERROR>> runSchedule -> TIMER <= 0")
 			return 0
 			
 		while True:
 			start = int(time())
 			try:
 				self.onSchedule()
-			except:
-				pass
+			except Exception:
+				et, ev, tb = sys.exc_info()
+				e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
+				debug(red("*") + " <<ERROR>> " + str(e))
 				
 			try:
 				stop = int(time())
@@ -1243,7 +1247,10 @@ class cDISModule:
 					next = next + self.TIMER
 					
 				time.sleep(next)
-			except:
+			except Exception:
+				et, ev, tb = sys.exc_info()
+				e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
+				debug(red("*") + " <<ERROR>> " + str(e))
 				return 0
 				
 	def regexflag (self, original, pattern, include_negatives = False):
