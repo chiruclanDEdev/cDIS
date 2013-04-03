@@ -1,29 +1,35 @@
-[1]
+[0]
 uuid = AAAAAA
+nick = G
+user = global
+real = Global helber
+
+[1]
+uuid = AAAAAB
 nick = N
 user = TheNBot
 real = The N Bot
 
 [2]
-uuid = AAAAAB
+uuid = AAAAAC
 nick = R
 user = TheRBot
 real = The R Bot
 
 [3]
-uuid = AAAAAC
+uuid = AAAAAD
 nick = C
 user = TheCBot
 real = The C Bot
 
 [4]
-uuid = AAAAAD
+uuid = AAAAAE
 nick = O
 user = TheOBot
 real = The O Bot
 
 [5]
-uuid = AAAAAE
+uuid = AAAAAF
 nick = H
 user = TheHBot
 real = The H Bot
