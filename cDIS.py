@@ -280,43 +280,77 @@ class cDISModule:
 						iscmd = False
 						cmd = data.split()[3][1:]
 						
-						for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `bot` = ?", cmd, bot):
-							if os.access("modules/" + command["name"] + ".py", os.F_OK):
-								iscmd = True
-								
-								cmd_auth = int(command["auth"])
-								cmd_oper = int(command["oper"])
-								
-								moduleToCall = getattr(modules, command["name"])
-								classToCall = getattr(moduleToCall, command["name"])()
-								methodToCall = getattr(classToCall, "onCommand")
-								
-								if cmd_oper and self.isoper(data.split()[0][1:]):
-									if len(data.split()) == 4:
-										thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-									elif len(data.split()) > 4:
-										thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-								elif not cmd_auth and not cmd_oper:
-									if len(data.split()) == 4:
-										thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-									elif len(data.split()) > 4:
-										thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-								elif cmd_auth and not cmd_oper:
-									if self.auth(data.split()[0][1:]):
+						if cmd.lower() == "help":
+							arg = data.split()[4:]
+							self.msg(source, "The following commands are available to you.")
+							
+							if len(arg) == 0:
+								for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? ORDER BY `command`", bot):
+									if os.access("modules/"+command["name"]+".py", os.F_OK):
+										cmd_auth = int(command["auth"])
+										cmd_help = command["help"]
+										cmd_oper = int(command["oper"])
+										
+										if cmd_oper == 0:
+											if cmd_auth == 0:
+												self.help(source, command["command"], cmd_help)
+											elif cmd_auth == 1 and self.auth(source) != 0:
+												self.help(source, command["command"], cmd_help)
+										elif cmd_oper == 1 and self.isoper(source):
+											self.help(source, command["command"], cmd_help)
+							else:
+								for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? AND `command` LIKE ? ORDER BY `command`", bot, '%' + args + '%'):
+									if os.access("modules/"+command["name"]+".py", os.F_OK):
+										cmd_auth = int(command["auth"])
+										cmd_help = command["help"]
+										cmd_oper = int(command["oper"])
+										
+										if cmd_oper == 0:
+											if cmd_auth == 0:
+												self.help(source, command["command"], cmd_help)
+											elif cmd_auth == 1 and self.auth(source) != 0:
+												self.help(source, command["command"], cmd_help)
+										elif cmd_oper == 1 and self.isoper(source):
+											self.help(source, command["command"], cmd_help)
+							
+							self.msg(source, "End of list.")
+						else:
+							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `bot` = ?", cmd, bot):
+								if os.access("modules/" + command["name"] + ".py", os.F_OK):
+									iscmd = True
+									
+									cmd_auth = int(command["auth"])
+									cmd_oper = int(command["oper"])
+									
+									moduleToCall = getattr(modules, command["name"])
+									classToCall = getattr(moduleToCall, command["name"])()
+									methodToCall = getattr(classToCall, "onCommand")
+									
+									if cmd_oper and self.isoper(data.split()[0][1:]):
 										if len(data.split()) == 4:
 											thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
 										elif len(data.split()) > 4:
 											thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-									else:
-										self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
-										
+									elif not cmd_auth and not cmd_oper:
+										if len(data.split()) == 4:
+											thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
+										elif len(data.split()) > 4:
+											thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
+									elif cmd_auth and not cmd_oper:
+										if self.auth(data.split()[0][1:]):
+											if len(data.split()) == 4:
+												thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
+											elif len(data.split()) > 4:
+												thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
+										else:
+											self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
+											
 						if not iscmd:
 							self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 								
 				if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
 					if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
 						botuid = self.services_id + bots.get("3", "uuid")
-						iscmd = False
 						fuid = data.split()[0][1:]
 						cmd = self.fantasy(data.split()[2])
 						
@@ -329,7 +363,6 @@ class cDISModule:
 								
 							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0 AND `bot` = '3'", cmd):
 								if os.access("modules/" + command["name"] + ".py", os.F_OK):
-									iscmd = True
 									moduleToCall = getattr(modules, command["name"])
 									classToCall = getattr(moduleToCall, command["name"])()
 									methodToCall = getattr(classToCall, "onFantasy")
@@ -345,11 +378,6 @@ class cDISModule:
 												thread.start_new_thread(methodToCall, (fuid, fchan, ''))
 											elif len(data.split()) > 4:
 												thread.start_new_thread(methodToCall, (fuid, fchan, args))
-										else:
-											self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
-									
-					if not iscmd:
-						self.msg(fuid, "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 		except Exception:
 			et, ev, tb = sys.exc_info()
 			e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
