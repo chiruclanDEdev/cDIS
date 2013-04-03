@@ -155,7 +155,7 @@ class Services:
 					classToCall = getattr(moduleToCall, mods)()
 					
 					if classToCall.MODULE_CLASS == "SCHEDULE":
-						methodToCall = getattr(classToCall, "onSchedule")
+						methodToCall = getattr(classToCall, "runSchedule")
 						thread.start_new_thread(methodToCall, ())
 						
 					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`, `bot`) VALUES (?, ?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
@@ -1174,6 +1174,7 @@ class cDISModule:
 	MODULE_CLASS = ''
 	COMMAND = ''
 	BOT_ID = '0'
+	TIMER = 0
 
 	def __init__(self):
 		self.con = con
@@ -1222,6 +1223,29 @@ class cDISModule:
 	def onSchedule(self):
 		pass
 		
+	def runSchedule(self):
+		if self.TIMER <= 0:
+			return 0
+			
+		while True:
+			start = int(time())
+			try:
+				self.onSchedule()
+			except:
+				pass
+				
+			try:
+				stop = int(time())
+				elapsed = stop - start
+				next = self.TIMER - elapsed
+				
+				while next <= 0:
+					next = next + self.TIMER
+					
+				time.sleep(next)
+			except:
+				return 0
+				
 	def regexflag (self, original, pattern, include_negatives = False):
 		pflags = ""
 		nflags = ""
