@@ -1230,7 +1230,8 @@ class cDISModule:
 			return 0
 			
 		while True:
-			start = int(time())
+			start = int(time.time())
+			
 			try:
 				self.onSchedule()
 			except Exception:
@@ -1239,7 +1240,7 @@ class cDISModule:
 				debug(red("*") + " <<ERROR>> " + str(e))
 				
 			try:
-				stop = int(time())
+				stop = int(time.time())
 				elapsed = stop - start
 				next = self.TIMER - elapsed
 				
