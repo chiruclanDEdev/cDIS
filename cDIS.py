@@ -280,7 +280,8 @@ class cDISModule:
 						cmd = data.split()[3][1:]
 						
 						if cmd.lower() == "help":
-							self.BOT_ID = bot
+							self.bot = self.services_id + bots.get(bot, "uuid")
+							
 							source = data.split()[0][1:]
 							args = ' '.join(data.split()[4:])
 							arg = args.split()
@@ -322,7 +323,7 @@ class cDISModule:
 							
 							self.msg(source, "End of list.")
 							
-							self.BOT_ID = '0'
+							self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
 						else:
 							iscmd = False
 							
