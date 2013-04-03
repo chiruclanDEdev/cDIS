@@ -281,10 +281,14 @@ class cDISModule:
 						cmd = data.split()[3][1:]
 						
 						if cmd.lower() == "help":
-							arg = data.split()[4:]
+							source = data.split()[2]
+							args = ' '.join(data.split()[4:])
+							arg = args.split()
 							self.msg(source, "The following commands are available to you.")
 							
 							if len(arg) == 0:
+								self.help(source, "HELP", "Shows information about all commands that are available to you")
+								
 								for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? ORDER BY `command`", bot):
 									if os.access("modules/"+command["name"]+".py", os.F_OK):
 										cmd_auth = int(command["auth"])
@@ -299,6 +303,9 @@ class cDISModule:
 										elif cmd_oper == 1 and self.isoper(source):
 											self.help(source, command["command"], cmd_help)
 							else:
+								if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
+									self.help(source, "HELP", "Shows information about all commands that are available to you")
+									
 								for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? AND `command` LIKE ? ORDER BY `command`", bot, '%' + args + '%'):
 									if os.access("modules/"+command["name"]+".py", os.F_OK):
 										cmd_auth = int(command["auth"])
