@@ -1157,18 +1157,6 @@ class ServiceThread:
 		return False
 
 class cDISModule:
-	import sys
-	import os
-	import time
-	import ConfigParser
-	import hashlib
-	import smtplib
-	import _mysql
-	import traceback
-	import fnmatch
-	import traceback
-	import __builtin__
-	
 	HELP = ''
 	NEED_OPER = 0
 	NEED_AUTH = 0
@@ -1178,6 +1166,18 @@ class cDISModule:
 	TIMER = 0
 
 	def __init__(self):
+		import sys
+		import os
+		import time
+		import ConfigParser
+		import hashlib
+		import smtplib
+		import _mysql
+		import traceback
+		import fnmatch
+		import traceback
+		import __builtin__
+		
 		self.con = con
 		self.mysql_host = config.get("MYSQL", "host")
 		self.mysql_port = config.getint("MYSQL", "port")
