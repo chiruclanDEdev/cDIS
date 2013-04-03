@@ -277,11 +277,10 @@ class cDISModule:
 					botuid = self.services_id + bots.get(bot, "uuid")
 					
 					if data.split()[2] == botuid:
-						iscmd = False
 						cmd = data.split()[3][1:]
 						
 						if cmd.lower() == "help":
-							source = data.split()[2]
+							source = data.split()[0][1:]
 							args = ' '.join(data.split()[4:])
 							arg = args.split()
 							self.msg(source, "The following commands are available to you.")
@@ -322,6 +321,8 @@ class cDISModule:
 							
 							self.msg(source, "End of list.")
 						else:
+							iscmd = False
+							
 							for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `bot` = ?", cmd, bot):
 								if os.access("modules/" + command["name"] + ".py", os.F_OK):
 									iscmd = True
@@ -352,8 +353,8 @@ class cDISModule:
 										else:
 											self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 											
-						if not iscmd:
-							self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
+							if not iscmd:
+								self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
 								
 				if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
 					if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
