@@ -1,4 +1,5 @@
 from cDIS import cDISModule
+import time
 
 class sched_0_gline(cDISModule):
 	MODULE_CLASS = "SCHEDULE"

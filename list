@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 2b3d21e89eca16c6c74b52f9c545d47b
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py 3b3aa4a88b532588743011da911bcbaf
+cDIS.py 37625cd495709aec4c89d0d1a96d48e6
 configs/bots.cfg.dist 11b706a200a12d2ba537339b04772ac3
 configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
@@ -93,8 +93,8 @@ modules/mod_3_notice.py fce6a482ae737fd259a141f423ca1014
 modules/mod_3_part.py 9cb92f52b881c77fce6e3e7917cf963c
 modules/mod_3_privmsg.py 95175e2de6a090f847d1e9f50e3ebd62
 modules/mod_3_topic.py 2d14af5eba6e5f715052a0b0419c5569
-modules/sched_0_gline.py 4c6e43784369e6fb0371215d59465225
-modules/sched_0_trust.py 40b38231984aafb26f77d2960a214bca
+modules/sched_0_gline.py fa0bfa666d790ef85ead9fbb090f6d86
+modules/sched_0_trust.py 0680505fbba4135372d6b3b1cd541b61
 modules/dev/cmd_memo.py 0bbaea022a1d555e27c0c21486213674
 sql/base/struct.sql d7c356a45a077db9807d99c60bb9f59b
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
