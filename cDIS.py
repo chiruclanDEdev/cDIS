@@ -245,11 +245,12 @@ class cDISModule:
 					botuid = self.services_id + bots.get(bot, "uuid")
 					self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, botuid, time.time(), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, time.time(), bots.get(bot, "real")))
 					self.send(":%s OPERTYPE Service" % botuid)
-					self.meta(self.bot, "accountname", bots.get(bot, "nick"))
+					self.meta(botuid, "accountname", bots.get(bot, "nick"))
 					
 				self.msg("$*", "Services are now back online. Have a nice day :)")
 				self.msg("$*", "Please note that you have to login manually after a restart!")
 				
+				self.bot = self.services_id + bots.get("3", "uuid")
 				for channel in self.query("select name,modes,topic from channelinfo"):
 					self.join(str(channel["name"]))
 					
@@ -259,9 +260,7 @@ class cDISModule:
 					if self.chanflag("t", channel["name"]):
 						self.send(":{0} TOPIC {1} :{2}".format(self.bot, channel["name"], channel["topic"]))
 						
-						if self.chanflag("l", channel["name"]):
-							self.log(self.bot_nick, "topic", channel["name"], ":"+channel["topic"])
-							
+				self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
 			else:
 				for module in self.query("SELECT * FROM `modules` WHERE `class` = ?", data.split()[1]):
 					if os.access("modules/" + module["name"] + ".py", os.F_OK):
