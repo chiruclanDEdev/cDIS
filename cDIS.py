@@ -826,6 +826,8 @@ class cDISModule:
 		account = self.auth(target)
 		if account != 0:
 			if channel != "":
+				_flag = ''
+				
 				for flag in self.query("select flag,channel from channels where user = ? and channel = ?", account, channel):
 					if flag["flag"] == "n" or flag["flag"] == "q":
 						self.mode(flag["channel"], "+qo " + target + " " + target)
@@ -839,13 +841,17 @@ class cDISModule:
 						self.mode(flag["channel"], "+v " + target)
 					elif flag["flag"] == "b":
 						self.kick(flag["channel"], target, "Banned.")
-					else:
-						if not self.chanflag("v", flag["channel"]):
-							self.mode(flag["channel"], "-qaohv {0} {0} {0} {0} {0}".format(target))
+						
+					_flag = flag["flag"]
+					
+				if _flag == '':
+					if self.chanexist(channel):
+						if not self.chanflag("v", channel):
+							self.mode(channel, "-qaohv {0} {0} {0} {0} {0}".format(target))
 						else:
-							self.mode(flag["channel"], "-qaoh {0} {0} {0} {0}".format(target))
+							self.mode(channel, "-qaoh {0} {0} {0} {0}".format(target))
 							
-					self.setuserchanflag(flag["channel"], target, flag["flag"].replace('n', 'q'))
+				self.setuserchanflag(channel, target, _flag.replace('n', 'q'))
 			else:
 				for flag in self.query("select flag,channel from channels where user = ? order by channel", account):
 					if flag["flag"] == "n" or flag["flag"] == "q":
