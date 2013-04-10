@@ -1,4 +1,4 @@
-from cDIS import cDISModule, shell
+from cDIS import cDISModule, shell, bots
 import urllib2, os, thread
 
 class cmd_1_update(cDISModule):
@@ -18,6 +18,7 @@ class cmd_1_update(cDISModule):
 		_web.close()
 		
 		if open("version", "r").read() != _version:
+			self.send_to_op("System: starting update...")
 			_updates = len(os.listdir("sql/updates"))
 			self.msg(source, "{0} -> {1}".format(open("version", "r").read(), _version))
 			shell("git pull origin master")
@@ -39,6 +40,15 @@ class cmd_1_update(cDISModule):
 							file.close()
 							
 			self.msg(source, "Done.")
+			
+			self.send_to_op("System: completing update...")
+			
+			message = "Services are restarting to complete an update. We will be back soon."
+			for bot in bots.sections():
+				self.send(":{sid}{uuid} QUIT :{msg}".format(sid=self.services_id, uuid=bots.get(bot, "uuid"), msg=message))
+			
+			self.send_to_op("System: restarting...")
+			self.send(":{sid} SQUIT :{msg}".format(sid=self.services_id, msg=message))
 			
 			thread.interrupt_main()
 			#self.msg(source, "Please note that you have to restart the services manually.")

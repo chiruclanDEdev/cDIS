@@ -747,7 +747,7 @@ class cDISModule:
 			
 		return False
 
-	def chanelusercount(self, channel):
+	def channelusercount(self, channel):
 		count = int(self.query("SELECT COUNT(*) c, `address` FROM `online` WHERE `uid` IN (SELECT `uid` FROM `chanlist` WHERE `channel` = ?) GROUP BY `address` HAVING `c` = 1", channel)[0]["c"])
 		return count
 		
