@@ -1047,10 +1047,10 @@ class cDISModule:
 	def currentuserchanflag(self, channel, target):
 		uid = self.uid(target)
 		
-		for data in self.query("SELECT `flag` FROM `chanlist` WHERE `uid` = ?", uid):
+		for data in self.query("SELECT `flag` FROM `chanlist` WHERE `uid` = ? AND `channel` = ?", uid, channel):
 			return data["flag"]
 			
-		return "-"
+		return ""
 
 	def setuserchanflag(self, channel, target, flag):
 		uid = self.uid(target)
