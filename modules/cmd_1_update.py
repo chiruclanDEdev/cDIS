@@ -1,5 +1,5 @@
 from cDIS import cDISModule, shell
-import urllib2, os
+import urllib2, os, thread
 
 class cmd_1_update(cDISModule):
 	MODULE_CLASS = "COMMAND"
@@ -39,4 +39,8 @@ class cmd_1_update(cDISModule):
 							file.close()
 							
 			self.msg(source, "Done.")
-			self.msg(source, "Please note that you have to restart the services manually.")
+			
+			thread.interrupt_main()
+			#self.msg(source, "Please note that you have to restart the services manually.")
+		else:
+			self.msg(source, "No update available.")

@@ -1213,7 +1213,7 @@ class cDISModule:
 			return True
 		elif self.getconns(user_ip) == limit:
 			for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", user_ip, user_host):
-				self.msg(nick["uid"], "Your IP is scratching the connection limit. If you need more connections please request a trust.")
+				self.msg(row["uid"], "Your IP is scratching the connection limit. If you need more connections please request a trust.")
 				
 		return False
 
