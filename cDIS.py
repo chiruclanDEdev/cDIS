@@ -1274,3 +1274,6 @@ if __name__ == "__main__":
 		print(red("*") + " " + str(e))
 	except KeyboardInterrupt:
 		print(red("*") + " Aborting ... STRG +C")
+		
+		if os.access("cDIS.pid", os.F_OK):
+			shell("sh cDIS restart")
