@@ -762,7 +762,7 @@ class cDISModule:
 		if self.chanexist(channel) and not self.suspended(channel):
 			self.send(":%s JOIN %s" % (self.services_id + bots.get("3", "uuid"), channel))
 			self.mode(channel, "+ryo {0} {0}".format(self.services_id + bots.get("3", "uuid")))
-			self.send_serv("NAMES " + channel)
+			self.push(self.services_id, self.bot + " NAMES " + channel)
 
 	def statistics(self):
 		stats = dict()
@@ -840,6 +840,13 @@ class cDISModule:
 						self.mode(flag["channel"], "+v " + target)
 					elif flag["flag"] == "b":
 						self.kick(flag["channel"], target, "Banned.")
+					else:
+						if not self.chanflag("v", flag["channel"]):
+							self.mode(flag["channel"], "-qaohv {0} {0} {0} {0} {0}".format(target))
+						else:
+							self.mode(flag["channel"], "-qaoh {0} {0} {0} {0}".format(target))
+							
+					self.setuserchanflag(flag["channel"], target, flag["flag"].replace('n', 'q'))
 			else:
 				for flag in self.query("select flag,channel from channels where user = ? order by channel", account):
 					if flag["flag"] == "n" or flag["flag"] == "q":
@@ -854,6 +861,13 @@ class cDISModule:
 						self.mode(flag["channel"], "+v " + target)
 					elif flag["flag"] == "b":
 						self.kick(flag["channel"], target, "Banned.")
+					else:
+						if not self.chanflag("v", flag["channel"]):
+							self.mode(flag["channel"], "-qaohv {0} {0} {0} {0} {0}".format(target))
+						else:
+							self.mode(flag["channel"], "-qaoh {0} {0} {0} {0}".format(target))
+							
+					self.setuserchanflag(flag["channel"], target, flag["flag"].replace('n', 'q'))
 
 	def autojoin(self, target):
 		user = self.auth(target)
