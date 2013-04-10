@@ -42,6 +42,8 @@ class mod_3_join(cDISModule):
 				self.kick(jchan, juid, "Banned.")
 				hasflag = True
 				
+			self.setuserchanflag(jchan, juid, flag["flag"].replace('n', 'q'))
+			
 		if not hasflag:
 			if self.chanflag("v", jchan):
 				self.mode(jchan, "+v %s" % juid)

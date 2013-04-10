@@ -762,6 +762,7 @@ class cDISModule:
 		if self.chanexist(channel) and not self.suspended(channel):
 			self.send(":%s JOIN %s" % (self.services_id + bots.get("3", "uuid"), channel))
 			self.mode(channel, "+ryo {0} {0}".format(self.services_id + bots.get("3", "uuid")))
+			self.send_bot("NAMES " + channel)
 
 	def statistics(self):
 		stats = dict()
