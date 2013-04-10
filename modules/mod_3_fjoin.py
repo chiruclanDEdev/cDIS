@@ -10,7 +10,9 @@ class mod_3_fjoin(cDISModule):
 		for pdata in data.split()[5:]:
 			pflag = pdata.split(",")[0]
 			pnick = pdata.split(",")[1]
-				
+			
+			self.query('INSERT INTO `chanlist` (`uid`, `channel`, `flag`) VALUES (?, ?, ?)', pnick, fjoin_chan, pflag)
+			
 			if self.suspended(fjoin_chan):
 				if not self.isoper(pnick):
 					self.kick(fjoin_chan, pnick, "Suspended: "+self.suspended(fjoin_chan))
