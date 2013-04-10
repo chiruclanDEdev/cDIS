@@ -41,9 +41,6 @@ class mod_3_fmode(cDISModule):
 									self.msg(data.split()[0][1:], "Done.")
 								elif ban == "*!*@*":
 									self.msg(data.split()[2], "ACTION is angry about %s, because he tried to set a *!*@* ban." % self.nick(data.split()[0][1:]), True)
-									
-					if splitted.find("q") != -1 or splitted.find("a") != -1 or splitted.find("o") != -1 or splitted.find("h") != -1 or splitted.find("v"):
-						self.send_bot("NAMES " + data.split()[2])
 				else:
 					self.mode(data.split()[2], "-{0} {1}".format("b"*len(data.split()[5:]), ' '.join(data.split()[5:])))
 				
@@ -69,9 +66,6 @@ class mod_3_fmode(cDISModule):
 									if entry:
 										self.query("delete from banlist where channel = ? and ban = ?", data.split()[2], ban)
 										self.msg(data.split()[0][1:], "Done.")
-										
-						if splitted.find("q") != -1 or splitted.find("a") != -1 or splitted.find("o") != -1 or splitted.find("h") != -1 or splitted.find("v"):
-							self.send_bot("NAMES " + data.split()[2])
 					else:
 						self.mode(data.split()[2], "+{0} {1}".format("b"*len(data.split()[5:]), ' '.join(data.split()[5:])))
 						
@@ -89,6 +83,7 @@ class mod_3_fmode(cDISModule):
 					if splitted.find("v") != -1:
 						for user in musers:
 							flag = self.getflag(self.uid(user), mchan)
+							self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
 							
 							if not self.chanflag("v", mchan) and flag != "v" and flag != "h" and flag != "o" and flag != "a" and flag != "q" and flag != "n" and self.uid(user) != self.bot:
 								self.mode(mchan, "-v "+user)
@@ -96,6 +91,7 @@ class mod_3_fmode(cDISModule):
 					if splitted.find("h") != -1:
 						for user in musers:
 							flag = self.getflag(self.uid(user), mchan)
+							self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
 							
 							if flag != "h" and flag != "o" and flag != "a" and flag != "q" and flag != "n" and self.uid(user) != self.bot:
 								self.mode(mchan, "-h "+user)
@@ -103,6 +99,7 @@ class mod_3_fmode(cDISModule):
 					if splitted.find("o") != -1:
 						for user in musers:
 							flag = self.getflag(self.uid(user), mchan)
+							self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
 							
 							if flag != "o" and flag != "a" and flag != "q" and flag != "n" and self.uid(user) != self.bot:
 								self.mode(mchan, "-o "+user)
@@ -110,6 +107,7 @@ class mod_3_fmode(cDISModule):
 					if splitted.find("a") != -1:
 						for user in musers:
 							flag = self.getflag(self.uid(user), mchan)
+							self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
 							
 							if flag != "a" and flag != self.bot_nick and flag != "n" and self.uid(user) != self.bot:
 								self.mode(mchan, "-a "+user)
@@ -120,6 +118,7 @@ class mod_3_fmode(cDISModule):
 					if splitted.find(self.bot_nick) != -1:
 						for user in musers:
 							flag = self.getflag(self.uid(user), mchan)
+							self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
 							
 							if flag != "q" and flag != "n" and self.uid(user) != self.bot:
 								self.mode(mchan, "-q "+user)
@@ -144,3 +143,5 @@ class mod_3_fmode(cDISModule):
 							self.mode(fm_chan, "+v {0}".format(user))
 						elif flag["flag"] == "b":
 							self.kick(fm_chan, user, "Banned.")
+							
+						self.setuserchanflag(fm_chan, user, flag["flag"].replace('n', 'q'))
