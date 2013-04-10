@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 2b3d21e89eca16c6c74b52f9c545d47b
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py 02c06c4338696d207979a248ad8dce7c
+cDIS.py 522daa6a23bd90b1ee6b216ca1f216a9
 configs/bots.cfg.dist b2d0f0cda769ad01f4dd7594bcba5517
 configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
@@ -79,9 +79,9 @@ modules/mod_0_nick.py fb29a29a43b1c31d28d8b304e363a22c
 modules/mod_0_opertype.py 9b6ba342c553afd74ca436a8de77ca34
 modules/mod_0_quit.py e24264e011985d4a5066a95b82f5e7f0
 modules/mod_0_uid.py 015d415b51e439df98684574415caa56
-modules/mod_3_fjoin.py 38ae4fb4d3bf287c1df5174412fed841
+modules/mod_3_fjoin.py 50f46ce4331d52119761ceb6b5f90842
 modules/mod_3_fmode.py 9f4bbbd7d4807baac52e2af9b9cb93fe
-modules/mod_3_join.py b23feb2f409d848760ea52f3756873af
+modules/mod_3_join.py fe3074059e5bfda4129675a24b618549
 modules/mod_3_kick.py 099d07e456e6b5b94cbc9d81affb42ee
 modules/mod_3_mode.py cb3b5965e08e425fca022b7b741ea520
 modules/mod_3_notice.py fce6a482ae737fd259a141f423ca1014

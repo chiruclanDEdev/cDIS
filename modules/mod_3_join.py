@@ -19,34 +19,10 @@ class mod_3_join(cDISModule):
 			self.showlog(juid, jchan)
 			self.log(juid, "join", jchan)
 			
-		fjoin_user = self.auth(juid)
-		hasflag = False
+		self.flag(juid, jchan)
 		
-		for flag in self.query("select flag from channels where channel = ? and user = ?", jchan, fjoin_user):
-			if flag["flag"] == "n" or flag["flag"] == "q":
-				self.mode(jchan, "+qo " + juid + " " + juid)
-				hasflag = True
-			elif flag["flag"] == "a":
-				self.mode(jchan, "+ao " + juid + " " + juid)
-				hasflag = True
-			elif flag["flag"] == "o":
-				self.mode(jchan, "+o " + juid)
-				hasflag = True
-			elif flag["flag"] == "h":
-				self.mode(jchan, "+h " + juid)
-				hasflag = True
-			elif flag["flag"] == "v":
-				self.mode(jchan, "+v " + juid)
-				hasflag = True
-			elif flag["flag"] == "b":
-				self.kick(jchan, juid, "Banned.")
-				hasflag = True
-				
-			self.setuserchanflag(jchan, juid, flag["flag"].replace('n', 'q'))
-			
-		if not hasflag:
-			if self.chanflag("v", jchan):
-				self.mode(jchan, "+v %s" % juid)
+		if self.chanflag("v", jchan):
+			self.mode(jchan, "+v %s" % juid)
 				
 		for welcome in self.query("select name,welcome from channelinfo where name = ?", jchan):
 			if self.chanflag("w", jchan):
