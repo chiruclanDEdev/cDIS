@@ -9,9 +9,6 @@ class mod_3_fjoin(cDISModule):
 		
 		for pdata in data.split()[5:]:
 			pflag = pdata.split(",")[0]
-			if pflag[0] == ":":
-				pflag = pflag[1:]
-				
 			pnick = pdata.split(",")[1]
 			
 			self.query('INSERT INTO `chanlist` (`uid`, `channel`, `flag`) VALUES (?, ?, ?)', pnick, fjoin_chan, pflag)
