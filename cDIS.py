@@ -851,7 +851,8 @@ class cDISModule:
 						else:
 							self.mode(channel, "-qaoh {0} {0} {0} {0}".format(target))
 							
-				self.setuserchanflag(channel, target, _flag.replace('n', 'q'))
+				if self.chanexist(channel):
+					self.setuserchanflag(channel, target, _flag.replace('n', 'q'))
 			else:
 				for flag in self.query("select flag,channel from channels where user = ? order by channel", account):
 					if flag["flag"] == "n" or flag["flag"] == "q":
