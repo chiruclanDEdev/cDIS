@@ -7,7 +7,7 @@ class mod_3_join(cDISModule):
 	def onData(self, data):
 		juid = data.split()[0][1:]
 		jchan = data.split()[2][1:]
-		self.query("insert into chanlist value (?, ?)", juid, jchan)
+		self.query("insert into chanlist value (?, ?, '')", juid, jchan)
 		
 		if self.suspended(jchan):
 			self.kick(jchan, juid, "Suspended: "+self.suspended(jchan))
