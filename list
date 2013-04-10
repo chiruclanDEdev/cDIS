@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 2b3d21e89eca16c6c74b52f9c545d47b
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py e01306cb2715b6cfc84816d456d4146b
+cDIS.py d8f9c1dd40123007e7685282ccb269f9
 configs/bots.cfg.dist b2d0f0cda769ad01f4dd7594bcba5517
 configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
@@ -79,9 +79,9 @@ modules/mod_0_nick.py fb29a29a43b1c31d28d8b304e363a22c
 modules/mod_0_opertype.py 9b6ba342c553afd74ca436a8de77ca34
 modules/mod_0_quit.py e24264e011985d4a5066a95b82f5e7f0
 modules/mod_0_uid.py 015d415b51e439df98684574415caa56
-modules/mod_3_fjoin.py 3e8204b4cda6b537fc057a7c269679e7
-modules/mod_3_fmode.py 296c857c13ade794a3d0768e1132b7e0
-modules/mod_3_join.py fc98a2dcb929d5926e7c0dd9ae4843d1
+modules/mod_3_fjoin.py cce7a72ee95e77f224ab3055e285c80d
+modules/mod_3_fmode.py 57e7f410ae71e943fa13eeb08c157efc
+modules/mod_3_join.py 41c5424d7aa381b39ca7974336a6fdaf
 modules/mod_3_kick.py 099d07e456e6b5b94cbc9d81affb42ee
 modules/mod_3_mode.py cb3b5965e08e425fca022b7b741ea520
 modules/mod_3_notice.py fce6a482ae737fd259a141f423ca1014
@@ -91,7 +91,7 @@ modules/mod_3_topic.py 2d14af5eba6e5f715052a0b0419c5569
 modules/sched_0_gline.py fa0bfa666d790ef85ead9fbb090f6d86
 modules/sched_0_trust.py 0680505fbba4135372d6b3b1cd541b61
 modules/dev/cmd_memo.py 0bbaea022a1d555e27c0c21486213674
-sql/base/struct.sql d7c356a45a077db9807d99c60bb9f59b
+sql/base/struct.sql f3a3f4b76f2e805d0e736ba4a113c6fa
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
 sql/updates/12_02-17-2012.sql 0c5d84bf3909b5091defcd77dcb4805f
@@ -125,6 +125,7 @@ sql/updates/37_03-03-2013.sql 620298fc17ebc88f2370c6da6d0cca39
 sql/updates/38_03-31-2013.sql ee660a7c5209af7c50361d6adb8c9b17
 sql/updates/39_04-02-2013.sql 0dfd77db1768e39113de99c9f58f1803
 sql/updates/3_02-05-2012.sql 30f5568f7a4ec8ba9f7c7ac790bb1f20
+sql/updates/40_04-10-2013.sql eeb98b9b8812a7ec5ce880133daed2f5
 sql/updates/4_02-05-2012.sql 592c83d9ac209484ead4d29c969751f2
 sql/updates/5_02-05-2012.sql 2157b0bba185b64f76e7ff6dc60502b1
 sql/updates/6_02-06-2012.sql fbafe9a42f68bc810fdd8a009c6ac2e2

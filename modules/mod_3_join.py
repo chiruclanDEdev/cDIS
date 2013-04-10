@@ -42,6 +42,8 @@ class mod_3_join(cDISModule):
 				self.kick(jchan, juid, "Banned.")
 				hasflag = True
 				
+			self.query("UPDATE `chanlist` SET `flag` = ? WHERE `uid` = ? AND `channel` = ?", flag["flag"], juid, jchan)
+				
 		if not hasflag:
 			if self.chanflag("v", jchan):
 				self.mode(jchan, "+v %s" % juid)

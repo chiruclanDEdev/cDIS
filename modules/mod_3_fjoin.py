@@ -15,7 +15,7 @@ class mod_3_fjoin(cDISModule):
 			if pnick.find(",") != -1:
 				pnick = pnick.split(",")[1]
 				
-			self.query("insert into chanlist value (?,?)", pnick, fjoin_chan)
+			self.query("insert into chanlist (uid, channel) values (?,?)", pnick, fjoin_chan)
 			
 			if self.suspended(fjoin_chan):
 				if not self.isoper(pnick):
@@ -52,6 +52,8 @@ class mod_3_fjoin(cDISModule):
 			elif flag["flag"] == "b":
 				self.kick(fjoin_chan, fjoin_nick, "Banned.")
 				hasflag = True
+				
+			self.query("UPDATE `chanlist` SET `flag` = ? WHERE `uid` = ? AND `channel` = ?", flag["flag"], fjoin_nick, fjoin_chan)
 				
 		if not hasflag:
 			if self.chanflag("v", fjoin_chan):

@@ -41,9 +41,12 @@ class mod_3_fmode(cDISModule):
 									self.msg(data.split()[0][1:], "Done.")
 								elif ban == "*!*@*":
 									self.msg(data.split()[2], "ACTION is angry about %s, because he tried to set a *!*@* ban." % self.nick(data.split()[0][1:]), True)
+									
+					if splitted.find("q") != -1 or splitted.find("a") != -1 or splitted.find("o") != -1 or splitted.find("h") != -1 or splitted.find("v"):
+						self.send_bot("NAMES " + data.split()[2])
 				else:
 					self.mode(data.split()[2], "-{0} {1}".format("b"*len(data.split()[5:]), ' '.join(data.split()[5:])))
-					
+				
 				splitted = data.split()[4]
 				
 				if splitted.find("-") != -1:
@@ -66,6 +69,9 @@ class mod_3_fmode(cDISModule):
 									if entry:
 										self.query("delete from banlist where channel = ? and ban = ?", data.split()[2], ban)
 										self.msg(data.split()[0][1:], "Done.")
+										
+						if splitted.find("q") != -1 or splitted.find("a") != -1 or splitted.find("o") != -1 or splitted.find("h") != -1 or splitted.find("v"):
+							self.send_bot("NAMES " + data.split()[2])
 					else:
 						self.mode(data.split()[2], "+{0} {1}".format("b"*len(data.split()[5:]), ' '.join(data.split()[5:])))
 						

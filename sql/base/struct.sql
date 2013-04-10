@@ -67,7 +67,8 @@ CREATE TABLE IF NOT EXISTS `trust` (
 DROP TABLE IF EXISTS `chanlist`;
 CREATE TABLE IF NOT EXISTS `chanlist` (
 	`uid` varchar(9),
-	`channel` varchar(255)
+	`channel` varchar(255),
+	`flag` enum('v', 'h', 'o', 'a', 'q') NOT NULL DEFAULT ''
 );
 
 DROP TABLE IF EXISTS `memo`;
