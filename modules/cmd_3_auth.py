@@ -25,7 +25,7 @@ class cmd_3_auth(cDISModule):
 							self.msg(str(user["uid"]), "Warning: {0} ({1}@{2}) authed with your password.".format(user["nick"], user["username"], user["host"]))
 							
 						self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", data["name"], source)
-						self.msg(source, "You are now logged in as %s" % str(data["name"]))
+						self.msg(source, "You are now logged in as %s." % str(data["name"]))
 						self.msg(source, "Remember: NO-ONE from %s will ever ask for your password. NEVER send your password to ANYONE except %s@%s." % (self.services_description, self.bot_nick, self.services_name))
 						self.meta(source, "accountname", str(data["name"]))
 						self.usermodes(source)
