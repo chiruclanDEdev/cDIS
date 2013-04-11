@@ -720,7 +720,7 @@ class cDISModule:
 		return None
 
 	def GetAccountData(self, account):
-		result = self.query("SELECT * FROM `users` WHERE `name` = ?", account):
+		result = self.query("SELECT * FROM `users` WHERE `name` = ?", account)
 		for row in result:
 			return row
 			
