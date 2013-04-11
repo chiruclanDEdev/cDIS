@@ -1,7 +1,23 @@
+-- chiruclan.de IRC services
+-- Copyright (C) 2012-2013  Chiruclan
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
 	`id` bigint(20) not null auto_increment key,
-	`name` varchar(255),
+	`name` varchar(255) not null,
 	`pass` varchar(255),
 	`email` varchar(255),
 	`flags` varchar(255),
@@ -18,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `channels` (
 
 DROP TABLE IF EXISTS `channelinfo`;
 CREATE TABLE IF NOT EXISTS `channelinfo` (
-	`name` varchar(255),
+	`name` varchar(255) not null key,
 	`modes` varchar(255),
 	`flags` varchar(255),
 	`topic` varchar(2048),
@@ -36,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `vhosts` (
 
 DROP TABLE IF EXISTS `opers`;
 CREATE TABLE IF NOT EXISTS `opers` (
-	`uid` varchar(9),
+	`uid` varchar(9) not null key,
 	`opertype` varchar(255) NOT NULL DEFAULT 'GlobalOp'
 );
 
@@ -48,18 +64,25 @@ CREATE TABLE IF NOT EXISTS `feedback` (
 
 DROP TABLE IF EXISTS `online`;
 CREATE TABLE IF NOT EXISTS `online` (
-	`uid` varchar(9),
-	`nick` varchar(255),
+	`uid` varchar(9) not null key,
+	`nick` varchar(255) not null,
 	`address` varchar(255),
 	`host` varchar(255),
 	`username` varchar(255),
     `account` varchar(255)
 );
 
+DROP TABLE IF EXISTS `metadata`;
+CREATE TABLE IF NOT EXISTS `metadata` (
+	`uid` VARCHAR(0) NOT NULL,
+	`key` VARCHAR(255) NOT NULL,
+	`value` VARCHAR(255) NOT NULL
+);
+
 DROP TABLE IF EXISTS `trust`;
 CREATE TABLE IF NOT EXISTS `trust` (
 	`id` bigint(20) not null auto_increment key,
-	`address` varchar(255),
+	`address` varchar(255) not null key,
 	`limit` varchar(255),
 	`timestamp` bigint(20) not null
 );
@@ -95,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `suspended` (
 
 DROP TABLE IF EXISTS `gateway`;
 CREATE TABLE IF NOT EXISTS `gateway` (
-	`uid` varchar(9)
+	`uid` varchar(9) not null key
 );
 
 DROP TABLE IF EXISTS `glines`;

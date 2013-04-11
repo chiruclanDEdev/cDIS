@@ -1,6 +1,20 @@
 #!/usr/bin/env python
 
-# Copyright by chiruclan.de IRC services 2012-2013
+# chiruclan.de IRC services
+# Copyright (C) 2012-2013  Chiruclan
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 import socket
@@ -528,33 +542,10 @@ class cDISModule:
 		return None
 
 	def query_row(self, string, *args):
-		conn = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
-		
-		conn.query("SET @s = '" + conn.escape_string(str(string)) + "'")
-		conn.query("PREPARE query FROM @s")
-		
-		i = 0
-		all_variables = ""
-		
-		for arg in args:
-			i += 1
-			conn.query("SET @" + str(i) + " = '" + conn.escape_string(str(arg)) + "'")
-			
-			if i == 1:
-				all_variables += " USING @" + str(i)
-			else:
-				all_variables += ", @" + str(i)
-		
-		conn.query("EXECUTE query" + all_variables)
-		result = conn.store_result()
-		conn.query("DEALLOCATE PREPARE query")
-		
+		result = self.query(string, args)
 		if result:
-			for data in result.fetch_row(maxrows=1, how=1):
-				conn.close()
-				return data
-				
-		conn.close()
+			return result[0]
+		
 		return None
 
 	def send_bot(self, content):
@@ -570,16 +561,6 @@ class cDISModule:
 		result = self.query("SELECT `uid` FROM `opers`")
 		for row in result:
 			self.send_serv("PRIVMSG " + row["uid"] + " :-" + self.services_name + "- " + content)
-
-	def metadata(self, uid, string, content):
-		if string == "accountname":
-			if self.ison(uid, True):
-				self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", content, uid)
-				self.msg(uid, "You are now logged in as %s" % content)
-				self.vhost(uid)
-				self.flag(uid)
-				self.memo(content)
-
 
 	def uid (self, nick):
 		if nick == self.bot_nick:
@@ -713,8 +694,11 @@ class cDISModule:
 			if self.chanflag("l", target):
 				self.log(self.bot_nick, "mode", target, mode)
 
-	def meta(self, target, meta, content):
-		self.send(":%s METADATA %s %s :%s" % (self.services_id, target, meta, content))
+	def meta(self, target, key, value = None):
+		if value:
+			self.send_serv("METADATA " + target + " " + key + " :" + value)
+		else:
+			self.send_serv("METADATA " + target + " " + key)
 
 	def auth(self, target):
 		for data in self.query("select account from online where uid = ? and account != ''", target):
