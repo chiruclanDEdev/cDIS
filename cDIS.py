@@ -135,12 +135,12 @@ class Services:
 
 	def run(self):
 		try:
-			self.query("truncate logs")
-			self.query("truncate opers")
-			self.query("truncate online")
-			self.query("truncate chanlist")
-			self.query("truncate modules")
-			shell("rm -rf logs/*")
+			self.query("TRUNCATE `logs`")
+			self.query("TRUNCATE `opers`")
+			self.query("TRUNCATE `online`")
+			self.query("TRUNCATE `chanlist`")
+			self.query("TRUNCATE `metadata`")
+			self.query("TRUNCATE `modules`")
 			
 			if self.ipv6 and socket.has_ipv6:
 				if self.ssl:
@@ -263,7 +263,6 @@ class cDISModule:
 					self.SetMetadata(botuid, "accountname", bots.get(bot, "nick"))
 					
 				self.msg("$*", "Services are now back online. Have a nice day :)")
-				self.msg("$*", "Please note that you have to login manually after a restart!")
 				
 				self.bot = self.services_id + bots.get("3", "uuid")
 				for channel in self.query("select name,modes,topic from channelinfo"):
