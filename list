@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 2b3d21e89eca16c6c74b52f9c545d47b
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py 7689df0a353f40b35121163ef2872f60
+cDIS.py 2b09cbe897db045ddf2c169a8df97ee6
 configs/bots.cfg.dist b2d0f0cda769ad01f4dd7594bcba5517
 configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
@@ -74,7 +74,7 @@ modules/cmd_4_vhost.py 271b9ec293e03603f7de2f98d896ebe5
 modules/cmd_5_opers.py cb771c31467bafdb53a9d4d6215969b5
 modules/cmd_5_version.py 254390cc320ad5e79d70378a0fafc14d
 modules/mod_0_idle.py a5d27011c85fcc4d0d2ec7a29124cb96
-modules/mod_0_metadata.py 241e4c0a79122b2df5c7226ca672ac54
+modules/mod_0_metadata.py 27a64d23897f6f6e7cbc1dd9a9941d7e
 modules/mod_0_nick.py f2e436eab1ef8bcff1bb8301ccaaf3a2
 modules/mod_0_opertype.py 6e41144f1bc33eebbc277424782e1ddb
 modules/mod_0_quit.py 8df991f4a805ec03c471b33d1526cd26
@@ -90,7 +90,7 @@ modules/mod_3_topic.py e4c3a346a9e0ef9fcdd1a80072df094d
 modules/sched_0_gline.py 34dfd0fcc78f3b82162ed9719229b4d8
 modules/sched_0_trust.py 8b9bc04e3d74230d09b565f272e766dc
 modules/dev/cmd_memo.py 0bbaea022a1d555e27c0c21486213674
-sql/base/struct.sql 7cd25645f6e24a502d846bc649286a7d
+sql/base/struct.sql 70d0aeb4464f396c6aeb7ee572789e1e
 sql/updates/10_02-12-2012.sql 01e17aaa106a9b8e173844791fc75655
 sql/updates/11_02-17-2012.sql 8871da6e53758f0c79c9944c6c42b106
 sql/updates/12_02-17-2012.sql 0c5d84bf3909b5091defcd77dcb4805f
@@ -125,7 +125,7 @@ sql/updates/38_03-31-2013.sql ee660a7c5209af7c50361d6adb8c9b17
 sql/updates/39_04-02-2013.sql 0dfd77db1768e39113de99c9f58f1803
 sql/updates/3_02-05-2012.sql 30f5568f7a4ec8ba9f7c7ac790bb1f20
 sql/updates/40_04-10-2013.sql 82cebed9018167ca06f6ec1258c95d08
-sql/updates/41_04-11-2013.sql 2b73321e75975c3180a5882aa3206d04
+sql/updates/41_04-11-2013.sql c3b10346384d4ddd28cf72e1a4c80ab5
 sql/updates/4_02-05-2012.sql 592c83d9ac209484ead4d29c969751f2
 sql/updates/5_02-05-2012.sql 2157b0bba185b64f76e7ff6dc60502b1
 sql/updates/6_02-06-2012.sql fbafe9a42f68bc810fdd8a009c6ac2e2

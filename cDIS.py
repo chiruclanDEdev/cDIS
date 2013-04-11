@@ -163,18 +163,18 @@ class Services:
 			__builtin__.config = config
 			__builtin__.bots = bots
 			
-			for mods in dir(modules):
-				if os.access("modules/" + mods + ".py", os.F_OK):
-					moduleToCall = getattr(modules, mods)
-					classToCall = getattr(moduleToCall, mods)()
+			for mod in dir(modules):
+				if os.access("modules/" + mod + ".py", os.F_OK):
+					moduleToCall = getattr(modules, mod)
+					classToCall = getattr(moduleToCall, mod)()
 					
 					if classToCall.MODULE_CLASS == "SCHEDULE":
 						methodToCall = getattr(classToCall, "runSchedule")
 						thread.start_new_thread(methodToCall, ())
 						
-					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`, `bot`) VALUES (?, ?, ?, ?, ?, ?, ?)", mods, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
-						
-			
+					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`, `bot`) VALUES (?, ?, ?, ?, ?, ?, ?)", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
+					debug(blue("#") + " initiate module '" + mod + "'")
+					
 			while 1:
 				recv = self.con.recv(25600)
 				
@@ -217,6 +217,8 @@ class cDISModule:
 
 	def __init__(self):
 		self.con = con
+		self.bots = bots
+		
 		self.mysql_host = config.get("MYSQL", "host")
 		self.mysql_port = config.getint("MYSQL", "port")
 		self.mysql_name = config.get("MYSQL", "name")
@@ -695,10 +697,41 @@ class cDISModule:
 				self.log(self.bot_nick, "mode", target, mode)
 
 	def meta(self, target, key, value = None):
+		self.SetMetadata(uid, key, value)
+
+	def SetMetadata(self, uid, key, value = None):
 		if value:
-			self.send_serv("METADATA " + target + " " + key + " :" + value)
+			count = int(self.query("SELECT COUNT(*) FROM `metadata` WHERE `uid` = ? AND `key` = ?", uid, key)[0]["COUNT(*)"])
+			if count == 1:
+				self.query("UPDATE `metadata` SET `value` = ? WHERE `uid` = ? AND `key` = ?", value, uid, key)
+			else:
+				self.query("INSERT INTO `metadata` (`uid`, `key`, `value`) VALUES (?, ?, ?)", uid, key, value)
+				
+			self.send_serv("METADATA " + uid + " " + key + " :" + value)
 		else:
-			self.send_serv("METADATA " + target + " " + key)
+			self.query("DELETE FROM `metadata` WHERE `uid` = ? AND `key` = ?", uid, key)
+			self.send_serv("METADATA " + uid + " " + key)
+
+	def GetMetadata(self, uid, key):
+		result = self.query("SELECT `value` FROM `metadata` WHERE `uid` = ? AND `key` = ?", uid, key)
+		for row in result:
+			return row["value"]
+			
+		return None
+
+	def GetAccountData(self, account):
+		result = self.query("SELECT * FROM `users` WHERE `name` = ?", account):
+		for row in result:
+			return row
+			
+		return None
+
+	def GetUserData(self, uid):
+		result = self.query("SELECT * FROM `online` WHERE `uid` = ?", uid)
+		for row in result:
+			return row
+			
+		return None
 
 	def auth(self, target):
 		for data in self.query("select account from online where uid = ? and account != ''", target):

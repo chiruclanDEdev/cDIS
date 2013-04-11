@@ -25,8 +25,7 @@ class mod_0_metadata(cDISModule):
 			key = data.split()[3]
 			value = ' '.join(data.split()[4:])[1:]
 			
-			self.query("DELETE FROM `metadata` WHERE `uid` = ? AND `key` = ?", uid, key)
-			self.query("INSERT INTO `metadata` (`uid`, `key`, `value`) VALUES (?, ?, ?)", uid, key, value)
+			self.SetMetadata(uid, key, value)
 			
 			if key == "accountname":
 				if self.ison(uid, True):
