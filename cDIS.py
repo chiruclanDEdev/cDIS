@@ -173,7 +173,6 @@ class Services:
 						thread.start_new_thread(methodToCall, ())
 						
 					self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`, `bot`) VALUES (?, ?, ?, ?, ?, ?, ?)", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
-					debug(blue("#") + " initiate module '" + mod + "'")
 					
 			while 1:
 				recv = self.con.recv(25600)
@@ -261,7 +260,7 @@ class cDISModule:
 					botuid = self.services_id + bots.get(bot, "uuid")
 					self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, botuid, time.time(), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, time.time(), bots.get(bot, "real")))
 					self.send(":%s OPERTYPE Service" % botuid)
-					self.meta(botuid, "accountname", bots.get(bot, "nick"))
+					self.SetMetadata(botuid, "accountname", bots.get(bot, "nick"))
 					
 				self.msg("$*", "Services are now back online. Have a nice day :)")
 				self.msg("$*", "Please note that you have to login manually after a restart!")
@@ -695,9 +694,6 @@ class cDISModule:
 		if target.startswith("#"):
 			if self.chanflag("l", target):
 				self.log(self.bot_nick, "mode", target, mode)
-
-	def meta(self, target, key, value = None):
-		self.SetMetadata(uid, key, value)
 
 	def SetMetadata(self, uid, key, value = None):
 		if value:

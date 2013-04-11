@@ -1,7 +1,7 @@
 HOWTO b973410836d9ce74fdcb837a99db5bca
 README.md 2b3d21e89eca16c6c74b52f9c545d47b
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py 5ab6c7a6dbafea371443c308942c1a45
+cDIS.py a234b81aaf29d9d29177cba781d964d4
 configs/bots.cfg.dist b2d0f0cda769ad01f4dd7594bcba5517
 configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
@@ -10,7 +10,7 @@ modules/cmd_1_notify.py 99bb0d76a96b23a00686f2e17fc092a2
 modules/cmd_1_update.py 705656549fddc98f956ebcb0f767839a
 modules/cmd_2_remove.py 918d6727e0e48d4c8de03b7b3f8582e3
 modules/cmd_2_request.py 3b7ac2519345337069f123f5f60523d5
-modules/cmd_3_auth.py 59c960b2d59f4214a0bbff1bb5cc6b13
+modules/cmd_3_auth.py 0f88a9a5e1efdf0324307ecb2c76c239
 modules/cmd_3_ban.py 2768d7447962ca9e052ab2150af90584
 modules/cmd_3_banlist.py 0556ae271bd9bc6a9c1a452b213d7658
 modules/cmd_3_chanflags.py 7967868dadd78b9315ae9461497639c9
@@ -78,7 +78,7 @@ modules/mod_0_metadata.py 27a64d23897f6f6e7cbc1dd9a9941d7e
 modules/mod_0_nick.py f2e436eab1ef8bcff1bb8301ccaaf3a2
 modules/mod_0_opertype.py 6e41144f1bc33eebbc277424782e1ddb
 modules/mod_0_quit.py 8df991f4a805ec03c471b33d1526cd26
-modules/mod_0_uid.py fc5cfdc3a1f4716be6c46279cd34aa6c
+modules/mod_0_uid.py 5ff8e898896950c0ab6a488f87315d12
 modules/mod_3_fjoin.py b8bc7d7ff7b83874b0e4bfd634e4c60c
 modules/mod_3_fmode.py a495f56a60e1b63c9d35db175204168f
 modules/mod_3_kick.py adf2b599d17d77900d83f3149fe81b24

@@ -38,7 +38,7 @@ class mod_0_uid(cDISModule):
 				self.flag(row["uid"])
 				self.memo(row["value"])
 			else:
-				self.meta(row["uid"], row["key"])
+				self.SetMetadata(row["uid"], row["key"])
 				
 		result = self.query("SELECT `id`, `mask`, `reason`, `timestamp` FROM `glines` WHERE `mask` = ? AND `timestamp` > ?", "*@"+data.split()[8], current_timestamp)
 		for row in result:
