@@ -1,7 +1,7 @@
 HOWTO a78cdb5daa8d558fc458f7a8c46378a6
 README.md 2b3d21e89eca16c6c74b52f9c545d47b
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py a702970e9e9bddd8eb1ac22f00a5c128
+cDIS.py da9aeb7e7d855a7f285edc90f9b1533a
 configs/bots.cfg.dist b2d0f0cda769ad01f4dd7594bcba5517
 configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
@@ -11,7 +11,7 @@ modules/cmd_1_update.py 705656549fddc98f956ebcb0f767839a
 modules/cmd_2_remove.py 918d6727e0e48d4c8de03b7b3f8582e3
 modules/cmd_2_request.py 3b7ac2519345337069f123f5f60523d5
 modules/cmd_3_auth.py 0f88a9a5e1efdf0324307ecb2c76c239
-modules/cmd_3_ban.py 2768d7447962ca9e052ab2150af90584
+modules/cmd_3_ban.py a3fcc850a810f03e9c4718544f3a0628
 modules/cmd_3_banlist.py 0556ae271bd9bc6a9c1a452b213d7658
 modules/cmd_3_chanflags.py 7967868dadd78b9315ae9461497639c9
 modules/cmd_3_chanlev.py 1670b53452015a048a5069766b93e262

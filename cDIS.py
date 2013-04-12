@@ -1285,20 +1285,6 @@ class cDISModule:
 			
 		return False
 
-class error(Exception):
-	def __init__(self, value):
-		self.value = value
-		self.email = config.get("OTHER", "email")
-	def __str__(self):
-		try:
-			mail = smtplib.SMTP('127.0.0.1', 25)
-			mail.sendmail(self.email, ['hosting@chiruclan.de'], str(self.value))
-			mail.quit()
-		except:
-			pass
-		finally:
-			return repr(self.value)
-
 if __name__ == "__main__":
 	try:
 		while True:

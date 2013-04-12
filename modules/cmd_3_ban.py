@@ -54,8 +54,6 @@ class cmd_3_ban(cDISModule):
 									uentry = True
 									entry = False
 									
-#									if self.userflag(user, "x"):
-#										ban = "*!*@" + self.auth(user) + ".users." + self.getservicedomain()
 									if self.gethost(user) == self.getip(user):
 										if self.getip(user).find(":") != -1:
 											ban = "*!*"+self.userhost(user).split("@")[0]+"@"+':'.join(self.getip(user).split(":")[:-2])+":*"
@@ -82,7 +80,7 @@ class cmd_3_ban(cDISModule):
 					self.msg(uid, "Invalid channel: "+arg[0])
 			else:
 				self.msg(uid, "Syntax: BAN <#channel> <hostmask>")
-		except chiruserv.error,e:
+		except Exception,e:
 			pass
 
 	def onFantasy(self, uid, chan, args):
