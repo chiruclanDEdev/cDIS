@@ -17,20 +17,20 @@
 from cDIS import cDISModule
 
 class mod_0_metadata(cDISModule):
-	MODULE_CLASS = "METADATA"
-	
-	def onData(self, data):
-		if len(data.split()) == 5 and len(data.split()[4]) != 1:
-			uid = data.split()[2]
-			key = data.split()[3]
-			value = ' '.join(data.split()[4:])[1:]
-			
-			self.SetMetadata(uid, key, value)
-			
-			if key == "accountname":
-				if self.ison(uid, True):
-					self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", value, uid)
-					self.msg(uid, "You are now logged in as " + value + ".")
-					self.vhost(uid)
-					self.flag(uid)
-					self.memo(value)
+  MODULE_CLASS = "METADATA"
+  
+  def onData(self, data):
+    if len(data.split()) == 5 and len(data.split()[4]) != 1:
+      uid = data.split()[2]
+      key = data.split()[3]
+      value = ' '.join(data.split()[4:])[1:]
+      
+      self.SetMetadata(uid, key, value)
+      
+      if key == "accountname":
+        if self.ison(uid, True):
+          self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", value, uid)
+          self.msg(uid, "You are now logged in as " + value + ".")
+          self.vhost(uid)
+          self.flag(uid)
+          self.memo(value)
