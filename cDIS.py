@@ -960,7 +960,7 @@ class cDISModule:
       msg = MIMEMultipart('alternative')
       msg.attach(MIMEText(message, 'plain'))
       message = message.replace("\n", "\n<br />")
-      message = self.mail_template("${MESSAGE}", message)
+      message = self.mail_template.replace("${MESSAGE}", message)
       msg.attach(MIMEText(message, 'html'))
       msg['Subject'] = subject
       msg['From'] = self.services_description + ' <' + self.email + '>'
