@@ -54,6 +54,12 @@ try:
     
   bots = ConfigParser.RawConfigParser()
   bots.read("configs/" + config.get("INCLUDES", "bots"))
+  
+  with open(config.get("MAIL", "template"), 'r') as content_file:
+    mail_template = content_file.read()
+    
+  mail_template = mail_template.replace("${LOGO}", config.get("MAIL", "logo"))
+  mail_template = mail_template.replace("${LINK}", config.get("MAIL", "link"))
 except Exception:
   et, ev, tb = sys.exc_info()
   print(red("*") + " <<ERROR>> {0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb)))
@@ -162,6 +168,7 @@ class Services:
       __builtin__._connected = False
       __builtin__.config = config
       __builtin__.bots = bots
+      __builtin__.mail_template = mail_template
       
       for mod in dir(modules):
         if os.access("modules/" + mod + ".py", os.F_OK):
@@ -205,6 +212,8 @@ class cDISModule:
   import thread
   import fnmatch
   import __builtin__
+  from email.mime.multipart import MIMEMultipart
+  from email.mime.text import MIMEText
   
   HELP = ''
   NEED_OPER = 0
@@ -244,6 +253,9 @@ class cDISModule:
     self.bot_real = bots.get(self.BOT_ID, "real")
     
     self.oper_not = config.getboolean("OPERS", "notifications")
+    
+    self.mail_template = mail_template
+    self.mail_name = config.get("MAIL", "name")
     
   def shell(self, text):
     subprocess.Popen(text+" >> /dev/null", shell=True).wait()
@@ -944,10 +956,18 @@ class cDISModule:
   def encode_md5(self, string):
     return hashlib.md5(string).hexdigest()
 
-  def mail(self, receiver, message):
+  def mail(self, receiver, subject, message):
     try:
+      msg = MIMEMultipart('alternative')
+      msg.attach(MIMEText(message, 'plain'))
+      message = message.replace("\n", "\n<br />")
+      message = self.mail_template("${MESSAGE}", message)
+      msg.attach(MIMEText(message, 'html'))
+      msg['Subject'] = subject
+      msg['From'] = self.mail_name + ' <' + self.email + '>'
+      msg['To'] = receiver
       mail = smtplib.SMTP('127.0.0.1', 25)
-      mail.sendmail(self.email, ['%s' % receiver], message)
+      mail.sendmail(self.email, msg['To'], msg.as_string())
       mail.quit()
     except Exception,e:
       debug(red("*") + " <<MAIL-ERROR>> "+str(e))

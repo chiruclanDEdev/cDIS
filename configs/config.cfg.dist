@@ -28,5 +28,11 @@ regmail = 1
 ipv6 = False
 ssl = False
 
+[MAIL]
+template = templates/default_mail.tpl
+logo = 
+link = 
+name = 
+
 [INCLUDES]
 bots = bots.cfg

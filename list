@@ -1,9 +1,9 @@
 HOWTO a78cdb5daa8d558fc458f7a8c46378a6
 README.md 2b3d21e89eca16c6c74b52f9c545d47b
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py 66c29d076d63a1634db090fd305e3485
+cDIS.py 08dbd189d8ece52c9fdbef91ff73941b
 configs/bots.cfg.dist b2d0f0cda769ad01f4dd7594bcba5517
-configs/config.cfg.dist 4d6aeb61a1d2cab9a5623834e01a1d36
+configs/config.cfg.dist 777c6ffb2396a126565efa34cb5f9980
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
 modules/__init__.py 6f16f445d1afd883dd60228ce711bb37
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
@@ -25,7 +25,7 @@ modules/cmd_3_email.py ffa78bf89696d694ab25d598fb7cafcf
 modules/cmd_3_fantasy.py bc08f52c6402555825e8cf0109654e9a
 modules/cmd_3_feedback.py 2ab66edac16dcebb95a08378e0a1936e
 modules/cmd_3_halfop.py bea2341ec732951745b2190981659cc9
-modules/cmd_3_hello.py 8dd12f986a344c8b26d1a16bdb465ff8
+modules/cmd_3_hello.py 5d3dfbc92ea5b000dd7bd3369bf5097c
 modules/cmd_3_invite.py 141a422b9afe7fd64ce840e2d0c1b012
 modules/cmd_3_kick.py aa92bd851b0bba6572cbe01950121f16
 modules/cmd_3_logs.py f4367914158f1439183f3ba161bfeab5
@@ -33,7 +33,7 @@ modules/cmd_3_newpass.py 564eb023baa08bd9b45e4c5859151eed
 modules/cmd_3_op.py 9cf0d590185f2167e5141d26e92a38bf
 modules/cmd_3_owner.py 89d4c66c50e7a972564fcc51bfa11cb1
 modules/cmd_3_protect.py 98ea010ef305b373c8c1ab7e3fcbb448
-modules/cmd_3_resetpass.py 25afc4711fe1199344f582fa445f20ff
+modules/cmd_3_resetpass.py 4d579d48e2c6fa71b95117ae9619333e
 modules/cmd_3_settopic.py 35a4da5c150d4e11e6c8ec12ba4dc4a5
 modules/cmd_3_setwhois.py 707f959934ddced0ac6f14a2979d7779
 modules/cmd_3_spamscan.py 2d8c211878882b6430ab57330d0b1b1c
@@ -132,3 +132,4 @@ sql/updates/6_02-06-2012.sql fbafe9a42f68bc810fdd8a009c6ac2e2
 sql/updates/7_02-06-2012.sql f9cf75884b162a4549736639b64dd3f7
 sql/updates/8_02-11-2012.sql 572a66ae57faa921fe3b9216969f0760
 sql/updates/9_02-12-2012.sql 34b72357730b06cc63a1462e81ae5e7a
+templates/default_mail.tpl fbc68da90348814e2052fe1e8aebdf77
