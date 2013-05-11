@@ -212,8 +212,6 @@ class cDISModule:
   import thread
   import fnmatch
   import __builtin__
-  from email.mime.text import MIMEText
-  from email.mime.multipart import MIMEMultipart
   
   HELP = ''
   NEED_OPER = 0
@@ -957,6 +955,8 @@ class cDISModule:
 
   def mail(self, receiver, subject, message):
     try:
+      from email.mime.text import MIMEText
+      from email.mime.multipart import MIMEMultipart
       msg = MIMEMultipart('alternative')
       msg.attach(MIMEText(message, 'plain'))
       message = message.replace("\n", "\n<br />")
