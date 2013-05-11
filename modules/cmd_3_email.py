@@ -38,7 +38,7 @@ class cmd_3_email(cDISModule):
                 
               if not entry:
                 self.query("update users set email = ? where name = ?", arg[0], self.auth(uid))
-                self.mail(arg[0], "From: {server} <{servermail}>\nTo: {user} <{usermail}>\nSubject: Email verification\n\nYour Email address has been changed to {usermail} successfully.".format(server=self.services_description, servermail=self.email, user=self.auth(uid), usermail=arg[0]))
+                self.mail(arg[0], "Email verification", "Your Email address has been changed to {usermail} successfully.".format(usermail=arg[0]))
                 self.msg(uid, "Done.")
               else:
                 self.msg(uid, "Email address already in use.")

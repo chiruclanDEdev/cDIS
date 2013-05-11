@@ -21,7 +21,7 @@ modules/cmd_3_deop.py 50aeea5cfd22c17ec4479044264d5079
 modules/cmd_3_deowner.py 9539bb199eaba711b294067ed850551b
 modules/cmd_3_deprotect.py 153f51c6fa0e5c4844fe75fb7a06ec4b
 modules/cmd_3_devoice.py e3d7a0cd72986180741fa0d0ee4bd39f
-modules/cmd_3_email.py ffa78bf89696d694ab25d598fb7cafcf
+modules/cmd_3_email.py 08b2bccb264a5cd97def961d9c69c052
 modules/cmd_3_fantasy.py bc08f52c6402555825e8cf0109654e9a
 modules/cmd_3_feedback.py 2ab66edac16dcebb95a08378e0a1936e
 modules/cmd_3_halfop.py bea2341ec732951745b2190981659cc9
