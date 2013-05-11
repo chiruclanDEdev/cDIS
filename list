@@ -1,9 +1,9 @@
 HOWTO a78cdb5daa8d558fc458f7a8c46378a6
 README.md 2b3d21e89eca16c6c74b52f9c545d47b
 cDIS 57751b55363f2584b23522f0ff7762d9
-cDIS.py 08dbd189d8ece52c9fdbef91ff73941b
+cDIS.py ad2b1fdba03bfa6445937b076b71a963
 configs/bots.cfg.dist b2d0f0cda769ad01f4dd7594bcba5517
-configs/config.cfg.dist 777c6ffb2396a126565efa34cb5f9980
+configs/config.cfg.dist 2e03a80d7813a4c3a146a8c233d4e129
 docs/inspircd-needed-modules.txt 649a16421341b9888ddbcb2f7d871166
 modules/__init__.py 6f16f445d1afd883dd60228ce711bb37
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766

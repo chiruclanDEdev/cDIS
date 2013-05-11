@@ -255,7 +255,6 @@ class cDISModule:
     self.oper_not = config.getboolean("OPERS", "notifications")
     
     self.mail_template = mail_template
-    self.mail_name = config.get("MAIL", "name")
     
   def shell(self, text):
     subprocess.Popen(text+" >> /dev/null", shell=True).wait()
@@ -964,7 +963,7 @@ class cDISModule:
       message = self.mail_template("${MESSAGE}", message)
       msg.attach(MIMEText(message, 'html'))
       msg['Subject'] = subject
-      msg['From'] = self.mail_name + ' <' + self.email + '>'
+      msg['From'] = self.services_description + ' <' + self.email + '>'
       msg['To'] = receiver
       mail = smtplib.SMTP('127.0.0.1', 25)
       mail.sendmail(self.email, msg['To'], msg.as_string())

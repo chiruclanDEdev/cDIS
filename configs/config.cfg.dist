@@ -32,7 +32,6 @@ ssl = False
 template = templates/default_mail.tpl
 logo = 
 link = 
-name = 
 
 [INCLUDES]
 bots = bots.cfg
