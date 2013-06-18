@@ -569,7 +569,7 @@ class cDISModule:
       
     result = self.query("SELECT `uid` FROM `opers`")
     for row in result:
-      self.send_serv("PRIVMSG " + row["uid"] + " :-" + self.services_name + "- " + content)
+      self.send_serv("PRIVMSG " + row["uid"] + " : " + content)
 
   def uid (self, nick):
     if nick == self.bot_nick:
