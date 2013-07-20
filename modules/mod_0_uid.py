@@ -26,7 +26,6 @@ class mod_0_uid(cDISModule):
     self.query("delete from online where uid = ?", data.split()[2])
     self.query("delete from online where nick = ?", data.split()[4])
     self.query("insert into online values (?, ?, ?, ?, ?, '')", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
-    self.query("UPDATE `ircd_opers` SET `hostname` = 'root@localhost` WHERE `hostname` = ?", self.userhost(data.split()[2]))
     
     result = self.query("SELECT `uid`, `key`, `value` FROM `metadata` WHERE `uid` = ? AND `key` = ?", data.split()[2], "accountname")
     for row in result:

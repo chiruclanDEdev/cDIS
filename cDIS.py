@@ -147,6 +147,7 @@ class Services:
       self.query("TRUNCATE `chanlist`")
       self.query("TRUNCATE `metadata`")
       self.query("TRUNCATE `modules`")
+      self.query("UPDATE `ircd_opers` SET `hostname` = 'root@localhost'")
       
       if self.ipv6 and socket.has_ipv6:
         if self.ssl:
