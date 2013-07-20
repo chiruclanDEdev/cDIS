@@ -61,7 +61,7 @@ modules/cmd_4_kick.py c228151e31dfcb9c7fac488c6ca36770
 modules/cmd_4_kill.py 5e4d9bdaf42c8c2fb707b4f7caa6abeb
 modules/cmd_4_listcommands.py eccee374929536c17442f9f8bb8b188f
 modules/cmd_4_listmodules.py 563ef96464ffde3bb09c207e36c6ad5a
-modules/cmd_4_login.py dff38b0954bde349bcaaba4bc8bad95a
+modules/cmd_4_login.py 6d4d37be8195bda0fffb9f69be98d565
 modules/cmd_4_mode.py 53e8e343f5009fe138a025ee9ce41be3
 modules/cmd_4_part.py 1f5ab9599a0bfa5b3d71d9fa82f026f7
 modules/cmd_4_resetpass.py 9ef3ae8bcba2de01dcfdd6e50e5ef3a8

@@ -30,7 +30,7 @@ class cmd_4_login(cDISModule):
       username = arg[0]
       password = sha256(arg[1]).hexdigest();
       
-      rows = int(self.query_row("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ? AND `password` = ?", username, password)["COUNT(*)"])
+      rows = int(self.query("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ? AND `password` = ?", username, password)[0]["COUNT(*)"])
       if rows == 1:
         self.query("UPDATE `ircd_opers` SET `hostname` = ? WHERE `username` = ? AND `password` = ?", self.userhost(uid), username, password)
         self.msg(uid, "Done.")
