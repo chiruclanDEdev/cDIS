@@ -78,7 +78,7 @@ modules/mod_0_metadata.py 3a58d12bef4bcc070bda634ff293840e
 modules/mod_0_nick.py 66ed13356f13b18d5bd2758f024a9858
 modules/mod_0_opertype.py 194e3262df6566eb970e700f8ab96aa8
 modules/mod_0_quit.py 9d9786b317311c7883d875c4425fe7f5
-modules/mod_0_uid.py d018cbce5ba7ac33fe502f32c0962d24
+modules/mod_0_uid.py e7f1b77e1a5b27a1d24be8419798e538
 modules/mod_3_fjoin.py 15c6ce787ca7e9ffd487f4559155c8bb
 modules/mod_3_fmode.py 7f2dad555ce25b6a967a8c3ba17c51e0
 modules/mod_3_kick.py f2bc600eda20fc67eb30c5d396a2b3f9
