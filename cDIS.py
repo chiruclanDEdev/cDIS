@@ -655,7 +655,7 @@ class cDISModule:
           modes = data["modes"].split("-")[1]
           
           if modes.find("+") != -1:
-            modes.split("+")[0]
+            modes = modes.split("+")[0]
             
           if modes.find("B") != -1:
             if self.gateway(target):
