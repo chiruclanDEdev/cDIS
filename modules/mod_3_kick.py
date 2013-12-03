@@ -30,4 +30,4 @@ class mod_3_kick(cDISModule):
     if ktarget == self.bot:
       self.join(kchan)
     else:
-      self.query("delete from chanlist where channel = ? and uid = ?", kchan, ktarget)
+      self.query("delete from chanlist where channel = %s and uid = %s", kchan, ktarget)

@@ -28,11 +28,11 @@ class cmd_4_login(cDISModule):
     
     if len(arg) == 2:
       username = arg[0]
-      password = sha256(arg[1]).hexdigest();
+      password = sha256(bytes(arg[1], "UTF-8")).hexdigest();
       
-      rows = int(self.query("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ? AND `password` = ?", username, password)[0]["COUNT(*)"])
+      rows = int(self.query("SELECT COUNT(*) FROM ircd_opers WHERE username = %s AND password = %s", username, password)[0]["count"])
       if rows == 1:
-        self.query("UPDATE `ircd_opers` SET `hostname` = ? WHERE `username` = ? AND `password` = ?", self.userhost(uid), username, password)
+        self.query("UPDATE ircd_opers SET hostname = %s WHERE username = %s AND password = %s", self.userhost(uid), username, password)
         self.msg(uid, "Done.")
       else:
         self.msg(uid, "Denied.")

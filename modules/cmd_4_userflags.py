@@ -46,7 +46,7 @@ class cmd_4_userflags(cDISModule):
       else:
         userflags = self.regexflag("+" + self.userflags(self.uid(arg[0])), arg[1])
         flags = ''.join([char for char in userflags if char in ''.join(mode)])
-        self.query("update users set flags = ? where name = ?", flags, self.auth(self.uid(arg[0])))
+        self.query("update users set flags = %s where name = %s", flags, self.auth(self.uid(arg[0])))
         self.msg(uid, "Done. Current user flags for " + arg[0] + ": +" + userflags)
         if arg[1].find("x") != -1:
           for target in self.sid(arg[0]):

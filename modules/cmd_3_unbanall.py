@@ -31,11 +31,11 @@ class cmd_3_unbanall(cDISModule):
         flag = self.getflag(uid, arg[0])
         
         if flag == "n" or flag == "q" or flag == "a":
-          for ban in self.query("select ban from banlist where channel = ?", arg[0]):
+          for ban in self.query("select ban from banlist where channel = %s", arg[0]):
             self.mode(arg[0], "-b "+ban["ban"])
             self.msg(uid, " - removed '"+ban["ban"]+"'")
             
-          self.query("delete from banlist where channel = ?", arg[0])
+          self.query("delete from banlist where channel = %s", arg[0])
           self.msg(uid, "Done.")
         else:
           self.msg(uid, "Denied.")

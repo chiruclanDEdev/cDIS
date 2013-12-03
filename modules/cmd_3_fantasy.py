@@ -45,7 +45,7 @@ class cmd_3_fantasy(cDISModule):
         
         if flag == "n" or flag == "q" or flag == "a":
           if self.chanflag("f", arg[0]):
-            self.query("update channelinfo set fantasy = ? where name = ?", arg[1], arg[0])
+            self.query("update channelinfo set fantasy = %s where name = %s", arg[1], arg[0])
             self.msg(uid, "Done.")
           else:
             self.msg(uid, "Fantasy commands are disabled for " + arg[0])

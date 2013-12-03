@@ -32,7 +32,7 @@ class cmd_4_gline(cDISModule):
         current_timestamp = int(time.time())
         self.msg(uid, "-=- List of G-lines -=-")
         
-        result = self.query("SELECT `id`, `mask`, `timestamp` FROM `glines`")
+        result = self.query("SELECT id, mask, timestamp FROM glines")
         for row in result:
           id = str(row["id"])
           mask = str(row["mask"])
@@ -49,7 +49,7 @@ class cmd_4_gline(cDISModule):
         current_timestamp = int(time.time())
         self.msg(uid, "-=- List of G-lines (lookup parameter: " + arg[1] + ") -=-")
         
-        result = self.query("SELECT `id`, `mask`, `timestamp` FROM `glines` WHERE `id` LIKE ? OR `mask` LIKE ?", "%" + arg[1][1:] + "%", "%" + arg[1] + "%")
+        result = self.query("SELECT id, mask, timestamp FROM glines WHERE id LIKE %s OR mask LIKE %s", "%" + arg[1][1:] + "%", "%" + arg[1] + "%")
         for row in result:
           id = str(row["id"])
           mask = str(row["mask"])
@@ -62,10 +62,10 @@ class cmd_4_gline(cDISModule):
           
         self.msg(uid, "-=- End of list -=-")
       elif arg[0].lower() == "del":
-        result = self.query("SELECT `id`, `mask` FROM `glines` WHERE `id` = ? OR `mask` = ?", arg[1][1:], arg[1])
+        result = self.query("SELECT id, mask FROM glines WHERE id = %s OR mask = %s", arg[1][1:], arg[1])
           
         for row in result:
-          self.query("DELETE FROM `glines` WHERE `id` = ?", row["id"])
+          self.query("DELETE FROM glines WHERE id = %s", row["id"])
           self.send_serv("GLINE " + row["mask"])
           self.msg(uid, "#G-line# ID #" + str(row["id"]) + " removed")
           
@@ -80,12 +80,12 @@ class cmd_4_gline(cDISModule):
           
           if not tuid.lower() == arg[1].lower():
             if not self.isoper(tuid) and tuid != self.bot:
-              for row in self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + self.getip(tuid)):
+              for row in self.query("SELECT id FROM glines WHERE mask = %s", "*@" + self.getip(tuid)):
                 self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
                 return 0
                 
               etime = int(time.time()) + int(ttime * 60)
-              self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + self.getip(tuid), etime)
+              self.query("INSERT INTO glines (mask, timestamp) VALUES (%s, %s)", "*@" + self.getip(tuid), etime)
               self.gline(tuid, bantime=str(int(ttime * 60)))
               self.msg(uid, "Done.")
             else:
@@ -105,12 +105,12 @@ class cmd_4_gline(cDISModule):
           
           if not tuid.lower() == arg[1].lower():
             if not self.isoper(tuid) and tuid != self.bot:
-              for row in self.query("SELECT `id` FROM `glines` WHERE `mask` = ?", "*@" + self.getip(tuid)):
+              for row in self.query("SELECT id FROM glines WHERE mask = %s", "*@" + self.getip(tuid)):
                 self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
                 return 0
                 
               etime = int(time.time()) + int(ttime * 60)
-              self.query("INSERT INTO `glines` (`mask`, `reason`, `timestamp`) VALUES (?, ?, ?)", "*@" + self.getip(tuid), treason, etime)
+              self.query("INSERT INTO glines (mask, reason, timestamp) VALUES (%s, %s, %s)", "*@" + self.getip(tuid), treason, etime)
               self.gline(tuid, treason, str(int(ttime * 60)))
               self.msg(uid, "Done.")
             else:

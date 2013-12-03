@@ -22,6 +22,6 @@ class mod_0_opertype(cDISModule):
   def onData(self, data):
     uid = data.split()[0][1:]
     type = data.split()[2]
-    self.query("DELETE FROM `opers` WHERE `uid` = ?", uid)
-    self.query("INSERT INTO `opers` (`uid`, `opertype`) VALUES (?, ?)", uid, type)
-    self.query("UPDATE `ircd_opers` SET `hostname` = 'root@localhost' WHERE `hostname` = ?", self.userhost(uid))
+    self.query("DELETE FROM opers WHERE uid = %s", uid)
+    self.query("INSERT INTO opers (uid, opertype) VALUES (%s, %s)", uid, type)
+    self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))

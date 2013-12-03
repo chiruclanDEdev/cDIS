@@ -29,7 +29,7 @@ class mod_0_metadata(cDISModule):
       
       if key == "accountname":
         if self.ison(uid, True):
-          self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", value, uid)
+          self.query("UPDATE online SET account = %s WHERE uid = %s", value, uid)
           self.msg(uid, "You are now logged in as " + value + ".")
           self.vhost(uid)
           self.flag(uid)

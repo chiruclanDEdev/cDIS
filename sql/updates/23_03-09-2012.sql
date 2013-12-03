@@ -1,1 +1,0 @@
-UPDATE `channelinfo` SET fantasy = '!';

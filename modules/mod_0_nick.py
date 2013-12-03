@@ -21,4 +21,4 @@ class mod_0_nick(cDISModule):
   BOT_ID = '3'
   
   def onData(self, data):
-    self.query("UPDATE `online` SET `nick` = ? WHERE `uid` = ?", data.split()[2], str(data.split()[0])[1:])
+    self.query("UPDATE online SET nick = %s WHERE uid = %s", data.split()[2], str(data.split()[0])[1:])

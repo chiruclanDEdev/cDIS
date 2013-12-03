@@ -33,7 +33,7 @@ class cmd_4_trust(cDISModule):
         current_timestamp = int(time.time())
         self.msg(uid, "-=- List of Trusts -=-")
         
-        result = self.query("SELECT `id`, `address`, `limit`, `timestamp` FROM `trust`")
+        result = self.query("SELECT id, address, \"limit\", timestamp FROM \"trust\"")
         for row in result:
           id = str(row["id"])
           address = str(row["address"])
@@ -50,7 +50,7 @@ class cmd_4_trust(cDISModule):
         current_timestamp = int(time.time())
         self.msg(uid, "-=- List of Trusts (lookup parameter: " + arg[1] + ") -=-")
         
-        result = self.query("SELECT `id`, `address`, `limit`, `timestamp` FROM `trust` WHERE `id` LIKE ? OR `address` LIKE ?", "%" + arg[1][1:] + "%", "%" + arg[1] + "%")
+        result = self.query("SELECT id, address, \"limit\", timestamp FROM \"trust\" WHERE id LIKE %s OR address LIKE %s", "%" + arg[1][1:] + "%", "%" + arg[1] + "%")
         for row in result:
           id = str(row["id"])
           address = str(row["address"])
@@ -61,10 +61,10 @@ class cmd_4_trust(cDISModule):
           
         self.msg(uid, "-=- End of list -=-")
       elif arg[0].lower() == "del":
-        result = self.query("SELECT `id`, `address`, `limit` FROM `trust` WHERE `address` = ?", arg[1])
+        result = self.query("SELECT id, address, \"limit\" FROM \"trust\" WHERE address = %s", arg[1])
           
         for row in result:
-          self.query("DELETE FROM `trust` WHERE `id` = ?", row["id"])
+          self.query("DELETE FROM trust WHERE id = %s", row["id"])
           self.msg(uid, "#Trust# " + str(row["address"]) + " (Limit: " + str(row["limit"]) + ") removed")
           
         self.msg(uid, "Done.")
@@ -78,14 +78,14 @@ class cmd_4_trust(cDISModule):
           tlimit = int(arg[3])
           
           if tuid != "0.0.0.0" and (wmatch(tuid, "*.*") or wmatch(tuid, "*:*")):
-            for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", tuid):
+            for row in self.query("SELECT id FROM \"trust\" WHERE address = %s", tuid):
               self.msg(uid, "This entry is already active (ID #" + str(row["id"]) + ")!")
               return 0
               
             etime = int(time.time()) + int(ttime * 60 * 60 * 24)
-            self.query("INSERT INTO `trust` (`address`, `limit`, `timestamp`) VALUES (?, ?, ?)", tuid, tlimit, etime)
+            self.query("INSERT INTO \"trust\" (address, \"limit\", timestamp) VALUES (%s, %s, %s)", tuid, tlimit, etime)
             
-            for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", tlimit, tlimit):
+            for row in self.query("SELECT uid FROM online WHERE address = %s OR host = %s", tlimit, tlimit):
               self.checkconnection(row["uid"])
               
             self.msg(uid, "Done.")
@@ -101,11 +101,11 @@ class cmd_4_trust(cDISModule):
           tlimit = int(arg[3])
           
           if tuid != "0.0.0.0" and (wmatch(tuid, "*.*") or wmatch(tuid, "*:*")):
-            for row in self.query("SELECT `id` FROM `trust` WHERE `address` = ?", tuid):
+            for row in self.query("SELECT id FROM trust WHERE address = %s", tuid):
               etime = int(time.time()) + int(ttime * 60 * 60 * 24)
-              self.query("UPDATE `trust` SET `timestamp` = ?, `limit` = ? WHERE `id` = ?", etime, tlimit, row["id"])
+              self.query("UPDATE \"trust\" SET timestamp = %s, \"limit\" = %s WHERE id = %s", etime, tlimit, row["id"])
               
-              for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", tuid, tuid):
+              for row in self.query("SELECT uid FROM online WHERE address = %s OR host = %s", tuid, tuid):
                 self.checkconnection(row["uid"])
                 
               self.msg(uid, "Done.")

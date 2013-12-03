@@ -35,7 +35,7 @@ class cmd_3_logs(cDISModule):
             self.showlog(uid, arg[0])
           elif arg[1].lower() == "clear":
             if flag == "n" or flag == "q" or flag == "a":
-              self.query("DELETE FROM `logs` WHERE `channel` = ?", arg[0])
+              self.query("DELETE FROM logs WHERE channel = %s", arg[0])
               self.msg(uid, "Done.")
             else:
               self.msg(uid, "Denied.")

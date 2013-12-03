@@ -26,7 +26,7 @@ class cmd_4_listcommands(cDISModule):
   def onCommand(self, uid, args):
     self.msg(uid, "-=- Lists all loaded commands -=-")
     
-    for data in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND'"):
+    for data in self.query("SELECT * FROM modules WHERE class = 'COMMAND'"):
       idname_space = " " * (5 - len(str(data["id"])))
       nameclass_space = " " * (20 - len(data["name"]))
       

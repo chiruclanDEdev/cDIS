@@ -1,7 +1,8 @@
-[MYSQL]
+[PGSQL]
 host = 
 port = 
 name = 
+schema = 
 user = 
 passwd = 
 

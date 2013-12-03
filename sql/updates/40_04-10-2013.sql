@@ -1,1 +1,0 @@
-ALTER TABLE `chanlist` ADD COLUMN `flag` enum('', 'v', 'h', 'o', 'a', 'q') NOT NULL DEFAULT '';

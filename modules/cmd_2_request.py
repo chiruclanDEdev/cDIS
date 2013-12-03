@@ -32,9 +32,9 @@ class cmd_2_request(cDISModule):
           if not self.suspended(arg[0]):
             cucflag = self.currentuserchanflag(arg[0], source)
             if cucflag == "q" or cucflag == "a" or cucflag == "o":
-              if self.channelusercount(arg[0]) >= 10:
-                self.query("insert into channelinfo values (?, '', '', '', '', '10:5', '!')", arg[0])
-                self.query("insert into channels values (?, ?, 'n')", arg[0], self.auth(source))
+              if self.channelusercount(arg[0]) >= 10 or self.isoper(source):
+                self.query("insert into channelinfo values (%s, '', '', '', '', '10:5', '!')", arg[0])
+                self.query("insert into channels values (%s, %s, 'n')", arg[0], self.auth(source))
                 self.join(arg[0])
                 self.mode(arg[0], "+qo {0} {0}".format(source))
                 self.msg(source, "Channel %s has been registered for you" % arg[0])

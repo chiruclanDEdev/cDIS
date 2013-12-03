@@ -32,7 +32,7 @@ class cmd_4_ircop(cDISModule):
         self.msg(uid, "<= List of IRC operators =>")
         self.msg(uid)
         
-        for row in self.query("SELECT `username`, `type`, `hostname` FROM `ircd_opers` ORDER BY `id`"):
+        for row in self.query("SELECT username, type, hostname FROM ircd_opers ORDER BY id"):
           self.msg(uid, "Username: {0}  Type: {1}  Hostname: {2}".format(row["username"], row["type"], row["hostname"]))
           
         self.msg(uid)
@@ -44,7 +44,7 @@ class cmd_4_ircop(cDISModule):
         self.msg(uid, "<= List of IRC operators (Search pattern: " + arg[1] + ")")
         self.msg(uid)
         
-        for row in self.query("SELECT `username`, `type`, `hostname` FROM `ircd_opers` WHERE `username` LIKE ? ORDER BY `id`", "%" + arg[1] + "%"):
+        for row in self.query("SELECT username, type, hostname FROM ircd_opers WHERE username LIKE %s ORDER BY id", "%" + arg[1] + "%"):
           self.msg(uid, "Username: {0}  Type: {1}  Hostname: {2}".format(row["username"], row["type"], row["hostname"]))
           
         self.msg(uid)
@@ -54,10 +54,10 @@ class cmd_4_ircop(cDISModule):
           self.msg(uid, "Denied.")
           return None
           
-        rows = int(self.query_row("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ?", arg[1])["COUNT(*)"])
+        rows = int(self.query("SELECT COUNT(*) FROM ircd_opers WHERE username = %s", arg[1])[0]["count"])
         
         if rows == 1:
-          self.query("DELETE FROM `ircd_opers` WHERE `username` = ? AND `type` = 'GlobalOp'", arg[1])
+          self.query("DELETE FROM ircd_opers WHERE username = %s AND type = 'GlobalOp'", arg[1])
           self.msg(uid, "Done.")
           self.send_to_op("#IRCOP# " + arg[1] + " removed")
         else:
@@ -70,12 +70,12 @@ class cmd_4_ircop(cDISModule):
           self.msg(uid, "Denied.")
           return None
           
-        rows = int(self.query_row("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ?", arg[1])["COUNT(*)"])
+        rows = int(self.query("SELECT COUNT(*) FROM ircd_opers WHERE username = %s", arg[1])[0]["count"])
         
         if rows == 0:
-          password = sha256(arg[2]).hexdigest()
+          password = sha256(bytes(arg[2], "UTF-8")).hexdigest()
           
-          self.query("INSERT INTO `ircd_opers` (`username`, `password`) VALUES (?, ?)", arg[1], password)
+          self.query("INSERT INTO ircd_opers (username, password, hostname, type) VALUES (%s, %s, 'root@localhost', 'GlobalOp')", arg[1], password)
           self.msg(uid, "Done.")
           self.send_to_op("#IRCOP# " + arg[1] + " added")
         else:
@@ -86,10 +86,10 @@ class cmd_4_ircop(cDISModule):
           return None
           
         username = arg[1]
-        password = sha256(arg[2]).hexdigest()
+        password = sha256(bytes(arg[2], "UTF-8")).hexdigest()
         
-        self.query("UPDATE `ircd_opers` SET `password` = ? WHERE `username` = ?", password, username)
-        rows = int(self.query_row("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ? AND `password` = ?", username, password)["COUNT(*)"])
+        self.query("UPDATE ircd_opers SET password = %s WHERE username = %s", password, username)
+        rows = int(self.query("SELECT COUNT(*) FROM ircd_opers WHERE username = %s AND password = %s", username, password)[0]["count"])
         
         if rows == 1:
           self.msg(uid, "Done.")
@@ -100,11 +100,11 @@ class cmd_4_ircop(cDISModule):
     elif len(arg) == 4:
       if arg[0].lower() == "password":
         username = arg[1]
-        oldpass = sha256(arg[2]).hexdigest()
-        newpass = sha256(arg[3]).hexdigest()
+        oldpass = sha256(bytes(arg[2], "UTF-8")).hexdigest()
+        newpass = sha256(bytes(arg[3], "UTF-8")).hexdigest()
         
-        self.query("UPDATE `ircd_opers` SET `password` = ? WHERE `username` = ? AND `password` = ?", newpass, username, oldpass)
-        rows = int(self.query_row("SELECT COUNT(*) FROM `ircd_opers` WHERE `username` = ? AND `password` = ?", username, newpass)["COUNT(*)"])
+        self.query("UPDATE ircd_opers SET password = %s WHERE username = %s AND password = %s", newpass, username, oldpass)
+        rows = int(self.query("SELECT COUNT(*) FROM ircd_opers WHERE username = %s AND password = %s", username, newpass)[0]["count"])
         
         if rows == 1:
           self.msg(uid, "Done.")

@@ -25,4 +25,4 @@ class mod_3_part(cDISModule):
     nick = arg[0][1:]
     chan = arg[2]
     
-    self.query("delete from chanlist where channel = ? and uid = ?", chan, nick)
+    self.query("delete from chanlist where channel = %s and uid = %s", chan, nick)

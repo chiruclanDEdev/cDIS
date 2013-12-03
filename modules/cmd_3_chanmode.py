@@ -29,7 +29,7 @@ class cmd_3_chanmode(cDISModule):
     if len(arg) == 1:
       if arg[0].startswith("#"):
         if self.getflag(source, arg[0]) == "n" or self.getflag(source, arg[0]) == "q" or self.getflag(source, arg[0]) == "a":
-          for channel in self.query("select name,modes from channelinfo where name = ?", arg[0]):
+          for channel in self.query("select name,modes from channelinfo where name = %s", arg[0]):
             self.msg(source, "Current modes for {0}: {1}".format(channel["name"], channel["modes"]))
         else:
           self.msg(source, "Denied.")
@@ -40,9 +40,9 @@ class cmd_3_chanmode(cDISModule):
       
       if arg[0].startswith("#"):
         if self.getflag(source, arg[0]) == "n" or self.getflag(source, arg[0]) == "q" or self.getflag(source, arg[0]) == "a":
-          for channel in self.query("select name,modes from channelinfo where name = ?", arg[0]):
+          for channel in self.query("select name,modes from channelinfo where name = %s", arg[0]):
             modes = self.regexflag(channel["modes"], modes, True)
-            self.query("update channelinfo set modes = ? where name = ?", modes, channel["name"])
+            self.query("update channelinfo set modes = %s where name = %s", modes, channel["name"])
             self.mode(channel["name"], modes)
             self.msg(source, "Done. New modes for {0}: {1}".format(channel["name"], modes))
         else:

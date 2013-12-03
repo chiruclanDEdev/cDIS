@@ -18,3 +18,5 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 ---
 
 ** If you're looking for more commands, check out https://github.com/chiruclanDEdev/cDIS-Modules! **
+
+== SWITCHING TO POSTGRESQL - DO NOT USE IN PRODUCTION YET! ==

@@ -37,11 +37,11 @@ class cmd_3_ban(cDISModule):
             if fnmatch(arg[1], "*!*@*") and arg[1] != "*!*@*":
               entry = False
               
-              for data in self.query("select * from banlist where ban = ? and channel = ?", arg[1], arg[0]):
+              for data in self.query("select * from banlist where ban = %s and channel = %s", arg[1], arg[0]):
                 entry = True
                 
               if not entry:
-                self.query("insert into banlist (`channel`, `ban`) values (?, ?)", arg[0], arg[1])
+                self.query("insert into banlist (channel, ban) values (%s, %s)", arg[0], arg[1])
                 self.msg(uid, "Done.")
                 self.enforceban(arg[0], arg[1])
               else:
@@ -62,11 +62,11 @@ class cmd_3_ban(cDISModule):
                   else:
                     ban = "*!*"+self.userhost(user).split("@")[0]+"@*."+'.'.join(self.gethost(user).split(".")[1:])
                     
-                  for data in self.query("select * from banlist where ban = ? and channel = ?", ban, arg[0]):
+                  for data in self.query("select * from banlist where ban = %s and channel = %s", ban, arg[0]):
                     entry = True
                     
                   if not entry:
-                    self.query("insert into banlist (`channel`, `ban`) values (?, ?)", arg[0], ban)
+                    self.query("insert into banlist (channel, ban) values (%s, %s)", arg[0], ban)
                     self.msg(uid, "Done.")
                     self.enforceban(arg[0], ban)
                   else:
@@ -80,7 +80,7 @@ class cmd_3_ban(cDISModule):
           self.msg(uid, "Invalid channel: "+arg[0])
       else:
         self.msg(uid, "Syntax: BAN <#channel> <hostmask>")
-    except Exception,e:
+    except Exception as e:
       pass
 
   def onFantasy(self, uid, chan, args):

@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from cDIS import cDISModule
-import __builtin__
+import builtins
 import time
 
 class mod_3_privmsg(cDISModule):
@@ -34,11 +34,11 @@ class mod_3_privmsg(cDISModule):
         messages = 10
         seconds = [6, 5]
         
-        for dump in self.query("select spamscan from channelinfo where name = ?", pchan):
+        for dump in self.query("select spamscan from channelinfo where name = %s", pchan):
           messages = int(dump["spamscan"].split(":")[0])
           seconds = [int(dump["spamscan"].split(":")[1]) + 1, int(dump["spamscan"].split(":")[1])]
           
-        if spamscan.has_key((pchan, puid)):
+        if (pchan, puid) in spamscan:
           num = spamscan[pchan,puid][0] + 1
           spamscan[pchan,puid] = [num, spamscan[pchan,puid][1]]
           timer = int(time.time()) - spamscan[pchan,puid][1]
@@ -55,4 +55,4 @@ class mod_3_privmsg(cDISModule):
         else:
           spamscan[pchan,puid] = [1, int(time.time())]
           
-    __builtin__.spamscan = spamscan
+    builtins.spamscan = spamscan

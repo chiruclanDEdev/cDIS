@@ -43,13 +43,13 @@ class cmd_4_accban(cDISModule):
           self.msg(uid, "Can't find user " + arg[0][1:])
       else:
         if self.user(arg[0]):
-          self.query("update users set suspended = '0' where name = ?", arg[0])
+          self.query("update users set suspended = '0' where name = %s", arg[0])
           self.msg(uid, "Done.")
         else:
           self.msg(uid, "Can't find user " + arg[0])
     elif len(arg) > 1:
       if self.user(arg[0]):
-        self.query("update users set suspended = ? where name = ?", ' '.join(arg[1:]), arg[0])
+        self.query("update users set suspended = %s where name = %s", ' '.join(arg[1:]), arg[0])
         self.msg(uid, "Done.")
       else:
         self.msg(uid, "Can't find user " + arg[0])

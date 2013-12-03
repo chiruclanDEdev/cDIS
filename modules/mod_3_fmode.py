@@ -26,7 +26,7 @@ class mod_3_fmode(cDISModule):
       
     if self.chanflag("m", data.split()[2]) and len(data.split()) == 5:
       if data.split()[2].startswith("#"):
-        for channel in self.query("select name,modes from channelinfo where name = ?", data.split()[2]):
+        for channel in self.query("select name,modes from channelinfo where name = %s", data.split()[2]):
           self.mode(channel["name"], channel["modes"])
           
     if len(data.split()) > 5:
@@ -49,11 +49,11 @@ class mod_3_fmode(cDISModule):
               if fnmatch.fnmatch(ban, "*!*@*"):
                 entry = False
                 
-                for sql in self.query("select ban from banlist where ban = ? and channel = ?", ban, data.split()[2]):
+                for sql in self.query("select ban from banlist where ban = %s and channel = %s", ban, data.split()[2]):
                   entry = True
                   
                 if not entry and ban != "*!*@*":
-                  self.query("insert into banlist (`channel`, `ban`) values (?, ?)", data.split()[2], ban)
+                  self.query("insert into banlist (channel, ban) values (%s, %s)", data.split()[2], ban)
                   self.msg(data.split()[0][1:], "Done.")
                 elif ban == "*!*@*":
                   self.msg(data.split()[2], "ACTION is angry about %s, because he tried to set a *!*@* ban." % self.nick(data.split()[0][1:]), True)
@@ -76,11 +76,11 @@ class mod_3_fmode(cDISModule):
                 if fnmatch.fnmatch(ban, "*!*@*"):
                   entry = False
                   
-                  for sql in self.query("select ban from banlist where channel = ? and ban = ?", data.split()[2], ban):
+                  for sql in self.query("select ban from banlist where channel = %s and ban = %s", data.split()[2], ban):
                     entry = True
                     
                   if entry:
-                    self.query("delete from banlist where channel = ? and ban = ?", data.split()[2], ban)
+                    self.query("delete from banlist where channel = %s and ban = %s", data.split()[2], ban)
                     self.msg(data.split()[0][1:], "Done.")
           else:
             self.mode(data.split()[2], "+{0} {1}".format("b"*len(data.split()[5:]), ' '.join(data.split()[5:])))
@@ -146,7 +146,7 @@ class mod_3_fmode(cDISModule):
         for user in data.split()[5:]:
           fm_chan = data.split()[2]
           
-          for flag in self.query("select flag from channels where channel = ? and user = ?", data.split()[2], self.auth(user)):
+          for flag in self.query("select flag from channels where channel = %s and user = %s", data.split()[2], self.auth(user)):
             if flag["flag"] == "n" or flag["flag"] == "q":
               self.mode(fm_chan, "+qo {0} {0}".format(user))
             elif flag["flag"] == "a":

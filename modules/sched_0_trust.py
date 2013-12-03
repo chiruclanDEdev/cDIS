@@ -25,10 +25,10 @@ class sched_0_trust(cDISModule):
   
   def onSchedule(self):
     current_timestamp = int(time.time())
-    result = self.query("SELECT `id`, `address`, `limit` FROM `trust` WHERE `timestamp` <= ?", current_timestamp)
+    result = self.query("SELECT id, address, \"limit\" FROM \"trust\" WHERE timestamp <= %s", current_timestamp)
     for row in result:
-      self.query("DELETE FROM `trust` WHERE `id` = ?", row["id"])
-      data = self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", row["address"], row["address"])
+      self.query("DELETE FROM \"trust\" WHERE id = %s", row["id"])
+      data = self.query("SELECT uid FROM online WHERE address = %s OR host = %s", row["address"], row["address"])
       for res in data:
         self.checkconnection(res["uid"])
         

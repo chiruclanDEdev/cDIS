@@ -42,9 +42,9 @@ class cmd_4_vhost(cDISModule):
           
         self.msg(source, "End of list.")
       else:
-        for data in self.query("select user,vhost from vhosts where active = '0' and user = ?", arg[0]):
-          self.query("update vhosts set active = '1' where user = ?", str(data["user"]))
-          self.query("insert into memo (`user`, `source`, `message`) values (?, ?, ?)", data["user"], self.bot_nick, "Your vHost {0} has been activated.".format(data["vhost"]))
+        for data in self.query("select user,vhost from vhosts where active = '0' and user = %s", arg[0]):
+          self.query("update vhosts set active = '1' where user = %s", str(data["user"]))
+          self.query("insert into memo (user, source, message) values (%s, %s, %s)", data["user"], self.bot_nick, "Your vHost {0} has been activated.".format(data["vhost"]))
           
           for uid in self.sid(data["user"]):
             self.vhost(uid)
@@ -56,15 +56,15 @@ class cmd_4_vhost(cDISModule):
         if self.user(arg[1]):
           entry = False
           
-          for data in self.query("select user,vhost from vhosts where vhost = ?", arg[2]):
+          for data in self.query("select user,vhost from vhosts where vhost = %s", arg[2]):
             user = data["user"]
             vhost = data["vhost"]
             entry = True
             
           if not entry:
-            self.query("delete from vhosts where user = ?", arg[1])
-            self.query("insert into vhosts values (?, ?, '1')", self.user(arg[1]), arg[2])
-            self.query("insert into memo (`user`, `source`, `message`) values (?, ?, ?)", self.user(arg[1]), self.bot_nick, "{0} has been set as your vHost".format(arg[2]))
+            self.query("delete from vhosts where user = %s", arg[1])
+            self.query("insert into vhosts values (%s, %s, '1')", self.user(arg[1]), arg[2])
+            self.query("insert into memo (user, source, message) values (%s, %s, %s)", self.user(arg[1]), self.bot_nick, "{0} has been set as your vHost".format(arg[2]))
             
             for uid in self.sid(arg[1]):
               self.vhost(uid)
@@ -78,8 +78,8 @@ class cmd_4_vhost(cDISModule):
       elif arg[0] == "?unset":
         if self.user(arg[1]):
           vhost = self.getvhost(arg[1])
-          self.query("delete from vhosts where user = ?", arg[1])
-          self.query("insert into memo (`user`, `source`, `message`) values (?, ?, ?)", self.user(arg[1]), self.bot_nick, "Your vHost {0} has been deleted.".format(vhost))
+          self.query("delete from vhosts where user = %s", arg[1])
+          self.query("insert into memo (user, source, message) values (%s, %s, %s)", self.user(arg[1]), self.bot_nick, "Your vHost {0} has been deleted.".format(vhost))
           
           for uid in self.sid(arg[1]):
             self.vhost(uid)
@@ -89,10 +89,10 @@ class cmd_4_vhost(cDISModule):
         else:
           self.msg(source, "Can't find user " + arg[1] + ".")
       else:
-        for data in self.query("select * from vhosts where active = '0' and user = ?", arg[0]):
-          self.query("delete from vhosts where user = ?", str(data["user"]))
+        for data in self.query("select * from vhosts where active = '0' and user = %s", arg[0]):
+          self.query("delete from vhosts where user = %s", str(data["user"]))
           self.msg(source, "vHost for user %s has been rejected" % str(data["user"]))
-          self.query("insert into memo (`user`, `source`, `message`) values (?, ?, ?)", data["user"], self.bot_nick, data["vhost"], "Your vHost %s has been rejected. Reason: " + ' '.join(arg[1:]))
+          self.query("insert into memo (user, source, message) values (%s, %s, %s)", data["user"], self.bot_nick, data["vhost"], "Your vHost %s has been rejected. Reason: " + ' '.join(arg[1:]))
           self.memo(data[0])
     else:
       self.msg(source, "Syntax: SAVHOST [?list] [[?set] <user> [<reject-reason>]]")

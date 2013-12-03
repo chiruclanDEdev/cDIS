@@ -22,17 +22,17 @@ class mod_0_uid(cDISModule):
   
   def onData(self, data):
     current_timestamp = int(time.time())
-    self.query("delete from gateway where uid = ?", data.split()[2])
-    self.query("delete from online where uid = ?", data.split()[2])
-    self.query("delete from online where nick = ?", data.split()[4])
-    self.query("insert into online values (?, ?, ?, ?, ?, '')", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
+    self.query("delete from gateway where uid = %s", data.split()[2])
+    self.query("delete from online where uid = %s", data.split()[2])
+    self.query("delete from online where nick = %s", data.split()[4])
+    self.query("insert into online values (%s, %s, %s, %s, %s, NULL)", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
     
-    result = self.query("SELECT `uid`, `key`, `value` FROM `metadata` WHERE `uid` = ? AND `key` = ?", data.split()[2], "accountname")
+    result = self.query("SELECT uid, key, value FROM metadata WHERE uid = %s AND key = %s", data.split()[2], "accountname")
     for row in result:
-      count = int(self.query("SELECT COUNT(*) FROM `users` WHERE `name` = ?", row["value"])[0]["COUNT(*)"])
+      count = int(self.query("SELECT COUNT(*) FROM users WHERE name = %s", row["value"])[0]["count"])
       
       if count == 1:
-        self.query("UPDATE `online` SET `account` = ? WHERE `uid` = ?", row["value"], row["uid"])
+        self.query("UPDATE online SET account = %s WHERE uid = %s", row["value"], row["uid"])
         self.msg(row["uid"], "You are now logged in as " + row["value"] + ".")
         self.vhost(row["uid"])
         self.flag(row["uid"])
@@ -40,7 +40,7 @@ class mod_0_uid(cDISModule):
       else:
         self.SetMetadata(row["uid"], row["key"])
         
-    result = self.query("SELECT `id`, `mask`, `reason`, `timestamp` FROM `glines` WHERE `mask` = ? AND `timestamp` > ?", "*@"+data.split()[8], current_timestamp)
+    result = self.query("SELECT id, mask, reason, timestamp FROM glines WHERE mask = %s AND timestamp > %s", "*@"+data.split()[8], current_timestamp)
     for row in result:
       bantime = str(int(int(row["timestamp"]) - int(current_timestamp)))
       self.gline(data.split()[2], row["reason"], bantime)
@@ -51,4 +51,4 @@ class mod_0_uid(cDISModule):
     if data.split()[10].find("B") != -1:
       crypthost = self.encode_md5(data.split()[2] + ":" + self.nick(data.split()[2]) + "!" + self.userhost(data.split()[2]))
       self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, data.split()[2], crypthost, '.'.join(self.services_name.split(".")[-2:])))
-      self.query("insert into gateway values (?)", data.split()[2])
+      self.query("insert into gateway values (%s)", data.split()[2])

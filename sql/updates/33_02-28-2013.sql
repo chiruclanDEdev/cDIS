@@ -1,1 +1,0 @@
-ALTER TABLE `glines` ADD COLUMN `timestamp` bigint(20) NOT NULL;

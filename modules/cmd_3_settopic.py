@@ -29,7 +29,7 @@ class cmd_3_settopic(cDISModule):
     if len(arg) > 1:
       if arg[0].startswith("#"):
         if self.getflag(source, arg[0]) == "n" or self.getflag(source, arg[0]) == "q" or self.getflag(source, arg[0]) == "a":
-          self.query("update channelinfo set topic = ? where name = ?", ' '.join(arg[1:]), arg[0])
+          self.query("update channelinfo set topic = %s where name = %s", ' '.join(arg[1:]), arg[0])
           self.send(":{0} TOPIC {1} :{2}".format(self.bot, arg[0], ' '.join(arg[1:])))
           
           if self.chanflag("l", arg[0]):

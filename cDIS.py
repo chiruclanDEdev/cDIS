@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # chiruclan.de IRC services
 # Copyright (C) 2012-2013  Chiruclan
@@ -19,20 +19,20 @@
 import sys
 import socket
 import os
-import ConfigParser
+import configparser
 import time
 import hashlib
 import smtplib
-import _mysql
+import psycopg2, psycopg2.extras
 import subprocess
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import traceback
-import thread
+import _thread
 import fnmatch
 import ssl
 import threading
 import modules
-import __builtin__
+import builtins
 
 def red(string):
   return("\033[91m" + string + "\033[0m")
@@ -46,13 +46,13 @@ def green(string):
 try:
   if not os.access("logs", os.F_OK):
     os.mkdir("logs")
-  config = ConfigParser.RawConfigParser()
+  config = configparser.RawConfigParser()
   if len(sys.argv) == 1:
     config.read("configs/config.cfg")
   else:
     config.read(sys.argv[1])
     
-  bots = ConfigParser.RawConfigParser()
+  bots = configparser.RawConfigParser()
   bots.read("configs/" + config.get("INCLUDES", "bots"))
   
   with open(config.get("MAIL", "template"), 'r') as content_file:
@@ -62,11 +62,11 @@ try:
   mail_template = mail_template.replace("${LINK}", config.get("MAIL", "link"))
 except Exception:
   et, ev, tb = sys.exc_info()
-  print(red("*") + " <<ERROR>> {0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb)))
+  print((red("*") + " <<ERROR>> {0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))))
 
 def debug(text):
   if config.get("OTHER", "debug") == "1":
-    print(str(text))
+    print((str(text)))
 
 def shell(text):
   subprocess.Popen(text+" >> /dev/null", shell=True).wait()
@@ -81,11 +81,12 @@ def perror(text):
 
 class Services:
   def __init__(self):
-    self.mysql_host = config.get("MYSQL", "host")
-    self.mysql_port = config.getint("MYSQL", "port")
-    self.mysql_name = config.get("MYSQL", "name")
-    self.mysql_user = config.get("MYSQL", "user")
-    self.mysql_passwd = config.get("MYSQL", "passwd")
+    self.pgsql_host = config.get("PGSQL", "host")
+    self.pgsql_port = config.getint("PGSQL", "port")
+    self.pgsql_name = config.get("PGSQL", "name")
+    self.pgsql_schema = config.get("PGSQL", "schema")
+    self.pgsql_user = config.get("PGSQL", "user")
+    self.pgsql_passwd = config.get("PGSQL", "passwd")
     self.server_name = config.get("SERVER", "name")
     self.server_address = config.get("SERVER", "address")
     self.server_port = config.get("SERVER", "port")
@@ -102,52 +103,52 @@ class Services:
     self.regmail = config.get("OTHER", "regmail")
     self.oper_not = config.getboolean("OPERS", "notifications")
     
+    try:
+      self.db_interface = psycopg2.connect(database=self.pgsql_name, user=self.pgsql_user, password=self.pgsql_passwd, host=self.pgsql_host, port=self.pgsql_port)
+      self.db_cursor = self.db_interface.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+      self.db_cursor.execute("SET search_path TO %s;", (self.pgsql_schema,))
+      self.db_interface.commit()
+    except Exception:
+      et, ev, tb = sys.exc_info()
+      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
+      debug(red("*") + " <<ERROR>> " + str(e))
+      sys.exit(1)
+    
   def query(self, string, *args):
-    conn = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
-    conn.query("SET @s = '" + conn.escape_string(str(string)) + "'")
-    conn.query("PREPARE query FROM @s")
-    
-    i = 0
-    all_variables = ""
-    
-    for arg in args:
-      i += 1
-      conn.query("SET @" + str(i) + " = '" + conn.escape_string(str(arg)) + "'")
+    try:
+      debug(blue("*** => ") + " " + string % args)
+      self.db_cursor.execute(string + ";", args)
+      self.db_interface.commit()
       
-      if i == 1:
-        all_variables += " USING @" + str(i)
-      else:
-        all_variables += ", @" + str(i)
-        
-    conn.query("EXECUTE query" + all_variables)
-    result = conn.store_result()
-    conn.query("DEALLOCATE PREPARE query")
-    
-    if result:
-      results = list()
+      if self.db_cursor.rowcount > 0 and string.lower().find('select ') != -1:
+        result = list()
+        rows = self.db_cursor.fetchall()
+        debug(green("*** <= ") + " " + str(rows))
+        for row in rows:
+          result.append(dict(row))
+          
+        return result
+    except psycopg2.DatabaseError as e:
+      self.db_interface.rollback()
+      et, ev, tb = sys.exc_info()
+      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
+      debug(red("*") + " <<ERROR>> " + str(e))
       
-      for data in result.fetch_row(maxrows=0, how=1):
-        results.append(data)
-        
-      conn.close()
-      return results
-      
-    conn.close()
-    return None
+    return list()
     
   def send(self, text):
-    self.con.send(text+"\n")
+    self.con.send(bytes(text+"\n", "UTF-8"))
     debug(blue("*") + " " + text)
 
   def run(self):
     try:
-      self.query("TRUNCATE `logs`")
-      self.query("TRUNCATE `opers`")
-      self.query("TRUNCATE `online`")
-      self.query("TRUNCATE `chanlist`")
-      self.query("TRUNCATE `metadata`")
-      self.query("TRUNCATE `modules`")
-      self.query("UPDATE `ircd_opers` SET `hostname` = 'root@localhost'")
+      self.query("TRUNCATE opers")
+      self.query("TRUNCATE online")
+      self.query("TRUNCATE chanlist")
+      self.query("TRUNCATE metadata")
+      self.query("TRUNCATE modules")
+      self.query("ALTER SEQUENCE modules_id_seq RESTART WITH 1")
+      self.query("UPDATE ircd_opers SET hostname = 'root@localhost'")
       
       if self.ipv6 and socket.has_ipv6:
         if self.ssl:
@@ -163,13 +164,13 @@ class Services:
       self.con.connect((self.server_address, int(self.server_port)))
       self.send("SERVER %s %s 0 %s :%s" % (self.services_name, self.server_password, self.services_id, self.services_description))
       self.send(":%s BURST" % self.services_id)
-      self.send(":%s ENDBURST" % self.services_id)
-      __builtin__.con = self.con
-      __builtin__.spamscan = {}
-      __builtin__._connected = False
-      __builtin__.config = config
-      __builtin__.bots = bots
-      __builtin__.mail_template = mail_template
+      builtins.con = self.con
+      builtins.spamscan = {}
+      builtins._connected = False
+      builtins.config = config
+      builtins.bots = bots
+      builtins.mail_template = mail_template
+      builtins.db_interface = self.db_interface
       
       for mod in dir(modules):
         if os.access("modules/" + mod + ".py", os.F_OK):
@@ -178,9 +179,9 @@ class Services:
           
           if classToCall.MODULE_CLASS == "SCHEDULE":
             methodToCall = getattr(classToCall, "runSchedule")
-            thread.start_new_thread(methodToCall, ())
+            _thread.start_new_thread(methodToCall, ())
             
-          self.query("INSERT INTO `modules` (`name`, `class`, `oper`, `auth`, `command`, `help`, `bot`) VALUES (?, ?, ?, ?, ?, ?, ?)", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
+          self.query("INSERT INTO modules (name, class, oper, auth, command, help, bot) VALUES (%s, %s, %s, %s, %s, %s, %s)", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
           
       while 1:
         recv = self.con.recv(25600)
@@ -189,30 +190,31 @@ class Services:
           return 1
           
         for data in recv.splitlines():
+          data = data.decode("UTF-8")
           if data.strip() != "":
             debug(green("*") + " " + data)
-            thread.start_new_thread(cDISModule().onInternal, (data.strip(),))
+            _thread.start_new_thread(cDISModule().onInternal, (data.strip(),))
           
     except Exception:
       et, ev, tb = sys.exc_info()
-      e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
+      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
       debug(red("*") + " <<ERROR>> " + str(e))
 
 class cDISModule:
   import sys
   import socket
   import os
-  import ConfigParser
+  import configparser
   import time
   import hashlib
   import smtplib
-  import _mysql
+  import psycopg2, psycopg2.extras
   import subprocess
-  import urllib2
+  import urllib.request, urllib.error, urllib.parse
   import traceback
-  import thread
+  import _thread
   import fnmatch
-  import __builtin__
+  import builtins
   
   HELP = ''
   NEED_OPER = 0
@@ -226,11 +228,7 @@ class cDISModule:
     self.con = con
     self.bots = bots
     
-    self.mysql_host = config.get("MYSQL", "host")
-    self.mysql_port = config.getint("MYSQL", "port")
-    self.mysql_name = config.get("MYSQL", "name")
-    self.mysql_user = config.get("MYSQL", "user")
-    self.mysql_passwd = config.get("MYSQL", "passwd")
+    self.pgsql_schema = config.get("PGSQL", "schema")
     self.server_name = config.get("SERVER", "name")
     self.server_address = config.get("SERVER", "address")
     self.server_port = config.get("SERVER", "port")
@@ -255,6 +253,10 @@ class cDISModule:
     
     self.mail_template = mail_template
     
+    self.db_cursor = db_interface.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    self.db_cursor.execute("SET search_path TO %s;", (self.pgsql_schema,))
+    db_interface.commit()
+    
   def shell(self, text):
     subprocess.Popen(text+" >> /dev/null", shell=True).wait()
   
@@ -264,11 +266,12 @@ class cDISModule:
         self.send(":%s PONG %s %s" % (self.services_id, self.services_id, data.split()[2]))
         self.send(":%s PING %s %s" % (self.services_id, self.services_id, data.split()[2]))
       elif data.split()[1] == "ENDBURST" and not _connected:
-        __builtin__._connected = True
+        self.send_serv("ENDBURST")
+        builtins._connected = True
         
         for bot in bots.sections():
           botuid = self.services_id + bots.get(bot, "uuid")
-          self.send(":%s UID %s %s %s %s %s %s %s %s +Ik :%s" % (self.services_id, botuid, time.time(), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, time.time(), bots.get(bot, "real")))
+          self.send_serv("UID {0} {1} {2} {3} {4} {5} {6} {7} +Ik :{8}".format(botuid, int(time.time()), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, int(time.time()), bots.get(bot, "real")))
           self.send(":%s OPERTYPE Service" % botuid)
           self.SetMetadata(botuid, "accountname", bots.get(bot, "nick"))
           
@@ -286,14 +289,14 @@ class cDISModule:
             
         self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
       else:
-        for module in self.query("SELECT * FROM `modules` WHERE `class` = ?", data.split()[1]):
+        for module in self.query("SELECT * FROM modules WHERE class = %s", data.split()[1]):
           if os.access("modules/" + module["name"] + ".py", os.F_OK):
             moduleToCall = getattr(modules, module["name"])
             classToCall = getattr(moduleToCall, module["name"])()
             
             if classToCall.MODULE_CLASS.lower() == data.split()[1].lower():
               methodToCall = getattr(classToCall, "onData")
-              thread.start_new_thread(methodToCall, (data, ))
+              _thread.start_new_thread(methodToCall, (data, ))
               
       if data.split()[1] == "PRIVMSG":
         for bot in bots.sections():
@@ -301,6 +304,10 @@ class cDISModule:
           
           if data.split()[2] == botuid:
             cmd = data.split()[3][1:]
+            if self.isoper(data.split()[0][1:]): isoper = 1
+            else: isoper = 0
+            if self.auth(data.split()[0][1:]): isauth = 1
+            else: isauth = 0
             
             if cmd.lower() == "help":
               self.bot = self.services_id + bots.get(bot, "uuid")
@@ -313,109 +320,71 @@ class cDISModule:
               if len(arg) == 0:
                 self.help(source, "HELP", "Shows information about all commands that are available to you")
                 
-                for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? ORDER BY `command`", bot):
+                for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s ORDER BY command", bot, isauth, isoper):
                   if os.access("modules/"+command["name"]+".py", os.F_OK):
-                    cmd_auth = int(command["auth"])
-                    cmd_help = command["help"]
-                    cmd_oper = int(command["oper"])
-                    
-                    if cmd_oper == 0:
-                      if cmd_auth == 0:
-                        self.help(source, command["command"], cmd_help)
-                      elif cmd_auth == 1 and self.auth(source) != 0:
-                        self.help(source, command["command"], cmd_help)
-                    elif cmd_oper == 1 and self.isoper(source):
-                      self.help(source, command["command"], cmd_help)
+                    self.help(source, command["command"], command["help"])
               else:
                 if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
                   self.help(source, "HELP", "Shows information about all commands that are available to you")
                   
-                for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `bot` = ? AND `command` LIKE ? ORDER BY `command`", bot, '%' + args + '%'):
+                for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s AND command LIKE %s ORDER BY command", bot, isauth, isoper, '%' + args + '%'):
                   if os.access("modules/"+command["name"]+".py", os.F_OK):
-                    cmd_auth = int(command["auth"])
-                    cmd_help = command["help"]
-                    cmd_oper = int(command["oper"])
-                    
-                    if cmd_oper == 0:
-                      if cmd_auth == 0:
-                        self.help(source, command["command"], cmd_help)
-                      elif cmd_auth == 1 and self.auth(source) != 0:
-                        self.help(source, command["command"], cmd_help)
-                    elif cmd_oper == 1 and self.isoper(source):
-                      self.help(source, command["command"], cmd_help)
+                    self.help(source, command["command"], command["help"])
               
               self.msg(source, "End of list.")
               
               self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
             else:
               iscmd = False
-              
-              for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `bot` = ?", cmd, bot):
+              for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND bot = %s AND auth <= %s AND oper <= %s", cmd.upper(), bot, isauth, isoper):
                 if os.access("modules/" + command["name"] + ".py", os.F_OK):
                   iscmd = True
-                  
-                  cmd_auth = int(command["auth"])
-                  cmd_oper = int(command["oper"])
                   
                   moduleToCall = getattr(modules, command["name"])
                   classToCall = getattr(moduleToCall, command["name"])()
                   methodToCall = getattr(classToCall, "onCommand")
                   
-                  if cmd_oper and self.isoper(data.split()[0][1:]):
-                    if len(data.split()) == 4:
-                      thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-                    elif len(data.split()) > 4:
-                      thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-                  elif not cmd_auth and not cmd_oper:
-                    if len(data.split()) == 4:
-                      thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-                    elif len(data.split()) > 4:
-                      thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-                  elif cmd_auth and not cmd_oper:
-                    if self.auth(data.split()[0][1:]):
-                      if len(data.split()) == 4:
-                        thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-                      elif len(data.split()) > 4:
-                        thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-                    else:
-                      self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
+                  if len(data.split()) == 4:
+                    _thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
+                  elif len(data.split()) > 4:
+                    _thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
                       
               if not iscmd:
                 self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
                 
-        if data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
-          if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
-            botuid = self.services_id + bots.get("3", "uuid")
-            fuid = data.split()[0][1:]
-            cmd = self.fantasy(data.split()[2])
-            
-            if len(data.split()[3]) > int(1+len(self.fantasy(data.split()[2]))):
-              fchan = data.split()[2]
-              cmd = data.split()[3][int(1+len(self.fantasy(fchan))):]
+          elif data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
+            if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
+              botuid = self.services_id + bots.get(bot, "uuid")
+              fuid = data.split()[0][1:]
+              cmd = self.fantasy(data.split()[2])
               
-              if len(data.split()) > 4:
-                args = ' '.join(data.split()[4:])
+              if len(data.split()[3]) > int(1+len(self.fantasy(data.split()[2]))):
+                fchan = data.split()[2]
+                cmd = data.split()[3][int(1+len(self.fantasy(fchan))):]
                 
-              for command in self.query("SELECT * FROM `modules` WHERE `class` = 'COMMAND' AND `command` = ? AND `oper` = 0 AND `bot` = '3'", cmd):
-                if os.access("modules/" + command["name"] + ".py", os.F_OK):
-                  moduleToCall = getattr(modules, command["name"])
-                  classToCall = getattr(moduleToCall, command["name"])()
-                  methodToCall = getattr(classToCall, "onFantasy")
+                if len(data.split()) > 4:
+                  args = ' '.join(data.split()[4:])
                   
-                  if not classToCall.NEED_AUTH:
-                    if len(data.split()) == 4:
-                      thread.start_new_thread(methodToCall, (fuid, fchan, ''))
-                    elif len(data.split()) > 4:
-                      thread.start_new_thread(methodToCall, (fuid, fchan, args))
-                  elif classToCall.NEED_AUTH:
-                    if self.auth(fuid):
+                for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND oper = 0 AND bot = %s", cmd.upper(), bot):
+                  if os.access("modules/" + command["name"] + ".py", os.F_OK):
+                    moduleToCall = getattr(modules, command["name"])
+                    classToCall = getattr(moduleToCall, command["name"])()
+                    methodToCall = getattr(classToCall, "onFantasy")
+                    
+                    if not classToCall.NEED_AUTH:
                       if len(data.split()) == 4:
-                        thread.start_new_thread(methodToCall, (fuid, fchan, ''))
+                        _thread.start_new_thread(methodToCall, (fuid, fchan, ''))
                       elif len(data.split()) > 4:
-                        thread.start_new_thread(methodToCall, (fuid, fchan, args))
+                        _thread.start_new_thread(methodToCall, (fuid, fchan, args))
+                    elif classToCall.NEED_AUTH:
+                      if self.auth(fuid):
+                        if len(data.split()) == 4:
+                          _thread.start_new_thread(methodToCall, (fuid, fchan, ''))
+                        elif len(data.split()) > 4:
+                          _thread.start_new_thread(methodToCall, (fuid, fchan, args))
     except Exception:
       et, ev, tb = sys.exc_info()
-      e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
+      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
       debug(red("*") + " <<ERROR>> " + str(e))
 
   def onCommand(self, uid, arguments):
@@ -442,7 +411,7 @@ class cDISModule:
         self.onSchedule()
       except Exception:
         et, ev, tb = sys.exc_info()
-        e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
+        e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
         debug(red("*") + " <<ERROR>> " + str(e))
         
       try:
@@ -456,7 +425,7 @@ class cDISModule:
         time.sleep(next)
       except Exception:
         et, ev, tb = sys.exc_info()
-        e = "{0}: {1} (Line #{2})".format(et, ev, traceback.tb_lineno(tb))
+        e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
         debug(red("*") + " <<ERROR>> " + str(e))
         return 0
         
@@ -518,45 +487,26 @@ class cDISModule:
     return pflags
 
   def query(self, string, *args):
-    conn = _mysql.connect(host=self.mysql_host, port=self.mysql_port, db=self.mysql_name, user=self.mysql_user, passwd=self.mysql_passwd)
-    
-    conn.query("SET @s = '" + conn.escape_string(str(string)) + "'")
-    conn.query("PREPARE query FROM @s")
-    
-    i = 0
-    all_variables = ""
-    
-    for arg in args:
-      i += 1
-      conn.query("SET @" + str(i) + " = '" + conn.escape_string(str(arg)) + "'")
+    try:
+      self.db_cursor.execute(string + ";", args)
+      debug(blue("*** => ") + " " + self.db_cursor.query.decode("UTF-8"))
+      db_interface.commit()
       
-      if i == 1:
-        all_variables += " USING @" + str(i)
-      else:
-        all_variables += ", @" + str(i)
-    
-    conn.query("EXECUTE query" + all_variables)
-    result = conn.store_result()
-    conn.query("DEALLOCATE PREPARE query")
-    
-    if result:
-      results = list()
+      if self.db_cursor.rowcount > 0 and string.lower().find('select ') != -1:
+        result = list()
+        rows = self.db_cursor.fetchall()
+        debug(green("*** <= ") + " " + str(rows))
+        for row in rows:
+          result.append(dict(row))
+          
+        return result
+    except psycopg2.DatabaseError as e:
+      db_interface.rollback()
+      et, ev, tb = sys.exc_info()
+      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
+      debug(red("*") + " <<ERROR>> " + str(e))
       
-      for data in result.fetch_row(maxrows=0, how=1):
-        results.append(data)
-        
-      conn.close()
-      return results
-      
-    conn.close()
-    return None
-
-  def query_row(self, string, *args):
-    result = self.query(string, args)
-    if result:
-      return result[0]
-    
-    return None
+    return list()
 
   def send_bot(self, content):
     self.send(":" + self.bot + " " + content)
@@ -568,39 +518,41 @@ class cDISModule:
     if not self.oper_not:
       return 0;
       
-    result = self.query("SELECT `uid` FROM `opers`")
+    result = self.query("SELECT uid FROM opers")
     for row in result:
       self.send_serv("PRIVMSG " + row["uid"] + " :" + content)
 
   def uid (self, nick):
     if nick == self.bot_nick:
       return self.bot
+    elif len(nick) > 9:
+      return nick
       
-    for data in self.query("select uid from online where nick = ?", nick):
+    for data in self.query("select uid from online where LOWER(nick) = LOWER(%s)", nick):
       return str(data["uid"])
       
     return nick
 
-  def nick (self, source):
+  def nick(self, source):
     if source == self.bot:
       return self.bot_nick
       
-    for data in self.query("select nick from online where uid = ?", source):
+    for data in self.query("select nick from online where uid = %s", source):
       return str(data["nick"])
       
     return source
 
-  def user (self, user):
+  def user(self, user):
     if user.lower() == self.bot_nick.lower():
       return self.bot_nick
       
-    for data in self.query("select name from users where name = ?", user):
+    for data in self.query("select name from users where LOWER(name) = LOWER(%s)", user):
       return str(data["name"])
       
     return False
 
   def banned(self, user):
-    for data in self.query("select * from users where name = ? and suspended != '0'", user):
+    for data in self.query("select * from users where LOWER(name) = LOWER(%s) and suspended != '0'", user):
       return data["suspended"]
       
     return False
@@ -608,13 +560,13 @@ class cDISModule:
   def gateway (self, target):
     uid = self.uid(target)
     
-    for data in self.query("select uid from gateway where uid = ?", uid):
+    for data in self.query("select uid from gateway where uid = %s", uid):
       return True
       
     return False
 
   def send(self, text):
-    self.con.send(text+"\n")
+    self.con.send(bytes(text+"\n", "UTF-8"))
     debug(blue("*") + " " + text)
 
   def push(self, target, message):
@@ -625,10 +577,10 @@ class cDISModule:
 
   def ison(self, user, uid=False):
     if not uid:
-      for data in self.query("select nick from online where account = ? LIMIT 1", user):
+      for data in self.query("SELECT nick FROM online WHERE LOWER(account) = LOWER(%s) LIMIT 1", user):
         return True
     else:
-      for data in self.query("select nick from online where uid = ? LIMIT 1", user):
+      for data in self.query("SELECT nick FROM online WHERE uid = %s LIMIT 1", user):
         return True
       
     return False
@@ -637,7 +589,7 @@ class cDISModule:
     user = self.auth(target)
     
     if self.ison(user):
-      for data in self.query("select modes from users where name = ?", user):
+      for data in self.query("select modes from users where LOWER(name) = LOWER(%s)", user):
         self.mode(target, data["modes"])
         
         if data["modes"].find("+") != -1:
@@ -648,7 +600,7 @@ class cDISModule:
             
           if modes.find("B") != -1:
             if not self.gateway(target):
-              self.query("insert into gateway values (?)", target)
+              self.query("insert into gateway values (%s)", target)
               self.vhost(target)
               
         if data["modes"].find("-") != -1:
@@ -659,7 +611,7 @@ class cDISModule:
             
           if modes.find("B") != -1:
             if self.gateway(target):
-              self.query("delete from gateway where uid = ?", target)
+              self.query("delete from gateway where uid = %s", target)
               self.vhost(target)
 
   def userflags(self, target):
@@ -668,14 +620,16 @@ class cDISModule:
     if user == 0:
       user = target
       
-    for data in self.query("select flags from users where name = ?", user):
+    for data in self.query("select flags from users where LOWER(name) = (%s)", user):
       return data["flags"]
+      
+    return ''
 
   def userflag(self, target, flag):
     user = self.auth(target)
     
     if self.ison(user):
-      for data in self.query("select flags from users where name = ?", user):
+      for data in self.query("select flags from users where LOWER(name) = LOWER(%s)", user):
         if str(data["flags"]).find(flag) != -1:
           return True
     else:
@@ -706,68 +660,68 @@ class cDISModule:
 
   def SetMetadata(self, uid, key, value = None):
     if value:
-      count = int(self.query("SELECT COUNT(*) FROM `metadata` WHERE `uid` = ? AND `key` = ?", uid, key)[0]["COUNT(*)"])
+      count = int(self.query("SELECT COUNT(*) FROM metadata WHERE uid = %s AND key = %s", uid, key)[0]["count"])
       if count == 1:
-        self.query("UPDATE `metadata` SET `value` = ? WHERE `uid` = ? AND `key` = ?", value, uid, key)
+        self.query("UPDATE metadata SET value = %s WHERE uid = %s AND key = %s", value, uid, key)
       else:
-        self.query("INSERT INTO `metadata` (`uid`, `key`, `value`) VALUES (?, ?, ?)", uid, key, value)
+        self.query("INSERT INTO metadata (uid, key, value) VALUES (%s, %s, %s)", uid, key, value)
         
       self.send_serv("METADATA " + uid + " " + key + " :" + value)
     else:
-      self.query("DELETE FROM `metadata` WHERE `uid` = ? AND `key` = ?", uid, key)
+      self.query("DELETE FROM metadata WHERE uid = %s AND key = %s", uid, key)
       self.send_serv("METADATA " + uid + " " + key)
 
   def GetMetadata(self, uid, key):
-    result = self.query("SELECT `value` FROM `metadata` WHERE `uid` = ? AND `key` = ?", uid, key)
+    result = self.query("SELECT value FROM metadata WHERE uid = %s AND key = %s", uid, key)
     for row in result:
       return row["value"]
       
     return None
 
   def GetAccountData(self, account):
-    result = self.query("SELECT * FROM `users` WHERE `name` = ?", account)
+    result = self.query("SELECT * FROM users WHERE LOWER(name) = LOWER(%s)", account)
     for row in result:
       return row
       
     return None
 
   def GetUserData(self, uid):
-    result = self.query("SELECT * FROM `online` WHERE `uid` = ?", uid)
+    result = self.query("SELECT * FROM online WHERE uid = %s", uid)
     for row in result:
       return row
       
     return None
 
   def GetChannelFlags(self, account):
-    result = self.query("SELECT * FROM `channels` WHERE `user` = ?", account)
+    result = self.query("SELECT * FROM channels WHERE LOWER(user) = LOWER(%s)", account)
     for row in result:
       return row
       
     return None
 
   def GetChannnelData(self, channel):
-    result = self.query("SELECT * FROM `channelinfo` WHERE `name` = ?", channel)
+    result = self.query("SELECT * FROM channelinfo WHERE LOWER(name) = LOWER(%s)", channel)
     for row in result:
       return row
       
     return None
 
   def auth(self, target):
-    for data in self.query("select account from online where uid = ? and account != ''", target):
+    for data in self.query("SELECT account FROM online WHERE uid = %s AND account != ''", target):
       return data["account"]
       
-    return 0
+    return None
 
   def sid(self, account):
     uids = list()
     
-    for data in self.query("select uid from online where account = ?", account):
+    for data in self.query("select uid from online where LOWER(account) = LOWER(%s)", account):
       uids.append(data["uid"])
       
     return uids
 
   def memo(self, user):
-    for data in self.query("select source,message from memo where user = ?", user):
+    for data in self.query("select source,message from memo where LOWER(user) = LOWER(%s)", user):
       online = False
       
       for source in self.sid(user):
@@ -775,21 +729,21 @@ class cDISModule:
         self.msg(source, "[Memo] From: %s, Message: %s" % (data["source"], data["message"]))
         
       if online:
-        self.query("delete from memo where user = ? and source = ? and message = ?", user, data["source"], data["message"])
+        self.query("delete from memo where LOWER(user) = LOWER(%s) and source = %s and message = %s", user, data["source"], data["message"])
 
   def chanexist(self, channel):
-    for data in self.query("select name from channelinfo where name = ?", channel):
+    for data in self.query("select name from channelinfo where LOWER(name) = LOWER(%s)", channel):
       return True
       
     return False
 
   def channelusercount(self, channel):
-    count = int(self.query("SELECT COUNT(*) c, `address` FROM `online` WHERE `uid` IN (SELECT `uid` FROM `chanlist` WHERE `channel` = ?) GROUP BY `address` HAVING `c` = 1", channel)[0]["c"])
+    count = int(self.query("SELECT COUNT(*), address FROM online WHERE uid IN (SELECT uid FROM chanlist WHERE LOWER(channel) = LOWER(%s)) GROUP BY address HAVING COUNT(*) = 1", channel)[0]["count"])
     return count
     
   def gettopic(self, channel):
     if self.chanexist(channel):
-      for data in self.query("select topic from channelinfo where name = ?", channel):
+      for data in self.query("select topic from channelinfo where LOWER(name) = LOWER(%s)", channel):
         return data["topic"]
         
     return ""
@@ -810,13 +764,13 @@ class cDISModule:
   def killcount(self):
     kills = int(self.statistics()["kills"])
     kills += 1
-    self.query("update statistics set `value` = ? where attribute = 'kills'", kills)
+    self.query("update statistics set value = %s where attribute = 'kills'", kills)
     return kills
 
   def kickcount(self):
     kicks = int(self.statistics()["kicks"])
     kicks += 1
-    self.query("update statistics set `value` = ? where attribute = 'kicks'", kicks)
+    self.query("update statistics set value = %s where attribute = 'kicks'", kicks)
     return kicks
 
   def kill(self, target, reason="You're violating network rules"):
@@ -827,7 +781,7 @@ class cDISModule:
     if not self.gateway(target):
       entry = False
       
-      for data in self.query("select vhost from vhosts where user = ? and active = '1'", self.auth(target)):
+      for data in self.query("select vhost from vhosts where user = %s and active = '1'", self.auth(target)):
         entry = True
         vhost = str(data["vhost"])
         
@@ -864,7 +818,7 @@ class cDISModule:
       if channel != "":
         _flag = ''
         
-        for flag in self.query("select flag,channel from channels where user = ? and channel = ?", account, channel):
+        for flag in self.query("select flag,channel from channels where user = %s and LOWER(channel) = LOWER(%s)", account, channel):
           if flag["flag"] == "n" or flag["flag"] == "q":
             self.mode(flag["channel"], "+qo " + target + " " + target)
           elif flag["flag"] == "a":
@@ -890,7 +844,7 @@ class cDISModule:
         if self.chanexist(channel):
           self.setuserchanflag(channel, target, _flag.replace('n', 'q'))
       else:
-        for flag in self.query("select flag,channel from channels where user = ? order by channel", account):
+        for flag in self.query("select flag,channel from channels where user = %s order by channel", account):
           if flag["flag"] == "n" or flag["flag"] == "q":
             self.mode(flag["channel"], "+qo " + target + " " + target)
           elif flag["flag"] == "a":
@@ -916,7 +870,7 @@ class cDISModule:
     
     if self.ison(user):
       if self.userflag(target, "a"):
-        for data in self.query("select channel,flag from channels where user = ?", user):
+        for data in self.query("select channel,flag from channels where user = %s", user):
           channel = data["channel"]
           flag = data["flag"]
           
@@ -924,14 +878,14 @@ class cDISModule:
             self.send(":%s SVSJOIN %s %s" % (self.bot, target, channel))
 
   def getflag(self, target, channel):
-    for data in self.query("select account from online where uid = ?", target):
-      for flag in self.query("select flag from channels where channel = ? and user = ?", channel, data["account"]):
+    for data in self.query("select account from online where uid = %s", target):
+      for flag in self.query("select flag from channels where channel = %s and user = %s", channel, data["account"]):
         return flag["flag"]
         
     return 0
 
   def chanflag(self, flag, channel):
-    for data in self.query("select flags from channelinfo where name = ?", channel):
+    for data in self.query("select flags from channelinfo where LOWER(name) = LOWER(%s)", channel):
       if data["flags"].find(flag) != -1:
         return True
         
@@ -943,16 +897,16 @@ class cDISModule:
       
     isoper = False
     
-    for data in self.query("select * from opers where uid = ?", target):
+    for data in self.query("select * from opers where uid = %s", target):
       isoper = True
       
     return isoper
 
   def encode(self, string):
-    return hashlib.sha512(string).hexdigest()
+    return hashlib.sha512(bytes(string, "UTF-8")).hexdigest()
 
   def encode_md5(self, string):
-    return hashlib.md5(string).hexdigest()
+    return hashlib.md5(bytes(string, "UTF-8")).hexdigest()
 
   def mail(self, receiver, subject, message):
     try:
@@ -969,7 +923,7 @@ class cDISModule:
       mail = smtplib.SMTP('127.0.0.1', 25)
       mail.sendmail(self.email, msg['To'], msg.as_string())
       mail.quit()
-    except Exception,e:
+    except Exception as e:
       debug(red("*") + " <<MAIL-ERROR>> "+str(e))
 
   def log(self, source, msgtype, channel, text=""):
@@ -988,12 +942,12 @@ class cDISModule:
         hostmask = self.hostmask(source)
         sender = hostmask[len(hostmask)-1]
         
-      result = self.query("SELECT COUNT(*) FROM `logs` WHERE `channel` = ?", channel)
+      result = self.query("SELECT COUNT(*) FROM logs WHERE channel = %s", channel)
       for row in result:
-        if row["COUNT(*)"] == 50:
-          self.query("DELETE FROM `logs` WHERE `channel` = ? LIMIT 1", channel)
+        if row["count"] == 50:
+          self.query("DELETE FROM logs WHERE channel = %s LIMIT 1", channel)
           
-      self.query("INSERT INTO `logs` (`channel`, `sender`, `action`, `message`) VALUES (?, ?, ?, ?)", channel, sender, msgtype.upper(), text)
+      self.query("INSERT INTO logs (channel, sender, action, message) VALUES (%s, %s, %s, %s)", channel, sender, msgtype.upper(), text)
     except:
       pass
 
@@ -1009,7 +963,7 @@ class cDISModule:
       
       self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
       
-      result = self.query("SELECT `channel`, `sender`, `action`, `message` FROM `logs` WHERE `channel` = ? ORDER BY `id`", channel)
+      result = self.query("SELECT channel, sender, action, message FROM logs WHERE channel = %s ORDER BY id", channel)
       for row in result:
         escaped_action = False
         
@@ -1072,12 +1026,12 @@ class cDISModule:
         self.send(":{uid} KICK {channel} {target} :{reason}".format(uid=self.bot, target=uid, channel=channel, reason=reason))
         self.kickcount()
         
-      self.query("delete from chanlist where channel = ? and uid = ?", channel, uid)
+      self.query("delete from chanlist where LOWER(channel) = LOWER(%s) and uid = %s", channel, uid)
 
   def userlist(self, channel):
     uid = list()
     
-    for user in self.query("select uid from chanlist where channel = ?", channel):
+    for user in self.query("select uid from chanlist where LOWER(channel) = LOWER(%s)", channel):
       uid.append(user["uid"])
       
     return uid
@@ -1085,7 +1039,7 @@ class cDISModule:
   def onchan(self, channel, target):
     uid = self.uid(target)
     
-    for data in self.query("select * from chanlist where channel = ? and uid = ?", channel, uid):
+    for data in self.query("select * from chanlist where LOWER(channel) = LOWER(%s) and uid = %s", channel, uid):
       return True
       
     return False
@@ -1093,19 +1047,19 @@ class cDISModule:
   def currentuserchanflag(self, channel, target):
     uid = self.uid(target)
     
-    for data in self.query("SELECT `flag` FROM `chanlist` WHERE `uid` = ? AND `channel` = ?", uid, channel):
+    for data in self.query("SELECT flag FROM chanlist WHERE uid = %s AND LOWER(channel) = LOWER(%s)", uid, channel):
       return data["flag"]
       
     return ""
 
   def setuserchanflag(self, channel, target, flag):
     uid = self.uid(target)
-    self.query("UPDATE `chanlist` SET `flag` = ? WHERE `uid` = ? AND `channel` = ?", flag, uid, channel)
+    self.query("UPDATE chanlist SET flag = %s WHERE uid = %s AND LOWER(channel) = LOWER(%s)", flag, uid, channel)
   
   def getident(self, target):
     uid = self.uid(target)
     
-    for data in self.query("select username from online where uid = ?", uid):
+    for data in self.query("select username from online where uid = %s", uid):
       return data["username"]
       
     return 0
@@ -1113,7 +1067,7 @@ class cDISModule:
   def gethost(self, target):
     uid = self.uid(target)
     
-    for data in self.query("select host from online where uid = ?", uid):
+    for data in self.query("select host from online where uid = %s", uid):
       return data["host"]
       
     return 0
@@ -1125,13 +1079,13 @@ class cDISModule:
     username = None
     account = self.auth(uid)
     
-    for data in self.query("select nick,username,host from online where uid = ?", uid):
+    for data in self.query("select nick,username,host from online where uid = %s", uid):
       nick = data["nick"]
       username = data["username"]
       masks.append(data["nick"]+"!"+data["username"]+"@"+data["host"])
       
     if self.auth(uid) != 0:
-      for data in self.query("select vhost from vhosts where user = ? and active = '1'", account):
+      for data in self.query("select vhost from vhosts where user = %s and active = '1'", account):
         if str(data["vhost"]).find("@") != -1:
           masks.append(nick+"!"+data["vhost"])
         else:
@@ -1158,7 +1112,7 @@ class cDISModule:
             self.kick(channel, user, "Banned.")
 
   def enforcebans(self, channel):
-    for data in self.query("select ban from banlist where channel = ?", channel):
+    for data in self.query("select ban from banlist where channel = %s", channel):
       if data["ban"] != "*!*@*":
         for user in self.userlist(channel):
           if self.gateway(user):
@@ -1198,7 +1152,7 @@ class cDISModule:
   def getip(self, target):
     uid = self.uid(target)
     
-    for data in self.query("select address from online where uid = ?", uid):
+    for data in self.query("select address from online where uid = %s", uid):
       return data["address"]
       
     return 0
@@ -1210,20 +1164,20 @@ class cDISModule:
       ip = self.getip(uid)
       
       if addentry:
-        rows = int(self.query_row("SELECT COUNT(*) FROM `glines` WHERE `mask` = ?", "*@" + ip)["COUNT(*)"])
+        rows = int(self.query("SELECT COUNT(*) FROM glines WHERE LOWER(mask) = LOWER(%s)", "*@" + ip)[0]["count"])
         
         if rows == 0:
           etime = int(time.time()) + int(bantime)
-          self.query("INSERT INTO `glines` (`mask`, `timestamp`) VALUES (?, ?)", "*@" + ip, etime)
+          self.query("INSERT INTO glines (mask, timestamp) VALUES (%s, %s)", "*@" + ip, etime)
           
-      for data in self.query("select uid from online where address = ?", self.getip(uid)):
+      for data in self.query("select uid from online where address = %s", self.getip(uid)):
         self.send_serv("KILL "+data["uid"]+" :G-lined")
         
       self.send_serv("GLINE *@"+ip+" "+str(bantime)+" :"+reason)
       self.send_to_op("#G-line# *@" + ip + " added (" + self.convert_timestamp(int(bantime)) + ")")
 
   def suspended(self, channel):
-    for data in self.query("select reason from suspended where channel = ?", channel):
+    for data in self.query("select reason from suspended where LOWER(channel) = LOWER(%s)", channel):
       return data["reason"]
       
     return False
@@ -1231,13 +1185,13 @@ class cDISModule:
   def userhost(self, target):
     uid = self.uid(target)
     
-    for data in self.query("select username,host from online where uid = ?", uid):
+    for data in self.query("select username, host from online where uid = %s", uid):
       return data["username"]+"@"+data["host"]
       
     return 0
 
   def getvhost(self, target):
-    for data in self.query("select vhost from vhosts where user = ? and active = '1'", target):
+    for data in self.query("select vhost from vhosts where user = %s and active = '1'", target):
       return data["vhost"]
       
     if self.userflag(target, "x"):
@@ -1257,15 +1211,15 @@ class cDISModule:
 
   def fantasy(self, channel):
     if self.chanexist(channel):
-      for data in self.query("select fantasy from channelinfo where name = ?", channel):
+      for data in self.query("select fantasy from channelinfo where name = %s", channel):
         return data["fantasy"]
         
     return False
 
   def getconns(self, address):
-    result = self.query("SELECT COUNT(*) FROM `online` WHERE `address` = ?", address)
+    result = self.query("SELECT COUNT(*) FROM online WHERE address = %s", address)
     for row in result:
-      return int(row["COUNT(*)"])
+      return int(row["count"])
       
     return 0
 
@@ -1275,14 +1229,14 @@ class cDISModule:
       
     user_ip = self.getip(uid)
     user_host = self.gethost(uid)
-    user_name = self.userhost(uid).split("@")[0]
+    user_name = self.getident(uid)
     timestamp = time.time()
     
     if user_ip == 0:
       return False
       
     limit = 3
-    result = self.query("SELECT `limit` FROM `trust` WHERE (`address` = ? OR `address` = ?) AND `timestamp` > ?", user_ip, user_host, timestamp)
+    result = self.query("SELECT \"limit\" FROM trust WHERE (address = %s OR address = %s) AND timestamp > %s", user_ip, user_host, timestamp)
     for row in result:
       limit = int(row["limit"])
       
@@ -1295,7 +1249,7 @@ class cDISModule:
       self.gline(uid, "Connection limit ({0}) reached".format(str(limit)), addentry=True)
       return True
     elif self.getconns(user_ip) == limit:
-      for row in self.query("SELECT `uid` FROM `online` WHERE `address` = ? OR `host` = ?", user_ip, user_host):
+      for row in self.query("SELECT uid FROM online WHERE address = %s OR host = %s", user_ip, user_host):
         self.msg(row["uid"], "Your IP is scratching the connection limit. If you need more connections please request a trust.")
         
     return False
@@ -1308,13 +1262,13 @@ class cDISModule:
     return False
 
   def opertype(self, uid):
-    for row in self.query("SELECT `opertype` FROM `opers` WHERE `uid` = ?", uid):
+    for row in self.query("SELECT opertype FROM opers WHERE uid = %s", uid):
       return row["opertype"]
       
     return None
 
   def isoptype(self, uid, type):
-    for row in self.query("SELECT `uid` FROM `opers` WHERE `uid` = ? AND `opertype` = ?", uid, type):
+    for row in self.query("SELECT uid FROM opers WHERE uid = %s AND LOWER(opertype) = LOWER(%s)", uid, type):
       return True
       
     return False
@@ -1330,15 +1284,15 @@ if __name__ == "__main__":
         __config__ = sys.argv[1]
         
       time.sleep(9)
-      print(green("*") + " chiruclan.de IRC services (" + __version__ + ") started (config: " + __config__ + ")")
+      print((green("*") + " chiruclan.de IRC services (" + __version__ + ") started (config: " + __config__ + ")"))
       Services().run()
-      print(red("*") + " chiruclan.de IRC services (" + __version__ + ") stopped (config: " + __config__ + ")")
+      print((red("*") + " chiruclan.de IRC services (" + __version__ + ") stopped (config: " + __config__ + ")"))
       
       time.sleep(1)
-  except Exception,e:
-    print(red("*") + " " + str(e))
+  except Exception as e:
+    print((red("*") + " " + str(e)))
   except KeyboardInterrupt:
-    print(red("*") + " Aborting ... STRG +C")
+    print((red("*") + " Aborting ... STRG +C"))
     
     if os.access("cDIS.pid", os.F_OK):
       shell("sh cDIS restart")

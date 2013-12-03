@@ -17,10 +17,12 @@ Following modules have to be loaded:
 	- m_chghost.so
 	- m_cap.so
 	- m_botmode.so
-	- m_mysql.so
+	- m_pgsql.so
 	- m_sqloper.so
 	- m_swhois.so
 	- m_xline_db.so
+  - m_sha256.so
+  - m_hidechans.so
 
 Following modules mustn't be loaded!
 	- m_chanprotect.so

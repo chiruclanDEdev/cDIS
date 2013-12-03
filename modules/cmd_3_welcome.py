@@ -30,7 +30,7 @@ class cmd_3_welcome(cDISModule):
       if arg[0].startswith("#"):
         entry = False
         
-        for data in self.query("select name,welcome from channelinfo where name = ?", arg[0]):
+        for data in self.query("select name,welcome from channelinfo where name = %s", arg[0]):
           self.msg(source, "[{0}] {1}".format(data["name"], data["welcome"]))
           entry = True
           
@@ -44,7 +44,7 @@ class cmd_3_welcome(cDISModule):
         welcome = ' '.join(arg[1:])
         
         if flag == "n" or flag == "q" or flag == "a":
-          self.query("update channelinfo set welcome = ? where name = ?", welcome, arg[0])
+          self.query("update channelinfo set welcome = %s where name = %s", welcome, arg[0])
           self.msg(source, "Done.")
         else:
           self.msg(source, "Denied.")

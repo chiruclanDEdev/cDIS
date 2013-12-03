@@ -33,11 +33,11 @@ class cmd_3_email(cDISModule):
             if arg[0].split("@")[1][-1] != "." and arg[0].split("@")[1][-2] != "." and arg[0].split("@")[1][0] != ".":
               entry = False
               
-              for data in self.query("select * from users where email = ?", arg[0]):
+              for data in self.query("select * from users where email = %s", arg[0]):
                 entry = True
                 
               if not entry:
-                self.query("update users set email = ? where name = ?", arg[0], self.auth(uid))
+                self.query("update users set email = %s where name = %s", arg[0], self.auth(uid))
                 self.mail(arg[0], "Email verification", "Your Email address has been changed to {usermail} successfully.".format(usermail=arg[0]))
                 self.msg(uid, "Done.")
               else:

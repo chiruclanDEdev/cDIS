@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from cDIS import cDISModule, shell, bots
-import urllib2, os, thread
+import urllib.request, urllib.error, urllib.parse, os, _thread
 
 class cmd_1_update(cDISModule):
   MODULE_CLASS = "COMMAND"
@@ -29,7 +29,7 @@ class cmd_1_update(cDISModule):
       self.msg(source, "Denied.")
       return None
       
-    _web = urllib2.urlopen("https://raw.github.com/chiruclanDEdev/cDIS/master/version")
+    _web = urllib.request.urlopen("https://raw.github.com/chiruclanDEdev/cDIS/master/version")
     _version = _web.read()
     _web.close()
     
@@ -66,7 +66,7 @@ class cmd_1_update(cDISModule):
       self.send_to_op("System: restarting...")
       self.send(":{sid} SQUIT :{msg}".format(sid=self.services_id, msg=message))
       
-      thread.interrupt_main()
+      _thread.interrupt_main()
       #self.msg(source, "Please note that you have to restart the services manually.")
     else:
       self.msg(source, "No update available.")

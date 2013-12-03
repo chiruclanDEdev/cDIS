@@ -55,7 +55,7 @@ class cmd_3_chanflags(cDISModule):
     if len(arg) == 1:
       if arg[0].startswith("#"):
         if self.getflag(source, arg[0]) == "n" or self.getflag(source, arg[0]) == "q" or self.getflag(source, arg[0]) == "a":
-          for channel in self.query("select name,flags from channelinfo where name = ?", arg[0]):
+          for channel in self.query("select name,flags from channelinfo where name = %s", arg[0]):
             self.msg(source, "Current flags for {0}: +{1}".format(channel["name"], channel["flags"]))
         else:
           self.msg(source, "Denied.")
@@ -70,10 +70,10 @@ class cmd_3_chanflags(cDISModule):
     elif len(arg) == 2:
       if arg[0].startswith("#"):
         if self.getflag(source, arg[0]) == "n" or self.getflag(source, arg[0]) == "a":
-          for channel in self.query("select name,flags from channelinfo where name = ?", arg[0]):
+          for channel in self.query("select name,flags from channelinfo where name = %s", arg[0]):
             chanflags = self.regexflag("+" + channel["flags"], arg[1])
             flags = ''.join([char for char in chanflags if char in ''.join(mode)])
-            self.query("update channelinfo set flags = ? where name = ?", flags, channel["name"])
+            self.query("update channelinfo set flags = %s where name = %s", flags, channel["name"])
             self.msg(source, "Done. New flags for {0}: +{1}".format(channel["name"], flags))
         else:
           self.msg(source, "Denied.")

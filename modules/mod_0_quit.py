@@ -22,7 +22,7 @@ class mod_0_quit(cDISModule):
   def onData(self, data):
     uid = data.split()[0][1:]
     
-    for qchan in self.query("select * from chanlist where uid = ?", uid):
+    for qchan in self.query("select * from chanlist where uid = %s", uid):
       if self.chanflag("l", qchan["channel"]):
         if len(data.split()) == 2:
           self.log(qchan["uid"], "quit", qchan["channel"])
@@ -30,9 +30,9 @@ class mod_0_quit(cDISModule):
           self.log(qchan["uid"], "quit", qchan["channel"], ' '.join(data.split()[2:])[1:])
           
     if self.isoper(uid):
-      self.query("UPDATE `ircd_opers` SET `hostname` = 'root@localhost' WHERE `hostname` = ?", self.userhost(uid))
+      self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))
     
-    self.query("delete from chanlist where uid = ?", data.split()[0][1:])
-    self.query("delete from gateway where uid = ?", str(data.split()[0])[1:])
-    self.query("delete from online where uid = ?", str(data.split()[0])[1:])
-    self.query("delete from opers where uid = ?", data.split()[0][1:])
+    self.query("delete from chanlist where uid = %s", data.split()[0][1:])
+    self.query("delete from gateway where uid = %s", str(data.split()[0])[1:])
+    self.query("delete from online where uid = %s", str(data.split()[0])[1:])
+    self.query("delete from opers where uid = %s", data.split()[0][1:])

@@ -1,1 +1,0 @@
-ALTER TABLE `ircd_opers` MODIFY COLUMN `hostname` VARCHAR(255) NOT NULL DEFAULT 'root@localhost';

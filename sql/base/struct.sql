@@ -14,156 +14,202 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-	`id` bigint(20) not null auto_increment key,
-	`name` varchar(255) not null,
-	`pass` varchar(255),
-	`email` varchar(255),
-	`flags` varchar(255),
-	`modes` varchar(255),
-	`suspended` varchar(255)
-);
+-- ----------------------------
+-- Table structure for banlist
+-- ----------------------------
+DROP TABLE IF EXISTS "banlist";
+CREATE TABLE "banlist" (
+"id" bigserial NOT NULL PRIMARY KEY,
+"channel" varchar(255) COLLATE "default" NOT NULL,
+"ban" varchar(255) COLLATE "default" NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `channels`;
-CREATE TABLE IF NOT EXISTS `channels` (
-	`channel` varchar(255),
-	`user` varchar(255),
-	`flag` enum('n', 'q', 'a', 'o', 'h', 'v', 'b')
-);
+-- ----------------------------
+-- Table structure for chanlist
+-- ----------------------------
+DROP TABLE IF EXISTS "chanlist";
+CREATE TABLE "chanlist" (
+"uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY,
+"channel" varchar(255) COLLATE "default" NOT NULL,
+"flag" varchar(255) COLLATE "default" NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `channelinfo`;
-CREATE TABLE IF NOT EXISTS `channelinfo` (
-	`name` varchar(255) not null key,
-	`modes` varchar(255),
-	`flags` varchar(255),
-	`topic` varchar(2048),
-	`welcome` varchar(1024),
-	`spamscan` varchar(255),
-	`fantasy` varchar(255)
-);
+-- ----------------------------
+-- Table structure for channelinfo
+-- ----------------------------
+DROP TABLE IF EXISTS "channelinfo";
+CREATE TABLE "channelinfo" (
+"name" varchar(255) COLLATE "default" NOT NULL PRIMARY KEY,
+"modes" varchar(255) COLLATE "default",
+"flags" varchar(255) COLLATE "default",
+"topic" varchar(2048) COLLATE "default",
+"welcome" varchar(1024) COLLATE "default",
+"spamscan" varchar(255) COLLATE "default",
+"fantasy" varchar(255) COLLATE "default"
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `vhosts`;
-CREATE TABLE IF NOT EXISTS `vhosts` (
-	`user` varchar(255),
-	`vhost` varchar(255),
-	`active` varchar(255)
-);
+-- ----------------------------
+-- Table structure for channels
+-- ----------------------------
+DROP TABLE IF EXISTS "channels";
+CREATE TABLE "channels" (
+"channel" varchar(255) COLLATE "default" NOT NULL,
+"user" varchar(255) COLLATE "default" NOT NULL,
+"flag" varchar(255) COLLATE "default" NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `opers`;
-CREATE TABLE IF NOT EXISTS `opers` (
-	`uid` varchar(9) not null key,
-	`opertype` varchar(255) NOT NULL DEFAULT 'GlobalOp'
-);
+-- ----------------------------
+-- Table structure for feedback
+-- ----------------------------
+DROP TABLE IF EXISTS "feedback";
+CREATE TABLE "feedback" (
+"user" varchar(255) COLLATE "default" NOT NULL PRIMARY KEY,
+"text" varchar(2048) COLLATE "default" NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `feedback`;
-CREATE TABLE IF NOT EXISTS `feedback` (
-	`user` varchar(255),
-	`text` varchar(2048)
-);
+-- ----------------------------
+-- Table structure for gateway
+-- ----------------------------
+DROP TABLE IF EXISTS "gateway";
+CREATE TABLE "gateway" (
+"uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `online`;
-CREATE TABLE IF NOT EXISTS `online` (
-	`uid` varchar(9) not null key,
-	`nick` varchar(255) not null,
-	`address` varchar(255),
-	`host` varchar(255),
-	`username` varchar(255),
-    `account` varchar(255)
-);
+-- ----------------------------
+-- Table structure for glines
+-- ----------------------------
+DROP TABLE IF EXISTS "glines";
+CREATE TABLE "glines" (
+"id" serial NOT NULL PRIMARY KEY,
+"mask" varchar(255) COLLATE "default" NOT NULL,
+"reason" varchar(240) COLLATE "default" NOT NULL,
+"timestamp" int4 NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `metadata`;
-CREATE TABLE IF NOT EXISTS `metadata` (
-	`uid` VARCHAR(9) NOT NULL,
-	`key` VARCHAR(255) NOT NULL,
-	`value` VARCHAR(255) NOT NULL
-);
+-- ----------------------------
+-- Table structure for ircd_opers
+-- ----------------------------
+DROP TABLE IF EXISTS "ircd_opers";
+CREATE TABLE "ircd_opers" (
+"id" serial NOT NULL PRIMARY KEY,
+"username" varchar(255) COLLATE "default" NOT NULL,
+"password" varchar(255) COLLATE "default" NOT NULL,
+"hostname" varchar(255) COLLATE "default" NOT NULL,
+"type" varchar(255) COLLATE "default" NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `trust`;
-CREATE TABLE IF NOT EXISTS `trust` (
-	`id` bigint(20) not null auto_increment key,
-	`address` varchar(255) not null key,
-	`limit` varchar(255),
-	`timestamp` bigint(20) not null
-);
+-- ----------------------------
+-- Table structure for memo
+-- ----------------------------
+DROP TABLE IF EXISTS "memo";
+CREATE TABLE "memo" (
+"id" serial NOT NULL PRIMARY KEY,
+"user" varchar(255) COLLATE "default" NOT NULL,
+"source" varchar(255) COLLATE "default" NOT NULL,
+"message" varchar(2048) COLLATE "default" NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `chanlist`;
-CREATE TABLE IF NOT EXISTS `chanlist` (
-	`uid` varchar(9),
-	`channel` varchar(255),
-	`flag` enum('', 'v', 'h', 'o', 'a', 'q') NOT NULL DEFAULT ''
-);
+-- ----------------------------
+-- Table structure for metadata
+-- ----------------------------
+DROP TABLE IF EXISTS "metadata";
+CREATE TABLE "metadata" (
+"uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY,
+"key" varchar(255) COLLATE "default" NOT NULL,
+"value" varchar(255) COLLATE "default" NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `memo`;
-CREATE TABLE IF NOT EXISTS `memo` (
-	`id` bigint(20) not null auto_increment key,
-	`user` varchar(255),
-	`source` varchar(255),
-	`message` varchar(2048)
-);
+-- ----------------------------
+-- Table structure for modules
+-- ----------------------------
+DROP TABLE IF EXISTS "modules";
+CREATE TABLE "modules" (
+"id" serial NOT NULL PRIMARY KEY,
+"name" varchar(255) COLLATE "default",
+"class" varchar(255) COLLATE "default",
+"command" varchar(255) COLLATE "default",
+"help" varchar(255) COLLATE "default",
+"bot" varchar(6) COLLATE "default" NOT NULL,
+"oper" bit(1) NOT NULL,
+"auth" bit(1) NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `banlist`;
-CREATE TABLE IF NOT EXISTS `banlist` (
-	`id` bigint(20) not null auto_increment key,
-	`channel` varchar(255),
-	`ban` varchar(255)
-);
+-- ----------------------------
+-- Table structure for online
+-- ----------------------------
+DROP TABLE IF EXISTS "online";
+CREATE TABLE "online" (
+"uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY,
+"nick" varchar(32) COLLATE "default" NOT NULL,
+"address" varchar(255) COLLATE "default" NOT NULL,
+"host" varchar(64) COLLATE "default" NOT NULL,
+"username" varchar(16) COLLATE "default" NOT NULL,
+"account" varchar(32) COLLATE "default"
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `suspended`;
-CREATE TABLE IF NOT EXISTS `suspended` (
-	`id` bigint(20) not null auto_increment key,
-	`channel` varchar(255),
-	`reason` varchar(255)
-);
+-- ----------------------------
+-- Table structure for opers
+-- ----------------------------
+DROP TABLE IF EXISTS "opers";
+CREATE TABLE "opers" (
+"uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY,
+"opertype" varchar(255) COLLATE "default" NOT NULL
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `gateway`;
-CREATE TABLE IF NOT EXISTS `gateway` (
-	`uid` varchar(9) not null key
-);
+-- ----------------------------
+-- Table structure for statistics
+-- ----------------------------
+DROP TABLE IF EXISTS "statistics";
+CREATE TABLE "statistics" (
+"attribute" varchar(255) COLLATE "default" NOT NULL PRIMARY KEY,
+"value" varchar(255) COLLATE "default"
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `glines`;
-CREATE TABLE IF NOT EXISTS `glines` (
-	`id` bigint(20) not null auto_increment key,
-	`mask` varchar(255),
-	`reason` varchar(255) NOT NULL DEFAULT 'You have been violating network rules',
-	`timestamp` bigint(20) not null
-);
+-- ----------------------------
+-- Table structure for suspended
+-- ----------------------------
+DROP TABLE IF EXISTS "suspended";
+CREATE TABLE "suspended" (
+"id" serial NOT NULL PRIMARY KEY,
+"channel" varchar(255) COLLATE "default" NOT NULL,
+"reason" varchar(120) COLLATE "default"
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `modules`;
-CREATE TABLE IF NOT EXISTS `modules` (
-	`id` bigint(20) not null auto_increment key,
-	`name` varchar(255),
-	`class` varchar(255),
-	`oper` int(1) not null default 0,
-	`auth` int(1) not null default 0,
-	`command` varchar(255),
-	`help` varchar(255),
-	`bot` varchar(6) not null default '0'
-);
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS "users";
+CREATE TABLE "users" (
+"id" serial NOT NULL PRIMARY KEY,
+"name" varchar(32) COLLATE "default" NOT NULL,
+"pass" varchar(255) COLLATE "default" NOT NULL,
+"email" varchar(64) COLLATE "default" NOT NULL,
+"flags" varchar(32) COLLATE "default",
+"modes" varchar(16) COLLATE "default",
+"suspended" varchar(120) COLLATE "default"
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `logs`;
-CREATE TABLE IF NOT EXISTS `logs` (
-	`id` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	`channel` varchar(255) not null,
-	`sender` varchar(255) not null,
-	`action` varchar(25) not null,
-	`message` varchar(1024)
-);
+-- ----------------------------
+-- Table structure for vhosts
+-- ----------------------------
+DROP TABLE IF EXISTS "vhosts";
+CREATE TABLE "vhosts" (
+"user" varchar(255) COLLATE "default" NOT NULL PRIMARY KEY,
+"vhost" varchar(255) COLLATE "default",
+"active" varchar(255) COLLATE "default"
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `ircd_opers`;
-CREATE TABLE `ircd_opers` (
-	`id` bigint(20) NOT NULL auto_increment,
-	`username` varchar(255) NOT NULL,
-	`password` varchar(255) NOT NULL,
-	`hostname` varchar(255) NOT NULL DEFAULT 'root@localhost',
-	`type` varchar(255) NOT NULL DEFAULT 'GlobalOp',
-	PRIMARY KEY (id)
-);
+-- ----------------------------
+-- Table structure for trust
+-- ----------------------------
+CREATE TABLE "trust" (
+"id" serial NOT NULL PRIMARY KEY,
+"address" varchar(255) COLLATE "default" NOT NULL,
+"limit" varchar(16) COLLATE "default" NOT NULL,
+"timestamp" int4 NOT NULL,
+CONSTRAINT "trust_pkey" PRIMARY KEY ("id", "address")
+) WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS `statistics`;
-CREATE TABLE IF NOT EXISTS `statistics` (
-	`attribute` varchar(255) not null key,
-	`value` varchar(255)
-);
-
-INSERT INTO `statistics` (`attribute`, `value`) VALUES ('kicks', '0'),('kills', '0');
+INSERT INTO "statistics" ("attribute", "value") VALUES
+  ('kicks', '0'),
+  ('kills', '0');
