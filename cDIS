@@ -7,7 +7,7 @@ case $1 in
       if [ -f cDIS.pyc ]; then
         rm -f cDIS.pyc
       fi
-      python cDIS.py >> /dev/null &
+      python3 cDIS.py >> /dev/null &
       pid=$!
       echo $pid > cDIS.pid
       echo "chiruclan.de IRC services ($ver) started into background (PID: $pid)"
@@ -53,7 +53,7 @@ case $1 in
         rm -f cDIS.pyc
       fi
       rm -f modules/*.pyc
-      python cDIS.py
+      python3 cDIS.py
       rm -f modules/*.pyc
       if [ -f cDIS.pyc ]; then
         rm -f cDIS.pyc
