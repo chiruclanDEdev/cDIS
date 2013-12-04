@@ -162,8 +162,8 @@ class Services:
           self.con = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
           
       self.con.connect((self.server_address, int(self.server_port)))
-      self.send("SERVER %s %s 0 %s :%s" % (self.services_name, self.server_password, self.services_id, self.services_description))
-      self.send(":%s BURST" % self.services_id)
+      self.send("SERVER {0} {1} 0 {2} :{3}".format(self.services_name, self.server_password, self.services_id, self.services_description))
+      self.send(":{0} BURST {1}".format(self.services_id, int(time.time())))
       builtins.con = self.con
       builtins.spamscan = {}
       builtins._connected = False
@@ -181,7 +181,7 @@ class Services:
             methodToCall = getattr(classToCall, "runSchedule")
             _thread.start_new_thread(methodToCall, ())
             
-          self.query("INSERT INTO modules (name, class, oper, auth, command, help, bot) VALUES (%s, %s, %s, %s, %s, %s, %s)", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
+          self.query("""INSERT INTO "modules" ("name", "class", "oper", "auth", "command", "help", "bot") VALUES (%s, %s, %s, %s, %s, %s, %s)""", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
           
       while 1:
         recv = self.con.recv(25600)
@@ -262,19 +262,32 @@ class cDISModule:
   
   def onInternal(self, data):
     try:
-      if data.split()[1] == "PING":
-        self.send(":%s PONG %s %s" % (self.services_id, self.services_id, data.split()[2]))
-        self.send(":%s PING %s %s" % (self.services_id, self.services_id, data.split()[2]))
-      elif data.split()[1] == "ENDBURST" and not _connected:
+      pData = data.split()
+      sID = pData[0][1:]
+      sCommand = pData[1]
+      if len(pData) > 2: sDestination = pData[2]
+      if len(pData) > 3: sUserCommand = pData[3][1:]
+      if len(pData) > 4: sArguments = pData[4:]
+      
+      if sCommand == "PING":
+        self.send_serv("PONG {0} {1}".format(self.services_id, sDestination))
+        self.send_serv("PING {0} {1}".format(self.services_id, sDestination))
+      elif sCommand == "ENDBURST" and not _connected:
         self.send_serv("ENDBURST")
         builtins._connected = True
         
+        botlist = dict()
+        botlist["id"] = dict()
+        botlist["uid"] = dict()
         for bot in bots.sections():
           botuid = self.services_id + bots.get(bot, "uuid")
+          botlist["uid"][bot] = botuid
+          botlist["id"][botuid] = bot
           self.send_serv("UID {0} {1} {2} {3} {4} {5} {6} {7} +Ik :{8}".format(botuid, int(time.time()), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, int(time.time()), bots.get(bot, "real")))
           self.send(":%s OPERTYPE Service" % botuid)
           self.SetMetadata(botuid, "accountname", bots.get(bot, "nick"))
           
+        builtins._botlist = botlist
         self.msg("$*", "Services are now back online. Have a nice day :)")
         
         self.bot = self.services_id + bots.get("3", "uuid")
@@ -288,100 +301,99 @@ class cDISModule:
             self.send(":{0} TOPIC {1} :{2}".format(self.bot, channel["name"], channel["topic"]))
             
         self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
+      elif sCommand == "PONG" or sCommand == "ERROR":
+        pass
       else:
-        for module in self.query("SELECT * FROM modules WHERE class = %s", data.split()[1]):
+        for module in self.query("SELECT * FROM modules WHERE class = %s", sCommand):
           if os.access("modules/" + module["name"] + ".py", os.F_OK):
             moduleToCall = getattr(modules, module["name"])
             classToCall = getattr(moduleToCall, module["name"])()
             
-            if classToCall.MODULE_CLASS.lower() == data.split()[1].lower():
+            if classToCall.MODULE_CLASS.lower() == sCommand.lower():
               methodToCall = getattr(classToCall, "onData")
               _thread.start_new_thread(methodToCall, (data, ))
               
-      if data.split()[1] == "PRIVMSG":
-        for bot in bots.sections():
-          botuid = self.services_id + bots.get(bot, "uuid")
+      if sCommand == "PRIVMSG":
+        if sDestination in _botlist["uid"]:
+          bot = _botlist["id"][sDestination]
+          botuid = sDestination
           
-          if data.split()[2] == botuid:
-            cmd = data.split()[3][1:]
-            if self.isoper(data.split()[0][1:]): isoper = 1
-            else: isoper = 0
-            if self.auth(data.split()[0][1:]): isauth = 1
-            else: isauth = 0
+          if self.isoper(sID): isoper = 1
+          else: isoper = 0
+          if self.auth(sID): isauth = 1
+          else: isauth = 0
+          
+          if sUserCommand.lower() == "help":
+            self.bot = botuid
+            args = ' '.join(sArguments)
+            self.msg(sID, "The following commands are available to you.")
             
-            if cmd.lower() == "help":
-              self.bot = self.services_id + bots.get(bot, "uuid")
+            if len(sArguments) == 0:
+              self.help(sID, "HELP", "Shows information about all commands that are available to you")
               
-              source = data.split()[0][1:]
-              args = ' '.join(data.split()[4:])
-              arg = args.split()
-              self.msg(source, "The following commands are available to you.")
-              
-              if len(arg) == 0:
-                self.help(source, "HELP", "Shows information about all commands that are available to you")
-                
-                for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s ORDER BY command", bot, isauth, isoper):
-                  if os.access("modules/"+command["name"]+".py", os.F_OK):
-                    self.help(source, command["command"], command["help"])
-              else:
-                if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
-                  self.help(source, "HELP", "Shows information about all commands that are available to you")
-                  
-                for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s AND command LIKE %s ORDER BY command", bot, isauth, isoper, '%' + args + '%'):
-                  if os.access("modules/"+command["name"]+".py", os.F_OK):
-                    self.help(source, command["command"], command["help"])
-              
-              self.msg(source, "End of list.")
-              
-              self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
+              for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s ORDER BY command", bot, isauth, isoper):
+                if os.access("modules/"+command["name"]+".py", os.F_OK):
+                  self.help(sID, command["command"], command["help"])
             else:
-              iscmd = False
-              for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND bot = %s AND auth <= %s AND oper <= %s", cmd.upper(), bot, isauth, isoper):
+              if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
+                self.help(sID, "HELP", "Shows information about all commands that are available to you")
+                
+              for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s AND command LIKE %s ORDER BY command", bot, isauth, isoper, '%' + args + '%'):
+                if os.access("modules/"+command["name"]+".py", os.F_OK):
+                  self.help(sID, command["command"], command["help"])
+            
+            self.msg(sID, "End of list.")
+            
+            self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
+          else:
+            iscmd = False
+            for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND bot = %s AND auth <= %s AND oper <= %s", sUserCommand.upper(), bot, isauth, isoper):
+              if os.access("modules/" + command["name"] + ".py", os.F_OK):
+                iscmd = True
+                
+                moduleToCall = getattr(modules, command["name"])
+                classToCall = getattr(moduleToCall, command["name"])()
+                methodToCall = getattr(classToCall, "onCommand")
+                
+                if len(data.split()) == 4:
+                  _thread.start_new_thread(methodToCall, (sID, ''))
+                elif len(data.split()) > 4:
+                  _thread.start_new_thread(methodToCall, (sID, ' '.join(sArguments)))
+                    
+            if not iscmd:
+              self.msg(sID, "Unknown command {0}. Please try HELP for more information.".format(sUserCommand.upper()), uid=botuid)
+              
+        elif sDestination.startswith("#"):
+          if not self.chanexist(sDestination): return None
+          elif not self.chanflag("f", sDestination): return None
+          
+          cFantasy = self.fantasy(sDestination)
+          if sUserCommand.startswith(cFantasy):
+            botuid = self.services_id + bots.get(bot, "uuid")
+            
+            if len(sUserCommand) > int(len(cFantasy)):
+              cmd = sUserCommand[int(len(cFantasy)):]
+              
+              if len(data.split()) > 4:
+                args = ' '.join(sArguments)
+                
+              for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND oper = 0 AND bot = %s", cmd.upper(), bot):
                 if os.access("modules/" + command["name"] + ".py", os.F_OK):
-                  iscmd = True
-                  
                   moduleToCall = getattr(modules, command["name"])
                   classToCall = getattr(moduleToCall, command["name"])()
-                  methodToCall = getattr(classToCall, "onCommand")
+                  methodToCall = getattr(classToCall, "onFantasy")
                   
-                  if len(data.split()) == 4:
-                    _thread.start_new_thread(methodToCall, (data.split()[0][1:], ''))
-                  elif len(data.split()) > 4:
-                    _thread.start_new_thread(methodToCall, (data.split()[0][1:], ' '.join(data.split()[4:])))
-                      
-              if not iscmd:
-                self.msg(data.split()[0][1:], "Unknown command {0}. Please try HELP for more information.".format(cmd.upper()), uid=botuid)
-                
-          elif data.split()[2].startswith("#") and self.chanflag("f", data.split()[2]) and self.chanexist(data.split()[2]):
-            if data.split()[3][1:].startswith(self.fantasy(data.split()[2])):
-              botuid = self.services_id + bots.get(bot, "uuid")
-              fuid = data.split()[0][1:]
-              cmd = self.fantasy(data.split()[2])
-              
-              if len(data.split()[3]) > int(1+len(self.fantasy(data.split()[2]))):
-                fchan = data.split()[2]
-                cmd = data.split()[3][int(1+len(self.fantasy(fchan))):]
-                
-                if len(data.split()) > 4:
-                  args = ' '.join(data.split()[4:])
-                  
-                for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND oper = 0 AND bot = %s", cmd.upper(), bot):
-                  if os.access("modules/" + command["name"] + ".py", os.F_OK):
-                    moduleToCall = getattr(modules, command["name"])
-                    classToCall = getattr(moduleToCall, command["name"])()
-                    methodToCall = getattr(classToCall, "onFantasy")
-                    
-                    if not classToCall.NEED_AUTH:
+                  if not classToCall.NEED_AUTH:
+                    if len(data.split()) == 4:
+                      _thread.start_new_thread(methodToCall, (sID, sDestination, ''))
+                    elif len(data.split()) > 4:
+                      _thread.start_new_thread(methodToCall, (sID, sDestination, args))
+                  elif classToCall.NEED_AUTH:
+                    if self.auth(sID):
                       if len(data.split()) == 4:
-                        _thread.start_new_thread(methodToCall, (fuid, fchan, ''))
+                        _thread.start_new_thread(methodToCall, (sID, sDestination, ''))
                       elif len(data.split()) > 4:
-                        _thread.start_new_thread(methodToCall, (fuid, fchan, args))
-                    elif classToCall.NEED_AUTH:
-                      if self.auth(fuid):
-                        if len(data.split()) == 4:
-                          _thread.start_new_thread(methodToCall, (fuid, fchan, ''))
-                        elif len(data.split()) > 4:
-                          _thread.start_new_thread(methodToCall, (fuid, fchan, args))
+                        _thread.start_new_thread(methodToCall, (sID, sDestination, args))
     except Exception:
       et, ev, tb = sys.exc_info()
       e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))

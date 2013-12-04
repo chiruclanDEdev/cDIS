@@ -1,7 +1,7 @@
 HOWTO a78cdb5daa8d558fc458f7a8c46378a6
 README.md 56a7df8f58e0ae72ffb76fecf4441c94
 cDIS 33fbe1af1253e97e361a31b1f569fc23
-cDIS.py 7eaf1e7363b2d4602e97e6de107032bd
+cDIS.py a0564a9acec9368f742d3840b7d8655f
 configs/bots.cfg.dist a8e51e908ca2f35861ec26f934639d75
 configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
@@ -83,7 +83,7 @@ modules/mod_3_fmode.py 91c7626489964963dd504c9f8d21bc9d
 modules/mod_3_kick.py 195b968802f519d38ee3f258f62ef204
 modules/mod_3_mode.py 482256101a307df2635e67ecad963c5a
 modules/mod_3_part.py bfbe7ddde90238f9884452553ece8358
-modules/mod_3_privmsg.py dc489bfa9eb3828dcbaa7d1956b7f663
+modules/mod_3_privmsg.py e2b1dc7a4f98be2baa4595af48f8adc6
 modules/mod_3_topic.py 6136c0964d8141c2461b90352edbbdf8
 modules/sched_0_gline.py d2da9d1c98872741d6d999869aabda1f
 modules/sched_0_trust.py 1901b2e38028845db72bb803b676dc39
