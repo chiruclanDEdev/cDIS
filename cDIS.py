@@ -948,16 +948,16 @@ class cDISModule:
     seconds = 0
     
     if dif == 86400 or dif > 86400:
-      days = int(dif)/86400
-      dif = int(dif)-int(days)*86400
+      days = int(dif / 86400)
+      dif = int(dif - days * 86400)
       
     if dif == 3600 or dif > 3600:
-      hours = int(dif)/3600
-      dif = int(dif)-int(hours)*3600
+      hours = int(dif / 3600)
+      dif = int(dif - hours * 3600)
       
     if dif == 60 or dif > 60:
-      minutes = int(dif)/60
-      dif = int(dif)-int(minutes)*60
+      minutes = int(dif / 60)
+      dif = int(dif - minutes * 60)
       
     seconds = dif
     

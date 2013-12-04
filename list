@@ -1,7 +1,7 @@
 HOWTO a78cdb5daa8d558fc458f7a8c46378a6
 README.md 56a7df8f58e0ae72ffb76fecf4441c94
 cDIS 33fbe1af1253e97e361a31b1f569fc23
-cDIS.py 7dc90d79b7c25c187230d6919c742b87
+cDIS.py 090ae633f6cc5b5cae4c371674486b09
 configs/bots.cfg.dist a8e51e908ca2f35861ec26f934639d75
 configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
@@ -72,7 +72,7 @@ modules/cmd_4_userlist.py 27325ff13ea8316958966f2daed59eae
 modules/cmd_4_vhost.py 8a9783f42882967ecd0ad16755cb17a9
 modules/cmd_5_opers.py ba3c7e3fc9f9e307433641ef5c6cfea0
 modules/cmd_5_version.py 2e5ec4f561ee67fabe8854dac734b768
-modules/event_3.py 4c7edda8e99ee5884677feadc451d146
+modules/event_3.py 276834b6849b1c2b2c85c878a02302da
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8
 modules/mod_0_metadata.py 4c82500ce41d921e6c2b52fc9b162aa5
 modules/mod_0_nick.py 085695d55db751f0ccdba2211d5a0d36
@@ -86,7 +86,7 @@ modules/mod_3_mode.py aa122c6c5a02b611b8a67d8abf57d847
 modules/mod_3_part.py bfbe7ddde90238f9884452553ece8358
 modules/mod_3_privmsg.py 1e69eaf07ca1cfd37a503c9eb0cf5dd9
 modules/mod_3_topic.py 6136c0964d8141c2461b90352edbbdf8
-modules/sched_0_gline.py d2da9d1c98872741d6d999869aabda1f
+modules/sched_0_gline.py 9a53c331c182295bb476aadb5f534e56
 modules/sched_0_trust.py 1901b2e38028845db72bb803b676dc39
 modules/dev/cmd_memo.py 5da4a9e2d2caf9c40de7fab42d76167d
 sql/base/struct.sql e33db973c8567589e35b6c4a7541921b

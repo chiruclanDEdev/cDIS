@@ -24,7 +24,7 @@ class sched_0_gline(cDISModule):
   TIMER = 60
   
   def onSchedule(self):
-    current_timestamp = time.time()
+    current_timestamp = int(time.time())
     
     results = self.query("SELECT id, mask, timestamp FROM glines")
     for row in results:
