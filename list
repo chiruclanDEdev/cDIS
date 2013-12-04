@@ -7,7 +7,7 @@ configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
-modules/cmd_1_update.py 2d6b3c7b1eaa4b491dc8bb783e6fd5a4
+modules/cmd_1_update.py 69417c0ba4cf352255ce71a6234ce063
 modules/cmd_2_remove.py 454ab7596f700f418dfd0b8c0bb56b4b
 modules/cmd_2_request.py 6117a7588b38551fc5bac19f1c08f0c2
 modules/cmd_3_auth.py cc6872689e92d9499558ba3282f95648
