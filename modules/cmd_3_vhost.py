@@ -48,12 +48,12 @@ class cmd_3_vhost(cDISModule):
         if vhost.find("@") != -1:
           vhost = vhost.split("@")[0]
           
-        for data in self.query("select user from vhosts where vhost = %s and user != %s", vhost, self.auth(source)):
+        for data in self.query("""select user from vhosts where vhost = %s and "user" != %s""", vhost, self.auth(source)):
           user = data["user"]
           entry = True
           
         if not entry:
-          self.query("delete from vhosts where user = %s", self.auth(source))
+          self.query("""delete from vhosts where "user" = %s""", self.auth(source))
           self.query("insert into vhosts values (%s, %s, '0')", self.auth(source), arg[1])
           self.msg(source, "Your new vhost %s has been requested" % arg[1])
           
@@ -77,7 +77,7 @@ class cmd_3_vhost(cDISModule):
       else:
         self.msg(source, "You did not set a vHost or userflag +x.")
     elif len(arg) == 1 and arg[0].lower() == "remove":
-      self.query("delete from vhosts where user = %s", self.auth(source))
+      self.query("""delete from vhosts where "user" = %s""", self.auth(source))
       self.vhost(source)
       self.msg(source, "Done.")
     else:

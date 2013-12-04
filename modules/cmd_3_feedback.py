@@ -28,7 +28,7 @@ class cmd_3_feedback(cDISModule):
     if len(args) > 0:
       entry = False
       
-      for data in self.query("select text from feedback where user = %s", self.auth(source)):
+      for data in self.query("""select text from feedback where "user" = %s""", self.auth(source)):
         entry = True
         
       if not entry:

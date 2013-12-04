@@ -49,7 +49,3 @@ class mod_3_fjoin(cDISModule):
           
       if self.isoper(pnick) and self.chanexist(fjoin_chan):
         self.send(":%s NOTICE %s :Operator %s has joined" % (self.services_id, fjoin_chan, self.nick(pnick)))
-        
-      if self.chanflag("l", fjoin_chan):
-        self.showlog(pnick, fjoin_chan)
-        self.log(pnick, "join", fjoin_chan)

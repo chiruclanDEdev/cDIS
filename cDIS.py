@@ -653,10 +653,6 @@ class cDISModule:
 
   def mode(self, target, mode):
     self.send(":%s SVSMODE %s %s" % (self.bot, target, mode))
-    
-    if target.startswith("#"):
-      if self.chanflag("l", target):
-        self.log(self.bot_nick, "mode", target, mode)
 
   def SetMetadata(self, uid, key, value = None):
     if value:
@@ -750,7 +746,7 @@ class cDISModule:
 
   def join(self, channel):
     if self.chanexist(channel) and not self.suspended(channel):
-      self.send(":%s JOIN %s" % (self.services_id + bots.get("3", "uuid"), channel))
+      self.send_serv("FJOIN {0} {1} +r :,{2}{3}".format(channel, int(time.time()), self.services_id, bots.get("3", "uuid")))
       self.mode(channel, "+ryo {0} {0}".format(self.services_id + bots.get("3", "uuid")))
 
   def statistics(self):
@@ -781,7 +777,7 @@ class cDISModule:
     if not self.gateway(target):
       entry = False
       
-      for data in self.query("select vhost from vhosts where user = %s and active = '1'", self.auth(target)):
+      for data in self.query("""select vhost from vhosts where "user" = %s and active = '1'""", self.auth(target)):
         entry = True
         vhost = str(data["vhost"])
         
@@ -818,7 +814,7 @@ class cDISModule:
       if channel != "":
         _flag = ''
         
-        for flag in self.query("select flag,channel from channels where user = %s and LOWER(channel) = LOWER(%s)", account, channel):
+        for flag in self.query("""select flag,channel from channels where "user" = %s and LOWER(channel) = LOWER(%s)""", account, channel):
           if flag["flag"] == "n" or flag["flag"] == "q":
             self.mode(flag["channel"], "+qo " + target + " " + target)
           elif flag["flag"] == "a":
@@ -844,7 +840,7 @@ class cDISModule:
         if self.chanexist(channel):
           self.setuserchanflag(channel, target, _flag.replace('n', 'q'))
       else:
-        for flag in self.query("select flag,channel from channels where user = %s order by channel", account):
+        for flag in self.query("""select flag,channel from channels where "user" = %s order by channel""", account):
           if flag["flag"] == "n" or flag["flag"] == "q":
             self.mode(flag["channel"], "+qo " + target + " " + target)
           elif flag["flag"] == "a":
@@ -870,7 +866,7 @@ class cDISModule:
     
     if self.ison(user):
       if self.userflag(target, "a"):
-        for data in self.query("select channel,flag from channels where user = %s", user):
+        for data in self.query("""select channel,flag from channels where "user" = %s""", user):
           channel = data["channel"]
           flag = data["flag"]
           
@@ -879,7 +875,7 @@ class cDISModule:
 
   def getflag(self, target, channel):
     for data in self.query("select account from online where uid = %s", target):
-      for flag in self.query("select flag from channels where channel = %s and user = %s", channel, data["account"]):
+      for flag in self.query("""select "flag" from "channels" where "channel" = %s and "user" = %s""", channel, data["account"]):
         return flag["flag"]
         
     return 0
@@ -925,64 +921,6 @@ class cDISModule:
       mail.quit()
     except Exception as e:
       debug(red("*") + " <<MAIL-ERROR>> "+str(e))
-
-  def log(self, source, msgtype, channel, text=""):
-    try:
-      if msgtype.lower() == "mode" and len(text.split()) > 1:
-        nicks = list()
-        
-        for nick in text.split()[1:]:
-          nicks.append(self.nick(nick))
-          
-        text = "{text} {nicks}".format(text=text.split()[0], nicks=' '.join(nicks))
-        
-      if source == self.bot_nick:
-        sender = self.bot_nick+"!"+self.bot_user+"@"+self.services_name
-      else:
-        hostmask = self.hostmask(source)
-        sender = hostmask[len(hostmask)-1]
-        
-      result = self.query("SELECT COUNT(*) FROM logs WHERE channel = %s", channel)
-      for row in result:
-        if row["count"] == 50:
-          self.query("DELETE FROM logs WHERE channel = %s LIMIT 1", channel)
-          
-      self.query("INSERT INTO logs (channel, sender, action, message) VALUES (%s, %s, %s, %s)", channel, sender, msgtype.upper(), text)
-    except:
-      pass
-
-  def showlog(self, source, channel):
-    try:
-      escaped_actions = list()
-      escaped_actions.append("JOIN")
-      escaped_actions.append("PART")
-      escaped_actions.append("QUIT")
-      escaped_actions.append("MODE")
-      escaped_actions.append("KICK")
-      escaped_actions.append("TOPIC")
-      
-      self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log start")
-      
-      result = self.query("SELECT channel, sender, action, message FROM logs WHERE channel = %s ORDER BY id", channel)
-      for row in result:
-        escaped_action = False
-        
-        for action in escaped_actions:
-          if row["action"] == action:
-            escaped_action = True
-            
-        if not escaped_action:
-          if row["action"] == "PRIVMSG":
-            row["action"] = "NOTICE"
-            
-          self.push(source, row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"])
-        else:
-          message = row["sender"] + " " + row["action"] + " " + row["channel"] + " " + row["message"]
-          self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE " + row["channel"] + " :" + message)
-          
-      self.push(source, self.bot_nick + "!" + self.bot_user + "@" + self.services_name + " NOTICE "+channel+" :*** Log end")
-    except:
-      pass
 
   def convert_timestamp(self, timestamp):
     dif = int(timestamp)
@@ -1085,7 +1023,7 @@ class cDISModule:
       masks.append(data["nick"]+"!"+data["username"]+"@"+data["host"])
       
     if self.auth(uid) != 0:
-      for data in self.query("select vhost from vhosts where user = %s and active = '1'", account):
+      for data in self.query("""select vhost from vhosts where "user" = %s and active = '1'""", account):
         if str(data["vhost"]).find("@") != -1:
           masks.append(nick+"!"+data["vhost"])
         else:
@@ -1191,7 +1129,7 @@ class cDISModule:
     return 0
 
   def getvhost(self, target):
-    for data in self.query("select vhost from vhosts where user = %s and active = '1'", target):
+    for data in self.query("""select vhost from vhosts where "user" = %s and active = '1'""", target):
       return data["vhost"]
       
     if self.userflag(target, "x"):

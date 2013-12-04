@@ -48,7 +48,7 @@ class cmd_3_whois(cDISModule):
           self.msg(source, "Known on following channels:")
           self.msg(source, "Channel              Flag")
           
-          for channel in self.query("select channel,flag from channels where user = %s order by flag,channel", user["name"]):
+          for channel in self.query("""select channel,flag from channels where "user" = %s order by flag,channel""", user["name"]):
             self.msg(source, " {0}{1}+{2}".format(channel["channel"], " "*int(20-len(channel["channel"])), channel["flag"]))
             
           self.msg(source, "End of list.")
@@ -82,7 +82,7 @@ class cmd_3_whois(cDISModule):
               self.msg(source, "Known on following channels:")
               self.msg(source, "Channel              Flag")
               
-            for channel in self.query("select channel,flag from channels where user = %s order by flag,channel", user):
+            for channel in self.query("""select channel,flag from channels where "user" = %s order by flag,channel""", user):
               if self.isoper(source) or self.auth(source) == user or self.getflag(source, channel["channel"]) != 0:
                 self.msg(source, " {0}{1}+{2}".format(channel["channel"], " "*int(20-len(channel["channel"])), channel["flag"]))
                   

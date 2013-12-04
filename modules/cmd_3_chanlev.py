@@ -53,7 +53,7 @@ class cmd_3_chanlev(cDISModule):
           for data in self.query("select name from users where name = %s", username):
             user = True
             
-          for data in self.query("select channel,flag from channels where user = %s and channel = %s", username, channel):
+          for data in self.query("""select channel,flag from channels where "user" = %s and channel = %s""", username, channel):
             self.msg(source, "Flags for #"+username+" on "+data["channel"]+": +"+data["flag"])
             channel = data["channel"]
             entry = True
@@ -66,7 +66,7 @@ class cmd_3_chanlev(cDISModule):
           username = self.auth(self.uid(arg[1]))
           entry = False
           
-          for data in self.query("select channel,flag from channels where user = %s and channel = %s", username, channel):
+          for data in self.query("""select channel,flag from channels where "user" = %s and channel = %s""", username, channel):
             self.msg(source, "Flags for "+arg[1]+" on "+data["channel"]+": +"+data["flag"])
             channel = data["channel"]
             entry = True
@@ -83,7 +83,7 @@ class cmd_3_chanlev(cDISModule):
       if channel.startswith("#"):
         entry = False
         
-        for channels in self.query("select channel from channels where user = %s and flag = 'n' and channel = %s", self.auth(source), arg[0]):
+        for channels in self.query("""select channel from channels where "user" = %s and flag = 'n' and channel = %s""", self.auth(source), arg[0]):
             entry = True
             channel = str(channels["channel"])
             
@@ -99,7 +99,7 @@ class cmd_3_chanlev(cDISModule):
             for data in self.query("select name from users where name = %s", username):
               if str(self.auth(source)).lower() != username.lower():
                 if arg[2][0] != "-":
-                  self.query("delete from channels where channel = %s and user = %s", channel, username)
+                  self.query("""delete from channels where channel = %s and "user" = %s""", channel, username)
                   self.query("insert into channels values (%s, %s, %s)", channel, username, arg[2][0])
                   
                   for data in self.sid(username):
@@ -121,7 +121,7 @@ class cmd_3_chanlev(cDISModule):
                     if uflag != "q" and uflag != "n":
                       self.mode(arg[0], "-q "+data)
                 else:
-                  self.query("delete from channels where channel = %s and user = %s", arg[0], username)
+                  self.query("""delete from channels where channel = %s and "user" = %s""", arg[0], username)
                   
                   for data in self.sid(username):
                     self.flag(data, channel)
@@ -156,7 +156,7 @@ class cmd_3_chanlev(cDISModule):
               for data in self.query("select name from users where name = %s", username):
                 if str(self.auth(source)).lower() != username.lower():
                   if arg[2][0] != "-":
-                    self.query("delete from channels where channel = %s and user = %s", channel, username)
+                    self.query("""delete from channels where channel = %s and "user" = %s""", channel, username)
                     self.query("insert into channels values (%s, %s, %s)", channel, username, arg[2][0])
                     
                     for data in self.sid(username):
@@ -178,7 +178,7 @@ class cmd_3_chanlev(cDISModule):
                       if uflag != "q" and uflag != "n":
                         self.mode(arg[0], "-q "+data)
                   else:
-                    self.query("delete from channels where channel = %s and user = %s", arg[0], username)
+                    self.query("""delete from channels where channel = %s and "user" = %s""", arg[0], username)
                     
                     for data in self.sid(username):
                       self.flag(data, channel)

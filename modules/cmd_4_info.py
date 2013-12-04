@@ -55,7 +55,7 @@ class cmd_4_info(cDISModule):
           self.msg(uid, "Known on following channels:")
           self.msg(uid, "Channel              Flag")
           
-          for channel in self.query("select channel,flag from channels where user = %s order by flag,channel", user["name"]):
+          for channel in self.query("""select channel,flag from channels where "user" = %s order by flag,channel""", user["name"]):
             self.msg(uid, " {0}{1}+{2}".format(channel["channel"], " "*int(20-len(channel["channel"])), channel["flag"]))
             
           self.msg(uid, "End of list.")

@@ -23,9 +23,6 @@ class mod_3_privmsg(cDISModule):
   BOT_ID = '3'
   
   def onData(self, data):
-    if data.split()[2].startswith("#") and self.chanflag("l", data.split()[2]):
-      self.log(data.split()[0][1:], "privmsg", data.split()[2], ' '.join(data.split()[3:]))
-          
     if self.chanexist(data.split()[2]):
       puid = data.split()[0][1:]
       pchan = data.split()[2]

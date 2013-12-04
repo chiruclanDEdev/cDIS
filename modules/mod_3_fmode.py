@@ -146,7 +146,7 @@ class mod_3_fmode(cDISModule):
         for user in data.split()[5:]:
           fm_chan = data.split()[2]
           
-          for flag in self.query("select flag from channels where channel = %s and user = %s", data.split()[2], self.auth(user)):
+          for flag in self.query("""select flag from channels where channel = %s and "user" = %s""", data.split()[2], self.auth(user)):
             if flag["flag"] == "n" or flag["flag"] == "q":
               self.mode(fm_chan, "+qo {0} {0}".format(user))
             elif flag["flag"] == "a":
