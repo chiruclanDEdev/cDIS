@@ -20,6 +20,7 @@ class cmd_3_owner(cDISModule):
   MODULE_CLASS = "COMMAND"
   COMMAND = "OWNER"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   HELP = "Sets your owner (+q) flag"
   BOT_ID = '3'
 

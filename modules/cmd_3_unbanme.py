@@ -21,6 +21,7 @@ class cmd_3_unbanme(cDISModule):
   COMMAND = "UNBANME"
   HELP = "Unbans you from a channel where you are known"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   BOT_ID = '3'
 
   def onCommand(self, uid, args):

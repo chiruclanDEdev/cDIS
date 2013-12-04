@@ -20,6 +20,7 @@ class cmd_3_welcome(cDISModule):
   MODULE_CLASS = "COMMAND"
   COMMAND = "WELCOME"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   HELP = "Sets a welcome message for your channel"
   BOT_ID = '3'
 

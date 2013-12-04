@@ -22,6 +22,7 @@ class cmd_3_op(cDISModule):
   COMMAND = "OP"
   HELP = "Sets op (+o) flag to you or someone on the channel"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   BOT_ID = '3'
 
   def onCommand(self, source, args):

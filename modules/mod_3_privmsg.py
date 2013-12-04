@@ -23,11 +23,13 @@ class mod_3_privmsg(cDISModule):
   BOT_ID = '3'
   
   def onData(self, data):
-    if not self.chanexist(data.split()[2]): return None
+    pchan = data.split()[2]
+    
+    if not pchan.startswith("#"): return None
+    elif not self.chanexist(pchan): return None
     elif not self.chanflag("s", pchan): return None
     
     puid = data.split()[0][1:]
-    pchan = data.split()[2]
     messages = 10
     seconds = [6, 5]
     

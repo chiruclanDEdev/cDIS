@@ -21,6 +21,7 @@ class cmd_3_spamscan(cDISModule):
   COMMAND = "SPAMSCAN"
   HELP = "Sets the spam settings of your channel (chanflag s)"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   BOT_ID = '3'
 
   def onCommand(self, uid, args):

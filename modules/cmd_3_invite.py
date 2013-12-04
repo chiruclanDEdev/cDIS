@@ -21,6 +21,7 @@ class cmd_3_invite(cDISModule):
   COMMAND = "INVITE"
   HELP = "Invites you into a channel"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   BOT_ID = '3'
 
   def onCommand(self, source, args):

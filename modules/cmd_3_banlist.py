@@ -21,6 +21,7 @@ class cmd_3_banlist(cDISModule):
   COMMAND = "BANLIST"
   HELP = "Sends you the banlist of your channel"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   BOT_ID = '3'
 
   def onCommand(self, uid, args):

@@ -22,6 +22,7 @@ class cmd_3_halfop(cDISModule):
   COMMAND = "HALFOP"
   HELP = "Sets halfop (+h) flag to you or someone on the channel"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   BOT_ID = '3'
 
   def onCommand(self, source, args):

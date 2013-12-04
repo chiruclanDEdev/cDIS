@@ -22,6 +22,7 @@ class cmd_3_dehalfop(cDISModule):
   COMMAND = "DEHALFOP"
   HELP = "Removes halfop (+h) flag from you or someone on the channel"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   BOT_ID = '3'
 
   def onCommand(self, source, args):

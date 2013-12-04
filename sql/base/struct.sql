@@ -68,14 +68,6 @@ CREATE TABLE "feedback" (
 ) WITH (OIDS=FALSE);
 
 -- ----------------------------
--- Table structure for gateway
--- ----------------------------
-DROP TABLE IF EXISTS "gateway";
-CREATE TABLE "gateway" (
-"uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY
-) WITH (OIDS=FALSE);
-
--- ----------------------------
 -- Table structure for glines
 -- ----------------------------
 DROP TABLE IF EXISTS "glines";
@@ -104,8 +96,8 @@ CREATE TABLE "ircd_opers" (
 DROP TABLE IF EXISTS "memo";
 CREATE TABLE "memo" (
 "id" serial NOT NULL PRIMARY KEY,
-"user" varchar(255) COLLATE "default" NOT NULL,
-"source" varchar(255) COLLATE "default" NOT NULL,
+"user" varchar(32) COLLATE "default" NOT NULL,
+"source" varchar(32) COLLATE "default" NOT NULL,
 "message" varchar(2048) COLLATE "default" NOT NULL
 ) WITH (OIDS=FALSE);
 
@@ -115,8 +107,8 @@ CREATE TABLE "memo" (
 DROP TABLE IF EXISTS "metadata";
 CREATE TABLE "metadata" (
 "uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY,
-"key" varchar(255) COLLATE "default" NOT NULL,
-"value" varchar(255) COLLATE "default" NOT NULL
+"key" varchar(32) COLLATE "default" NOT NULL,
+"value" varchar(128) COLLATE "default" NOT NULL
 ) WITH (OIDS=FALSE);
 
 -- ----------------------------
@@ -130,8 +122,9 @@ CREATE TABLE "modules" (
 "command" varchar(255) COLLATE "default",
 "help" varchar(255) COLLATE "default",
 "bot" varchar(6) COLLATE "default" NOT NULL,
-"oper" bit(1) NOT NULL,
-"auth" bit(1) NOT NULL
+"oper" numeric(1) NOT NULL,
+"auth" numeric(1) NOT NULL,
+"fantasy" numeric(1) NOT NULL
 ) WITH (OIDS=FALSE);
 
 -- ----------------------------
@@ -141,10 +134,11 @@ DROP TABLE IF EXISTS "online";
 CREATE TABLE "online" (
 "uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY,
 "nick" varchar(32) COLLATE "default" NOT NULL,
-"address" varchar(255) COLLATE "default" NOT NULL,
+"address" varchar(38) COLLATE "default" NOT NULL,
 "host" varchar(64) COLLATE "default" NOT NULL,
 "username" varchar(16) COLLATE "default" NOT NULL,
-"account" varchar(32) COLLATE "default"
+"gateway" numeric(1) NOT NULL DEFAULT 0,
+"account" varchar(32) COLLATE "default",
 ) WITH (OIDS=FALSE);
 
 -- ----------------------------
@@ -171,7 +165,7 @@ CREATE TABLE "statistics" (
 DROP TABLE IF EXISTS "suspended";
 CREATE TABLE "suspended" (
 "id" serial NOT NULL PRIMARY KEY,
-"channel" varchar(255) COLLATE "default" NOT NULL,
+"channel" varchar(65) COLLATE "default" NOT NULL,
 "reason" varchar(120) COLLATE "default"
 ) WITH (OIDS=FALSE);
 
@@ -196,7 +190,7 @@ DROP TABLE IF EXISTS "vhosts";
 CREATE TABLE "vhosts" (
 "user" varchar(255) COLLATE "default" NOT NULL PRIMARY KEY,
 "vhost" varchar(255) COLLATE "default",
-"active" varchar(255) COLLATE "default"
+"active" numeric(1) NOT NULL DEFAULT 0
 ) WITH (OIDS=FALSE);
 
 -- ----------------------------
@@ -207,7 +201,14 @@ CREATE TABLE "trust" (
 "address" varchar(255) COLLATE "default" NOT NULL,
 "limit" varchar(16) COLLATE "default" NOT NULL,
 "timestamp" int4 NOT NULL,
-CONSTRAINT "trust_pkey" PRIMARY KEY ("id", "address")
+) WITH (OIDS=FALSE);
+
+-- ----------------------------
+-- Table structure for botchannel
+-- ----------------------------
+CREATE TABLE "botchannel" (
+"bot" numeric(6) NOT NULL,
+"channel" varchar(64) NOT NULL
 ) WITH (OIDS=FALSE);
 
 INSERT INTO "statistics" ("attribute", "value") VALUES

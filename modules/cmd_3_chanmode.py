@@ -21,6 +21,7 @@ class cmd_3_chanmode(cDISModule):
   COMMAND = "CHANMODE"
   HELP = "Sets modes for your channel"
   NEED_AUTH = 1
+  ENABLE_FANTASY = 1
   BOT_ID = '3'
 
   def onCommand(self, source, args):

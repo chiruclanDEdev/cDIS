@@ -34,15 +34,26 @@ import threading
 import modules
 import builtins
 
-def red(string):
-  return("\033[91m" + string + "\033[0m")
+class ConsoleColors:
+  def red(self, string):
+    return("\033[1m\033[91m{0}\033[0m".format(string))
 
-def blue(string):
-  return("\033[94m" + string + "\033[0m")
+  def lightblue(self, string):
+    return("\033[1m\033[94m{0}\033[0m".format(string))
 
-def green(string):
-  return("\033[92m" + string + "\033[0m")
+  def lightgreen(self, string):
+    return("\033[1m\033[92m{0}\033[0m".format(string))
+    
+  def cyan(self, string):
+    return("\033[1m\033[36m{0}\033[0m".format(string))
+    
+  def green(self, string):
+    return("\033[1m\033[32m{0}\033[0m".format(string))
+    
+  def blue(self, string):
+    return("\033[1m\033[34m{0}\033[0m".format(string))
 
+colors = ConsoleColors()
 try:
   if not os.access("logs", os.F_OK):
     os.mkdir("logs")
@@ -62,18 +73,18 @@ try:
   mail_template = mail_template.replace("${LINK}", config.get("MAIL", "link"))
 except Exception:
   et, ev, tb = sys.exc_info()
-  print((red("*") + " <<ERROR>> {0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))))
+  print(colors.red("(Error) => ") + " {0}: {1}".format(et, traceback.format_tb(tb)[0]))
 
 def debug(text):
   if config.get("OTHER", "debug") == "1":
-    print((str(text)))
+    print(str(text))
 
 def shell(text):
   subprocess.Popen(text+" >> /dev/null", shell=True).wait()
 
 def perror(text):
   try:
-    debug(red("*") + " " + text)
+    debug(colors.red("(Error) ==") + " " + text)
     file = open("error.log", "ab")
     file.write(text+"\n")
     file.close()
@@ -110,20 +121,20 @@ class Services:
       self.db_interface.commit()
     except Exception:
       et, ev, tb = sys.exc_info()
-      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
-      debug(red("*") + " <<ERROR>> " + str(e))
+      e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
+      debug(colors.red("(Error) =>") + " " + str(e))
       sys.exit(1)
     
   def query(self, string, *args):
     try:
-      debug(blue("*** => ") + " " + string % args)
+      debug(colors.cyan("(Database) <=") + " " + string % args)
       self.db_cursor.execute(string + ";", args)
       self.db_interface.commit()
       
       if self.db_cursor.rowcount > 0 and string.lower().find('select ') != -1:
         result = list()
         rows = self.db_cursor.fetchall()
-        debug(green("*** <= ") + " " + str(rows))
+        debug(colors.lightgreen("(Database) =>") + " " + str(rows))
         for row in rows:
           result.append(dict(row))
           
@@ -131,24 +142,25 @@ class Services:
     except psycopg2.DatabaseError as e:
       self.db_interface.rollback()
       et, ev, tb = sys.exc_info()
-      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
-      debug(red("*") + " <<ERROR>> " + str(e))
+      e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
+      debug(colors.red("(Error) =>") + " " + str(e))
       
     return list()
     
   def send(self, text):
     self.con.send(bytes(text+"\n", "UTF-8"))
-    debug(blue("*") + " " + text)
+    debug(colors.blue("(Socket) <=") + " " + text)
 
   def run(self):
     try:
-      self.query("TRUNCATE opers")
-      self.query("TRUNCATE online")
-      self.query("TRUNCATE chanlist")
-      self.query("TRUNCATE metadata")
-      self.query("TRUNCATE modules")
-      self.query("ALTER SEQUENCE modules_id_seq RESTART WITH 1")
-      self.query("UPDATE ircd_opers SET hostname = 'root@localhost'")
+      self.query("""TRUNCATE "opers\"""")
+      self.query("""TRUNCATE "online\"""")
+      self.query("""TRUNCATE "chanlist\"""")
+      self.query("""TRUNCATE "metadata\"""")
+      self.query("""TRUNCATE "modules\"""")
+      self.query("""TRUNCATE "botchannel\"""")
+      self.query("""ALTER SEQUENCE "modules_id_seq" RESTART WITH 1""")
+      self.query("""UPDATE "ircd_opers" SET "hostname" = 'root@localhost'""")
       
       if self.ipv6 and socket.has_ipv6:
         if self.ssl:
@@ -181,7 +193,7 @@ class Services:
             methodToCall = getattr(classToCall, "runSchedule")
             _thread.start_new_thread(methodToCall, ())
             
-          self.query("""INSERT INTO "modules" ("name", "class", "oper", "auth", "command", "help", "bot") VALUES (%s, %s, %s, %s, %s, %s, %s)""", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID)
+          self.query("""INSERT INTO "modules" ("name", "class", "oper", "auth", "command", "help", "bot", "fantasy") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID, classToCall.ENABLE_FANTASY)
           
       while 1:
         recv = self.con.recv(25600)
@@ -192,13 +204,13 @@ class Services:
         for data in recv.splitlines():
           data = data.decode("UTF-8")
           if data.strip() != "":
-            debug(green("*") + " " + data)
+            debug(colors.green("(Socket) =>") + " " + data)
             _thread.start_new_thread(cDISModule().onInternal, (data.strip(),))
           
     except Exception:
       et, ev, tb = sys.exc_info()
-      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
-      debug(red("*") + " <<ERROR>> " + str(e))
+      e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
+      debug(colors.red("(Error) =>") + " " + str(e))
 
 class cDISModule:
   import sys
@@ -219,6 +231,7 @@ class cDISModule:
   HELP = ''
   NEED_OPER = 0
   NEED_AUTH = 0
+  ENABLE_FANTASY = 0
   MODULE_CLASS = ''
   COMMAND = ''
   BOT_ID = '0'
@@ -283,38 +296,27 @@ class cDISModule:
           botuid = self.services_id + bots.get(bot, "uuid")
           botlist["uid"][bot] = botuid
           botlist["id"][botuid] = bot
+          
           self.send_serv("UID {0} {1} {2} {3} {4} {5} {6} {7} +Ik :{8}".format(botuid, int(time.time()), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, int(time.time()), bots.get(bot, "real")))
           self.send(":%s OPERTYPE Service" % botuid)
           self.SetMetadata(botuid, "accountname", bots.get(bot, "nick"))
           
         builtins._botlist = botlist
+        self.raiseEvent('STARTUP')
         self.msg("$*", "Services are now back online. Have a nice day :)")
-        
-        self.bot = self.services_id + bots.get("3", "uuid")
-        for channel in self.query("select name,modes,topic from channelinfo"):
-          self.join(str(channel["name"]))
-          
-          if self.chanflag("m", channel["name"]):
-            self.mode(channel["name"], channel["modes"])
-            
-          if self.chanflag("t", channel["name"]):
-            self.send(":{0} TOPIC {1} :{2}".format(self.bot, channel["name"], channel["topic"]))
-            
-        self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
       elif sCommand == "PONG" or sCommand == "ERROR":
         pass
       else:
-        for module in self.query("SELECT * FROM modules WHERE class = %s", sCommand):
-          if os.access("modules/" + module["name"] + ".py", os.F_OK):
-            moduleToCall = getattr(modules, module["name"])
-            classToCall = getattr(moduleToCall, module["name"])()
-            
-            if classToCall.MODULE_CLASS.lower() == sCommand.lower():
-              methodToCall = getattr(classToCall, "onData")
-              _thread.start_new_thread(methodToCall, (data, ))
+        for module in self.query("""SELECT * FROM modules WHERE class = %s""", sCommand):
+          moduleToCall = getattr(modules, module["name"])
+          classToCall = getattr(moduleToCall, module["name"])()
+          
+          if classToCall.MODULE_CLASS.lower() == sCommand.lower():
+            methodToCall = getattr(classToCall, "onData")
+            _thread.start_new_thread(methodToCall, (data, ))
               
       if sCommand == "PRIVMSG":
-        if sDestination in _botlist["uid"]:
+        if sDestination in _botlist["id"]:
           bot = _botlist["id"][sDestination]
           botuid = sDestination
           
@@ -325,79 +327,67 @@ class cDISModule:
           
           if sUserCommand.lower() == "help":
             self.bot = botuid
-            args = ' '.join(sArguments)
             self.msg(sID, "The following commands are available to you.")
             
-            if len(sArguments) == 0:
+            if len(pData) == 4:
               self.help(sID, "HELP", "Shows information about all commands that are available to you")
               
-              for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s ORDER BY command", bot, isauth, isoper):
+              for command in self.query("""SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s ORDER BY command""", bot, isauth, isoper):
                 if os.access("modules/"+command["name"]+".py", os.F_OK):
                   self.help(sID, command["command"], command["help"])
             else:
+              args = ' '.join(sArguments)
               if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
                 self.help(sID, "HELP", "Shows information about all commands that are available to you")
                 
-              for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s AND command LIKE %s ORDER BY command", bot, isauth, isoper, '%' + args + '%'):
+              for command in self.query("""SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s AND command LIKE %s ORDER BY command""", bot, isauth, isoper, '%' + args.upper() + '%'):
                 if os.access("modules/"+command["name"]+".py", os.F_OK):
                   self.help(sID, command["command"], command["help"])
             
             self.msg(sID, "End of list.")
             
-            self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
+            self.bot = _botlist["uid"][self.BOT_ID]
           else:
             iscmd = False
-            for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND bot = %s AND auth <= %s AND oper <= %s", sUserCommand.upper(), bot, isauth, isoper):
-              if os.access("modules/" + command["name"] + ".py", os.F_OK):
-                iscmd = True
-                
-                moduleToCall = getattr(modules, command["name"])
-                classToCall = getattr(moduleToCall, command["name"])()
-                methodToCall = getattr(classToCall, "onCommand")
-                
-                if len(data.split()) == 4:
-                  _thread.start_new_thread(methodToCall, (sID, ''))
-                elif len(data.split()) > 4:
-                  _thread.start_new_thread(methodToCall, (sID, ' '.join(sArguments)))
-                    
+            for command in self.query("""SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND bot = %s AND auth <= %s AND oper <= %s""", sUserCommand.upper(), bot, isauth, isoper):
+              iscmd = True
+              
+              moduleToCall = getattr(modules, command["name"])
+              classToCall = getattr(moduleToCall, command["name"])()
+              methodToCall = getattr(classToCall, "onCommand")
+              
+              if len(pData) > 4: _thread.start_new_thread(methodToCall, (sID, ' '.join(sArguments)))
+              else: _thread.start_new_thread(methodToCall, (sID, ''))
+              
             if not iscmd:
               self.msg(sID, "Unknown command {0}. Please try HELP for more information.".format(sUserCommand.upper()), uid=botuid)
-              
         elif sDestination.startswith("#"):
           if not self.chanexist(sDestination): return None
           elif not self.chanflag("f", sDestination): return None
           
           cFantasy = self.fantasy(sDestination)
           if sUserCommand.startswith(cFantasy):
-            botuid = self.services_id + bots.get(bot, "uuid")
-            
             if len(sUserCommand) > int(len(cFantasy)):
               cmd = sUserCommand[int(len(cFantasy)):]
               
-              if len(data.split()) > 4:
-                args = ' '.join(sArguments)
+              if len(pData) > 4: args = ' '.join(sArguments)
+              if self.isoper(sID): isoper = 1
+              else: isoper = 0
+              if self.auth(sID): isauth = 1
+              else: isauth = 0
+              
+              for command in self.query("""SELECT * FROM "modules" WHERE "class" = 'COMMAND' AND "command" = %s AND "oper" <= %s AND "auth" <= %s AND "fantasy" >= %s AND (SELECT COUNT(*) FROM "botchannel" WHERE "bot" = %s AND "channel" = %s) = 1""", cmd.upper(), isoper, isauth, 1):
+                moduleToCall = getattr(modules, command["name"])
+                classToCall = getattr(moduleToCall, command["name"])()
+                methodToCall = getattr(classToCall, "onFantasy")
                 
-              for command in self.query("SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND oper = 0 AND bot = %s", cmd.upper(), bot):
-                if os.access("modules/" + command["name"] + ".py", os.F_OK):
-                  moduleToCall = getattr(modules, command["name"])
-                  classToCall = getattr(moduleToCall, command["name"])()
-                  methodToCall = getattr(classToCall, "onFantasy")
-                  
-                  if not classToCall.NEED_AUTH:
-                    if len(data.split()) == 4:
-                      _thread.start_new_thread(methodToCall, (sID, sDestination, ''))
-                    elif len(data.split()) > 4:
-                      _thread.start_new_thread(methodToCall, (sID, sDestination, args))
-                  elif classToCall.NEED_AUTH:
-                    if self.auth(sID):
-                      if len(data.split()) == 4:
-                        _thread.start_new_thread(methodToCall, (sID, sDestination, ''))
-                      elif len(data.split()) > 4:
-                        _thread.start_new_thread(methodToCall, (sID, sDestination, args))
+                if len(pData) > 4: _thread.start_new_thread(methodToCall, (sID, sDestination, args))
+                else: _thread.start_new_thread(methodToCall, (sID, sDestination, ''))
+                
     except Exception:
       et, ev, tb = sys.exc_info()
-      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
-      debug(red("*") + " <<ERROR>> " + str(e))
+      e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
+      debug(colors.red("(Error) =>") + " " + str(e))
 
   def onCommand(self, uid, arguments):
     pass
@@ -408,12 +398,15 @@ class cDISModule:
   def onData(self, data):
     pass
     
+  def onEvent(self, event):
+    pass
+    
   def onSchedule(self):
     pass
     
   def runSchedule(self):
     if self.TIMER <= 0:
-      debug(red("*") + " <<ERROR>> runSchedule -> TIMER <= 0")
+      debug(colors.red("(Error) =>") + " runSchedule -> TIMER <= 0")
       return 0
       
     while True:
@@ -423,8 +416,8 @@ class cDISModule:
         self.onSchedule()
       except Exception:
         et, ev, tb = sys.exc_info()
-        e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
-        debug(red("*") + " <<ERROR>> " + str(e))
+        e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
+        debug(colors.red("(Error) =>") + " " + str(e))
         
       try:
         stop = int(time.time())
@@ -437,11 +430,19 @@ class cDISModule:
         time.sleep(next)
       except Exception:
         et, ev, tb = sys.exc_info()
-        e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
-        debug(red("*") + " <<ERROR>> " + str(e))
+        e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
+        debug(colors.red("(Error) =>") + " " + str(e))
         return 0
         
-  def regexflag (self, original, pattern, include_negatives = False):
+  def raiseEvent(self, event, evnt_type = 'INTERNAL_EVENT'):
+    for module in self.query("""SELECT "name", "class", "command", "bot" FROM "modules" WHERE "class" = %s AND "command" = %s""", evnt_type.upper(), event.upper()):
+      moduleToCall = getattr(modules, module["name"])
+      classToCall = getattr(moduleToCall, module["name"])()
+      methodToCall = getattr(classToCall, "onEvent")
+      methodToCall(module["command"])
+      self.send_to_op("""*** Event: {0} => {1} (handled by module '{2}', bot {3}).""".format(module["class"], module["command"], module["name"], module["bot"]))
+      
+  def regexflag(self, original, pattern, include_negatives = False):
     pflags = ""
     nflags = ""
     actflag = ""
@@ -501,13 +502,13 @@ class cDISModule:
   def query(self, string, *args):
     try:
       self.db_cursor.execute(string + ";", args)
-      debug(blue("*** => ") + " " + self.db_cursor.query.decode("UTF-8"))
+      debug(colors.cyan("(Database) <=") + " " + self.db_cursor.query.decode("UTF-8"))
       db_interface.commit()
       
       if self.db_cursor.rowcount > 0 and string.lower().find('select ') != -1:
         result = list()
         rows = self.db_cursor.fetchall()
-        debug(green("*** <= ") + " " + str(rows))
+        debug(colors.lightgreen("(Database) =>") + " " + str(rows))
         for row in rows:
           result.append(dict(row))
           
@@ -515,22 +516,22 @@ class cDISModule:
     except psycopg2.DatabaseError as e:
       db_interface.rollback()
       et, ev, tb = sys.exc_info()
-      e = "{0}: {1} ({2})".format(et, ev, traceback.format_tb(tb))
-      debug(red("*") + " <<ERROR>> " + str(e))
+      e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
+      debug(colors.red("(Error) =>") + " " + str(e))
       
     return list()
 
   def send_bot(self, content):
-    self.send(":" + self.bot + " " + content)
+    self.send(":{0} {1}".format(self.bot, content))
 
   def send_serv(self, content):
-    self.send(":" + self.services_id + " " + content)
+    self.send(":{0} {1}".format(self.services_id, content))
 
   def send_to_op(self, content):
     if not self.oper_not:
       return 0;
       
-    result = self.query("SELECT uid FROM opers")
+    result = self.query("""SELECT "uid" FROM "opers\"""")
     for row in result:
       self.send_serv("PRIVMSG " + row["uid"] + " :" + content)
 
@@ -572,14 +573,14 @@ class cDISModule:
   def gateway (self, target):
     uid = self.uid(target)
     
-    for data in self.query("select uid from gateway where uid = %s", uid):
+    for data in self.query("""SELECT "uid" FROM "online" WHERE "uid" = %s AND "gateway" = 1""", uid):
       return True
       
     return False
 
   def send(self, text):
     self.con.send(bytes(text+"\n", "UTF-8"))
-    debug(blue("*") + " " + text)
+    debug(colors.blue("(Socket) <=") + " " + text)
 
   def push(self, target, message):
     self.send(":{uid} PUSH {target} ::{message}".format(uid=self.services_id, target=target, message=message))
@@ -612,7 +613,7 @@ class cDISModule:
             
           if modes.find("B") != -1:
             if not self.gateway(target):
-              self.query("insert into gateway values (%s)", target)
+              self.query("""UPDATE "online" SET "gateway" = 1 WHERE "uid" = %s""", target)
               self.vhost(target)
               
         if data["modes"].find("-") != -1:
@@ -623,7 +624,7 @@ class cDISModule:
             
           if modes.find("B") != -1:
             if self.gateway(target):
-              self.query("delete from gateway where uid = %s", target)
+              self.query("""UPDATE "online" SET "gateway" = 0 WHERE "uid" = %s""", target)
               self.vhost(target)
 
   def userflags(self, target):
@@ -632,7 +633,7 @@ class cDISModule:
     if user == 0:
       user = target
       
-    for data in self.query("select flags from users where LOWER(name) = (%s)", user):
+    for data in self.query("""SELECT "flags" FROM "users" WHERE LOWER("name") = (%s)""", user):
       return data["flags"]
       
     return ''
@@ -640,15 +641,12 @@ class cDISModule:
   def userflag(self, target, flag):
     user = self.auth(target)
     
-    if self.ison(user):
-      for data in self.query("select flags from users where LOWER(name) = LOWER(%s)", user):
-        if str(data["flags"]).find(flag) != -1:
-          return True
-    else:
-      if flag == "n":
+    for data in self.query("""SELECT "flags" FROM "users" WHERE LOWER("name") = LOWER(%s)""", user):
+      if str(data["flags"]).find(flag) != -1:
         return True
         
-    return False
+    if flag == "n": return True
+    else: return False
 
   def msg(self, target, text=" ", action=False, uid=""):
     source = self.bot
@@ -740,7 +738,8 @@ class cDISModule:
         self.query("delete from memo where LOWER(user) = LOWER(%s) and source = %s and message = %s", user, data["source"], data["message"])
 
   def chanexist(self, channel):
-    for data in self.query("select name from channelinfo where LOWER(name) = LOWER(%s)", channel):
+    c = int(self.query("""SELECT COUNT(*) FROM "channelinfo" WHERE LOWER("name") = LOWER(%s)""", channel)[0]["count"])
+    if c == 1:
       return True
       
     return False
@@ -757,9 +756,16 @@ class cDISModule:
     return ""
 
   def join(self, channel):
-    if self.chanexist(channel) and not self.suspended(channel):
-      self.send_serv("FJOIN {0} {1} +r :,{2}{3}".format(channel, int(time.time()), self.services_id, bots.get("3", "uuid")))
-      self.mode(channel, "+ryo {0} {0}".format(self.services_id + bots.get("3", "uuid")))
+    if not self.chanexist(channel): return None
+    elif self.suspended(channel): return None
+    
+    self.send_serv("FJOIN {0} {1} +r :,{2}".format(channel, int(time.time()), self.bot))
+    self.mode(channel, "+ryo {0} {0}".format(self.bot))
+    self.query("""INSERT INTO "botchannel" ("bot", "channel") VALUES (%s, %s)""", _botlist["id"][self.bot], channel)
+    
+  def part(self, channel, reason = "There's no reason."):
+    self.send_bot("PART {0} :{1}".format(channel, reason))
+    self.query("""DELETE FROM "botchannel" WHERE "bot" = %s AND "channel" = %s""", _botlist["id"][self.bot], channel)
 
   def statistics(self):
     stats = dict()
@@ -809,7 +815,7 @@ class cDISModule:
           self.send(":%s CHGIDENT %s %s" % (self.bot, target, self.getident(target)))
           self.send(":%s CHGHOST %s %s.users.%s" % (self.bot, target, self.auth(target), self.getservicedomain()))
     else:
-      username = self.userhost(target).split("@")[0]
+      username = self.getident(target)
       self.send(":%s CHGIDENT %s %s" % (self.bot, target, username))
       crypthost = self.encode_md5(target + ":" + self.nick(target) + "!" + self.userhost(target))
       self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, target, crypthost, self.getservicedomain()))
@@ -932,7 +938,7 @@ class cDISModule:
       mail.sendmail(self.email, msg['To'], msg.as_string())
       mail.quit()
     except Exception as e:
-      debug(red("*") + " <<MAIL-ERROR>> "+str(e))
+      debug(colors.red("==") + " <<MAIL-ERROR>> "+str(e))
 
   def convert_timestamp(self, timestamp):
     dif = int(timestamp)
@@ -1135,13 +1141,13 @@ class cDISModule:
   def userhost(self, target):
     uid = self.uid(target)
     
-    for data in self.query("select username, host from online where uid = %s", uid):
+    for data in self.query("""SELECT "username", "host" FROM "online" WHERE "uid" = %s""", uid):
       return data["username"]+"@"+data["host"]
       
     return 0
 
   def getvhost(self, target):
-    for data in self.query("""select vhost from vhosts where "user" = %s and active = '1'""", target):
+    for data in self.query("""SELECT "vhost" FROM "vhosts" WHERE "user" = %s and active = 1""", target):
       return data["vhost"]
       
     if self.userflag(target, "x"):
@@ -1160,14 +1166,13 @@ class cDISModule:
       return False
 
   def fantasy(self, channel):
-    if self.chanexist(channel):
-      for data in self.query("select fantasy from channelinfo where name = %s", channel):
-        return data["fantasy"]
+    for data in self.query("""SELECT "fantasy" FROM "channelinfo" WHERE LOWER("name") = LOWER(%s)""", channel):
+      return data["fantasy"]
         
     return False
 
   def getconns(self, address):
-    result = self.query("SELECT COUNT(*) FROM online WHERE address = %s", address)
+    result = self.query("""SELECT COUNT(*) FROM "online" WHERE "address" = %s""", address)
     for row in result:
       return int(row["count"])
       
@@ -1180,13 +1185,13 @@ class cDISModule:
     user_ip = self.getip(uid)
     user_host = self.gethost(uid)
     user_name = self.getident(uid)
-    timestamp = time.time()
+    timestamp = int(time.time())
     
     if user_ip == 0:
       return False
       
     limit = 3
-    result = self.query("SELECT \"limit\" FROM trust WHERE (address = %s OR address = %s) AND timestamp > %s", user_ip, user_host, timestamp)
+    result = self.query("""SELECT "limit" FROM "trust" WHERE ("address" = %s OR "address" = %s) AND "timestamp" > %s""", user_ip, user_host, timestamp)
     for row in result:
       limit = int(row["limit"])
       
@@ -1199,7 +1204,7 @@ class cDISModule:
       self.gline(uid, "Connection limit ({0}) reached".format(str(limit)), addentry=True)
       return True
     elif self.getconns(user_ip) == limit:
-      for row in self.query("SELECT uid FROM online WHERE address = %s OR host = %s", user_ip, user_host):
+      for row in self.query("""SELECT "uid" FROM "online" WHERE "address" = %s OR "host" = %s""", user_ip, user_host):
         self.msg(row["uid"], "Your IP is scratching the connection limit. If you need more connections please request a trust.")
         
     return False
@@ -1234,15 +1239,15 @@ if __name__ == "__main__":
         __config__ = sys.argv[1]
         
       time.sleep(9)
-      print((green("*") + " chiruclan.de IRC services (" + __version__ + ") started (config: " + __config__ + ")"))
+      print((colors.green("=>") + " chiruclan.de IRC services (" + __version__ + ") started (config: " + __config__ + ")"))
       Services().run()
-      print((red("*") + " chiruclan.de IRC services (" + __version__ + ") stopped (config: " + __config__ + ")"))
+      print((colors.red("==") + " chiruclan.de IRC services (" + __version__ + ") stopped (config: " + __config__ + ")"))
       
       time.sleep(1)
   except Exception as e:
-    print((red("*") + " " + str(e)))
+    print((colors.red("==") + " " + str(e)))
   except KeyboardInterrupt:
-    print((red("*") + " Aborting ... STRG +C"))
+    print((colors.red("==") + " Aborting ... STRG +C"))
     
     if os.access("cDIS.pid", os.F_OK):
       shell("sh cDIS restart")

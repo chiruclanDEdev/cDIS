@@ -32,7 +32,7 @@ class mod_3_mode(cDISModule):
       if smodes.find("B") != -1:
         crypthost = self.encode_md5(data.split()[0][1:] + ":" + self.nick(data.split()[0][1:]) + "!" + self.userhost(data.split()[0][1:]))
         self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, data.split()[0][1:], crypthost, '.'.join(self.services_name.split(".")[-2:])))
-        self.query("insert into gateway values (%s)", data.split()[0][1:])
+        self.query("""UPDATE "online" SET "gateway" = 1 WHERE "uid" = %s""", data.split()[0][1:])
         
     smodes = data.split()[3]
     
@@ -44,4 +44,4 @@ class mod_3_mode(cDISModule):
         
       if smodes.find("B") != -1:
         self.send(":%s CHGHOST %s %s" % (self.bot, data.split()[0][1:], self.gethost(data.split()[0][1:])))
-        self.query("delete from gateway where uid = %s", data.split()[0][1:])
+        self.query("""UPDATE "online" SET "gateway" = 0 WHERE "uid" = %s""", data.split()[0][1:])

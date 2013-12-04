@@ -22,10 +22,9 @@ class mod_0_uid(cDISModule):
   
   def onData(self, data):
     current_timestamp = int(time.time())
-    self.query("delete from gateway where uid = %s", data.split()[2])
-    self.query("delete from online where uid = %s", data.split()[2])
-    self.query("delete from online where nick = %s", data.split()[4])
-    self.query("insert into online values (%s, %s, %s, %s, %s, NULL)", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
+    self.query("""DELETE FROM "online" WHERE "uid" = %s""", data.split()[2])
+    self.query("""DELETE FROM "online" WHERE "nick" = %s""", data.split()[4])
+    self.query("""INSERT INTO "online" ("uid", "nick", "address", "host", "username", "account", "gateway") VALUES (%s, %s, %s, %s, %s, NULL, 0)""", data.split()[2], data.split()[4], data.split()[8], data.split()[5], data.split()[7])
     
     result = self.query("SELECT uid, key, value FROM metadata WHERE uid = %s AND key = %s", data.split()[2], "accountname")
     for row in result:
@@ -51,4 +50,4 @@ class mod_0_uid(cDISModule):
     if data.split()[10].find("B") != -1:
       crypthost = self.encode_md5(data.split()[2] + ":" + self.nick(data.split()[2]) + "!" + self.userhost(data.split()[2]))
       self.send(":%s CHGHOST %s %s.gateway.%s" % (self.services_id, data.split()[2], crypthost, '.'.join(self.services_name.split(".")[-2:])))
-      self.query("insert into gateway values (%s)", data.split()[2])
+      self.query("""UPDATE "online" SET "gateway" = 1 WHERE "uid" = %s""", data.split()[2])

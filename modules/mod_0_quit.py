@@ -26,6 +26,5 @@ class mod_0_quit(cDISModule):
       self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))
     
     self.query("delete from chanlist where uid = %s", data.split()[0][1:])
-    self.query("delete from gateway where uid = %s", str(data.split()[0])[1:])
     self.query("delete from online where uid = %s", str(data.split()[0])[1:])
     self.query("delete from opers where uid = %s", data.split()[0][1:])
