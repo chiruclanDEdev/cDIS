@@ -30,13 +30,13 @@ class cmd_3_resetpass(cDISModule):
       if len(arg) == 2:
         entry = False
         
-        for data in self.query("select name,pass,email,suspended from users where name = %s and email = %s", arg[0], arg[1]):
+        for data in self.query("""SELECT "name", "pass", "email", "suspended" FROM "users" WHERE "name" = %s AND "email" = %s""", arg[0], arg[1]):
           entry = True
           
           if data["suspended"] == "0":
-            newpw = str(hash(str(time()) + data["name"] + data["pass"] + data["email"]))
-            self.query("update users set pass = %s where name = %s and email = %s", self.encode(newpw), arg[0], arg[1])
-            self.mail(data["email"], "Password reset", "Account: %s\nPassword: %s" % (data["name"], newpw))
+            password = self.createPassword(data["name"] + data["pass"] + data["email"])
+            self.query("""UPDATE "users" SET "pass" = %s WHERE "name" = %s AND "email" = %s""", password[1], data["name"], data["email"])
+            self.mail(data["email"], "Password reset", "Account: %s\nPassword: %s" % (data["name"], password[0]))
             self.msg(uid, "I've sent an email with your lost password to %s." % data["email"])
           else:
             self.msg(uid, "Your account have been banned from " + self.services_description + ". Reason: " + data["suspended"])

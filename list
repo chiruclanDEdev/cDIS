@@ -1,13 +1,13 @@
 HOWTO a78cdb5daa8d558fc458f7a8c46378a6
 README.md 56a7df8f58e0ae72ffb76fecf4441c94
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py 090ae633f6cc5b5cae4c371674486b09
+cDIS.py 7ec76a2c1c2122a1de53cb038dd024e8
 configs/bots.cfg.dist a8e51e908ca2f35861ec26f934639d75
 configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
-modules/cmd_1_update.py 69417c0ba4cf352255ce71a6234ce063
+modules/cmd_1_update.py b68853cbc498a9d1f4aad30a5f84837d
 modules/cmd_2_remove.py 454ab7596f700f418dfd0b8c0bb56b4b
 modules/cmd_2_request.py 6117a7588b38551fc5bac19f1c08f0c2
 modules/cmd_3_auth.py cc6872689e92d9499558ba3282f95648
@@ -25,14 +25,14 @@ modules/cmd_3_email.py 49f437f33617935771bfd6d9a6ac7413
 modules/cmd_3_fantasy.py ca7b98bfec60def564fac6d85711a9b8
 modules/cmd_3_feedback.py 2cc6a499cf935f38ab891a8c254383cf
 modules/cmd_3_halfop.py 3db217f010e1147ea4198b8941d8ad10
-modules/cmd_3_hello.py 20e50c22fb948f6cc8466162ccf08d22
+modules/cmd_3_hello.py 94ecb6324644e5d2f26fa25a7a454975
 modules/cmd_3_invite.py 5d2aec534cd4c86d9b04b22b792e5fc9
 modules/cmd_3_kick.py 6d18d0bdc067d83cfa5d4c14aec5f5ec
-modules/cmd_3_newpass.py f43d23dae1f6de4aee6c912341b70c48
+modules/cmd_3_newpass.py cf198b549e48f8ba5874ea56f084834a
 modules/cmd_3_op.py a42cdaafae19f3ebed8954a86c98493d
 modules/cmd_3_owner.py d90a77626c660cb1437f8ea39e23e638
 modules/cmd_3_protect.py 08b3dc9f1d13a0c39b358e69ed54f0bc
-modules/cmd_3_resetpass.py 21df7232cefc965b4c62a2804676944d
+modules/cmd_3_resetpass.py c50456fdcbdd2e9473a3e8cdf9f95bde
 modules/cmd_3_settopic.py 039b1956972d7480d64f8e54c438e950
 modules/cmd_3_setwhois.py 707f959934ddced0ac6f14a2979d7779
 modules/cmd_3_spamscan.py d8ab86f8f9bfe50efbfe491a61bb0770
@@ -51,7 +51,7 @@ modules/cmd_4_accban.py 932fb6512abb901e9508f02cb54bc6a6
 modules/cmd_4_domaincheck.py 73f13a674ed45fda7c3fa739ae51069c
 modules/cmd_4_feedback.py 7903e3ca0c7d07486a68aaae15ed283b
 modules/cmd_4_gline.py ae1b8ad0124b70ac7558fd3696ea0f6b
-modules/cmd_4_hello.py 129c4e61eed1c633e2f023a194b9e73c
+modules/cmd_4_hello.py ffa2cbed13024ed7d2b9c68755a5d885
 modules/cmd_4_hostinfo.py 953689df624176228f27225181da7b22
 modules/cmd_4_info.py 79b0dc2bb77f24cd390d5934451151a5
 modules/cmd_4_ircop.py 5c8a91f3546caa2be27607177de1968b
@@ -63,7 +63,7 @@ modules/cmd_4_listmodules.py ae76a1f4ed626ff343dc0f084cacfa93
 modules/cmd_4_login.py 8be157e4c8ea79ed90f77dc903df4ce1
 modules/cmd_4_mode.py 53e8e343f5009fe138a025ee9ce41be3
 modules/cmd_4_part.py 1f5ab9599a0bfa5b3d71d9fa82f026f7
-modules/cmd_4_resetpass.py 6f7d171cdb468417d5c0c03700f29ba0
+modules/cmd_4_resetpass.py 7a3c4e3a6a32f4df2314d9fa869c089d
 modules/cmd_4_scanport.py 446f219e2cad9cbc47d8538c88befcd0
 modules/cmd_4_suspend.py f8142373769ed3c4872a3dbf21fdebe6
 modules/cmd_4_trust.py 49935a815f3784e8320f3199ec2fc952
@@ -71,7 +71,7 @@ modules/cmd_4_userflags.py 571dc87865ba30886b17e159eb79a7db
 modules/cmd_4_userlist.py 27325ff13ea8316958966f2daed59eae
 modules/cmd_4_vhost.py 8a9783f42882967ecd0ad16755cb17a9
 modules/cmd_5_opers.py ba3c7e3fc9f9e307433641ef5c6cfea0
-modules/cmd_5_version.py 2e5ec4f561ee67fabe8854dac734b768
+modules/cmd_5_version.py 62f3f3cf36a67fefc89eefc82bed19ef
 modules/event_3.py 276834b6849b1c2b2c85c878a02302da
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8
 modules/mod_0_metadata.py 4c82500ce41d921e6c2b52fc9b162aa5
@@ -79,7 +79,7 @@ modules/mod_0_nick.py 085695d55db751f0ccdba2211d5a0d36
 modules/mod_0_opertype.py 2c0316b05e1a7648a0230302c9d41562
 modules/mod_0_quit.py 2bb64291c23b866805b4a75769d5ff0a
 modules/mod_0_uid.py 3125cf7ebdb91bfafeff7bbeda0464a2
-modules/mod_3_fjoin.py 391dd0a4d9864d974ebdf43342698469
+modules/mod_3_fjoin.py 122d7527dee04445fa804923d6f67c02
 modules/mod_3_fmode.py 91c7626489964963dd504c9f8d21bc9d
 modules/mod_3_kick.py 195b968802f519d38ee3f258f62ef204
 modules/mod_3_mode.py aa122c6c5a02b611b8a67d8abf57d847
@@ -89,5 +89,5 @@ modules/mod_3_topic.py 6136c0964d8141c2461b90352edbbdf8
 modules/sched_0_gline.py 9a53c331c182295bb476aadb5f534e56
 modules/sched_0_trust.py 1901b2e38028845db72bb803b676dc39
 modules/dev/cmd_memo.py 5da4a9e2d2caf9c40de7fab42d76167d
-sql/base/struct.sql e33db973c8567589e35b6c4a7541921b
+sql/base/struct.sql 0719e96c7edb6fd58062c447601826d6
 templates/default_mail.tpl fbc68da90348814e2052fe1e8aebdf77

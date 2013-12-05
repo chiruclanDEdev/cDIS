@@ -139,13 +139,13 @@ class Services:
           result.append(dict(row))
           
         return result
-    except psycopg2.DatabaseError as e:
+    except Exception as e:
       self.db_interface.rollback()
       et, ev, tb = sys.exc_info()
       e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
       debug(colors.red("(Error) =>") + " " + str(e))
       
-    return list()
+    return list(dict())
     
   def send(self, text):
     self.con.send(bytes(text+"\n", "UTF-8"))
@@ -307,7 +307,7 @@ class cDISModule:
       elif sCommand == "PONG" or sCommand == "ERROR":
         pass
       else:
-        for module in self.query("""SELECT * FROM modules WHERE class = %s""", sCommand):
+        for module in self.query("""SELECT "name" FROM "modules" WHERE "class" = %s""", sCommand):
           moduleToCall = getattr(modules, module["name"])
           classToCall = getattr(moduleToCall, module["name"])()
           
@@ -332,24 +332,22 @@ class cDISModule:
             if len(pData) == 4:
               self.help(sID, "HELP", "Shows information about all commands that are available to you")
               
-              for command in self.query("""SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s ORDER BY command""", bot, isauth, isoper):
-                if os.access("modules/"+command["name"]+".py", os.F_OK):
-                  self.help(sID, command["command"], command["help"])
+              for command in self.query("""SELECT "command", "help" FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s ORDER BY command""", bot, isauth, isoper):
+                self.help(sID, command["command"], command["help"])
             else:
               args = ' '.join(sArguments)
               if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
                 self.help(sID, "HELP", "Shows information about all commands that are available to you")
                 
-              for command in self.query("""SELECT * FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s AND command LIKE %s ORDER BY command""", bot, isauth, isoper, '%' + args.upper() + '%'):
-                if os.access("modules/"+command["name"]+".py", os.F_OK):
-                  self.help(sID, command["command"], command["help"])
+              for command in self.query("""SELECT "name", "help" FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s AND command LIKE %s ORDER BY command""", bot, isauth, isoper, '%' + args.upper() + '%'):
+                self.help(sID, command["command"], command["help"])
             
             self.msg(sID, "End of list.")
             
             self.bot = _botlist["uid"][self.BOT_ID]
           else:
             iscmd = False
-            for command in self.query("""SELECT * FROM modules WHERE class = 'COMMAND' AND command = %s AND bot = %s AND auth <= %s AND oper <= %s""", sUserCommand.upper(), bot, isauth, isoper):
+            for command in self.query("""SELECT "name" FROM modules WHERE class = 'COMMAND' AND command = %s AND bot = %s AND auth <= %s AND oper <= %s""", sUserCommand.upper(), bot, isauth, isoper):
               iscmd = True
               
               moduleToCall = getattr(modules, command["name"])
@@ -376,7 +374,7 @@ class cDISModule:
               if self.auth(sID): isauth = 1
               else: isauth = 0
               
-              for command in self.query("""SELECT * FROM "modules" WHERE "class" = 'COMMAND' AND "command" = %s AND "oper" <= %s AND "auth" <= %s AND "fantasy" >= %s AND (SELECT COUNT(*) FROM "botchannel" WHERE "bot" = %s AND "channel" = %s) = 1""", cmd.upper(), isoper, isauth, 1):
+              for command in self.query("""SELECT "name" FROM "modules" WHERE "class" = 'COMMAND' AND "command" = %s AND "oper" <= %s AND "auth" <= %s AND "fantasy" >= %s AND (SELECT COUNT(*) FROM "botchannel" WHERE "channel" = %s) > 0""", cmd.upper(), isoper, isauth, 1, sDestination):
                 moduleToCall = getattr(modules, command["name"])
                 classToCall = getattr(moduleToCall, command["name"])()
                 methodToCall = getattr(classToCall, "onFantasy")
@@ -513,13 +511,13 @@ class cDISModule:
           result.append(dict(row))
           
         return result
-    except psycopg2.DatabaseError as e:
+    except Exception as e:
       db_interface.rollback()
       et, ev, tb = sys.exc_info()
       e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])
       debug(colors.red("(Error) =>") + " " + str(e))
       
-    return list()
+    return list(dict())
 
   def send_bot(self, content):
     self.send(":{0} {1}".format(self.bot, content))
@@ -650,13 +648,14 @@ class cDISModule:
 
   def msg(self, target, text=" ", action=False, uid=""):
     source = self.bot
+    hasn = self.userflag(target, "n")
     
     if uid != "":
       source = uid
       
-    if self.userflag(target, "n") and not action:
+    if hasn and not action:
       self.send(":%s NOTICE %s :%s" % (source, target, text))
-    elif not self.userflag(target, "n") and not action:
+    elif not hasn and not action:
       self.send(":%s PRIVMSG %s :%s" % (source, target, text))
     else:
       self.send(":%s PRIVMSG %s :\001ACTION %s\001" % (self.bot, target, text))
@@ -921,6 +920,12 @@ class cDISModule:
 
   def encode_md5(self, string):
     return hashlib.md5(bytes(string, "UTF-8")).hexdigest()
+    
+  def createPassword(self, key = time.time()):
+    password = list()
+    password.append(hmac.new(bytes(key, "UTF-8"), bytes(time.time(), "UTF-8"), hashlib.md5).hexdigest())
+    password.append(self.encode(password[0]))
+    return password
 
   def mail(self, receiver, subject, message):
     try:

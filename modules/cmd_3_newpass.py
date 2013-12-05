@@ -27,7 +27,7 @@ class cmd_3_newpass(cDISModule):
     arg = args.split()
     
     if len(arg) == 1:
-      self.query("update users set pass = %s where name = %s", self.encode(arg[0]), self.auth(source))
+      self.query("""UPDATE "users" SET "pass" = %s WHERE "name" = %s""", self.encode(arg[0]), self.auth(source))
       self.msg(source, """Your new password is "%s". Remember it!""" % arg[0])
     else:
       self.msg(source, "Syntax: NEWPASS <password>")

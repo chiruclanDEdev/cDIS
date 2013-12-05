@@ -29,7 +29,7 @@ CREATE TABLE "banlist" (
 -- ----------------------------
 DROP TABLE IF EXISTS "chanlist";
 CREATE TABLE "chanlist" (
-"uid" varchar(9) COLLATE "default" NOT NULL PRIMARY KEY,
+"uid" varchar(9) COLLATE "default" NOT NULL,
 "channel" varchar(255) COLLATE "default" NOT NULL,
 "flag" varchar(255) COLLATE "default" NOT NULL
 ) WITH (OIDS=FALSE);

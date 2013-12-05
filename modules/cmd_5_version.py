@@ -29,10 +29,16 @@ class cmd_5_version(cDISModule):
     file.close()
     self.msg(uid, "<= chiruclan.de IRC services {0} =>".format(version))
     self.msg(uid)
-    self.msg(uid, "  Hash: {0}".format(Popen("git describe --match init --dirty=+ --abbrev=12 --tags", shell=True, stdout=PIPE).stdout.read().rstrip().split("-")[-1][1:]))
+    gitshell = Popen("git describe --match init --dirty=+ --abbrev=12 --tags", shell=True, stdout=PIPE)
+    stdout, stderr = gitshell.communicate()
+    gitshell.wait()
+    self.msg(uid, "  Hash: {0}".format(stdout.decode("UTF-8").split("-")[-1][1:]))
     
     if self.isoper(uid):
-      self.msg(uid, "  Last update: {0}".format(Popen("git show -s --format=%ci", shell=True, stdout=PIPE).stdout.read().rstrip()))
+      gitshell = Popen("git show -s --format=%ci", shell=True, stdout=PIPE)
+      stdout, stderr = gitshell.communicate()
+      gitshell.wait()
+      self.msg(uid, "  Last update: {0}".format(stdout.decode("UTF-8")))
 
     options = list()
     

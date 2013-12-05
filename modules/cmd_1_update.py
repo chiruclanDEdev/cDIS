@@ -30,7 +30,7 @@ class cmd_1_update(cDISModule):
       return None
       
     _web = urllib.request.urlopen("https://raw.github.com/chiruclanDEdev/cDIS/master/version")
-    _version = _web.read()
+    _version = _web.read().decode("UTF-8")
     _web.close()
     
     if open("version", "r").read() != _version:
