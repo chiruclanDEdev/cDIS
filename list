@@ -90,4 +90,5 @@ modules/sched_0_gline.py 9a53c331c182295bb476aadb5f534e56
 modules/sched_0_trust.py 1901b2e38028845db72bb803b676dc39
 modules/dev/cmd_memo.py 5da4a9e2d2caf9c40de7fab42d76167d
 sql/base/struct.sql 0719e96c7edb6fd58062c447601826d6
+sql/updates/empty_dir d41d8cd98f00b204e9800998ecf8427e
 templates/default_mail.tpl fbc68da90348814e2052fe1e8aebdf77
