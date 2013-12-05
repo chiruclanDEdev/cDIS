@@ -1,19 +1,19 @@
 Installing cDIS:
   1. login into root
-  2. install "python-psutil" and "python-mysql"
+  2. install "python-psutil" and "python-psycopg2"
   3. login into a normal user
   4. rename "configs/config.cfg.dist" => "configs/config.cfg"
   5. rename "configs/bots.cfg.dist" => "configs/bots.cfg"
   6. edit both configs
-  7. create mysql database
-  8. insert sql/base/struct.sql into the database
+  7. create postgresql database
+  8. insert sql/base/struct.sql into the database (important: use the 'public' schema if you want to run inspircd's sqlopers module)!
   9. configure your inspircd for cDIS (take a look at the docs)
   10. run "sh cDIS start" to start cDIS in background or "sh cDIS debug" to run it in foreground
 
 Updating cDIS (method 1):
   1. run "sh cDIS update"
-  2. insert the sqls in sql/updates into the mysql database
-  3. (run "sh cDIS start" to start pyserv in background or "sh pyserv debug" to run it in foreground)
+  2. insert the sqls in sql/updates into the postgresql database
+  3. (run "sh cDIS start" to start cDIS in background or "sh cDIS debug" to run it in foreground)
 
 Updating cDIS (method 2):
   1. Run cDIS' command "UPDATE" as IRC-Operator via PRIVMSG (it will insert the update SQLs by itself)
