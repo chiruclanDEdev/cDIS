@@ -631,7 +631,7 @@ class cDISModule:
     if user == 0:
       user = target
       
-    for data in self.query("""SELECT "flags" FROM "users" WHERE LOWER("name") = (%s)""", user):
+    for data in self.query("""SELECT "flags" FROM "users" WHERE LOWER("name") = LOWER(%s)""", user):
       return data["flags"]
       
     return ''

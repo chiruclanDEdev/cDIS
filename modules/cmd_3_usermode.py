@@ -27,12 +27,13 @@ class cmd_3_usermode(cDISModule):
     arg = args.split()
     
     if len(arg) == 0:
-      for data in self.query("select modes from users where name = %s", self.auth(uid)):
+      for data in self.query("""SELECT "modes" FROM "users" WHERE "name" = %s""", self.auth(uid)):
         self.msg(uid, "Current modes: "+data["modes"])
     elif len(arg) == 1:
-      data = self.query("select modes from users where name = %s", self.auth(uid))[0]
+      data = self.query("""SELECT "modes" FROM "users" WHERE "name" = %s""", self.auth(uid))[0]
       modes = self.regexflag(data["modes"], arg[0], True)
-      self.query("update users set modes = %s where name = %s", ''.join([char for char in modes if char.isalpha() or char == "+" or char == "-"]), self.auth(uid))
+      newmodes = ''.join([char for char in modes if char.isalpha() or char == "+" or char == "-"])
+      self.query("""UPDATE "users" SET "modes" = %s WHERE "name" = %s""", newmodes, self.auth(uid))
       self.usermodes(uid)
       self.msg(uid, "Done. Current modes: " + ''.join([char for char in modes if char.isalpha() or char == "+" or char == "-"]))
     else:

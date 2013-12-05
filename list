@@ -1,7 +1,7 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 3fb536870704f04d06a2006d67b7f1df
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py 7ec76a2c1c2122a1de53cb038dd024e8
+cDIS.py ff0e3e1685465a41b74f77424727d098
 configs/bots.cfg.dist a8e51e908ca2f35861ec26f934639d75
 configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
@@ -40,8 +40,8 @@ modules/cmd_3_sync.py 9ba87e81db1e211f4eb8035921852cc5
 modules/cmd_3_unban.py 0709c7231a96eb8b4f0387d55804afc0
 modules/cmd_3_unbanall.py f35300aa125ac4f59233473b090ed94f
 modules/cmd_3_unbanme.py 1f89efeab9f4bac32a8fb0ccd116cb57
-modules/cmd_3_userflags.py 7511abcc001568db4ca970034ffbd50d
-modules/cmd_3_usermode.py e841d71c1f5b4e88fae083282c1e0e43
+modules/cmd_3_userflags.py dd8d388d7a00dbfd22b814b341606ff9
+modules/cmd_3_usermode.py d55be82cb95b24926a5b92e328474e83
 modules/cmd_3_vhost.py 7b86f613b2fd8d60e54ad6633ef53d6b
 modules/cmd_3_voice.py 166494eac06e95ffeb948c148b1f5a9d
 modules/cmd_3_welcome.py d4f3593f7c22527eb2cfaaec3b157570
