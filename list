@@ -25,7 +25,7 @@ modules/cmd_3_email.py 49f437f33617935771bfd6d9a6ac7413
 modules/cmd_3_fantasy.py ca7b98bfec60def564fac6d85711a9b8
 modules/cmd_3_feedback.py 2cc6a499cf935f38ab891a8c254383cf
 modules/cmd_3_halfop.py 3db217f010e1147ea4198b8941d8ad10
-modules/cmd_3_hello.py 94ecb6324644e5d2f26fa25a7a454975
+modules/cmd_3_hello.py a01abbad7810abc64bc6d710b196d95d
 modules/cmd_3_invite.py 5d2aec534cd4c86d9b04b22b792e5fc9
 modules/cmd_3_kick.py 6d18d0bdc067d83cfa5d4c14aec5f5ec
 modules/cmd_3_newpass.py cf198b549e48f8ba5874ea56f084834a

@@ -47,7 +47,7 @@ class cmd_3_hello(cDISModule):
               self.msg(source, "An email had been send to you with your password!")
               self.mail(arg[0], "Your account on {0}".format(self.services_description), """Welcome to {4}\nYour account data:\n\nUser: {2}\nPassword: {5}\n\nAuth via "/MSG {6}@{7} AUTH {2} {5}"\nChange your password as soon as possible with "/MSG {6}@{7} NEWPASS <NEWPASSWORD>"!""".format(self.services_description, self.email, self.nick(source), arg[0], self.services_description, password[0], self.bot_nick, self.services_name))
             else:
-              self.msg(source, """Use "/msg %s@%s auth %s %s" to auth""" % (self.bot_nick, self.services_name, self.nick(source), newpw))
+              self.msg(source, """Use "/msg %s@%s auth %s %s" to auth""" % (self.bot_nick, self.services_name, self.nick(source), password[0]))
               self.msg(source, "Change your password as soon as possible!")
           else:
             self.msg(source, "Invalid email %s!" % arg[0])
