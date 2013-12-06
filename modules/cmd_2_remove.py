@@ -34,7 +34,9 @@ class cmd_2_remove(cDISModule):
             self.query("delete from channelinfo where name = %s", data["name"])
             self.query("delete from banlist where channel = %s", data["name"])
             self.msg(source, "Channel {0} has been deleted.".format(data["name"]))
-            self.send(":{0} PART {1} :Channel {1} has been deleted.".format(self.services_id + bots.get("3", "uuid"), data["name"]))
+            self.bot = _botlist["cs"]
+            self.part(data["name"])
+            self.bot = _botlist["uid"][self.BOT_ID]
         else:
           self.msg(source, "Denied.")
       else:

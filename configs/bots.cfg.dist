@@ -3,33 +3,39 @@ uuid = AAAAAA
 nick = G
 user = global
 real = Global helper
+cs = False
 
 [1]
 uuid = AAAAAB
 nick = N
 user = TheNBot
 real = The N Bot
+cs = False
 
 [2]
 uuid = AAAAAC
 nick = R
 user = TheRBot
 real = The R Bot
+cs = False
 
 [3]
 uuid = AAAAAD
 nick = C
 user = TheCBot
 real = The C Bot
+cs = True
 
 [4]
 uuid = AAAAAE
 nick = O
 user = TheOBot
 real = The O Bot
+cs = False
 
 [5]
 uuid = AAAAAF
 nick = H
 user = TheHBot
 real = The H Bot
+cs = False

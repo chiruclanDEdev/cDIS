@@ -296,6 +296,7 @@ class cDISModule:
           botuid = self.services_id + bots.get(bot, "uuid")
           botlist["uid"][bot] = botuid
           botlist["id"][botuid] = bot
+          if bots.getboolean(bot, "cs"): botlist["cs"] = botuid
           
           self.send_serv("UID {0} {1} {2} {3} {4} {5} {6} {7} +Ik :{8}".format(botuid, int(time.time()), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, int(time.time()), bots.get(bot, "real")))
           self.send(":%s OPERTYPE Service" % botuid)
