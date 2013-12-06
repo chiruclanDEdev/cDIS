@@ -48,7 +48,6 @@ modules/cmd_3_welcome.py d4f3593f7c22527eb2cfaaec3b157570
 modules/cmd_3_whoami.py ce06b781b2de4111f9fb7b826a230b68
 modules/cmd_3_whois.py d2251554bb8bbbd71302b5ff9647e293
 modules/cmd_4_accban.py 932fb6512abb901e9508f02cb54bc6a6
-modules/cmd_4_domaincheck.py 73f13a674ed45fda7c3fa739ae51069c
 modules/cmd_4_feedback.py 7903e3ca0c7d07486a68aaae15ed283b
 modules/cmd_4_gline.py ae1b8ad0124b70ac7558fd3696ea0f6b
 modules/cmd_4_hello.py ffa2cbed13024ed7d2b9c68755a5d885
