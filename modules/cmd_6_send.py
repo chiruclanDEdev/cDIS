@@ -9,21 +9,21 @@ class cmd_6_send(cDISModule):
   
   def onCommand(self, uid, args):
     arg = args.split()
-    account = self.auth(uid)
     
     if len(arg) > 2:
       user = self.user(arg[0])
       if not user:
         self.msg(uid, "No such user '%s'." % arg[0])
         return 0
-        
+      
+      account = self.auth(uid)
       subject = "No subject"
       message = ' '.join(arg[1:])
       if (message.find(": ") != -1):
         subject = message.split(": ")[0]
         message = message.split(": ")[1]
       
-      self.query("""INSERT INTO "memo" ("user", "source", "message", "read_state") VALUES (%s, %s, %s, 0)""", user, account, message)
+      self.query("""INSERT INTO "memo" ("user", "source", "message", "read_state") VALUES (%s, %s, %s, %s)""", user, account, message, False)
       self.msg(uid, "Done.")
       self.memo(user)
     else:

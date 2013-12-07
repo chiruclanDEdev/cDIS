@@ -8,6 +8,7 @@ class cmd_6_list(cDISModule):
   BOT_ID = '6'
   
   def onCommand(self, uid, args):
+    account = self.auth(uid)
     self.msg(uid, "<= List of memos =>")
     self.msg(uid)
     
