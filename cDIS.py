@@ -78,7 +78,7 @@ except Exception:
 
 def debug(text):
   if config.get("OTHER", "debug") == "1":
-    print(str(text))
+    print(str(text, "UTF-8"))
 
 def shell(text):
   subprocess.Popen(text+" >> /dev/null", shell=True).wait()

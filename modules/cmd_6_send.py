@@ -10,7 +10,7 @@ class cmd_6_send(cDISModule):
   def onCommand(self, uid, args):
     arg = args.split()
     
-    if len(arg) > 2:
+    if len(arg) >= 2:
       user = self.user(arg[0])
       if not user:
         self.msg(uid, "No such user '%s'." % arg[0])
