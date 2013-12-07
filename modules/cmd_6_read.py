@@ -33,15 +33,13 @@ class cmd_6_read(cDISModule):
         if result:
           row = result[0]
           self.msg(uid, "<= Message #{0} =>".format(row["id"]))
-          self.msg(uid)
-          self.msg(uid, "  Sender:  {0}".format(row["sender"]))
-          self.msg(uid, "  Subject: {0}".format(row["subject"]))
-          self.msg(uid, "  Message:")
+          self.msg(uid, "  \037Sender:\037  {0}".format(row["sender"]))
+          self.msg(uid, "  \037Subject:\037 {0}".format(row["subject"]))
+          self.msg(uid, "  \037Message:\037")
           
           for line in row["message"].split("`"):
             self.msg(uid, "    {0}".format(line))
             
-          self.msg(uid)
           self.msg(uid, "<= Message END =>")
           self.query("""UPDATE "memo" SET "read_state" = %s WHERE "id" = %s AND LOWER("recipient") = LOWER(%s)""", True, row["id"], userData["account"])
         else:
