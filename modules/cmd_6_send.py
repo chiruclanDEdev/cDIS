@@ -23,7 +23,7 @@ class cmd_6_send(cDISModule):
         subject = message.split(": ")[0]
         message = message.split(": ")[1]
       
-      self.query("""INSERT INTO "memo" ("user", "source", "message", "read_state") VALUES (%s, %s, %s, %s)""", user, account, message, False)
+      self.query("""INSERT INTO "memo" ("recipient", "sender", "subject, "message", "read_state") VALUES (%s, %s, %s, %s, %s)""", user, account, subject, message, False)
       self.msg(uid, "Done.")
       self.memo(user)
     else:
