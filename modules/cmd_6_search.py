@@ -15,14 +15,14 @@ class cmd_6_search(cDISModule):
       self.msg(uid, "<= List of memos =>")
       self.msg(uid)
       
-      result = self.query("""SELECT "id", "sender", "read_state" FROM "memo" WHERE "recipient" = %s AND LOWER("subject") LIKE LOWER("%%s%") ORDER BY "read_state" ASC, "id" DESC""", account, args)
+      result = self.query("""SELECT "id", "sender", "subject", "read_state" FROM "memo" WHERE "recipient" = %s AND LOWER("subject") LIKE LOWER("%%s%") ORDER BY "read_state" ASC, "id" DESC""", account, args)
       if result:
         for row in result:
           msg_state = "old"
           if not row["read_state"]:
-            msg_state = "new!"
+            msg_state = "\002new!\002"
             
-          self.msg(uid, " => ID: {0}  From: {1}  Subject: {2} (\002{2}\002)".format(str(row["id"]), row["sender"], msg_state))
+          self.msg(uid, " => ID: {0}  From: {1}  Subject: {2} ({3})".format(row["id"], row["sender"], row["subject"] msg_state))
       else:
         self.msg(uid, " => Nothing found :(")
           

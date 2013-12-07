@@ -27,7 +27,7 @@ class cmd_6_read(cDISModule):
             
           self.msg(uid)
           self.msg(uid, "<= Message END =>")
-          self.query("""UPDATE "memo" SET "read_state" = %s WHERE "id" = %s AND LOWER("recipient") = LOWER(%s)""", False, row["id"], userData["account"])
+          self.query("""UPDATE "memo" SET "read_state" = %s WHERE "id" = %s AND LOWER("recipient") = LOWER(%s)""", True, row["id"], userData["account"])
         else:
           self.msg(uid, "Could not find message #{0}".format(arg[0]))
       else:
