@@ -162,17 +162,6 @@ class Services:
       self.query("""ALTER SEQUENCE "modules_id_seq" RESTART WITH 1""")
       self.query("""UPDATE "ircd_opers" SET "hostname" = 'root@localhost'""")
       
-      for mod in dir(modules):
-        if os.access("modules/" + mod + ".py", os.F_OK):
-          moduleToCall = getattr(modules, mod)
-          classToCall = getattr(moduleToCall, mod)()
-          
-          if classToCall.MODULE_CLASS == "SCHEDULE":
-            methodToCall = getattr(classToCall, "runSchedule")
-            _thread.start_new_thread(methodToCall, ())
-            
-          self.query("""INSERT INTO "modules" ("name", "class", "oper", "auth", "command", "help", "bot", "fantasy") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID, classToCall.ENABLE_FANTASY)
-          
       if self.ipv6 and socket.has_ipv6:
         if self.ssl:
           self.con = ssl.wrap_socket(socket.socket(socket.AF_INET6, socket.SOCK_STREAM))
@@ -195,6 +184,17 @@ class Services:
       builtins.mail_template = mail_template
       builtins.db_interface = self.db_interface
       
+      for mod in dir(modules):
+        if os.access("modules/" + mod + ".py", os.F_OK):
+          moduleToCall = getattr(modules, mod)
+          classToCall = getattr(moduleToCall, mod)()
+          
+          if classToCall.MODULE_CLASS == "SCHEDULE":
+            methodToCall = getattr(classToCall, "runSchedule")
+            _thread.start_new_thread(methodToCall, ())
+            
+          self.query("""INSERT INTO "modules" ("name", "class", "oper", "auth", "command", "help", "bot", "fantasy") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID, classToCall.ENABLE_FANTASY)
+          
       while 1:
         recv = self.con.recv(25600)
         
