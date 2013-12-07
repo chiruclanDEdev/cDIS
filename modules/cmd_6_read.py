@@ -23,7 +23,7 @@ class cmd_6_read(cDISModule):
             self.msg(uid, "  Subject: {0}".format(row["subject"]))
             self.msg(uid, "  Message:")
             
-            for line in row["message"].split("´"):
+            for line in row["message"].split(u"´"):
               self.msg(uid, "    {0}".format(line))
               
             self.msg(uid)
