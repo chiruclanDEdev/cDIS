@@ -722,7 +722,7 @@ class cDISModule:
     return uids
 
   def memo(self, user):
-    result = self.query("""SELECT "id", "sender", "subject" FROM "users" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s""", user, False)
+    result = self.query("""SELECT "id", "sender", "subject" FROM "memo" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s""", user, False)
     if result:
       self.msg(recipient, "<= You have recieved one or more new messages! =>")
       for row in result:
