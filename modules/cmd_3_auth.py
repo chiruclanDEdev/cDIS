@@ -33,13 +33,10 @@ class cmd_3_auth(cDISModule):
       exists = False
       
       for data in self.query("select name,pass,suspended from users where name = %s", arg[0]):
-        if self.encode(arg[1]) == str(data["pass"]):
+        if self.encode(arg[1]) == data["pass"]:
           exists = True
           
           if data["suspended"] == "0":
-            for user in self.query("select uid, nick, username, host from online where account = %s", str(data["name"])):
-              self.msg(str(user["uid"]), "Warning: {0} ({1}@{2}) authed with your password.".format(user["nick"], user["username"], user["host"]))
-              
             self.query("UPDATE online SET account = %s WHERE uid = %s", data["name"], source)
             self.msg(source, "You are now logged in as %s." % str(data["name"]))
             self.msg(source, "Remember: NO-ONE from %s will ever ask for your password. NEVER send your password to ANYONE except %s@%s." % (self.services_description, self.bot_nick, self.services_name))
@@ -48,6 +45,10 @@ class cmd_3_auth(cDISModule):
             self.vhost(source)
             self.flag(source)
             self.autojoin(source)
+            
+            for user in self.query("select uid, nick, username, host from online where account = %s and uid = %s", data["name"], source):
+              for target in self.sid(data["name"]):
+                if target != source: self.msg(target, "Warning: {0} ({1}@{2}) authed with your password.".format(user["nick"], user["username"], user["host"]))
           else:
             self.msg(source, "Your account has been banned from " + self.services_description + ". Reason: " + data["suspended"])
             
