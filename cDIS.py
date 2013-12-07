@@ -292,8 +292,12 @@ class cDISModule:
           botlist["uid"][bot] = botuid
           botlist["id"][botuid] = bot
           if bots.getboolean(bot, "cs"): botlist["cs"] = botuid
+          bot_nick = bots.get(bot, "nick")
+          bot_user = bots.get(bot, "user")
+          bot_host = bots.get(bot, "host")
+          bot_real = bots.get(bot, "real")
           
-          self.send_serv("UID {0} {1} {2} {3} {4} {5} {6} {7} +Ik :{8}".format(botuid, int(time.time()), bots.get(bot, "nick"), self.services_name, self.services_name, bots.get(bot, "user"), self.services_address, int(time.time()), bots.get(bot, "real")))
+          self.send_serv("UID {uid} {timestamp} {nick} {hostname} {displayed_host} {ident} {ip} {timestamp} +{modes} :{gecos}".format(uid=botuid, timestamp=int(time.time()), nick=bot_nick, hostname=self.services_name, displayed_host=bot_host, ident=bot_user, ip=self.services_address, modes="Ik", gecos=bot_real))
           self.send(":%s OPERTYPE Service" % botuid)
           self.SetMetadata(botuid, "accountname", bots.get(bot, "nick"))
           
