@@ -33,6 +33,7 @@ import ssl
 import threading
 import modules
 import builtins
+import random
 
 class ConsoleColors:
   def red(self, string):
@@ -213,7 +214,7 @@ class Services:
       debug(colors.red("(Error) =>") + " " + str(e))
 
 class cDISModule:
-  import sys, time, hashlib, hmac, smtplib, psycopg2.extras, subprocess, traceback, fnmatch, builtins
+  import sys, time, hashlib, hmac, smtplib, psycopg2.extras, subprocess, traceback, fnmatch, builtins, random
   
   HELP = ''
   NEED_OPER = 0
@@ -665,35 +666,35 @@ class cDISModule:
       self.send_serv("METADATA " + uid + " " + key)
 
   def GetMetadata(self, uid, key):
-    result = self.query("SELECT value FROM metadata WHERE uid = %s AND key = %s", uid, key)
+    result = self.query("""SELECT "value" FROM "metadata" WHERE "uid" = %s AND "key" = %s""", uid, key)
     for row in result:
       return row["value"]
       
     return None
 
   def GetAccountData(self, account):
-    result = self.query("SELECT * FROM users WHERE LOWER(name) = LOWER(%s)", account)
+    result = self.query("""SELECT * FROM "users" WHERE LOWER("name") = LOWER(%s)""", account)
     for row in result:
       return row
       
     return None
 
   def GetUserData(self, uid):
-    result = self.query("SELECT * FROM online WHERE uid = %s", uid)
+    result = self.query("""SELECT * FROM "online" WHERE "uid" = %s""", uid)
     for row in result:
       return row
       
     return None
 
   def GetChannelFlags(self, account):
-    result = self.query("SELECT * FROM channels WHERE LOWER(user) = LOWER(%s)", account)
+    result = self.query("""SELECT * FROM "channels" WHERE LOWER("user") = LOWER(%s)""", account)
     for row in result:
       return row
       
     return None
 
   def GetChannnelData(self, channel):
-    result = self.query("SELECT * FROM channelinfo WHERE LOWER(name) = LOWER(%s)", channel)
+    result = self.query("""SELECT * FROM "channelinfo" WHERE LOWER("name") = LOWER(%s)""", channel)
     for row in result:
       return row
       
@@ -723,6 +724,22 @@ class cDISModule:
         
       if online:
         self.query("delete from memo where LOWER(user) = LOWER(%s) and source = %s and message = %s", user, data["source"], data["message"])
+        
+  def requestConfirmed(account, channel, isoper):
+    if isoper:
+      self.query("""DELETE FROM "chanrequest" WHERE LOWER("channel") = %s""", channel)
+      return True
+      
+    c = int(self.query("""SELECT COUNT(*) FROM "chanrequest" WHERE LOWER("channel") = LOWER(%s)""", channel)[0]["count"])
+    if c == 0:
+      succeed = int(time.time()) + int(random.randint(1800, 7200))
+      self.query("""INSERT INTO "chanrequest" ("account", "channel", "succeed") VALUES (%s, %s, %s)""", account, channel, succeed)
+    else:
+      for data in self.query("""SELECT "succeed" FROM "chanrequest" WHERE "account" = %s AND LOWER("channel") = LOWER(%s) AND "succeed" <= %s""", account, channel, int(time.time())):
+        self.query("""DELETE FROM "chanrequest" WHERE LOWER("channel") = %s""", channel)
+        return True
+        
+    return False
 
   def chanexist(self, channel):
     c = int(self.query("""SELECT COUNT(*) FROM "channelinfo" WHERE LOWER("name") = LOWER(%s)""", channel)[0]["count"])
