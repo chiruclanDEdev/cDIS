@@ -71,7 +71,7 @@ modules/cmd_4_userlist.py 27325ff13ea8316958966f2daed59eae
 modules/cmd_4_vhost.py 3eb7f7846ef290415b88465a1667e62d
 modules/cmd_5_opers.py ba3c7e3fc9f9e307433641ef5c6cfea0
 modules/cmd_5_version.py 62f3f3cf36a67fefc89eefc82bed19ef
-modules/cmd_6_list.py 1af4c5f9226d7e47e80548c8c7d21859
+modules/cmd_6_list.py cb4c5e76af279372021e1ed54e444025
 modules/cmd_6_read.py 0c59e7a3b33a2505ce6c8bcb0bd5b96f
 modules/cmd_6_search.py 125dcb4b09f8ec15f064f8960d516e6a
 modules/cmd_6_send.py ab5e68c9fb5b9ab2c5c17a39e59c4ee5
