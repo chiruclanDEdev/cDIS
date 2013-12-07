@@ -26,7 +26,7 @@ class mod_0_quit(cDISModule):
     if self.isoper(uid):
       self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))
     
-    self.query("""DELETE FROM "chanlist" WHERE "uid" = %s""", data.split()[0][1:])
-    self.query("""DELETE FROM "online" WHERE "uid" = %s""", str(data.split()[0])[1:])
-    self.query("""DELETE FROM "opers" WHERE "uid" = %s""", data.split()[0][1:])
+    self.query("""DELETE FROM "chanlist" WHERE "uid" = %s""", uid)
+    self.query("""DELETE FROM "online" WHERE "uid" = %s""", uid)
+    self.query("""DELETE FROM "opers" WHERE "uid" = %s""", uid)
     self.query("""DELETE FROM "chanrequest" WHERE "account" = %s""", acc)
