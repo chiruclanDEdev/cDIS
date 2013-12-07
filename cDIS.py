@@ -725,7 +725,7 @@ class cDISModule:
       if online:
         self.query("delete from memo where LOWER(user) = LOWER(%s) and source = %s and message = %s", user, data["source"], data["message"])
         
-  def requestConfirmed(account, channel, isoper):
+  def requestConfirmed(self, account, channel, isoper):
     if isoper:
       self.query("""DELETE FROM "chanrequest" WHERE LOWER("channel") = %s""", channel)
       return True
