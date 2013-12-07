@@ -13,7 +13,7 @@ class cmd_6_read(cDISModule):
     
     if len(arg) == 1:
       if arg[0].isnumeric():
-        result = self.query("""SELECT "id", "sender", "subject", "message" FROM "memo" WHERE LOWER("recipient") = LOWER(%s) AND "id" = %s""", userData["account"], int(arg[0])):
+        result = self.query("""SELECT "id", "sender", "subject", "message" FROM "memo" WHERE LOWER("recipient") = LOWER(%s) AND "id" = %s""", userData["account"], int(arg[0]))
         if result:
           row = result[0]
           self.msg(uid, "<= Message #{0} =>".format(row["id"]))
