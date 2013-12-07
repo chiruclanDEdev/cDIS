@@ -35,7 +35,7 @@ class cmd_6_list(cDISModule):
         if not row["read_state"]:
           msg_state = "new!"
           
-        self.msg(uid, " => ID: {0}  From: {1}  Subject: {2} (\002{3}\002)".format(row["id"], row["sender"], row["subject"], msg_state))
+        self.msg(uid, " => \037\002ID:\002\037 {0}  \037\002From:\002\037 {1}  \037\002Subject:\002\037 {2} (\002{3}\002)".format(row["id"], row["sender"], row["subject"], msg_state))
     else:
       self.msg(uid, " => Nothing to display :(")
         

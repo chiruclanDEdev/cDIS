@@ -33,9 +33,9 @@ class cmd_6_read(cDISModule):
         if result:
           row = result[0]
           self.msg(uid, "<= Message #{0} =>".format(row["id"]))
-          self.msg(uid, "  \037Sender:\037  {0}".format(row["sender"]))
-          self.msg(uid, "  \037Subject:\037 {0}".format(row["subject"]))
-          self.msg(uid, "  \037Message:\037")
+          self.msg(uid, "  \037\002Sender:\002\037  {0}".format(row["sender"]))
+          self.msg(uid, "  \037\002Subject:\002\037 {0}".format(row["subject"]))
+          self.msg(uid, "  \037\002Message:\002\037")
           
           for line in row["message"].split("`"):
             self.msg(uid, "    {0}".format(line))

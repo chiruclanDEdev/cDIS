@@ -73,9 +73,9 @@ modules/cmd_5_opers.py ba3c7e3fc9f9e307433641ef5c6cfea0
 modules/cmd_5_version.py 62f3f3cf36a67fefc89eefc82bed19ef
 modules/cmd_6_clear.py f2b951ebedf7c70e2554ad660180a700
 modules/cmd_6_delete.py bff95c2d785edfe8057aa926d2ad9431
-modules/cmd_6_list.py ed08380bc5a1e529427ff7eb2cfb8ccd
-modules/cmd_6_read.py 586105fe5b5b911a97bb89e70d7de221
-modules/cmd_6_search.py 5a9b8ca765ebc11776cd724daac18837
+modules/cmd_6_list.py dbf1547313173a2be4a9fbe5bb0a8946
+modules/cmd_6_read.py 4c12a409d7e5e2461ffb95446b30f8ae
+modules/cmd_6_search.py 14b84e653e103824ab1f6376da12753c
 modules/cmd_6_send.py 10c0e615c19896036c18044ef090e2dd
 modules/event_3.py 276834b6849b1c2b2c85c878a02302da
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8
