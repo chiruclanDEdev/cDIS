@@ -49,6 +49,16 @@ CREATE TABLE "channelinfo" (
 ) WITH (OIDS=FALSE);
 
 -- ----------------------------
+-- Table structure for chanrequest
+-- ----------------------------
+DROP TABLE IF EXISTS "chanrequest";
+CREATE TABLE "chanrequest" (
+"channel" varchar(65) COLLATE "default" NOT NULL PRIMARY KEY,
+"account" varchar(32) COLLATE "default" NOT NULL,
+"succeed" int4 NOT NULL
+) WITH (OIDS=FALSE);
+
+-- ----------------------------
 -- Table structure for channels
 -- ----------------------------
 DROP TABLE IF EXISTS "channels";

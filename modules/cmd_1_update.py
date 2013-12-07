@@ -51,7 +51,7 @@ class cmd_1_update(cDISModule):
               file = open("sql/updates/"+sql, "r")
               
               for line in file.readlines():
-                self.query(line[:1])
+                self.query(line[:-1])
                 
               file.close()
               

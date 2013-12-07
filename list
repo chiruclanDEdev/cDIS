@@ -7,7 +7,7 @@ configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
-modules/cmd_1_update.py b68853cbc498a9d1f4aad30a5f84837d
+modules/cmd_1_update.py 9aad9d1561b5351eef34583ba4229398
 modules/cmd_2_remove.py 4452b963e94b237ab59251551d61e37a
 modules/cmd_2_request.py 37f8a399532c51b5dab1cc164d47c1f4
 modules/cmd_3_auth.py cc6872689e92d9499558ba3282f95648
@@ -88,6 +88,6 @@ modules/mod_3_topic.py 6136c0964d8141c2461b90352edbbdf8
 modules/sched_0_gline.py 9a53c331c182295bb476aadb5f534e56
 modules/sched_0_trust.py 1901b2e38028845db72bb803b676dc39
 modules/dev/cmd_memo.py 5da4a9e2d2caf9c40de7fab42d76167d
-sql/base/struct.sql 0719e96c7edb6fd58062c447601826d6
+sql/base/struct.sql d9454835ae367af9fbc98e67b180db8b
 sql/updates/empty_dir d41d8cd98f00b204e9800998ecf8427e
 templates/default_mail.tpl fbc68da90348814e2052fe1e8aebdf77
