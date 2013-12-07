@@ -76,7 +76,7 @@ modules/cmd_6_delete.py bff95c2d785edfe8057aa926d2ad9431
 modules/cmd_6_list.py ed08380bc5a1e529427ff7eb2cfb8ccd
 modules/cmd_6_read.py 93011eb645cfe2fc415e5898f16c5212
 modules/cmd_6_search.py 5a9b8ca765ebc11776cd724daac18837
-modules/cmd_6_send.py 9e3b344fcab466d2dee13e0fc12d0fd7
+modules/cmd_6_send.py 10c0e615c19896036c18044ef090e2dd
 modules/event_3.py 276834b6849b1c2b2c85c878a02302da
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8
 modules/mod_0_metadata.py 35f35d1ec298e31d2452511db43b0b50

@@ -39,6 +39,8 @@ class cmd_6_send(cDISModule):
         subject = message.split(": ")[0]
         message = message.split(": ")[1]
       
+      if (len(subject) > 64): subject = subject[:64]
+      if (len(message) > 2048): message = message[:2048]
       self.query("""INSERT INTO "memo" ("recipient", "sender", "subject", "message", "read_state") VALUES (%s, %s, %s, %s, %s)""", user, account, subject, message, False)
       self.msg(uid, "Done.")
       self.memo(user)
