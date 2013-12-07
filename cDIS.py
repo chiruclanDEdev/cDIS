@@ -909,9 +909,9 @@ class cDISModule:
   def encode_md5(self, string):
     return hashlib.md5(bytes(string, "UTF-8")).hexdigest()
     
-  def createPassword(self, password=None, key = time.time()):
+  def createPassword(self, key = time.time()):
     password = list()
-    password.append(hmac.new(bytes(key, "UTF-8"), bytes(time.time(), "UTF-8"), hashlib.md5).hexdigest())
+    password.append(hmac.new(bytes(str(key), "UTF-8"), bytes(str(time.time()), "UTF-8"), hashlib.md5).hexdigest())
     password.append(self.encode(password[0]))
     
     return password
