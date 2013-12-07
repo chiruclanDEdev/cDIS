@@ -21,10 +21,12 @@ class mod_0_quit(cDISModule):
   
   def onData(self, data):
     uid = data.split()[0][1:]
+    acc = self.auth(uid)
     
     if self.isoper(uid):
       self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))
     
-    self.query("delete from chanlist where uid = %s", data.split()[0][1:])
-    self.query("delete from online where uid = %s", str(data.split()[0])[1:])
-    self.query("delete from opers where uid = %s", data.split()[0][1:])
+    self.query("""DELETE FROM "chanlist" WHERE "uid" = %s""", data.split()[0][1:])
+    self.query("""DELETE FROM "online" WHERE "uid" = %s""", str(data.split()[0])[1:])
+    self.query("""DELETE FROM "opers" WHERE "uid" = %s""", data.split()[0][1:])
+    self.query("""DELETE FROM "chanrequest" WHERE "account" = %s""", acc)
