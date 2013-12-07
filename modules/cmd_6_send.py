@@ -11,14 +11,14 @@ class cmd_6_send(cDISModule):
     arg = args.split()
     account = self.auth(uid)
     
-    if len(arg) > 3:
-      user = self.user(arg[1])
+    if len(arg) > 2:
+      user = self.user(arg[0])
       if not user:
-        self.msg(uid, "No such user '%s'." % arg[1])
+        self.msg(uid, "No such user '%s'." % arg[0])
         return 0
         
       subject = "No subject"
-      message = ' '.join(arg[2:])
+      message = ' '.join(arg[1:])
       if (message.find(": ") != -1):
         subject = message.split(": ")[0]
         message = message.split(": ")[1]
