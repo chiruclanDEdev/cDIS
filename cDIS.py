@@ -213,17 +213,6 @@ class Services:
       debug(colors.red("(Error) =>") + " " + str(e))
 
 class cDISModule:
-  import sys
-  import time
-  import hashlib
-  import hmac
-  import smtplib
-  import psycopg2.extras
-  import subprocess
-  import traceback
-  import fnmatch
-  import builtins
-  
   HELP = ''
   NEED_OPER = 0
   NEED_AUTH = 0
@@ -234,6 +223,16 @@ class cDISModule:
   TIMER = 0
 
   def __init__(self):
+    import sys
+    import time
+    import hashlib, hmac
+    import smtplib
+    import psycopg2.extras
+    import subprocess
+    import traceback
+    import fnmatch
+    import builtins
+    
     self.con = con
     self.bots = bots
     
