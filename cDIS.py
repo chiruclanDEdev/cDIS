@@ -223,16 +223,7 @@ class cDISModule:
   TIMER = 0
 
   def __init__(self):
-    import sys,
-           time,
-           hashlib,
-           hmac,
-           smtplib,
-           psycopg2.extras,
-           subprocess,
-           traceback,
-           fnmatch,
-           builtins
+    import sys, time, hashlib, hmac, smtplib, psycopg2.extras, subprocess, traceback, fnmatch, builtins
     
     self.con = con
     self.bots = bots
