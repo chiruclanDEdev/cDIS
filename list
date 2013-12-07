@@ -71,9 +71,10 @@ modules/cmd_4_userlist.py 27325ff13ea8316958966f2daed59eae
 modules/cmd_4_vhost.py 3eb7f7846ef290415b88465a1667e62d
 modules/cmd_5_opers.py ba3c7e3fc9f9e307433641ef5c6cfea0
 modules/cmd_5_version.py 62f3f3cf36a67fefc89eefc82bed19ef
+modules/cmd_6_delete.py 108eb1ff7b31aacfa4bf8861e12061ca
 modules/cmd_6_list.py ed08380bc5a1e529427ff7eb2cfb8ccd
 modules/cmd_6_read.py 93011eb645cfe2fc415e5898f16c5212
-modules/cmd_6_search.py 475188a72a44676325b26bd6ba8ecf42
+modules/cmd_6_search.py 5a9b8ca765ebc11776cd724daac18837
 modules/cmd_6_send.py 9e3b344fcab466d2dee13e0fc12d0fd7
 modules/event_3.py 276834b6849b1c2b2c85c878a02302da
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8

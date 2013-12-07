@@ -26,7 +26,7 @@ class cmd_6_search(cDISModule):
   def onCommand(self, uid, args):
     arg = args.split()
     
-    if (len(arg) > 1):
+    if (len(arg) >= 1):
       account = self.auth(uid)
       self.msg(uid, "<= List of memos =>")
       self.msg(uid)
