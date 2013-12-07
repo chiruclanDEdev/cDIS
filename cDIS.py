@@ -722,12 +722,13 @@ class cDISModule:
     return uids
 
   def memo(self, user):
-    for data in self.query("""SELECT "id", "sender", "subject" FROM "users" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s""", user, False):
-      for recipient in self.sid(user):
-        self.msg(recipient, "You have recieved a new message!")
-        self.msg(recipient, "  Sender: " + data["sender"])
-        self.msg(recipient, "  Subject: " + data["subject"])
-        self.msg(recipient, "To read this message type: /MSG {0} READ {1}".format(self.bot_nick, data["id"]))
+    result = self.query("""SELECT "id", "sender", "subject" FROM "users" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s""", user, False)
+    if result:
+      self.msg(recipient, "<= You have recieved one or more new messages! =>")
+      for row in result:
+        for recipient in self.sid(user):
+          self.msg(recipient, " Sender: " + row["sender"] + ", Subject: " + row["subject"])
+          self.msg(recipient, "  To read this message type: /MSG {0} READ {1}".format(self.bot_nick, row["id"]))
         
   def requestConfirmed(self, account, channel, isoper):
     if isoper:
