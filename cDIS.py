@@ -160,6 +160,7 @@ class Services:
       self.query("""TRUNCATE "metadata\"""")
       self.query("""TRUNCATE "modules\"""")
       self.query("""TRUNCATE "botchannel\"""")
+      self.query("""TRUNCATE "chanrequest\"""")
       self.query("""ALTER SEQUENCE "modules_id_seq" RESTART WITH 1""")
       self.query("""UPDATE "ircd_opers" SET "hostname" = 'root@localhost'""")
       
