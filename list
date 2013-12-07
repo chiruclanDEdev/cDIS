@@ -1,7 +1,7 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 3fb536870704f04d06a2006d67b7f1df
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py 984989effc4aea148fdc34f1fbbbb2e7
+cDIS.py 9305c5c40f4c92adab25f482a433cffa
 configs/bots.cfg.dist 571c77c1f39265492e2f03bb6db00281
 configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
@@ -72,9 +72,9 @@ modules/cmd_4_vhost.py 3eb7f7846ef290415b88465a1667e62d
 modules/cmd_5_opers.py ba3c7e3fc9f9e307433641ef5c6cfea0
 modules/cmd_5_version.py 62f3f3cf36a67fefc89eefc82bed19ef
 modules/cmd_6_list.py bb227640dda02bfe158ce8cb9dd2f009
-modules/cmd_6_read.py 9c5a8229dfcae19e61029ed18f5ac889
+modules/cmd_6_read.py f9b8845f229d9470fbc439d47a86fa1a
 modules/cmd_6_search.py 0413797cff3c619472d34805bdac9073
-modules/cmd_6_send.py a1b40e57647d6f368dc23ee60f8b8cce
+modules/cmd_6_send.py 064b195ca5f2d61078a92328cc511e00
 modules/event_3.py 276834b6849b1c2b2c85c878a02302da
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8
 modules/mod_0_metadata.py 4c82500ce41d921e6c2b52fc9b162aa5

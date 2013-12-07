@@ -200,7 +200,7 @@ class Services:
             _thread.start_new_thread(methodToCall, ())
             
           self.query("""INSERT INTO "modules" ("name", "class", "oper", "auth", "command", "help", "bot", "fantasy") VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", mod, classToCall.MODULE_CLASS, classToCall.NEED_OPER, classToCall.NEED_AUTH, classToCall.COMMAND, classToCall.HELP, classToCall.BOT_ID, classToCall.ENABLE_FANTASY)
-          
+      
       while 1:
         recv = self.con.recv(25600)
         
@@ -208,11 +208,13 @@ class Services:
           return 1
           
         for data in recv.splitlines():
-          data = data.decode("UTF-8")
-          if data.strip() != "":
-            debug(colors.green("(Socket) =>") + " " + data)
-            _thread.start_new_thread(cDISModule().onInternal, (data.strip(),))
-          
+          try:
+            data = data.decode("UTF-8")
+            if data.strip() != "":
+              debug(colors.green("(Socket) =>") + " " + data)
+              _thread.start_new_thread(cDISModule().onInternal, (data.strip(),))
+          except:
+            pass
     except Exception:
       et, ev, tb = sys.exc_info()
       e = "{0}: {1}".format(et, traceback.format_tb(tb)[0])

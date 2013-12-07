@@ -28,4 +28,4 @@ class cmd_6_send(cDISModule):
       self.memo(user)
     else:
       self.msg(uid, "Syntax: SEND <recipient> [<subject>:] <message>")
-      self.msg(uid, "  You can switch to a new line using: ´")
+      self.msg(uid, "  You can switch to a new line using: &/")
