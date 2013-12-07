@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # chiruclan.de IRC services
 # Copyright (C) 2012-2013  Chiruclan
@@ -152,7 +153,7 @@ class Services:
     return list(dict())
     
   def send(self, text):
-    self.con.send(bytes(text+"\n", "UTF-8"))
+    self.con.send(bytes(text.encode("UTF-8")+"\n", "UTF-8"))
     debug(colors.blue("(Socket) <=") + " " + text)
 
   def run(self):
@@ -570,7 +571,7 @@ class cDISModule:
     return False
 
   def send(self, text):
-    self.con.send(bytes(text+"\n", "UTF-8"))
+    self.con.send(bytes(text.encode("UTF-8")+"\n", "UTF-8"))
     debug(colors.blue("(Socket) <=") + " " + text)
 
   def push(self, target, message):
