@@ -724,11 +724,11 @@ class cDISModule:
   def memo(self, user):
     result = self.query("""SELECT "id", "sender", "subject" FROM "memo" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s""", user, False)
     if result:
-      self.msg(recipient, "<= You have recieved one or more new messages! =>")
-      for row in result:
-        for recipient in self.sid(user):
+      for recipient in self.sid(user):
+        self.msg(recipient, "<= You have recieved one or more new messages! =>")
+        for row in result:
           self.msg(recipient, " Sender: " + row["sender"] + ", Subject: " + row["subject"])
-          self.msg(recipient, "  To read this message type: /MSG {0} READ {1}".format(self.bot_nick, row["id"]))
+          self.msg(recipient, "  To read this message type: \002/MSG {0} READ {1}\002".format(self.bot_nick, row["id"]))
         
   def requestConfirmed(self, account, channel, isoper):
     if isoper:
