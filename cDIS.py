@@ -214,17 +214,12 @@ class Services:
 
 class cDISModule:
   import sys
-  import socket
-  import os
-  import configparser
   import time
-  import hashlib
+  import hashlib, hmac
   import smtplib
-  import psycopg2, psycopg2.extras
+  import psycopg2.extras
   import subprocess
-  import urllib.request, urllib.error, urllib.parse
   import traceback
-  import _thread
   import fnmatch
   import builtins
   
