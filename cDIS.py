@@ -434,7 +434,8 @@ class cDISModule:
       classToCall = getattr(moduleToCall, module["name"])()
       methodToCall = getattr(classToCall, "onEvent")
       methodToCall(module["command"])
-      self.send_to_op("""*** Event: {0} => {1} (handled by module '{2}', bot {3}).""".format(module["class"], module["command"], module["name"], module["bot"]))
+      debug(colors.red("(Event) =>") + " {0} => {1} (handled by module '{2}', bot {3}).".format(module["class"], module["command"], module["name"], module["bot"]))
+      #self.send_to_op("""*** Event: {0} => {1} (handled by module '{2}', bot {3}).""".format(module["class"], module["command"], module["name"], module["bot"]))
       
   def regexflag(self, original, pattern, include_negatives = False):
     pflags = ""
@@ -729,6 +730,8 @@ class cDISModule:
         for row in result:
           self.msg(recipient, " Sender: " + row["sender"] + ", Subject: " + row["subject"])
           self.msg(recipient, "  To read this message type: \002/MSG {0} READ {1}\002".format(self.bot_nick, row["id"]))
+        
+        self.msg(recipient, "<= End of list =>")
         
   def requestConfirmed(self, account, channel, isoper):
     if isoper:

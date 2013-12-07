@@ -33,4 +33,3 @@ class mod_0_metadata(cDISModule):
           self.msg(uid, "You are now logged in as " + value + ".")
           self.vhost(uid)
           self.flag(uid)
-          self.memo(value)

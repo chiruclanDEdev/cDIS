@@ -48,7 +48,6 @@ class cmd_3_auth(cDISModule):
             self.vhost(source)
             self.flag(source)
             self.autojoin(source)
-            self.memo(str(data["name"]))
           else:
             self.msg(source, "Your account has been banned from " + self.services_description + ". Reason: " + data["suspended"])
             

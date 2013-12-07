@@ -1,7 +1,7 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 3fb536870704f04d06a2006d67b7f1df
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py bc5ec14750730b9930808cec71115687
+cDIS.py 7f015e290c42e023227d0957ee9ba4b4
 configs/bots.cfg.dist 571c77c1f39265492e2f03bb6db00281
 configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
@@ -10,7 +10,7 @@ modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
 modules/cmd_1_update.py 9aad9d1561b5351eef34583ba4229398
 modules/cmd_2_remove.py 4452b963e94b237ab59251551d61e37a
 modules/cmd_2_request.py 2a08b32bcd2fa156791d84cbb051edc4
-modules/cmd_3_auth.py cc6872689e92d9499558ba3282f95648
+modules/cmd_3_auth.py 2679f579b9f5d119b32c9abe5d554223
 modules/cmd_3_ban.py 30868a1fc4623890486ab11bf1e16149
 modules/cmd_3_banlist.py a31537e4f6d5e1b83867243cff4ffc77
 modules/cmd_3_chanflags.py ec1ab5025068fd8b36fda4f79c4af79b
@@ -71,13 +71,13 @@ modules/cmd_4_userlist.py 27325ff13ea8316958966f2daed59eae
 modules/cmd_4_vhost.py 3eb7f7846ef290415b88465a1667e62d
 modules/cmd_5_opers.py ba3c7e3fc9f9e307433641ef5c6cfea0
 modules/cmd_5_version.py 62f3f3cf36a67fefc89eefc82bed19ef
-modules/cmd_6_list.py bb227640dda02bfe158ce8cb9dd2f009
-modules/cmd_6_read.py 145c8ee1ff345cc7b07c188382b47307
-modules/cmd_6_search.py 0413797cff3c619472d34805bdac9073
-modules/cmd_6_send.py 92f7eae64b10f35df6d6a27c389ae231
+modules/cmd_6_list.py ed08380bc5a1e529427ff7eb2cfb8ccd
+modules/cmd_6_read.py 93011eb645cfe2fc415e5898f16c5212
+modules/cmd_6_search.py 475188a72a44676325b26bd6ba8ecf42
+modules/cmd_6_send.py 9e3b344fcab466d2dee13e0fc12d0fd7
 modules/event_3.py 276834b6849b1c2b2c85c878a02302da
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8
-modules/mod_0_metadata.py 4c82500ce41d921e6c2b52fc9b162aa5
+modules/mod_0_metadata.py 35f35d1ec298e31d2452511db43b0b50
 modules/mod_0_nick.py 085695d55db751f0ccdba2211d5a0d36
 modules/mod_0_opertype.py 2c0316b05e1a7648a0230302c9d41562
 modules/mod_0_quit.py 27df54530b596884d42d3de0b7bd5368
