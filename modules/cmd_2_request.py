@@ -34,7 +34,7 @@ class cmd_2_request(cDISModule):
             if cucflag == "q" or cucflag == "a" or cucflag == "o":
               account = self.auth(source)
               isoper = self.isoper(source)
-              if (self.channelusercount(arg[0]) >= 5 and self.requestConfirmed(account, arg[0], isoper)) or isoper:
+              if (self.requestConfirmed(account, arg[0], isoper) and self.channelusercount(arg[0]) >= 5) or isoper:
                 self.query("insert into channelinfo values (%s, '', '', '', '', '10:5', '!')", arg[0])
                 self.query("insert into channels values (%s, %s, 'n')", arg[0], account)
                 self.bot = _botlist["cs"]

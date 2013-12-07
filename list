@@ -9,7 +9,7 @@ modules/__init__.py d21ad24350299d861fb4e59878716908
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
 modules/cmd_1_update.py 9aad9d1561b5351eef34583ba4229398
 modules/cmd_2_remove.py 4452b963e94b237ab59251551d61e37a
-modules/cmd_2_request.py 42690fbe6b45c6efa042ca3e139c6df8
+modules/cmd_2_request.py 2a08b32bcd2fa156791d84cbb051edc4
 modules/cmd_3_auth.py cc6872689e92d9499558ba3282f95648
 modules/cmd_3_ban.py 30868a1fc4623890486ab11bf1e16149
 modules/cmd_3_banlist.py a31537e4f6d5e1b83867243cff4ffc77
