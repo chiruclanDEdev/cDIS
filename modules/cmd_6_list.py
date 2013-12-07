@@ -12,14 +12,16 @@ class cmd_6_list(cDISModule):
     self.msg(uid, "<= List of memos =>")
     self.msg(uid)
     
-    result = self.query("""SELECT COUNT(*), "id", "sender", "read_state" FROM "memo" WHERE "recipient" = %s ORDER BY "read_state" ASC, "id" DESC""", account)
-    self.msg(uid, len(result))
-    for row in result:
-      msg_state = "old"
-      if row["read_state"]:
-        msg_state = "new!"
-        
-      self.msg(uid, " => ID: {0}  From: {1}  Subject: {2} (\002{2}\002)".format(str(row["id"]), row["source"], msg_state))
+    result = self.query("""SELECT "id", "sender", "read_state" FROM "memo" WHERE "recipient" = %s ORDER BY "read_state" ASC, "id" DESC""", account)
+    if result:
+      for row in result:
+        msg_state = "old"
+        if row["read_state"]:
+          msg_state = "new!"
+          
+        self.msg(uid, " => ID: {0}  From: {1}  Subject: {2} (\002{2}\002)".format(str(row["id"]), row["source"], msg_state))
+    else:
+      self.msg(uid, " => Nothing to display :(")
         
     self.msg(uid)
     self.msg(uid, "<= End of list =>")
