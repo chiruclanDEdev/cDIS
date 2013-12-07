@@ -153,7 +153,7 @@ class Services:
     return list(dict())
     
   def send(self, text):
-    self.con.send(bytes(text.encode("UTF-8")+"\n", "UTF-8"))
+    self.con.send(bytes(text+"\n", "UTF-8"))
     debug(colors.blue("(Socket) <=") + " " + text)
 
   def run(self):
@@ -571,7 +571,7 @@ class cDISModule:
     return False
 
   def send(self, text):
-    self.con.send(bytes(text.encode("UTF-8")+"\n", "UTF-8"))
+    self.con.send(bytes(text+"\n", "UTF-8"))
     debug(colors.blue("(Socket) <=") + " " + text)
 
   def push(self, target, message):
