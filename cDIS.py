@@ -77,8 +77,11 @@ except Exception:
   print(colors.red("(Error) => ") + " {0}: {1}".format(et, traceback.format_tb(tb)[0]))
 
 def debug(text):
-  if config.get("OTHER", "debug") == "1":
-    print(bytes(text, "UTF-8").decode("UTF-8"))
+  try:
+    if config.get("OTHER", "debug") == "1":
+      print(str(text))
+  except:
+    pass
 
 def shell(text):
   subprocess.Popen(text+" >> /dev/null", shell=True).wait()
