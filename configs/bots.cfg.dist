@@ -9,23 +9,23 @@ cs = False
 [1]
 uuid = AAAAAB
 nick = N
-user = TheNBot
-real = The N Bot
+user = nethelp
+real = Network helper
 fantasy = False
 cs = False
 
 [2]
 uuid = AAAAAC
 nick = R
-user = TheRBot
-real = The R Bot
+user = request
+real = Request service
 fantasy = False
 cs = False
 
 [3]
 uuid = AAAAAD
 nick = C
-user = TheCBot
+user = chanserv
 real = The C Bot
 fantasy = True
 cs = True
@@ -33,7 +33,7 @@ cs = True
 [4]
 uuid = AAAAAE
 nick = O
-user = TheOBot
+user = operserv
 real = The O Bot
 fantasy = False
 cs = False
@@ -41,7 +41,15 @@ cs = False
 [5]
 uuid = AAAAAF
 nick = H
-user = TheHBot
-real = The H Bot
+user = help
+real = Help service
+fantasy = False
+cs = False
+
+[6]
+uuid = AAAAAG
+nick = M
+user = memo
+real = Memo service
 fantasy = False
 cs = False

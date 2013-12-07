@@ -15,9 +15,9 @@ class cmd_memo(cDISModule):
         self.msg(uid, "<= List of memos =>")
         self.msg(uid)
         
-        result = self.query("SELECT COUNT(*), `id`, `source`, `read_state` FROM `memo` WHERE `user` = ? ORDER BY `read_state` ASC, `id` DESC")
+        result = self.query("""SELECT COUNT(*), "id", "source", "read_state" FROM "memo" WHERE "user" = %s ORDER BY "read_state" ASC, "id" DESC""", account)
         for row in result:
-          if int(row["COUNT(*)"]) == 0:
+          if int(row["count"]) == 0:
             self.msg(uid, " => Nothing to display :(")
           else:
             msg_state = "old"
@@ -32,28 +32,21 @@ class cmd_memo(cDISModule):
     elif len(arg) == 2:
       if arg[0].lower() == "read":
         self.msg(
-    if len(arg) > 1:
-      if arg[0].startswith("#"):
-        user = arg[0][1:]
+    if len(arg) > 3:
+      if arg[0].lower() == "send":
+        user = self.user(arg[1])
+        if not user:
+          self.msg("No such user '%s'." % arg[1])
+          return 0
+          
+        subject = "No subject"
+        message = ' '.join(arg[2:])
+        if (message.find(": ") != -1):
+          subject = message.split(": ")[0]
+          message = message.split(": ")[1]
         
-        if self.user(user):
-          sender = self.auth(source)
-          message = ' '.join(arg[1:])
-          self.query("insert into memo (`user`, `source`, `message`) values (?, ?, ?)", user, sender, message)
-          self.msg(source, "Done.")
-          self.memo(user)
-        else:
-          self.msg(source, "Can't find user %s." % arg[0])
-      else:
-        user = self.auth(arg[0])
-        
-        if self.user(user):
-          sender = self.auth(source)
-          message = ' '.join(arg[1:])
-          self.query("insert into memo (`user`, `source`, `message`) values (?, ?, ?)", user, sender, message)
-          self.msg(source, "Done.")
-          self.memo(user)
-        else:
-          self.msg(source, "Can't find user %s." % arg[0])
+        self.query("""INSERT INTO "memo" ("user", "source", "message", "read_state") VALUES (%s, %s, %s, 0)""", user, account, message)
+        self.msg(source, "Done.")
+        self.memo(user)
     else:
-      self.msg(source, "Syntax: MEMO <user> <message>")
+      self.msg(source, "Syntax: MEMO <list|read|send> [<account> [[<subject>:] <message>]]")

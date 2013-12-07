@@ -105,10 +105,12 @@ CREATE TABLE "ircd_opers" (
 -- ----------------------------
 DROP TABLE IF EXISTS "memo";
 CREATE TABLE "memo" (
-"id" serial NOT NULL PRIMARY KEY,
-"user" varchar(32) COLLATE "default" NOT NULL,
-"source" varchar(32) COLLATE "default" NOT NULL,
-"message" varchar(2048) COLLATE "default" NOT NULL
+"id" bigserial NOT NULL PRIMARY KEY,
+"recipient" varchar(32) COLLATE "default" NOT NULL,
+"sender" varchar(32) COLLATE "default" NOT NULL,
+"subject" varchar(64) COLLATE default NOT NULL,
+"message" varchar(2048) COLLATE "default" NOT NULL,
+"read_state" boolean NOT NULL
 ) WITH (OIDS=FALSE);
 
 -- ----------------------------

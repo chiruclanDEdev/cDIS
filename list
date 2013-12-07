@@ -1,8 +1,8 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 3fb536870704f04d06a2006d67b7f1df
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py 51fe2fdc22ed5ddc8a179c9db5410883
-configs/bots.cfg.dist bcb61e23bac05cbe7265ff3d3aeeb64c
+cDIS.py 716d7605674b2b0ec47019db50376a8f
+configs/bots.cfg.dist 571c77c1f39265492e2f03bb6db00281
 configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
@@ -68,9 +68,12 @@ modules/cmd_4_suspend.py f8142373769ed3c4872a3dbf21fdebe6
 modules/cmd_4_trust.py 49935a815f3784e8320f3199ec2fc952
 modules/cmd_4_userflags.py 571dc87865ba30886b17e159eb79a7db
 modules/cmd_4_userlist.py 27325ff13ea8316958966f2daed59eae
-modules/cmd_4_vhost.py 8a9783f42882967ecd0ad16755cb17a9
+modules/cmd_4_vhost.py 3eb7f7846ef290415b88465a1667e62d
 modules/cmd_5_opers.py ba3c7e3fc9f9e307433641ef5c6cfea0
 modules/cmd_5_version.py 62f3f3cf36a67fefc89eefc82bed19ef
+modules/cmd_6_list.py fc5d14048c417010475bc4b31c7e530b
+modules/cmd_6_read.py 20d5b86fc845ea9fc801196c1cbd2004
+modules/cmd_6_send.py 4bfb5d17bdb834f6a0c7290272589bbf
 modules/event_3.py 276834b6849b1c2b2c85c878a02302da
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8
 modules/mod_0_metadata.py 4c82500ce41d921e6c2b52fc9b162aa5
@@ -87,8 +90,8 @@ modules/mod_3_privmsg.py 1e69eaf07ca1cfd37a503c9eb0cf5dd9
 modules/mod_3_topic.py 6136c0964d8141c2461b90352edbbdf8
 modules/sched_0_gline.py 9a53c331c182295bb476aadb5f534e56
 modules/sched_0_trust.py 1901b2e38028845db72bb803b676dc39
-modules/dev/cmd_memo.py 5da4a9e2d2caf9c40de7fab42d76167d
-sql/base/struct.sql d9454835ae367af9fbc98e67b180db8b
+modules/dev/cmd_memo.py 511fb202b32f19fc295b286a6996dd1a
+sql/base/struct.sql ba74232b2fdd7987cd276ceace52c55f
 sql/updates/1_2013-12-07_add_chanrequest.sql 90ced3eecc39049ac154dab4fad3cb3b
 sql/updates/empty_dir d41d8cd98f00b204e9800998ecf8427e
 templates/default_mail.tpl fbc68da90348814e2052fe1e8aebdf77

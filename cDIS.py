@@ -547,8 +547,8 @@ class cDISModule:
     if user.lower() == self.bot_nick.lower():
       return self.bot_nick
       
-    for data in self.query("select name from users where LOWER(name) = LOWER(%s)", user):
-      return str(data["name"])
+    for data in self.query("""SELECT "name" FROM "users" WHERE LOWER("name") = LOWER(%s)""", user):
+      return data["name"]
       
     return False
 
@@ -716,15 +716,12 @@ class cDISModule:
     return uids
 
   def memo(self, user):
-    for data in self.query("select source,message from memo where LOWER(user) = LOWER(%s)", user):
-      online = False
-      
-      for source in self.sid(user):
-        online = True
-        self.msg(source, "[Memo] From: %s, Message: %s" % (data["source"], data["message"]))
-        
-      if online:
-        self.query("delete from memo where LOWER(user) = LOWER(%s) and source = %s and message = %s", user, data["source"], data["message"])
+    for data in self.query("""SELECT "id", "sender", "subject" FROM "users" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s""", user, False):
+      for recipient in self.sid(user):
+        self.msg(recipient, "You have recieved a new message!")
+        self.msg(recipient, "  Sender: " + data["sender"])
+        self.msg(recipient, "  Subject: " + data["subject"])
+        self.msg(recipient, "To read this message type: /MSG {0} READ {1}".format(self.bot_nick, data["id"]))
         
   def requestConfirmed(self, account, channel, isoper):
     if isoper:
