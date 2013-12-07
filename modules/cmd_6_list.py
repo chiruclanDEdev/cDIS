@@ -17,9 +17,9 @@ class cmd_6_list(cDISModule):
       for row in result:
         msg_state = "old"
         if not row["read_state"]:
-          msg_state = "\002new!\002"
+          msg_state = "new!"
           
-        self.msg(uid, " => ID: {0}  From: {1}  Subject: {2} ({3})".format(row["id"], row["sender"], row["subject"], msg_state))
+        self.msg(uid, " => ID: {0}  From: {1}  Subject: {2} (\002{3}\002)".format(row["id"], row["sender"], row["subject"], msg_state))
     else:
       self.msg(uid, " => Nothing to display :(")
         
