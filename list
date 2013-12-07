@@ -82,7 +82,7 @@ modules/mod_3_fjoin.py 122d7527dee04445fa804923d6f67c02
 modules/mod_3_fmode.py 91c7626489964963dd504c9f8d21bc9d
 modules/mod_3_kick.py 195b968802f519d38ee3f258f62ef204
 modules/mod_3_mode.py aa122c6c5a02b611b8a67d8abf57d847
-modules/mod_3_part.py bfbe7ddde90238f9884452553ece8358
+modules/mod_3_part.py 481b045d3742d99c421cbfc388932875
 modules/mod_3_privmsg.py 1e69eaf07ca1cfd37a503c9eb0cf5dd9
 modules/mod_3_topic.py 6136c0964d8141c2461b90352edbbdf8
 modules/sched_0_gline.py 9a53c331c182295bb476aadb5f534e56

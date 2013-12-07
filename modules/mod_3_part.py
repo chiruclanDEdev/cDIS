@@ -24,5 +24,7 @@ class mod_3_part(cDISModule):
     arg = data.split()
     nick = arg[0][1:]
     chan = arg[2]
+    auth = self.auth(nick)
     
-    self.query("delete from chanlist where channel = %s and uid = %s", chan, nick)
+    self.query("""DELETE FROM "chanlist" WHERE LOWER("channel") = LOWER(%s) AND "uid" = %s""", chan, nick)
+    self.query("""DELETE FROM "chanrequest" WHERE LOWER("channel") = %s AND LOWER("account") = %s""", chan, auth)
