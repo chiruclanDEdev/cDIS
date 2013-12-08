@@ -17,13 +17,9 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 ---
 
-** If you're looking for more commands, check out https://github.com/chiruclanDEdev/cDIS-Modules! **
-
-== SWITCHING TO POSTGRESQL - DO NOT USE IN PRODUCTION YET! ==
-
 System requirements
 -------------------
-This program has only been tested on Linux but it should run on Windows, too.
+This program has only been tested on Linux but it should run on Windows and Mac OSX, too.
 
 Software requirements
 ---------------------
@@ -32,3 +28,8 @@ You will need the listed software:
 - Python psutil
 - psycopg (version 2)
 - git
+- PostgreSQL (server)
+
+---
+
+** If you're looking for more commands, check out https://github.com/chiruclanDEdev/cDIS-Modules! **
