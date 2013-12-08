@@ -13,7 +13,7 @@ modules/cmd_2_request.py 2a08b32bcd2fa156791d84cbb051edc4
 modules/cmd_3_auth.py 1bd9ce6527b8075411b2f6b05969c12a
 modules/cmd_3_ban.py 30868a1fc4623890486ab11bf1e16149
 modules/cmd_3_banlist.py a31537e4f6d5e1b83867243cff4ffc77
-modules/cmd_3_chanflags.py ec1ab5025068fd8b36fda4f79c4af79b
+modules/cmd_3_chanflags.py deccbee87a56ec1150f1689f0b9a3429
 modules/cmd_3_chanlev.py cf19ff63ad75453541f3d3a82058fe24
 modules/cmd_3_chanmode.py d9f64ea676f7fa015e83c3bd957b56b4
 modules/cmd_3_dehalfop.py d85ef3ee5c58f073c5aba405e57652f5

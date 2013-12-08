@@ -37,8 +37,6 @@ class cmd_3_chanflags(cDISModule):
     desc.append("Modes enforcement")
     mode.append("w")
     desc.append("Welcome message on join")
-    mode.append("l")
-    desc.append("Used for channel logs")
     mode.append("e")
     desc.append("Enforce bans")
     mode.append("b")
@@ -48,9 +46,9 @@ class cmd_3_chanflags(cDISModule):
     mode.append("f")
     desc.append("Fantasy commands")
     mode.append("k")
-    desc.append("Sign kicks with Q")
+    desc.append("Sign kicks with {0}".format(self.bot_nick))
     mode.append("c")
-    desc.append("Display count at Q-kicks")
+    desc.append("Display count at {0}-kicks".format(self.bot_nick))
     arg = args.split()
     
     if len(arg) == 1:
