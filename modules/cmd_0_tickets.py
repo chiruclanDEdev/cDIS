@@ -25,7 +25,7 @@ class cmd_0_tickets(cDISModule):
   
   def onCommand(self, uid, args):
     arg = args.split()
-    aResults = self.query("""SELECT COUNT(*) FROM "tickets\"""")
+    aResults = self.query("""SELECT COUNT(*) FROM tickets""")
     if (self.db_rows == 1):
       iTicketCount = aResults[0]["count"]
       iPageCount = int(iTicketCount / 5)
