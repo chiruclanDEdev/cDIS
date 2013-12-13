@@ -158,6 +158,12 @@ class Services:
 
   def run(self):
     try:
+    
+      official_channels = dict()
+      for key, value in config.get("OFFICIAL_CHANNELS"):
+        official_channels[key] = value
+      builtins.official_channels = official_channels
+      
       self.query("""TRUNCATE "opers\"""")
       self.query("""TRUNCATE "online\"""")
       self.query("""TRUNCATE "chanlist\"""")
@@ -261,11 +267,6 @@ class cDISModule:
     
     self.oper_not = config.getboolean("OPERS", "notifications")
     self.mail_template = mail_template
-    
-    self.channel = dict()
-    self.channel["tickets"] = config.get("CHANNEL", "tickets")
-    self.channel["help"] = config.get("CHANNEL", "help")
-    self.channel["opers"] = config.get("CHANNEL", "opers")
     
     self.db_cursor = db_interface.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     self.db_cursor.execute("SET search_path TO %s;", (self.pgsql_schema,))

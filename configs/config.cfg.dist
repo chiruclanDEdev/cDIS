@@ -22,7 +22,7 @@ description = chiruclan.de IRC services
 [OPERS]
 notifications = True
 
-[CHANNEL]
+[OFFICIAL_CHANNELS]
 help = #help
 support = #feds
 opers = #opers

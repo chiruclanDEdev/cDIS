@@ -17,7 +17,7 @@
 from cDIS import cDISModule
 
 class cmd_0_ticket(cDISModule):
-  HELP = "Use a ticket you got from {0}".format(self.channel["help"])
+  HELP = "Use a ticket you got from {0}".format(official_channels["help"])
   MODULE_CLASS = "COMMAND"
   COMMAND = "TICKET"
   NEED_AUTH = 1
@@ -25,7 +25,7 @@ class cmd_0_ticket(cDISModule):
   
   def onCommand(self, uid, args):
     if self.isoper(uid):
-      self.send_bot("SVSJOIN {0} {1}".format(uid, self.channel["support"]))
+      self.send_bot("SVSJOIN {0} {1}".format(uid, official_channels["support"]))
       return 0
       
     sAccount = self.auth(uid)
@@ -33,7 +33,7 @@ class cmd_0_ticket(cDISModule):
     
     if result:
       for row in result:
-        self.send_bot("SVSJOIN {0} {1}".format(uid, self.channel["support"]))
+        self.send_bot("SVSJOIN {0} {1}".format(uid, official_channels["support"]))
         self.query("""DELETE FROM "tickets" WHERE "account" = %s""", sAccount)
         self.msg(self.channel["support"], """User {0} joined with subject: "{1}"!""".format(sAccount, row["subject"]))
         
