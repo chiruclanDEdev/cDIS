@@ -26,13 +26,8 @@ class cmd_0_tickets(cDISModule):
   
   def onCommand(self, uid, args):
     arg = args.split()
-    aResults = self.query("""SELECT COUNT(*) FROM "tickets\"""")
-    if (self.db_rows == 1):
-      iTicketCount = int(aResults[0]["count"])
-      iPageCount = int(iTicketCount / 5)
-    else:
-      iTicketCount = 0
-      iPageCount = 0
+    iTicketCount = self.query("""SELECT COUNT(*) FROM "tickets\"""")[0]["count"]
+    iPageCount = int(iTicketCount / 5)
     
     if (len(arg) == 1):
       if (arg[0].lower() == "list"):
@@ -65,7 +60,7 @@ class cmd_0_tickets(cDISModule):
       elif (arg[0].lower() == "remove"):
         self.query("""DELETE FROM "tickets" WHERE LOWER("account") = LOWER(%s)""", arg[1])
         
-        if (self.db_row == 1):
+        if (self.db_rows == 1):
           self.msg(uid, "Done.")
         else:
           self.msg(uid, "No such ticket.")

@@ -1,13 +1,13 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 959fc567766fc3542738ca6c785ef204
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py 80a727270f43372a2c8929440b5b627e
+cDIS.py 042c85a6c5851d7c0beeb856339f54ab
 configs/bots.cfg.dist d888f9d4759097fe09fdc1a34190fcda
 configs/config.cfg.dist be633efff9b48cbfc696314399a6d65d
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
 modules/cmd_0_ticket.py 49e7214ed28135bcdfa2631e8af55900
-modules/cmd_0_tickets.py 4bdf3692b2fc1255358323488291870f
+modules/cmd_0_tickets.py f54f6c83948331d26a677e778a4be1de
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
 modules/cmd_1_update.py 9aad9d1561b5351eef34583ba4229398
 modules/cmd_2_remove.py 4452b963e94b237ab59251551d61e37a
