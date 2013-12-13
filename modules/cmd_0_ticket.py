@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from cDIS import cDISModule
+from cDIS import cDISModule, official_channels
 
 class cmd_0_ticket(cDISModule):
-  HELP = "Use a ticket you got from {0}".format(self.official_channels["help"])
+  HELP = "Use a ticket you got from {0}".format(official_channels["help"])
   MODULE_CLASS = "COMMAND"
   COMMAND = "TICKET"
   NEED_AUTH = 1
