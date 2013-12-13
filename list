@@ -1,11 +1,13 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 959fc567766fc3542738ca6c785ef204
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py 84b6ad90074b155a121ec92c56af987c
+cDIS.py 6182651300df1681d113064cb2122983
 configs/bots.cfg.dist d888f9d4759097fe09fdc1a34190fcda
-configs/config.cfg.dist a07025dce4fa50d419acab9768e8dd2b
+configs/config.cfg.dist 76ef311afd9aaca09e92c989e06da78b
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
+modules/cmd_0_ticket.py 5602676ec878f77c6db1c6e7a77bccfb
+modules/cmd_0_tickets.py 9da4137686e154c5307ac91a032959ea
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
 modules/cmd_1_update.py 9aad9d1561b5351eef34583ba4229398
 modules/cmd_2_remove.py 4452b963e94b237ab59251551d61e37a
@@ -54,7 +56,7 @@ modules/cmd_4_hello.py ffa2cbed13024ed7d2b9c68755a5d885
 modules/cmd_4_hostinfo.py 953689df624176228f27225181da7b22
 modules/cmd_4_info.py 79b0dc2bb77f24cd390d5934451151a5
 modules/cmd_4_ircop.py 5c8a91f3546caa2be27607177de1968b
-modules/cmd_4_join.py b62e243e018f9421c8a7ab914a0d69ec
+modules/cmd_4_join.py 2d34e55aae09475be8650a83971a6b9f
 modules/cmd_4_kick.py c228151e31dfcb9c7fac488c6ca36770
 modules/cmd_4_kill.py 5e4d9bdaf42c8c2fb707b4f7caa6abeb
 modules/cmd_4_listcommands.py d18ca036aadedd4d87a7a391418e77d8
@@ -92,9 +94,11 @@ modules/mod_3_part.py 1e15ebf5f80e787c81ab71174fbad56d
 modules/mod_3_privmsg.py 1e69eaf07ca1cfd37a503c9eb0cf5dd9
 modules/mod_3_topic.py 6136c0964d8141c2461b90352edbbdf8
 modules/sched_0_gline.py 9a53c331c182295bb476aadb5f534e56
+modules/sched_0_tickets.py 476cad9fa9bbb05dbc77767c24dfd2a3
 modules/sched_0_trust.py 1901b2e38028845db72bb803b676dc39
 modules/dev/empty_dir d41d8cd98f00b204e9800998ecf8427e
-sql/base/struct.sql ba74232b2fdd7987cd276ceace52c55f
+sql/base/struct.sql 18fecb62f55fabe078345938d2a6c2a0
 sql/updates/1_2013-12-07_add_chanrequest.sql 90ced3eecc39049ac154dab4fad3cb3b
+sql/updates/2_2013_12_13_add_tickets.sql 67d0bd671404d5a98a76c849cd05c229
 sql/updates/empty_dir d41d8cd98f00b204e9800998ecf8427e
 templates/default_mail.tpl fbc68da90348814e2052fe1e8aebdf77

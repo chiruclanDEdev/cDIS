@@ -16,18 +16,27 @@
 
 from cDIS import cDISModule
 
-class cmd_4_join(cDISModule):
+class cmd_0_ticket(cDISModule):
+  HELP = "Use a ticket you got from {0}".format(self.channel["help"])
   MODULE_CLASS = "COMMAND"
-  COMMAND = "JOIN"
-  HELP = "Forces a user to join a channel"
-  NEED_OPER = 1
-  BOT_ID = '4'
-
+  COMMAND = "TICKET"
+  NEED_AUTH = 1
+  BOT_ID = '0'
+  
   def onCommand(self, uid, args):
-    arg = args.split()
+    if self.isoper(uid):
+      self.send_bot("SVSJOIN {0} {1}".format(uid, self.channel["support"]))
+      return 0
+      
+    sAccount = self.auth(uid)
+    result = self.query("""SELECT "subject" FROM "tickets" WHERE "account" = %s""", sAccount)
     
-    if len(arg) == 2:
-      self.send(":"+self.bot+" SVSJOIN "+self.uid(arg[1])+" "+arg[0])
+    if result:
+      for row in result:
+        self.send_bot("SVSJOIN {0} {1}".format(uid, self.channel["support"]))
+        self.query("""DELETE FROM "tickets" WHERE "account" = %s""", sAccount)
+        self.msg(self.channel["support"], """User {0} joined with subject: "{1}"!""".format(sAccount, row["subject"]))
+        
       self.msg(uid, "Done.")
     else:
-      self.msg(uid, "Syntax: JOIN <#channel> <nick>")
+      self.msg(uid, "Denied.")

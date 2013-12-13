@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS "tickets";
+CREATE TABLE "tickets" ("id" serial NOT NULL, "account" varchar(32) COLLATE "default" NOT NULL, "subject" varchar(64) COLLATE "default" NOT NULL, "timestamp" int4 NOT NULL, CONSTRAINT "tickets_pkey" PRIMARY KEY ("id", "account")) WITH (OIDS=FALSE);

@@ -1,26 +1,31 @@
 [PGSQL]
-host = 
-port = 
-name = 
-schema = 
-user = 
-passwd = 
+host = 127.0.0.1
+port = 5432
+name = cdis
+schema = public
+user = cdis
+passwd = changeit!
 
 [SERVER]
-name = 
-address = 
-port = 
-id = 
-password = 
+name = irc.localhost
+address = 127.0.0.1
+port = 7000
+id = 01U
+password = changeit!
 
 [SERVICES]
-name = 
-address = 
-id = 
-description = 
+name = chiruclande-irc-services.localhost
+address = 127.0.0.1
+id = 01S
+description = chiruclan.de IRC services
 
 [OPERS]
 notifications = True
+
+[CHANNEL]
+help = #help
+support = #feds
+opers = #opers
 
 [OTHER]
 debug = 0

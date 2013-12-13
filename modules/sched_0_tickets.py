@@ -16,18 +16,15 @@
 
 from cDIS import cDISModule
 
-class cmd_4_join(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "JOIN"
-  HELP = "Forces a user to join a channel"
+class sched_0_tickets(cDISModule):
+  MODULE_CLASS = "SCHEDULE"
   NEED_OPER = 1
-  BOT_ID = '4'
-
-  def onCommand(self, uid, args):
-    arg = args.split()
+  BOT_ID = '0'
+  TIMER = 300
+  
+  def onSchedule(self):
+    current_timestamp = int(time.time())
+    self.query("""DELETE FROM "tickets" WHERE "timestamp" < %s""", current_timestamp - 86400)
     
-    if len(arg) == 2:
-      self.send(":"+self.bot+" SVSJOIN "+self.uid(arg[1])+" "+arg[0])
-      self.msg(uid, "Done.")
-    else:
-      self.msg(uid, "Syntax: JOIN <#channel> <nick>")
+    if (self.db_rows > 0):
+      self.send_to_op("#Tickets# {0} tickets expired.".format(self.db_rows))

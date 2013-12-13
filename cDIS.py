@@ -165,7 +165,9 @@ class Services:
       self.query("""TRUNCATE "modules\"""")
       self.query("""TRUNCATE "botchannel\"""")
       self.query("""TRUNCATE "chanrequest\"""")
+      self.query("""TRUNCATE "tickets\"""")
       self.query("""ALTER SEQUENCE "modules_id_seq" RESTART WITH 1""")
+      self.query("""ALTER SEQUENCE "tickets_id_seq" RESTART WITH 1""")
       self.query("""UPDATE "ircd_opers" SET "hostname" = 'root@localhost'""")
       
       if self.ipv6 and socket.has_ipv6:
@@ -258,12 +260,17 @@ class cDISModule:
     self.bot_real = bots.get(self.BOT_ID, "real")
     
     self.oper_not = config.getboolean("OPERS", "notifications")
-    
     self.mail_template = mail_template
+    
+    self.channel = dict()
+    self.channel["tickets"] = config.get("CHANNEL", "tickets")
+    self.channel["help"] = config.get("CHANNEL", "help")
+    self.channel["opers"] = config.get("CHANNEL", "opers")
     
     self.db_cursor = db_interface.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     self.db_cursor.execute("SET search_path TO %s;", (self.pgsql_schema,))
     db_interface.commit()
+    self.db_rows = 0
     
   def shell(self, text):
     subprocess.Popen(text+" >> /dev/null", shell=True).wait()
@@ -503,8 +510,9 @@ class cDISModule:
       self.db_cursor.execute(string + ";", args)
       debug(colors.cyan("(Database) <=") + " " + self.db_cursor.query.decode("UTF-8"))
       db_interface.commit()
+      self.db_rows = self.db_cursor.rowcount
       
-      if self.db_cursor.rowcount > 0 and string.lower().find('select ') != -1:
+      if self.db_rows > 0 and string.lower().find('select ') != -1:
         result = list()
         rows = self.db_cursor.fetchall()
         debug(colors.lightgreen("(Database) =>") + " " + str(rows))
@@ -647,12 +655,10 @@ class cDISModule:
     if flag == "n": return True
     else: return False
 
-  def msg(self, target, text=" ", action=False, uid=""):
-    source = self.bot
-    hasn = self.userflag(target, "n")
-    
-    if uid != "":
-      source = uid
+  def msg(self, target, text=" ", action=False, uid=None):
+    if not uid: uid = self.bot
+    if not target.startswith("#"): hasn = self.userflag(target, "n")
+    else: hasn = False
       
     if hasn and not action:
       self.send(":%s NOTICE %s :%s" % (source, target, text))
@@ -727,16 +733,14 @@ class cDISModule:
     return uids
 
   def memo(self, user):
-    result = self.query("""SELECT "id", "sender", "subject" FROM "memo" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s""", user, False)
+    result = self.query("""SELECT "id", "sender", "subject" FROM "memo" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s LIMIT 1""", user, False)
     if result:
       for recipient in self.sid(user):
-        self.msg(recipient, "<= You have recieved one or more new messages! =>")
+        self.msg(recipient, "<= You have recieved a new message! =>")
         for row in result:
           self.msg(recipient, " Sender: " + row["sender"] + ", Subject: " + row["subject"])
           self.msg(recipient, "  To read this message type: \002/MSG {0} READ {1}\002".format(self.bot_nick, row["id"]))
-        
-        self.msg(recipient, "<= End of list =>")
-        
+
   def requestConfirmed(self, account, channel, isoper):
     if isoper:
       self.query("""DELETE FROM "chanrequest" WHERE LOWER("channel") = %s""", channel)
