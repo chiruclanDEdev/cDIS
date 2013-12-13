@@ -7,7 +7,7 @@ configs/config.cfg.dist be633efff9b48cbfc696314399a6d65d
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
 modules/cmd_0_ticket.py 49e7214ed28135bcdfa2631e8af55900
-modules/cmd_0_tickets.py 0ef86b243a2854bed4f0d29568c09871
+modules/cmd_0_tickets.py 4bdf3692b2fc1255358323488291870f
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
 modules/cmd_1_update.py 9aad9d1561b5351eef34583ba4229398
 modules/cmd_2_remove.py 4452b963e94b237ab59251551d61e37a
@@ -94,7 +94,7 @@ modules/mod_3_part.py 1e15ebf5f80e787c81ab71174fbad56d
 modules/mod_3_privmsg.py 1e69eaf07ca1cfd37a503c9eb0cf5dd9
 modules/mod_3_topic.py 6136c0964d8141c2461b90352edbbdf8
 modules/sched_0_gline.py 9a53c331c182295bb476aadb5f534e56
-modules/sched_0_tickets.py 476cad9fa9bbb05dbc77767c24dfd2a3
+modules/sched_0_tickets.py ad1aee27c71a336617942b11fd943b88
 modules/sched_0_trust.py 1901b2e38028845db72bb803b676dc39
 modules/dev/empty_dir d41d8cd98f00b204e9800998ecf8427e
 sql/base/struct.sql 18fecb62f55fabe078345938d2a6c2a0

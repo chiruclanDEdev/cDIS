@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from cDIS import cDISModule, config
+import time
 
 class cmd_0_tickets(cDISModule):
   HELP = "Manage tickets for {0}".format(config.get("OFFICIAL_CHANNELS", "support"))

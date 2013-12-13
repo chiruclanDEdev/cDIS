@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from cDIS import cDISModule
+import time
 
 class sched_0_tickets(cDISModule):
   MODULE_CLASS = "SCHEDULE"
