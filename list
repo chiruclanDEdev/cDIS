@@ -7,7 +7,7 @@ configs/config.cfg.dist be633efff9b48cbfc696314399a6d65d
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
 modules/cmd_0_ticket.py 49e7214ed28135bcdfa2631e8af55900
-modules/cmd_0_tickets.py e7dc109fb88f75145025b06471950604
+modules/cmd_0_tickets.py 2ece3fc85d2faba13c0a887625bd971c
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
 modules/cmd_1_update.py 9aad9d1561b5351eef34583ba4229398
 modules/cmd_2_remove.py 4452b963e94b237ab59251551d61e37a
