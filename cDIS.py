@@ -160,7 +160,7 @@ class Services:
     try:
     
       official_channels = dict()
-      for key, value in config.get("OFFICIAL_CHANNELS"):
+      for key, value in config.items("OFFICIAL_CHANNELS"):
         official_channels[key] = value
       builtins.official_channels = official_channels
       
