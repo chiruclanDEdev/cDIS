@@ -663,11 +663,11 @@ class cDISModule:
     else: hasn = False
       
     if hasn and not action:
-      self.send(":%s NOTICE %s :%s" % (source, target, text))
+      self.send(":%s NOTICE %s :%s" % (uid, target, text))
     elif not hasn and not action:
-      self.send(":%s PRIVMSG %s :%s" % (source, target, text))
+      self.send(":%s PRIVMSG %s :%s" % (uid, target, text))
     else:
-      self.send(":%s PRIVMSG %s :\001ACTION %s\001" % (self.bot, target, text))
+      self.send(":%s PRIVMSG %s :\001ACTION %s\001" % (uid, target, text))
 
   def mode(self, target, mode):
     self.send(":%s SVSMODE %s %s" % (self.bot, target, mode))
