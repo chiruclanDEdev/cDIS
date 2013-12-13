@@ -6,7 +6,7 @@ configs/bots.cfg.dist d888f9d4759097fe09fdc1a34190fcda
 configs/config.cfg.dist be633efff9b48cbfc696314399a6d65d
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py d21ad24350299d861fb4e59878716908
-modules/cmd_0_ticket.py 4d9b363242a418f20ad38ec42ea77a76
+modules/cmd_0_ticket.py 49e7214ed28135bcdfa2631e8af55900
 modules/cmd_0_tickets.py 4c8716565be790f4216adaadcee46eb0
 modules/cmd_1_notify.py 0c2ecc8321d62c201073339543d45766
 modules/cmd_1_update.py 9aad9d1561b5351eef34583ba4229398
