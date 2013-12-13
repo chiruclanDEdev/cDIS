@@ -17,7 +17,7 @@
 from cDIS import cDISModule
 
 class cmd_0_tickets(cDISModule):
-  HELP = "Manage tickets for {0}".format(official_channels["support"])
+  HELP = "Manage tickets for {0}".format(self.official_channels["support"])
   MODULE_CLASS = "COMMAND"
   COMMAND = "TICKETS"
   NEED_OPER = 1

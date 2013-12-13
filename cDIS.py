@@ -243,6 +243,7 @@ class cDISModule:
   def __init__(self):
     self.con = con
     self.bots = bots
+    self.official_channels = official_channels
     
     self.pgsql_schema = config.get("PGSQL", "schema")
     self.server_name = config.get("SERVER", "name")
