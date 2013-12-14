@@ -514,10 +514,10 @@ class cDISModule:
       if nflags:
         rData += "-"
         rData += nflags
-        
-      return rData
+    else:
+      rData = pflags
       
-    return pflags
+    return rData
 
   def query(self, string, *args):
     try:
@@ -1057,10 +1057,10 @@ class cDISModule:
   def currentuserchanflag(self, channel, target):
     uid = self.uid(target)
     
-    for data in self.query("SELECT flag FROM chanlist WHERE uid = %s AND LOWER(channel) = LOWER(%s)", uid, channel):
+    for data in self.query("""SELECT "flag" FROM "chanlist" WHERE "uid" = %s AND LOWER("channel") = LOWER(%s)""", uid, channel):
       return data["flag"]
       
-    return ""
+    return ''
 
   def setuserchanflag(self, channel, target, flag):
     uid = self.uid(target)

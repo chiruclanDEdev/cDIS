@@ -118,27 +118,7 @@ class mod_3_fmode(cDISModule):
                 
               if flag != "o":
                 self.mode(mchan, "-o "+user)
-      else:
-        mchan = data.split()[2]
-        splitted = data.split()[4]
-        musers = data.split()[5:]
-        
-        if splitted.find("+") != -1:
-          splitted = splitted.split("+")[1]
-          
-          if splitted.find("-") != -1:
-            splitted = splitted.split("-")[0]
-            
-          for user in musers:
-            if splitted.find("v") != -1:
-                self.setuserchanflag(mchan, user, "v")
-            if splitted.find("h") != -1:
-                self.setuserchanflag(mchan, user, "h")
-            if splitted.find("o") != -1:
-                self.setuserchanflag(mchan, user, "o")
-            if splitted.find("a") != -1:
-              self.setuserchanflag(mchan, user, "a")
-              
+                
       if self.chanflag("p", data.split()[2]):
         for user in data.split()[5:]:
           fm_chan = data.split()[2]
