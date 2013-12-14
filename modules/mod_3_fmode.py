@@ -97,52 +97,48 @@ class mod_3_fmode(cDISModule):
           if splitted.find("-") != -1:
             splitted = splitted.split("-")[0]
             
-          if splitted.find("v") != -1:
-            for user in musers:
-              flag = self.getflag(self.uid(user), mchan)
-              self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
-              
+          for user in musers:
+            flag = self.getflag(self.uid(user), mchan)
+            self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
+            if splitted.find("v") != -1:
               if not self.chanflag("v", mchan) and flag != "v" and flag != "h" and flag != "o" and flag != "a" and flag != "q" and flag != "n" and self.uid(user) != self.bot:
                 self.mode(mchan, "-v "+user)
                 
-          if splitted.find("h") != -1:
-            for user in musers:
-              flag = self.getflag(self.uid(user), mchan)
-              self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
-              
+            if splitted.find("h") != -1:
               if flag != "h" and flag != "o" and flag != "a" and flag != "q" and flag != "n" and self.uid(user) != self.bot:
                 self.mode(mchan, "-h "+user)
                 
-          if splitted.find("o") != -1:
-            for user in musers:
-              flag = self.getflag(self.uid(user), mchan)
-              self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
-              
+            if splitted.find("o") != -1:
               if flag != "o" and flag != "a" and flag != "q" and flag != "n" and self.uid(user) != self.bot:
                 self.mode(mchan, "-o "+user)
                 
-          if splitted.find("a") != -1:
-            for user in musers:
-              flag = self.getflag(self.uid(user), mchan)
-              self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
-              
+            if splitted.find("a") != -1:
               if flag != "a" and flag != self.bot_nick and flag != "n" and self.uid(user) != self.bot:
                 self.mode(mchan, "-a "+user)
                 
               if flag != "o":
                 self.mode(mchan, "-o "+user)
-                
-          if splitted.find(self.bot_nick) != -1:
-            for user in musers:
-              flag = self.getflag(self.uid(user), mchan)
-              self.setuserchanflag(mchan, user, flag.replace('n', 'q'))
+      else:
+        mchan = data.split()[2]
+        splitted = data.split()[4]
+        musers = data.split()[5:]
+        
+        if splitted.find("+") != -1:
+          splitted = splitted.split("+")[1]
+          
+          if splitted.find("-") != -1:
+            splitted = splitted.split("-")[0]
+            
+          for user in musers:
+            if splitted.find("v") != -1:
+                self.setuserchanflag(mchan, user, "v")
+            if splitted.find("h") != -1:
+                self.setuserchanflag(mchan, user, "h")
+            if splitted.find("o") != -1:
+                self.setuserchanflag(mchan, user, "o")
+            if splitted.find("a") != -1:
+              self.setuserchanflag(mchan, user, "a")
               
-              if flag != "q" and flag != "n" and self.uid(user) != self.bot:
-                self.mode(mchan, "-q "+user)
-                
-              if flag != "o":
-                self.mode(mchan, "-o "+user)
-                
       if self.chanflag("p", data.split()[2]):
         for user in data.split()[5:]:
           fm_chan = data.split()[2]

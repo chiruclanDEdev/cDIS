@@ -682,7 +682,7 @@ class cDISModule:
       self.send(":%s PRIVMSG %s :\001ACTION %s\001" % (uid, target, text))
 
   def mode(self, target, mode):
-    self.send(":%s SVSMODE %s %s" % (self.bot, target, mode))
+    self.send_bot("SVSMODE %s %s" % (target, mode))
 
   def SetMetadata(self, uid, key, value = None):
     if value:
@@ -1064,7 +1064,7 @@ class cDISModule:
 
   def setuserchanflag(self, channel, target, flag):
     uid = self.uid(target)
-    self.query("UPDATE chanlist SET flag = %s WHERE uid = %s AND LOWER(channel) = LOWER(%s)", flag, uid, channel)
+    self.query("""UPDATE "chanlist" SET "flag" = %s WHERE "uid" = %s AND LOWER("channel") = LOWER(%s)""", flag, uid, channel)
   
   def getident(self, target):
     uid = self.uid(target)
