@@ -808,11 +808,11 @@ class cDISModule:
     
     self.send_serv("FJOIN {0} {1} +r :,{2}".format(channel, int(time.time()), self.bot))
     self.mode(channel, "+ryo {0} {0}".format(self.bot))
-    self.query("""INSERT INTO "botchannel" ("bot", "channel") VALUES (%s, %s)""", _botlist["id"][self.bot], channel)
+    self.query("""INSERT INTO "botchannel" ("bot", "channel") VALUES (%s, %s)""", self.BOT_ID, channel)
     
   def part(self, channel, reason = "There's no reason."):
     self.send_bot("PART {0} :{1}".format(channel, reason))
-    self.query("""DELETE FROM "botchannel" WHERE "bot" = %s AND "channel" = %s""", _botlist["id"][self.bot], channel)
+    self.query("""DELETE FROM "botchannel" WHERE "bot" = %s AND "channel" = %s""", self.BOT_ID, channel)
 
   def statistics(self):
     stats = dict()

@@ -1,7 +1,7 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 959fc567766fc3542738ca6c785ef204
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py 3ec4909d2ca01cc5597f89790ea12c0c
+cDIS.py 287ef651779688409754e6cd80fa65d5
 configs/bots.cfg.dist c0f048974d9b5c3fc7f0ee47cdbc8de4
 configs/config.cfg.dist be633efff9b48cbfc696314399a6d65d
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
@@ -56,7 +56,7 @@ modules/cmd_4_hello.py ffa2cbed13024ed7d2b9c68755a5d885
 modules/cmd_4_hostinfo.py 953689df624176228f27225181da7b22
 modules/cmd_4_info.py 79b0dc2bb77f24cd390d5934451151a5
 modules/cmd_4_ircop.py 5c8a91f3546caa2be27607177de1968b
-modules/cmd_4_join.py 2d34e55aae09475be8650a83971a6b9f
+modules/cmd_4_join.py 973f6b55a60af9c97da520adbd1e0fda
 modules/cmd_4_kick.py c228151e31dfcb9c7fac488c6ca36770
 modules/cmd_4_kill.py 5e4d9bdaf42c8c2fb707b4f7caa6abeb
 modules/cmd_4_listcommands.py d18ca036aadedd4d87a7a391418e77d8
@@ -79,7 +79,7 @@ modules/cmd_6_list.py dbf1547313173a2be4a9fbe5bb0a8946
 modules/cmd_6_read.py 4c12a409d7e5e2461ffb95446b30f8ae
 modules/cmd_6_search.py 14b84e653e103824ab1f6376da12753c
 modules/cmd_6_send.py 10c0e615c19896036c18044ef090e2dd
-modules/event_3.py 276834b6849b1c2b2c85c878a02302da
+modules/event_3.py 2d34b973b3ecd26c9cce5083b10cd0cd
 modules/mod_0_idle.py a0f7b2718ae5b4d254e4d450eb4b1ec8
 modules/mod_0_metadata.py 35f35d1ec298e31d2452511db43b0b50
 modules/mod_0_nick.py 085695d55db751f0ccdba2211d5a0d36
