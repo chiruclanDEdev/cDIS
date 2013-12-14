@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from cDIS import cDISModule
+import fnmatch
 
 class mod_3_fmode(cDISModule):
   MODULE_CLASS = "FMODE"
