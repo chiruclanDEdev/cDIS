@@ -3,9 +3,11 @@ ver=$(cat version)
 case $1 in
   start)
     if [ ! -f cDIS.pid ]; then
-      rm -f modules/*.pyc
-      if [ -f cDIS.pyc ]; then
-        rm -f cDIS.pyc
+      if [ -d modules/__pycache__ ]; then
+        rm -rf modules/__pycache__
+      fi
+      if [ -d __pycache__ ]; then
+        rm -rf __pycache__
       fi
       python3 cDIS.py >> /dev/null &
       pid=$!
@@ -30,9 +32,11 @@ case $1 in
       pid=$(cat cDIS.pid)
       kill -9 $pid
       rm -f cDIS.pid
-      rm -f modules/*.pyc
-      if [ -f cDIS.pyc ]; then
-        rm -f cDIS.pyc
+      if [ -d modules/__pycache__ ]; then
+        rm -rf modules/__pycache__
+      fi
+      if [ -d __pycache__ ]; then
+        rm -rf __pycache__
       fi
       echo "chiruclan.de IRC services ($ver) is stopped (PID: $pid)"
     else
@@ -49,14 +53,18 @@ case $1 in
     ;;
   debug)
     while [ 1 ]; do
-      if [ -f cDIS.pyc ]; then
-        rm -f cDIS.pyc
+      if [ -d modules/__pycache__ ]; then
+        rm -rf modules/__pycache__
       fi
-      rm -f modules/*.pyc
+      if [ -d __pycache__ ]; then
+        rm -rf __pycache__
+      fi
       python3 cDIS.py
-      rm -f modules/*.pyc
-      if [ -f cDIS.pyc ]; then
-        rm -f cDIS.pyc
+      if [ -d modules/__pycache__ ]; then
+        rm -rf modules/__pycache__
+      fi
+      if [ -d __pycache__ ]; then
+        rm -rf __pycache__
       fi
     done
     ;;
@@ -69,7 +77,8 @@ case $1 in
         sh cDIS stop
         running="true"
       fi
-      git rm modules/*.pyc
+      git rm __pycache__
+      git rm modules/__pycache__
       git pull origin master
       if [ $running = "true" ]; then
         sh cDIS start
