@@ -37,7 +37,7 @@ class cmd_0_ticket(cDISModule):
         self.send_bot("INVITE {0} {1} 0".format(uid, self.official_channels["support"]))
         self.send_bot("SVSJOIN {0} {1}".format(uid, self.official_channels["support"]))
         self.query("""DELETE FROM "tickets" WHERE "account" = %s""", sAccount)
-        self.msg(self.channel["support"], """User {0} joined with subject: "{1}"!""".format(sAccount, row["subject"]))
+        self.msg(self.official_channels["support"], """User {0} joined with subject: "{1}"!""".format(sAccount, row["subject"]))
         
       self.msg(uid, "Done.")
     else:
