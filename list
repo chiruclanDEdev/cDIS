@@ -87,7 +87,7 @@ modules/mod_0_opertype.py 2c0316b05e1a7648a0230302c9d41562
 modules/mod_0_quit.py 27df54530b596884d42d3de0b7bd5368
 modules/mod_0_uid.py 3125cf7ebdb91bfafeff7bbeda0464a2
 modules/mod_3_fjoin.py 122d7527dee04445fa804923d6f67c02
-modules/mod_3_fmode.py 91c7626489964963dd504c9f8d21bc9d
+modules/mod_3_fmode.py 8bb6874723fa9446d4bce476c1c84ba6
 modules/mod_3_kick.py 195b968802f519d38ee3f258f62ef204
 modules/mod_3_mode.py aa122c6c5a02b611b8a67d8abf57d847
 modules/mod_3_part.py 1e15ebf5f80e787c81ab71174fbad56d

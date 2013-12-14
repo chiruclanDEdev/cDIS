@@ -56,7 +56,7 @@ class mod_3_fmode(cDISModule):
                   self.query("insert into banlist (channel, ban) values (%s, %s)", data.split()[2], ban)
                   self.msg(data.split()[0][1:], "Done.")
                 elif ban == "*!*@*":
-                  self.msg(data.split()[2], "ACTION is angry about %s, because he tried to set a *!*@* ban." % self.nick(data.split()[0][1:]), True)
+                  self.msg(data.split()[2], "is angry about %s, because he tried to set a *!*@* ban." % self.nick(data.split()[0][1:]), True)
         else:
           self.mode(data.split()[2], "-{0} {1}".format("b"*len(data.split()[5:]), ' '.join(data.split()[5:])))
         
