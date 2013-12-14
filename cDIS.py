@@ -562,8 +562,8 @@ class cDISModule:
     elif len(nick) > 9:
       return nick
       
-    for data in self.query("select uid from online where LOWER(nick) = LOWER(%s)", nick):
-      return str(data["uid"])
+    for row in self.query("""SELECT "uid" FROM "online" WHERE LOWER("nick") = LOWER(%s)""", nick):
+      return row["uid"]
       
     return nick
 

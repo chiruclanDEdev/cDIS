@@ -1,7 +1,7 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 959fc567766fc3542738ca6c785ef204
 cDIS 12daaba0353af0cbff0c01333efa2579
-cDIS.py 7a4fc10aa2b9c2bac0056581eec34d09
+cDIS.py 11ee32b1c693f171469b0892c2826382
 configs/bots.cfg.dist c0f048974d9b5c3fc7f0ee47cdbc8de4
 configs/config.cfg.dist be633efff9b48cbfc696314399a6d65d
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
@@ -56,7 +56,7 @@ modules/cmd_4_hello.py ffa2cbed13024ed7d2b9c68755a5d885
 modules/cmd_4_hostinfo.py 953689df624176228f27225181da7b22
 modules/cmd_4_info.py 79b0dc2bb77f24cd390d5934451151a5
 modules/cmd_4_ircop.py 5c8a91f3546caa2be27607177de1968b
-modules/cmd_4_join.py 973f6b55a60af9c97da520adbd1e0fda
+modules/cmd_4_join.py 2ece60cf15045ffaec419ccd763f05ec
 modules/cmd_4_kick.py c228151e31dfcb9c7fac488c6ca36770
 modules/cmd_4_kill.py 5e4d9bdaf42c8c2fb707b4f7caa6abeb
 modules/cmd_4_listcommands.py d18ca036aadedd4d87a7a391418e77d8

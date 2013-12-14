@@ -27,7 +27,7 @@ class cmd_4_join(cDISModule):
     arg = args.split()
     
     if len(arg) == 2:
-      userData = self.GetUserData(arg[1])
+      userData = self.GetUserData(self.uid(arg[1]))
       self.send_bot("INVITE " + userData["uid"] + " " + arg[0])
       self.send_bot("SVSJOIN " + userData["uid"] + " " + arg[0])
       self.msg(uid, "Done.")
