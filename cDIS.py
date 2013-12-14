@@ -651,7 +651,7 @@ class cDISModule:
   def userflags(self, target):
     user = self.auth(target)
     
-    if user == 0:
+    if user == '':
       user = target
       
     for data in self.query("""SELECT "flags" FROM "users" WHERE LOWER("name") = LOWER(%s)""", user):
@@ -736,7 +736,7 @@ class cDISModule:
     for data in self.query("SELECT account FROM online WHERE uid = %s AND account != ''", target):
       return data["account"]
       
-    return None
+    return ''
 
   def sid(self, account):
     uids = list()
