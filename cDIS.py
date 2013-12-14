@@ -244,6 +244,7 @@ class cDISModule:
     self.con = con
     self.bots = bots
     self.official_channels = official_channels
+    self.botlist = _botlist
     
     self.pgsql_schema = config.get("PGSQL", "schema")
     self.server_name = config.get("SERVER", "name")
@@ -261,7 +262,7 @@ class cDISModule:
     self.ssl = config.getboolean("OTHER", "ssl")
     self.regmail = config.get("OTHER", "regmail")
     
-    self.bot = self.services_id + bots.get(self.BOT_ID, "uuid")
+    self.bot = self.botlist["uid"][self.BOT_ID]
     self.bot_nick = bots.get(self.BOT_ID, "nick")
     self.bot_user = bots.get(self.BOT_ID, "user")
     self.bot_real = bots.get(self.BOT_ID, "real")
@@ -300,7 +301,15 @@ class cDISModule:
           botuid = self.services_id + bots.get(bot, "uuid")
           botlist["uid"][bot] = botuid
           botlist["id"][botuid] = bot
-          if bots.getboolean(bot, "cs"): botlist["cs"] = botuid
+          botlist["nick"][botuid] = bots.get(bot, "nick")
+          if bots.get(bot, "type") == "chanserv": botlist["cs"] = botuid
+          elif bots.get(bot, "type") == "memoserv": botlist["ms"] = botuid
+          elif bots.get(bot, "type") == "operserv": botlist["os"] = botuid
+          elif bots.get(bot, "type") == "botserv": botlist["bs"] = botuid
+          elif bots.get(bot, "type") == "helpserv": botlist["hs"] = botuid
+          elif bots.get(bot, "type") == "network": botlist["net"] = botuid
+          elif bots.get(bot, "type") == "global": botlist["glob"] = botuid
+          elif bots.get(bot, "type") == "gameserv": botlist["gs"] = botuid
           bot_nick = bots.get(bot, "nick")
           bot_user = bots.get(bot, "user")
           bot_host = bots.get(bot, "host")
@@ -735,6 +744,15 @@ class cDISModule:
     return uids
 
   def memo(self, user):
+    if self.bot != self.botlist["ms"]:
+      oldbot = self.bot
+      oldnick = self.bot_nick
+      self.bot_nick = self.botlist["nick"][self.botlist["ms"]]
+      self.bot = self.botlist["ms"]
+    else:
+      oldbot = None
+      oldnick = None
+      
     result = self.query("""SELECT "id", "sender", "subject" FROM "memo" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s LIMIT 1""", user, False)
     if result:
       for recipient in self.sid(user):
@@ -742,6 +760,10 @@ class cDISModule:
         for row in result:
           self.msg(recipient, " \037\002Sender:\002\037 " + row["sender"] + ", \037\002Subject:\002\037 " + row["subject"])
           self.msg(recipient, "  To read this message type: \002/MSG {0} READ {1}\002".format(self.bot_nick, row["id"]))
+          
+    if (oldbot != None and oldnick != None):
+      self.bot = oldbot
+      self.nick = oldnick
 
   def requestConfirmed(self, account, channel, isoper):
     if isoper:

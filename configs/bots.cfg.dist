@@ -5,7 +5,7 @@ user = global
 host = global.localhost
 real = Global helper
 fantasy = False
-cs = False
+type = global
 
 [1]
 uuid = AAAAAB
@@ -14,7 +14,7 @@ user = nethelp
 host = nethelp.localhost
 real = Network helper
 fantasy = False
-cs = False
+type = network
 
 [2]
 uuid = AAAAAC
@@ -23,7 +23,7 @@ user = request
 host = request.localhost
 real = Request service
 fantasy = False
-cs = False
+type = request
 
 [3]
 uuid = AAAAAD
@@ -32,7 +32,7 @@ user = chanserv
 host = chanserv.localhost
 real = Channel service
 fantasy = True
-cs = True
+type = chanserv
 
 [4]
 uuid = AAAAAE
@@ -41,7 +41,7 @@ user = operserv
 host = operserv.localhost
 real = Oper service
 fantasy = False
-cs = False
+type = operserv
 
 [5]
 uuid = AAAAAF
@@ -50,7 +50,7 @@ user = help
 host = help.localhost
 real = Help service
 fantasy = False
-cs = False
+type = helpserv
 
 [6]
 uuid = AAAAAG
@@ -59,4 +59,4 @@ user = memo
 host = memo.service
 real = Memo service
 fantasy = False
-cs = False
+type = memoserv

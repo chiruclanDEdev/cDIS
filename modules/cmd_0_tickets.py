@@ -73,7 +73,7 @@ class cmd_0_tickets(cDISModule):
           for c in self.query("""SELECT COUNT(*) FROM "tickets" WHERE "account" = %s""", accountData["name"]):
             if (c["count"] == 0):
               sSubject = ' '.join(arg[2:])
-              sMessage = """You've received a support ticket.`Subject: "{0}"`To use it type: \002/MSG G TICKET\002""".format(sSubject)
+              sMessage = """You've received a support ticket.`Subject: "{0}"`To use it type: \002/MSG {1} TICKET\002""".format(sSubject, self.bot_nick)
               self.query("""INSERT INTO "tickets" ("account", "subject", "timestamp") VALUES (%s, %s, %s)""", accountData["name"], sSubject, int(time.time()))
               if (self.db_rows == 1):
                 self.query("""INSERT INTO "memo" ("recipient", "sender", "subject", "message", "read_state") VALUES (%s, %s, %s, %s, %s)""", accountData["name"], self.bot_nick, "You've received a support ticket.", sMessage, False)
