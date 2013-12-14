@@ -166,6 +166,7 @@ class Services:
       botlist = dict()
       botlist["id"] = dict()
       botlist["uid"] = dict()
+      botlist["nick"] = dict()
       for bot in bots.sections():
         botuid = self.services_id + bots.get(bot, "uuid")
         botlist["uid"][bot] = botuid
