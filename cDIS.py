@@ -943,7 +943,7 @@ class cDISModule:
       for flag in self.query("""select "flag" from "channels" where "channel" = %s and "user" = %s""", channel, data["account"]):
         return flag["flag"]
         
-    return 0
+    return ''
 
   def chanflag(self, flag, channel):
     for data in self.query("select flags from channelinfo where LOWER(name) = LOWER(%s)", channel):
@@ -1072,7 +1072,7 @@ class cDISModule:
     for data in self.query("select username from online where uid = %s", uid):
       return data["username"]
       
-    return 0
+    return ''
 
   def gethost(self, target):
     uid = self.uid(target)
@@ -1080,7 +1080,7 @@ class cDISModule:
     for data in self.query("select host from online where uid = %s", uid):
       return data["host"]
       
-    return 0
+    return ''
 
   def hostmask(self, target):
     uid = self.uid(target)
@@ -1165,7 +1165,7 @@ class cDISModule:
     for data in self.query("select address from online where uid = %s", uid):
       return data["address"]
       
-    return 0
+    return ''
 
   def gline(self, target, reason="", bantime="1800", addentry=False):
     uid = self.uid(target)
@@ -1198,7 +1198,7 @@ class cDISModule:
     for data in self.query("""SELECT "username", "host" FROM "online" WHERE "uid" = %s""", uid):
       return data["username"]+"@"+data["host"]
       
-    return 0
+    return ''
 
   def getvhost(self, target):
     for data in self.query("""SELECT "vhost" FROM "vhosts" WHERE "user" = %s and active = 1""", target):
