@@ -158,11 +158,28 @@ class Services:
 
   def run(self):
     try:
-    
       official_channels = dict()
       for key, value in config.items("OFFICIAL_CHANNELS"):
         official_channels[key] = value
       builtins.official_channels = official_channels
+      
+      botlist = dict()
+      botlist["id"] = dict()
+      botlist["uid"] = dict()
+      for bot in bots.sections():
+        botuid = self.services_id + bots.get(bot, "uuid")
+        botlist["uid"][bot] = botuid
+        botlist["id"][botuid] = bot
+        botlist["nick"][botuid] = bots.get(bot, "nick")
+        if bots.get(bot, "type") == "chanserv": botlist["cs"] = botuid
+        elif bots.get(bot, "type") == "memoserv": botlist["ms"] = botuid
+        elif bots.get(bot, "type") == "operserv": botlist["os"] = botuid
+        elif bots.get(bot, "type") == "botserv": botlist["bs"] = botuid
+        elif bots.get(bot, "type") == "helpserv": botlist["hs"] = botuid
+        elif bots.get(bot, "type") == "network": botlist["net"] = botuid
+        elif bots.get(bot, "type") == "global": botlist["glob"] = botuid
+        elif bots.get(bot, "type") == "gameserv": botlist["gs"] = botuid
+      builtins._botlist = botlist
       
       self.query("""TRUNCATE "opers\"""")
       self.query("""TRUNCATE "online\"""")
@@ -294,22 +311,8 @@ class cDISModule:
         self.send_serv("ENDBURST")
         builtins._connected = True
         
-        botlist = dict()
-        botlist["id"] = dict()
-        botlist["uid"] = dict()
         for bot in bots.sections():
           botuid = self.services_id + bots.get(bot, "uuid")
-          botlist["uid"][bot] = botuid
-          botlist["id"][botuid] = bot
-          botlist["nick"][botuid] = bots.get(bot, "nick")
-          if bots.get(bot, "type") == "chanserv": botlist["cs"] = botuid
-          elif bots.get(bot, "type") == "memoserv": botlist["ms"] = botuid
-          elif bots.get(bot, "type") == "operserv": botlist["os"] = botuid
-          elif bots.get(bot, "type") == "botserv": botlist["bs"] = botuid
-          elif bots.get(bot, "type") == "helpserv": botlist["hs"] = botuid
-          elif bots.get(bot, "type") == "network": botlist["net"] = botuid
-          elif bots.get(bot, "type") == "global": botlist["glob"] = botuid
-          elif bots.get(bot, "type") == "gameserv": botlist["gs"] = botuid
           bot_nick = bots.get(bot, "nick")
           bot_user = bots.get(bot, "user")
           bot_host = bots.get(bot, "host")
@@ -319,7 +322,6 @@ class cDISModule:
           self.send(":%s OPERTYPE Service" % botuid)
           self.SetMetadata(botuid, "accountname", bots.get(bot, "nick"))
           
-        builtins._botlist = botlist
         self.raiseEvent('STARTUP')
         self.msg("$*", "Services are now back online. Have a nice day :)")
       elif sCommand == "PONG" or sCommand == "ERROR":
