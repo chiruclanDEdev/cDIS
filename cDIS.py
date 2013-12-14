@@ -759,7 +759,7 @@ class cDISModule:
     result = self.query("""SELECT "id", "sender", "subject" FROM "memo" WHERE LOWER("recipient") = LOWER(%s) AND "read_state" = %s LIMIT 1""", user, False)
     if result:
       for recipient in self.sid(user):
-        self.msg(recipient, "<= You have recieved a new message! =>")
+        self.msg(recipient, "<= You have received a new message! =>")
         for row in result:
           self.msg(recipient, " \037\002Sender:\002\037 " + row["sender"] + ", \037\002Subject:\002\037 " + row["subject"])
           self.msg(recipient, "  To read this message type: \002/MSG {0} READ {1}\002".format(self.bot_nick, row["id"]))
