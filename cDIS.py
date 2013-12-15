@@ -559,8 +559,6 @@ class cDISModule:
   def uid (self, nick):
     if nick == self.bot_nick:
       return self.bot
-    elif len(nick) > 9:
-      return nick
       
     for row in self.query("""SELECT "uid" FROM "online" WHERE LOWER("nick") = LOWER(%s)""", nick):
       return row["uid"]
