@@ -1041,7 +1041,7 @@ class cDISModule:
   def userlist(self, channel):
     uid = list()
     
-    for user in self.query("select uid from chanlist where LOWER(channel) = LOWER(%s)", channel):
+    for user in self.query("""SELECT "uid" FROM "chanlist" WHERE LOWER("channel") = LOWER(%s)""", channel):
       uid.append(user["uid"])
       
     return uid
@@ -1049,7 +1049,7 @@ class cDISModule:
   def onchan(self, channel, target):
     uid = self.uid(target)
     
-    for data in self.query("select * from chanlist where LOWER(channel) = LOWER(%s) and uid = %s", channel, uid):
+    for data in self.query("""SELECT "uid" FROM "chanlist" WHERE LOWER("channel") = LOWER(%s) AND "uid" = %s""", channel, uid):
       return True
       
     return False
