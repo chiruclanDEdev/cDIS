@@ -353,14 +353,14 @@ class cDISModule:
             if len(pData) == 4:
               self.help(sID, "HELP", "Shows information about all commands that are available to you")
               
-              for command in self.query("""SELECT "command", "help" FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s ORDER BY command""", bot, isauth, isoper):
+              for command in self.query("""SELECT "command", "help" FROM "modules" WHERE "class" = 'COMMAND' AND "bot" = %s AND "auth" <= %s AND "oper" <= %s ORDER BY "command\"""", bot, isauth, isoper):
                 self.help(sID, command["command"], command["help"])
             else:
               args = ' '.join(sArguments)
               if fnmatch.fnmatch("help", "*" + args.lower() + "*"):
                 self.help(sID, "HELP", "Shows information about all commands that are available to you")
                 
-              for command in self.query("""SELECT "name", "help" FROM modules WHERE class = 'COMMAND' AND bot = %s AND auth <= %s AND oper <= %s AND command LIKE %s ORDER BY command""", bot, isauth, isoper, '%' + args.upper() + '%'):
+              for command in self.query("""SELECT "command", "help" FROM "modules" WHERE "class" = 'COMMAND' AND "bot" = %s AND "auth" <= %s AND "oper" <= %s AND "command" LIKE %s ORDER BY "command\"""", bot, isauth, isoper, '%' + args.upper() + '%'):
                 self.help(sID, command["command"], command["help"])
             
             self.msg(sID, "End of list.")
@@ -368,7 +368,7 @@ class cDISModule:
             self.bot = _botlist["uid"][self.BOT_ID]
           else:
             iscmd = False
-            for command in self.query("""SELECT "name" FROM modules WHERE class = 'COMMAND' AND command = %s AND bot = %s AND auth <= %s AND oper <= %s""", sUserCommand.upper(), bot, isauth, isoper):
+            for command in self.query("""SELECT "name" FROM "modules" WHERE "class" = 'COMMAND' AND "command" = %s AND "bot" = %s AND "auth" <= %s AND "oper" <= %s""", sUserCommand.upper(), bot, isauth, isoper):
               iscmd = True
               
               moduleToCall = getattr(modules, command["name"])
