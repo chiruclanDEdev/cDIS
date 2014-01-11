@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,14 +17,14 @@
 from cDIS import cDISModule
 
 class mod_3_part(cDISModule):
-  MODULE_CLASS = "PART"
-  BOT_ID = '3'
-  
-  def onData(self, data):
-    arg = data.split()
-    nick = arg[0][1:]
-    chan = arg[2]
-    auth = self.auth(nick)
+    MODULE_CLASS = "PART"
+    BOT_ID = '3'
     
-    self.query("""DELETE FROM "chanlist" WHERE LOWER("channel") = LOWER(%s) AND "uid" = %s""", chan, nick)
-    self.query("""DELETE FROM "chanrequest" WHERE LOWER("channel") = LOWER(%s) AND "account" = %s""", chan, auth)
+    def onData(self, data):
+        arg = data.split()
+        nick = arg[0][1:]
+        chan = arg[2]
+        auth = self.auth(nick)
+        
+        self.query("""DELETE FROM "chanlist" WHERE LOWER("channel") = LOWER(%s) AND "uid" = %s""", chan, nick)
+        self.query("""DELETE FROM "chanrequest" WHERE LOWER("channel") = LOWER(%s) AND "account" = %s""", chan, auth)

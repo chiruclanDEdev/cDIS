@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,19 +17,19 @@
 from cDIS import cDISModule
 
 class mod_0_metadata(cDISModule):
-  MODULE_CLASS = "METADATA"
-  
-  def onData(self, data):
-    if len(data.split()) == 5 and len(data.split()[4]) != 1:
-      uid = data.split()[2]
-      key = data.split()[3]
-      value = ' '.join(data.split()[4:])[1:]
-      
-      self.SetMetadata(uid, key, value)
-      
-      if key == "accountname":
-        if self.ison(uid, True):
-          self.query("UPDATE online SET account = %s WHERE uid = %s", value, uid)
-          self.msg(uid, "You are now logged in as " + value + ".")
-          self.vhost(uid)
-          self.flag(uid)
+    MODULE_CLASS = "METADATA"
+    
+    def onData(self, data):
+        if len(data.split()) == 5 and len(data.split()[4]) != 1:
+            uid = data.split()[2]
+            key = data.split()[3]
+            value = ' '.join(data.split()[4:])[1:]
+            
+            self.SetMetadata(uid, key, value)
+            
+            if key == "accountname":
+                if self.ison(uid, True):
+                    self.query("UPDATE online SET account = %s WHERE uid = %s", value, uid)
+                    self.msg(uid, "You are now logged in as " + value + ".")
+                    self.vhost(uid)
+                    self.flag(uid)

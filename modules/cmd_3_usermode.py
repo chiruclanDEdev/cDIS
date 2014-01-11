@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,24 +17,24 @@
 from cDIS import cDISModule
 
 class cmd_3_usermode(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "USERMODE"
-  HELP = "Shows your usermodes or changes it"
-  NEED_AUTH = 1
-  BOT_ID = '3'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "USERMODE"
+    HELP = "Shows your usermodes or changes it"
+    NEED_AUTH = 1
+    BOT_ID = '3'
 
-  def onCommand(self, uid, args):
-    arg = args.split()
-    
-    if len(arg) == 0:
-      for data in self.query("""SELECT "modes" FROM "users" WHERE "name" = %s""", self.auth(uid)):
-        self.msg(uid, "Current modes: "+data["modes"])
-    elif len(arg) == 1:
-      data = self.query("""SELECT "modes" FROM "users" WHERE "name" = %s""", self.auth(uid))[0]
-      modes = self.regexflag(data["modes"], arg[0], True)
-      newmodes = ''.join([char for char in modes if char.isalpha() or char == "+" or char == "-"])
-      self.query("""UPDATE "users" SET "modes" = %s WHERE "name" = %s""", newmodes, self.auth(uid))
-      self.usermodes(uid)
-      self.msg(uid, "Done. Current modes: " + ''.join([char for char in modes if char.isalpha() or char == "+" or char == "-"]))
-    else:
-      self.msg(uid, "Syntax: USERMODES [<modes>]")
+    def onCommand(self, uid, args):
+        arg = args.split()
+        
+        if len(arg) == 0:
+            for data in self.query("""SELECT "modes" FROM "users" WHERE "name" = %s""", self.auth(uid)):
+                self.msg(uid, "Current modes: "+data["modes"])
+        elif len(arg) == 1:
+            data = self.query("""SELECT "modes" FROM "users" WHERE "name" = %s""", self.auth(uid))[0]
+            modes = self.regexflag(data["modes"], arg[0], True)
+            newmodes = ''.join([char for char in modes if char.isalpha() or char == "+" or char == "-"])
+            self.query("""UPDATE "users" SET "modes" = %s WHERE "name" = %s""", newmodes, self.auth(uid))
+            self.usermodes(uid)
+            self.msg(uid, "Done. Current modes: " + ''.join([char for char in modes if char.isalpha() or char == "+" or char == "-"]))
+        else:
+            self.msg(uid, "Syntax: USERMODES [<modes>]")

@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,56 +18,56 @@ from cDIS import cDISModule
 from fnmatch import fnmatch
 
 class cmd_3_protect(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "PROTECT"
-  HELP = "Sets admin (+a) flag to you or someone on the channel"
-  NEED_AUTH = 1
-  ENABLE_FANTASY = 1
-  BOT_ID = '3'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "PROTECT"
+    HELP = "Sets admin (+a) flag to you or someone on the channel"
+    NEED_AUTH = 1
+    ENABLE_FANTASY = 1
+    BOT_ID = '3'
 
-  def onCommand(self, source, args):
-    arg = args.split()
-    
-    if len(arg) == 1:
-      if arg[0].startswith("#"):
-        flag = self.getflag(source, arg[0])
+    def onCommand(self, source, args):
+        arg = args.split()
         
-        if flag == "n" or flag == "q" or flag == "a":
-          self.mode(arg[0], "+ao {0} {0}".format(source))
-          self.msg(source, "Done.")
-        else:
-          self.msg(source, "Denied.")
-      else:
-        self.msg(source, "Invalid channel")
-    elif len(arg) > 1:
-      if arg[0].startswith("#"):
-        flag = self.getflag(source, arg[0])
-        
-        if flag == "n" or flag == "q":
-          for user in self.userlist(arg[0]):
-            for target in arg[1:]:
-              if fnmatch(self.nick(user).lower(), target.lower()):
-                self.mode(arg[0], "+ao "+user+" "+user)
+        if len(arg) == 1:
+            if arg[0].startswith("#"):
+                flag = self.getflag(source, arg[0])
                 
-                if self.chanflag("b", arg[0]):
-                  uflag = self.getflag(user, arg[0])
-                  
-                  if uflag != "a" and uflag != "q" and uflag != "n":
-                    self.mode(arg[0], "-a "+user)
-                    
-                  if uflag != "o":
-                    self.mode(arg[0], "-o "+user)
-                    
-          self.msg(source, "Done.")
+                if flag == "n" or flag == "q" or flag == "a":
+                    self.mode(arg[0], "+ao {0} {0}".format(source))
+                    self.msg(source, "Done.")
+                else:
+                    self.msg(source, "Denied.")
+            else:
+                self.msg(source, "Invalid channel")
+        elif len(arg) > 1:
+            if arg[0].startswith("#"):
+                flag = self.getflag(source, arg[0])
+                
+                if flag == "n" or flag == "q":
+                    for user in self.userlist(arg[0]):
+                        for target in arg[1:]:
+                            if fnmatch(self.nick(user).lower(), target.lower()):
+                                self.mode(arg[0], "+ao "+user+" "+user)
+                                
+                                if self.chanflag("b", arg[0]):
+                                    uflag = self.getflag(user, arg[0])
+                                    
+                                    if uflag != "a" and uflag != "q" and uflag != "n":
+                                        self.mode(arg[0], "-a "+user)
+                                        
+                                    if uflag != "o":
+                                        self.mode(arg[0], "-o "+user)
+                                        
+                    self.msg(source, "Done.")
+                else:
+                    self.msg(source, "Denied.")
+            else:
+                self.msg(source, "Invalid channel")
         else:
-          self.msg(source, "Denied.")
-      else:
-        self.msg(source, "Invalid channel")
-    else:
-      self.msg(source, "Syntax: PROTECT <#channel> [<nick> [<nick>]]")
+            self.msg(source, "Syntax: PROTECT <#channel> [<nick> [<nick>]]")
 
-  def onFantasy(self, uid, chan, args):
-    flag = self.getflag(uid, chan)
-    
-    if flag == "n" or flag == "q" or flag == "a" or flag == "o" or flag == "h":
-      self.onCommand(uid, chan + " " + args)
+    def onFantasy(self, uid, chan, args):
+        flag = self.getflag(uid, chan)
+        
+        if flag == "n" or flag == "q" or flag == "a" or flag == "o" or flag == "h":
+            self.onCommand(uid, chan + " " + args)

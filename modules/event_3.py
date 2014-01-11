@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,16 +17,16 @@
 from cDIS import cDISModule
 
 class event_3(cDISModule):
-  MODULE_CLASS = 'INTERNAL_EVENT'
-  COMMAND = 'STARTUP'
-  BOT_ID = '3'
-  
-  def onEvent(self, event):
-    for channel in self.query("""SELECT "name", "modes", "topic" FROM "channelinfo\""""):
-      self.join(channel["name"])
-      
-      if self.chanflag("m", channel["name"]):
-        self.mode(channel["name"], channel["modes"])
-        
-      if self.chanflag("t", channel["name"]):
-        self.send(":{0} TOPIC {1} :{2}".format(self.bot, channel["name"], channel["topic"]))
+    MODULE_CLASS = 'INTERNAL_EVENT'
+    COMMAND = 'STARTUP'
+    BOT_ID = '3'
+    
+    def onEvent(self, event):
+        for channel in self.query("""SELECT "name", "modes", "topic" FROM "channelinfo\""""):
+            self.join(channel["name"])
+            
+            if self.chanflag("m", channel["name"]):
+                self.mode(channel["name"], channel["modes"])
+                
+            if self.chanflag("t", channel["name"]):
+                self.send(":{0} TOPIC {1} :{2}".format(self.bot, channel["name"], channel["topic"]))

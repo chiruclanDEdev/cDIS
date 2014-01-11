@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,39 +19,39 @@ import builtins
 import time
 
 class mod_3_privmsg(cDISModule):
-  MODULE_CLASS = "PRIVMSG"
-  BOT_ID = '3'
-  
-  def onData(self, data):
-    pchan = data.split()[2]
+    MODULE_CLASS = "PRIVMSG"
+    BOT_ID = '3'
     
-    if not pchan.startswith("#"): return None
-    elif not self.chanexist(pchan): return None
-    elif not self.chanflag("s", pchan): return None
-    
-    puid = data.split()[0][1:]
-    messages = 10
-    seconds = [6, 5]
-    
-    for dump in self.query("select spamscan from channelinfo where name = %s", pchan):
-      messages = int(dump["spamscan"].split(":")[0])
-      seconds = [int(dump["spamscan"].split(":")[1]) + 1, int(dump["spamscan"].split(":")[1])]
-      
-    if (pchan, puid) in spamscan:
-      num = spamscan[pchan,puid][0] + 1
-      spamscan[pchan,puid] = [num, spamscan[pchan,puid][1]]
-      timer = int(time.time()) - spamscan[pchan,puid][1]
-      
-      if spamscan[pchan,puid][0] == messages and timer < seconds[0]:
-        if self.isoper(puid):
-          self.msg(puid, "WARNING: You are flooding {0}. Please stop that, but I won't kill you because you're an IRC Operator.".format(pchan))
+    def onData(self, data):
+        pchan = data.split()[2]
+        
+        if not pchan.startswith("#"): return None
+        elif not self.chanexist(pchan): return None
+        elif not self.chanflag("s", pchan): return None
+        
+        puid = data.split()[0][1:]
+        messages = 10
+        seconds = [6, 5]
+        
+        for dump in self.query("select spamscan from channelinfo where name = %s", pchan):
+            messages = int(dump["spamscan"].split(":")[0])
+            seconds = [int(dump["spamscan"].split(":")[1]) + 1, int(dump["spamscan"].split(":")[1])]
+            
+        if (pchan, puid) in spamscan:
+            num = spamscan[pchan,puid][0] + 1
+            spamscan[pchan,puid] = [num, spamscan[pchan,puid][1]]
+            timer = int(time.time()) - spamscan[pchan,puid][1]
+            
+            if spamscan[pchan,puid][0] == messages and timer < seconds[0]:
+                if self.isoper(puid):
+                    self.msg(puid, "WARNING: You are flooding {0}. Please stop that, but I won't kill you because you're an IRC Operator.".format(pchan))
+                else:
+                    self.kill(puid)
+                    
+                del spamscan[pchan,puid]
+            elif timer > seconds[1]:
+                spamscan[pchan,puid] = [1, int(time.time())]
         else:
-          self.kill(puid)
-          
-        del spamscan[pchan,puid]
-      elif timer > seconds[1]:
-        spamscan[pchan,puid] = [1, int(time.time())]
-    else:
-      spamscan[pchan,puid] = [1, int(time.time())]
-          
-    builtins.spamscan = spamscan
+            spamscan[pchan,puid] = [1, int(time.time())]
+                    
+        builtins.spamscan = spamscan

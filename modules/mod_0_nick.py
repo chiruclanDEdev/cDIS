@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 from cDIS import cDISModule
 
 class mod_0_nick(cDISModule):
-  MODULE_CLASS = "NICK"
-  BOT_ID = '3'
-  
-  def onData(self, data):
-    self.query("UPDATE online SET nick = %s WHERE uid = %s", data.split()[2], str(data.split()[0])[1:])
+    MODULE_CLASS = "NICK"
+    BOT_ID = '3'
+    
+    def onData(self, data):
+        self.query("UPDATE online SET nick = %s WHERE uid = %s", data.split()[2], str(data.split()[0])[1:])

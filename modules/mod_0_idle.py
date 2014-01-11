@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 from cDIS import cDISModule
 
 class mod_0_idle(cDISModule):
-  MODULE_CLASS = "IDLE"
-  
-  def onData(self, data):
-    if len(data.split()) == 3:
-      self.send(":{uid} IDLE {source} 0 0".format(uid=data.split()[2], source=data.split()[0][1:]))
+    MODULE_CLASS = "IDLE"
+    
+    def onData(self, data):
+        if len(data.split()) == 3:
+            self.send(":{uid} IDLE {source} 0 0".format(uid=data.split()[2], source=data.split()[0][1:]))

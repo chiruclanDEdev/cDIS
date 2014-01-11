@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,15 +17,15 @@
 from cDIS import cDISModule
 
 class cmd_5_opers(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "OPERS"
-  HELP = "Shows all operators available for help"
-  BOT_ID = '5'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "OPERS"
+    HELP = "Shows all operators available for help"
+    BOT_ID = '5'
 
-  def onCommand(self, uid, args):
-    self.msg(uid, "Available operators:")
-    
-    for data in self.query("select uid from opers"):
-      self.msg(uid, "  "+self.nick(data["uid"]))
-      
-    self.msg(uid, "End of list.")
+    def onCommand(self, uid, args):
+        self.msg(uid, "Available operators:")
+        
+        for data in self.query("select uid from opers"):
+            self.msg(uid, "  "+self.nick(data["uid"]))
+            
+        self.msg(uid, "End of list.")

@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,12 +17,12 @@
 from cDIS import cDISModule
 
 class cmd_3_sync(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "SYNC"
-  NEED_AUTH = 1
-  HELP = "Syncs your flags on all channels"
-  BOT_ID = '3'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "SYNC"
+    NEED_AUTH = 1
+    HELP = "Syncs your flags on all channels"
+    BOT_ID = '3'
 
-  def onCommand(self, source, args):
-    self.flag(source)
-    self.msg(source, "Done.")
+    def onCommand(self, source, args):
+        self.flag(source)
+        self.msg(source, "Done.")

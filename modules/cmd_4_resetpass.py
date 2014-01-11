@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,29 +18,29 @@ from cDIS import cDISModule
 from time import time
 
 class cmd_4_resetpass(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "RESETPASS"
-  HELP = "Reset your lost password"
-  NEED_OPER = 1
-  BOT_ID = '4'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "RESETPASS"
+    HELP = "Reset your lost password"
+    NEED_OPER = 1
+    BOT_ID = '4'
 
-  def onCommand(self, uid, args):
-    arg = args.split()
-    
-    if len(arg) == 1:
-      entry = False
-      
-      for data in self.query("""SELECT "name", "pass", "email", "suspended" FROM "users" WHERE "name" = %s""", arg[0]):
-        entry = True
+    def onCommand(self, uid, args):
+        arg = args.split()
         
-        if data["suspended"] == "0":
-          password = self.createPassword(data["name"] + data["pass"] + data["email"])
-          self.query("""UPDATE "users" SET "pass" = %s WHERE "name" = %s AND "email" = %s""", password[1], data["name"], data["email"])
-          self.msg(uid, "The new password of the user {0} is {1}. He/She should change it as soon as possible!".format(data["name"], password[0]))
+        if len(arg) == 1:
+            entry = False
+            
+            for data in self.query("""SELECT "name", "pass", "email", "suspended" FROM "users" WHERE "name" = %s""", arg[0]):
+                entry = True
+                
+                if data["suspended"] == "0":
+                    password = self.createPassword(data["name"] + data["pass"] + data["email"])
+                    self.query("""UPDATE "users" SET "pass" = %s WHERE "name" = %s AND "email" = %s""", password[1], data["name"], data["email"])
+                    self.msg(uid, "The new password of the user {0} is {1}. He/She should change it as soon as possible!".format(data["name"], password[0]))
+                else:
+                    self.msg(uid, "The account have been banned from " + self.services_description + ". Reason: " + data["suspended"])
+                    
+            if not entry:
+                self.msg(uid, "Can't find user " + arg[0] + ".")
         else:
-          self.msg(uid, "The account have been banned from " + self.services_description + ". Reason: " + data["suspended"])
-          
-      if not entry:
-        self.msg(uid, "Can't find user " + arg[0] + ".")
-    else:
-      self.msg(uid, "Syntax: RESETPASS <account>")
+            self.msg(uid, "Syntax: RESETPASS <account>")

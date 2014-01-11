@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,28 +17,28 @@
 from cDIS import cDISModule, config
 
 class cmd_0_ticket(cDISModule):
-  HELP = "Use a ticket you got from {0}".format(config.get("OFFICIAL_CHANNELS", "help"))
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "TICKET"
-  NEED_AUTH = 1
-  BOT_ID = '0'
-  
-  def onCommand(self, uid, args):
-    if self.isoper(uid):
-      self.send_bot("INVITE {0} {1} 0".format(uid, self.official_channels["support"]))
-      self.send_bot("SVSJOIN {0} {1}".format(uid, self.official_channels["support"]))
-      return 0
-      
-    sAccount = self.auth(uid)
-    result = self.query("""SELECT "subject" FROM "tickets" WHERE "account" = %s""", sAccount)
+    HELP = "Use a ticket you got from {0}".format(config.get("OFFICIAL_CHANNELS", "help"))
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "TICKET"
+    NEED_AUTH = 1
+    BOT_ID = '0'
     
-    if result:
-      for row in result:
-        self.send_bot("INVITE {0} {1} 0".format(uid, self.official_channels["support"]))
-        self.send_bot("SVSJOIN {0} {1}".format(uid, self.official_channels["support"]))
-        self.query("""DELETE FROM "tickets" WHERE "account" = %s""", sAccount)
-        self.msg(self.official_channels["support"], """User {0} joined with subject: "{1}"!""".format(sAccount, row["subject"]))
+    def onCommand(self, uid, args):
+        if self.isoper(uid):
+            self.send_bot("INVITE {0} {1} 0".format(uid, self.official_channels["support"]))
+            self.send_bot("SVSJOIN {0} {1}".format(uid, self.official_channels["support"]))
+            return 0
+            
+        sAccount = self.auth(uid)
+        result = self.query("""SELECT "subject" FROM "tickets" WHERE "account" = %s""", sAccount)
         
-      self.msg(uid, "Done.")
-    else:
-      self.msg(uid, "Denied.")
+        if result:
+            for row in result:
+                self.send_bot("INVITE {0} {1} 0".format(uid, self.official_channels["support"]))
+                self.send_bot("SVSJOIN {0} {1}".format(uid, self.official_channels["support"]))
+                self.query("""DELETE FROM "tickets" WHERE "account" = %s""", sAccount)
+                self.msg(self.official_channels["support"], """User {0} joined with subject: "{1}"!""".format(sAccount, row["subject"]))
+                
+            self.msg(uid, "Done.")
+        else:
+            self.msg(uid, "Denied.")

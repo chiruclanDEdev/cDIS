@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,29 +17,29 @@
 from cDIS import cDISModule
 
 class cmd_4_feedback(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "FEEDBACK"
-  HELP = "Reads the feedback from users"
-  NEED_OPER = 1
-  BOT_ID = '4'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "FEEDBACK"
+    HELP = "Reads the feedback from users"
+    NEED_OPER = 1
+    BOT_ID = '4'
 
-  def onCommand(self, source, args):
-    arg = args.split()
-    
-    if len(args) == 0:
-      self.msg(source, "Following users sent a feedback:")
-      
-      for data in self.query("select user from feedback"):
-        self.msg(source, "  "+str(data["user"]))
+    def onCommand(self, source, args):
+        arg = args.split()
         
-      self.msg(source, "To read a feedback: SAFEEDBACK <user>")
-    else:
-      entry = False
-      
-      for data in self.query("""select user,text from feedback where "user" = %s""", arg[0]):
-        entry = True
-        self.msg(source, "[Feedback] From: %s, Message: %s" % (data["user"], data["text"]))
-        self.query("""delete from feedback where "user" = %s""", str(data["user"]))
-        
-      if not entry:
-        self.msg(source, "There is no feedback from %s" % arg[0])
+        if len(args) == 0:
+            self.msg(source, "Following users sent a feedback:")
+            
+            for data in self.query("select user from feedback"):
+                self.msg(source, "  "+str(data["user"]))
+                
+            self.msg(source, "To read a feedback: SAFEEDBACK <user>")
+        else:
+            entry = False
+            
+            for data in self.query("""select user,text from feedback where "user" = %s""", arg[0]):
+                entry = True
+                self.msg(source, "[Feedback] From: %s, Message: %s" % (data["user"], data["text"]))
+                self.query("""delete from feedback where "user" = %s""", str(data["user"]))
+                
+            if not entry:
+                self.msg(source, "There is no feedback from %s" % arg[0])

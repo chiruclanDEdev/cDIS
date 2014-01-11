@@ -13,21 +13,3 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-from cDIS import cDISModule
-
-class cmd_4_part(cDISModule):
-    MODULE_CLASS = "COMMAND"
-    COMMAND = "PART"
-    HELP = "Forces a user to part a channel"
-    NEED_OPER = 1
-    BOT_ID = '4'
-
-    def onCommand(self, uid, args):
-        arg = args.split()
-        
-        if len(arg) == 2:
-            self.send(":"+self.bot+" SVSPART "+self.uid(arg[1])+" "+arg[0])
-            self.msg(uid, "Done.")
-        else:
-            self.msg(uid, "Syntax: SAPART <#channel> <nick>")

@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,47 +17,47 @@
 from cDIS import cDISModule
 
 class cmd_3_fantasy(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "FANTASY"
-  HELP = "Define the fantasy prefix for your channel"
-  NEED_AUTH = 1
-  BOT_ID = '3'
-  
-  def onCommand(self, uid, args):
-    arg = args.split()
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "FANTASY"
+    HELP = "Define the fantasy prefix for your channel"
+    NEED_AUTH = 1
+    BOT_ID = '3'
     
-    if len(arg) == 1:
-      if self.chanexist(arg[0]):
-        flag = self.getflag(uid, arg[0])
+    def onCommand(self, uid, args):
+        arg = args.split()
         
-        if flag == "n" or flag == "q" or flag == "a":
-          if self.chanflag("f", arg[0]):
-            self.msg(uid, "Current fantasy prefix for " + arg[0] + ": " + self.fantasy(arg[0]))
-          else:
-            self.msg(uid, "Fantasy commands are disabled for " + arg[0])
+        if len(arg) == 1:
+            if self.chanexist(arg[0]):
+                flag = self.getflag(uid, arg[0])
+                
+                if flag == "n" or flag == "q" or flag == "a":
+                    if self.chanflag("f", arg[0]):
+                        self.msg(uid, "Current fantasy prefix for " + arg[0] + ": " + self.fantasy(arg[0]))
+                    else:
+                        self.msg(uid, "Fantasy commands are disabled for " + arg[0])
+                else:
+                    self.msg(uid, "Denied.")
+            else:
+                self.msg(uid, "Invalid channel: " + arg[0])
+        elif len(arg) == 2:
+            if self.chanexist(arg[0]):
+                flag = self.getflag(uid, arg[0])
+                
+                if flag == "n" or flag == "q" or flag == "a":
+                    if self.chanflag("f", arg[0]):
+                        self.query("update channelinfo set fantasy = %s where name = %s", arg[1], arg[0])
+                        self.msg(uid, "Done.")
+                    else:
+                        self.msg(uid, "Fantasy commands are disabled for " + arg[0])
+                else:
+                    self.msg(uid, "Denied.")
+            else:
+                self.msg(uid, "Invalid channel: " + arg[0])
         else:
-          self.msg(uid, "Denied.")
-      else:
-        self.msg(uid, "Invalid channel: " + arg[0])
-    elif len(arg) == 2:
-      if self.chanexist(arg[0]):
-        flag = self.getflag(uid, arg[0])
-        
-        if flag == "n" or flag == "q" or flag == "a":
-          if self.chanflag("f", arg[0]):
-            self.query("update channelinfo set fantasy = %s where name = %s", arg[1], arg[0])
-            self.msg(uid, "Done.")
-          else:
-            self.msg(uid, "Fantasy commands are disabled for " + arg[0])
-        else:
-          self.msg(uid, "Denied.")
-      else:
-        self.msg(uid, "Invalid channel: " + arg[0])
-    else:
-      self.msg(uid, "Syntax: FANTASY <#channel> [<prefix>]")
+            self.msg(uid, "Syntax: FANTASY <#channel> [<prefix>]")
 
-  def onFantasy(self, uid, chan, args):
-    flag = self.getflag(uid, chan)
-    
-    if flag == "n" or flag == "q" or flag == "a" or flag == "o" or flag == "h":
-      self.onCommand(uid, chan + " " + args)
+    def onFantasy(self, uid, chan, args):
+        flag = self.getflag(uid, chan)
+        
+        if flag == "n" or flag == "q" or flag == "a" or flag == "o" or flag == "h":
+            self.onCommand(uid, chan + " " + args)

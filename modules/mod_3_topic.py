@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,11 +17,11 @@
 from cDIS import cDISModule
 
 class mod_3_topic(cDISModule):
-  MODULE_CLASS = "TOPIC"
-  BOT_ID = '3'
-  
-  def onData(self, data):
-    if len(data.split()) > 1:
-      if self.chanflag("t", data.split()[2]):
-        for channel in self.query("select topic from channelinfo where name = %s", data.split()[2]):
-          self.send(":{0} TOPIC {1} :{2}".format(self.bot, data.split()[2], channel["topic"]))
+    MODULE_CLASS = "TOPIC"
+    BOT_ID = '3'
+    
+    def onData(self, data):
+        if len(data.split()) > 1:
+            if self.chanflag("t", data.split()[2]):
+                for channel in self.query("select topic from channelinfo where name = %s", data.split()[2]):
+                    self.send(":{0} TOPIC {1} :{2}".format(self.bot, data.split()[2], channel["topic"]))

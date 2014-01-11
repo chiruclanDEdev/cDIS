@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,42 +17,42 @@
 from cDIS import cDISModule, config, bots
 
 class cmd_3_auth(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "AUTH"
-  HELP = "Login with your account at " + bots.get("3", "nick") + "@" + config.get("SERVICES", "name")
-  BOT_ID = '3'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "AUTH"
+    HELP = "Login with your account at " + bots.get("3", "nick") + "@" + config.get("SERVICES", "name")
+    BOT_ID = '3'
 
-  def onCommand(self, source, args):
-    arg = args.split()
-    
-    if self.auth(source):
-      self.msg(source, "AUTH is not available once you have authed.")
-      return 0
-      
-    if len(arg) == 2:
-      exists = False
-      
-      for data in self.query("select name,pass,suspended from users where name = %s", arg[0]):
-        if self.encode(arg[1]) == data["pass"]:
-          exists = True
-          
-          if data["suspended"] == "0":
-            self.query("UPDATE online SET account = %s WHERE uid = %s", data["name"], source)
-            self.msg(source, "You are now logged in as %s." % str(data["name"]))
-            self.msg(source, "Remember: NO-ONE from %s will ever ask for your password. NEVER send your password to ANYONE except %s@%s." % (self.services_description, self.bot_nick, self.services_name))
-            self.SetMetadata(source, "accountname", str(data["name"]))
-            self.usermodes(source)
-            self.vhost(source)
-            self.flag(source)
-            self.autojoin(source)
+    def onCommand(self, source, args):
+        arg = args.split()
+        
+        if self.auth(source):
+            self.msg(source, "AUTH is not available once you have authed.")
+            return 0
             
-            for user in self.query("select uid, nick, username, host from online where account = %s and uid = %s", data["name"], source):
-              for target in self.sid(data["name"]):
-                if target != source: self.msg(target, "Warning: {0} ({1}@{2}) authed with your password.".format(user["nick"], user["username"], user["host"]))
-          else:
-            self.msg(source, "Your account has been banned from " + self.services_description + ". Reason: " + data["suspended"])
+        if len(arg) == 2:
+            exists = False
             
-      if not exists:
-        self.msg(source, "Username or password incorrect.")
-    else:
-      self.msg(source, "Syntax: AUTH <username> <password>")
+            for data in self.query("select name,pass,suspended from users where name = %s", arg[0]):
+                if self.encode(arg[1]) == data["pass"]:
+                    exists = True
+                    
+                    if data["suspended"] == "0":
+                        self.query("UPDATE online SET account = %s WHERE uid = %s", data["name"], source)
+                        self.msg(source, "You are now logged in as %s." % str(data["name"]))
+                        self.msg(source, "Remember: NO-ONE from %s will ever ask for your password. NEVER send your password to ANYONE except %s@%s." % (self.services_description, self.bot_nick, self.services_name))
+                        self.SetMetadata(source, "accountname", str(data["name"]))
+                        self.usermodes(source)
+                        self.vhost(source)
+                        self.flag(source)
+                        self.autojoin(source)
+                        
+                        for user in self.query("select uid, nick, username, host from online where account = %s and uid = %s", data["name"], source):
+                            for target in self.sid(data["name"]):
+                                if target != source: self.msg(target, "Warning: {0} ({1}@{2}) authed with your password.".format(user["nick"], user["username"], user["host"]))
+                    else:
+                        self.msg(source, "Your account has been banned from " + self.services_description + ". Reason: " + data["suspended"])
+                        
+            if not exists:
+                self.msg(source, "Username or password incorrect.")
+        else:
+            self.msg(source, "Syntax: AUTH <username> <password>")

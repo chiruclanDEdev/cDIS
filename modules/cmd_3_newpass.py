@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,17 +17,17 @@
 from cDIS import cDISModule, config, bots
 
 class cmd_3_newpass(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "NEWPASS"
-  HELP = "Changes your password at " + bots.get("3", "nick") + "@" + config.get("SERVICES", "name")
-  NEED_AUTH = 1
-  BOT_ID = '3'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "NEWPASS"
+    HELP = "Changes your password at " + bots.get("3", "nick") + "@" + config.get("SERVICES", "name")
+    NEED_AUTH = 1
+    BOT_ID = '3'
 
-  def onCommand(self, source, args):
-    arg = args.split()
-    
-    if len(arg) == 1:
-      self.query("""UPDATE "users" SET "pass" = %s WHERE "name" = %s""", self.encode(arg[0]), self.auth(source))
-      self.msg(source, """Your new password is "%s". Remember it!""" % arg[0])
-    else:
-      self.msg(source, "Syntax: NEWPASS <password>")
+    def onCommand(self, source, args):
+        arg = args.split()
+        
+        if len(arg) == 1:
+            self.query("""UPDATE "users" SET "pass" = %s WHERE "name" = %s""", self.encode(arg[0]), self.auth(source))
+            self.msg(source, """Your new password is "%s". Remember it!""" % arg[0])
+        else:
+            self.msg(source, "Syntax: NEWPASS <password>")

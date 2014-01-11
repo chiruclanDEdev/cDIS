@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,20 +17,20 @@
 from cDIS import cDISModule
 
 class cmd_4_mode(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "MODE"
-  HELP = "Change modes on a channel where you have no rights"
-  NEED_OPER = 1
-  BOT_ID = '4'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "MODE"
+    HELP = "Change modes on a channel where you have no rights"
+    NEED_OPER = 1
+    BOT_ID = '4'
 
-  def onCommand(self, uid, args):
-    arg = args.split()
-    
-    if len(arg) > 1:
-      if arg[0].startswith("#"):
-        self.mode(arg[0], ' '.join(arg[1:]))
-        self.msg(uid, "Done.")
-      else:
-        self.msg(uid, "Invalid channel: " + arg[0])
-    else:
-      self.msg(uid, "Syntax: SAMODE <#channel> <modes>")
+    def onCommand(self, uid, args):
+        arg = args.split()
+        
+        if len(arg) > 1:
+            if arg[0].startswith("#"):
+                self.mode(arg[0], ' '.join(arg[1:]))
+                self.msg(uid, "Done.")
+            else:
+                self.msg(uid, "Invalid channel: " + arg[0])
+        else:
+            self.msg(uid, "Syntax: SAMODE <#channel> <modes>")

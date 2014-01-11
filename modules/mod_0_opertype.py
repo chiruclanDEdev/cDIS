@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,11 +17,11 @@
 from cDIS import cDISModule
 
 class mod_0_opertype(cDISModule):
-  MODULE_CLASS = "OPERTYPE"
-  
-  def onData(self, data):
-    uid = data.split()[0][1:]
-    type = data.split()[2]
-    self.query("DELETE FROM opers WHERE uid = %s", uid)
-    self.query("INSERT INTO opers (uid, opertype) VALUES (%s, %s)", uid, type)
-    self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))
+    MODULE_CLASS = "OPERTYPE"
+    
+    def onData(self, data):
+        uid = data.split()[0][1:]
+        type = data.split()[2]
+        self.query("DELETE FROM opers WHERE uid = %s", uid)
+        self.query("INSERT INTO opers (uid, opertype) VALUES (%s, %s)", uid, type)
+        self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))

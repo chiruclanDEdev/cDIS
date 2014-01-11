@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,17 +17,17 @@
 from cDIS import cDISModule
 
 class mod_3_kick(cDISModule):
-  MODULE_CLASS = "KICK"
-  BOT_ID = '3'
-  
-  def onData(self, data):
-    arg = data.split()
-    knick = arg[0][1:]
-    kchan = arg[2]
-    ktarget = self.uid(arg[3])
-    kreason = ' '.join(arg[4:])[1:]
+    MODULE_CLASS = "KICK"
+    BOT_ID = '3'
     
-    if ktarget == self.bot:
-      self.join(kchan)
-    else:
-      self.query("delete from chanlist where channel = %s and uid = %s", kchan, ktarget)
+    def onData(self, data):
+        arg = data.split()
+        knick = arg[0][1:]
+        kchan = arg[2]
+        ktarget = self.uid(arg[3])
+        kreason = ' '.join(arg[4:])[1:]
+        
+        if ktarget == self.bot:
+            self.join(kchan)
+        else:
+            self.query("delete from chanlist where channel = %s and uid = %s", kchan, ktarget)

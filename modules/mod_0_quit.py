@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,16 +17,16 @@
 from cDIS import cDISModule
 
 class mod_0_quit(cDISModule):
-  MODULE_CLASS = "QUIT"
-  
-  def onData(self, data):
-    uid = data.split()[0][1:]
-    acc = self.auth(uid)
+    MODULE_CLASS = "QUIT"
     
-    if self.isoper(uid):
-      self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))
-    
-    self.query("""DELETE FROM "chanlist" WHERE "uid" = %s""", uid)
-    self.query("""DELETE FROM "online" WHERE "uid" = %s""", uid)
-    self.query("""DELETE FROM "opers" WHERE "uid" = %s""", uid)
-    self.query("""DELETE FROM "chanrequest" WHERE "account" = %s""", acc)
+    def onData(self, data):
+        uid = data.split()[0][1:]
+        acc = self.auth(uid)
+        
+        if self.isoper(uid):
+            self.query("UPDATE ircd_opers SET hostname = 'root@localhost' WHERE hostname = %s", self.userhost(uid))
+        
+        self.query("""DELETE FROM "chanlist" WHERE "uid" = %s""", uid)
+        self.query("""DELETE FROM "online" WHERE "uid" = %s""", uid)
+        self.query("""DELETE FROM "opers" WHERE "uid" = %s""", uid)
+        self.query("""DELETE FROM "chanrequest" WHERE "account" = %s""", acc)

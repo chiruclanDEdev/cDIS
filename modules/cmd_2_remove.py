@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,29 +17,29 @@
 from cDIS import cDISModule, bots
 
 class cmd_2_remove(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "REMOVE"
-  HELP = "Removes the channel service from your channel"
-  NEED_AUTH = 1
-  BOT_ID = '2'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "REMOVE"
+    HELP = "Removes the channel service from your channel"
+    NEED_AUTH = 1
+    BOT_ID = '2'
 
-  def onCommand(self, source, args):
-    arg = args.split()
-    
-    if len(arg) == 1:
-      if arg[0].startswith("#"):
-        if self.getflag(source, arg[0]) == "n":
-          for data in self.query("select name from channelinfo where name = %s", arg[0]):
-            self.query("delete from channels where channel = %s", data["name"])
-            self.query("delete from channelinfo where name = %s", data["name"])
-            self.query("delete from banlist where channel = %s", data["name"])
-            self.msg(source, "Channel {0} has been deleted.".format(data["name"]))
-            self.bot = _botlist["cs"]
-            self.part(data["name"])
-            self.bot = _botlist["uid"][self.BOT_ID]
+    def onCommand(self, source, args):
+        arg = args.split()
+        
+        if len(arg) == 1:
+            if arg[0].startswith("#"):
+                if self.getflag(source, arg[0]) == "n":
+                    for data in self.query("select name from channelinfo where name = %s", arg[0]):
+                        self.query("delete from channels where channel = %s", data["name"])
+                        self.query("delete from channelinfo where name = %s", data["name"])
+                        self.query("delete from banlist where channel = %s", data["name"])
+                        self.msg(source, "Channel {0} has been deleted.".format(data["name"]))
+                        self.bot = _botlist["cs"]
+                        self.part(data["name"])
+                        self.bot = _botlist["uid"][self.BOT_ID]
+                else:
+                    self.msg(source, "Denied.")
+            else:
+                self.msg(source, "Invalid channel: {0}".format(arg[0]))
         else:
-          self.msg(source, "Denied.")
-      else:
-        self.msg(source, "Invalid channel: {0}".format(arg[0]))
-    else:
-      self.msg(source, "Syntax: REMOVE <#channel>")
+            self.msg(source, "Syntax: REMOVE <#channel>")

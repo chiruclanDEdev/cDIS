@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,13 +17,13 @@
 from cDIS import cDISModule
 
 class cmd_6_clear(cDISModule):
-  HELP = "Deletes all messages in your inbox"
-  NEED_AUTH = 1
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "CLEAR"
-  BOT_ID = '6'
-  
-  def onCommand(self, uid, args):
-    account = self.auth(uid)
-    self.query("""DELETE FROM "memo" WHERE "recipient" = %s""", account)
-    self.msg(uid, "Done.")
+    HELP = "Deletes all messages in your inbox"
+    NEED_AUTH = 1
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "CLEAR"
+    BOT_ID = '6'
+    
+    def onCommand(self, uid, args):
+        account = self.auth(uid)
+        self.query("""DELETE FROM "memo" WHERE "recipient" = %s""", account)
+        self.msg(uid, "Done.")

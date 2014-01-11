@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,27 +17,27 @@
 from cDIS import cDISModule
 
 class cmd_3_feedback(cDISModule):
-  MODULE_CLASS = "COMMAND"
-  COMMAND = "FEEDBACK"
-  HELP = "Sends your feedback about us to us"
-  NEED_AUTH = 1
-  BOT_ID = '3'
+    MODULE_CLASS = "COMMAND"
+    COMMAND = "FEEDBACK"
+    HELP = "Sends your feedback about us to us"
+    NEED_AUTH = 1
+    BOT_ID = '3'
 
-  def onCommand(self, source, args):
-    
-    if len(args) > 0:
-      entry = False
-      
-      for data in self.query("""select text from feedback where "user" = %s""", self.auth(source)):
-        entry = True
+    def onCommand(self, source, args):
         
-      if not entry:
-        self.query("insert into feedback values(%s, %s)", self.auth(source), args)
-        self.msg(source, "Feedback added to queue.")
-        
-        for op in self.query("select uid from opers"):
-          self.msg(str(op["uid"]), "New feedback from %s" % self.auth(source))
-      else:
-        self.msg(source, "You already sent a feedback. Please wait until an operator read it.")
-    else:
-      self.msg(source, "FEEDBACK <text>")
+        if len(args) > 0:
+            entry = False
+            
+            for data in self.query("""select text from feedback where "user" = %s""", self.auth(source)):
+                entry = True
+                
+            if not entry:
+                self.query("insert into feedback values(%s, %s)", self.auth(source), args)
+                self.msg(source, "Feedback added to queue.")
+                
+                for op in self.query("select uid from opers"):
+                    self.msg(str(op["uid"]), "New feedback from %s" % self.auth(source))
+            else:
+                self.msg(source, "You already sent a feedback. Please wait until an operator read it.")
+        else:
+            self.msg(source, "FEEDBACK <text>")

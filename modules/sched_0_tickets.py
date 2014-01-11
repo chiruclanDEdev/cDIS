@@ -1,5 +1,5 @@
 # chiruclan.de IRC services
-# Copyright (C) 2012-2013  Chiruclan
+# Copyright (C) 2012-2014  Chiruclan
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@ from cDIS import cDISModule
 import time
 
 class sched_0_tickets(cDISModule):
-  MODULE_CLASS = "SCHEDULE"
-  NEED_OPER = 1
-  BOT_ID = '0'
-  TIMER = 300
-  
-  def onSchedule(self):
-    current_timestamp = int(time.time())
-    self.query("""DELETE FROM "tickets" WHERE "timestamp" < %s""", current_timestamp - 86400)
+    MODULE_CLASS = "SCHEDULE"
+    NEED_OPER = 1
+    BOT_ID = '0'
+    TIMER = 300
     
-    if (self.db_rows > 0):
-      self.send_to_op("#Tickets# {0} tickets expired.".format(self.db_rows))
+    def onSchedule(self):
+        current_timestamp = int(time.time())
+        self.query("""DELETE FROM "tickets" WHERE "timestamp" < %s""", current_timestamp - 86400)
+        
+        if (self.db_rows > 0):
+            self.send_to_op("#Tickets# {0} tickets expired.".format(self.db_rows))
