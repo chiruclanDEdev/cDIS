@@ -17,7 +17,7 @@ modules/cmd_3_auth.py e12be1cc4b3b27c075d439984928f29b
 modules/cmd_3_ban.py 11211ec975934bcb84d5fb4488cbd1ff
 modules/cmd_3_banlist.py 7cc620ad66d384f2697194e2b9a27952
 modules/cmd_3_chanflags.py f9e719874de6c0b1e258084963b823c4
-modules/cmd_3_chanlev.py f011ba61eaf09471def6e795994af308
+modules/cmd_3_chanlev.py dca44545b0b9d6396ba5457df8b368eb
 modules/cmd_3_chanmode.py bb1a8087047bd1cd734106a4ceb6e583
 modules/cmd_3_dehalfop.py f38e433df17d552984912ebfe2eeda9f
 modules/cmd_3_deop.py 46901a24a33738791ac5f7c0eb4b1105

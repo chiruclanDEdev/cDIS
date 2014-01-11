@@ -34,7 +34,7 @@ class cmd_3_chanlev(cDISModule):
                     self.msg(source, "Known users on {0}:".format(channel))
                     self.msg(source, "Username               Flag")
                     
-                    for data in self.query("select user,flag from channels where channel = %s order by flag,user", channel):
+                    for data in self.query("""SELECT "user", "flag" FROM "channels" WHERE "channel" = %s ORDER BY "flag", "user\"""", channel):
                         self.msg(source, " {0} {1} {2}".format(data["user"], " "*int(24-len(data["user"])), data["flag"]))
                         
                     self.msg(source, "End of list.")
@@ -54,7 +54,7 @@ class cmd_3_chanlev(cDISModule):
                     for data in self.query("select name from users where name = %s", username):
                         user = True
                         
-                    for data in self.query("""select channel,flag from channels where "user" = %s and channel = %s""", username, channel):
+                    for data in self.query("""SELECT "channel", "flag" FROM "channels" WHERE "user" = %s AND "channel" = %s""", username, channel):
                         self.msg(source, "Flags for #"+username+" on "+data["channel"]+": +"+data["flag"])
                         channel = data["channel"]
                         entry = True
