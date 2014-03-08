@@ -24,7 +24,7 @@ class cmd_3_resetpass(cDISModule):
     BOT_ID = '3'
 
     def onCommand(self, uid, args):
-        if self.auth(uid) == 0:
+        if self.auth(uid) == '':
             arg = args.split()
             
             if len(arg) == 2:

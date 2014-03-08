@@ -35,7 +35,7 @@ modules/cmd_3_newpass.py c7d33c9cea3f36f56c785f523fb0cb3f
 modules/cmd_3_op.py bf8524fd2c556f76246f0a1b3e1b6b73
 modules/cmd_3_owner.py f83d3fc46d6bb7784589fdb50cafd029
 modules/cmd_3_protect.py 613aaad063e7ae35af8e28f4e0662e16
-modules/cmd_3_resetpass.py dc457024ec215de30ae1ae4801b4072b
+modules/cmd_3_resetpass.py 3a92251e585973cd573a0d011719f439
 modules/cmd_3_settopic.py 437bf388ea8cf5adfc8b74647b71eeae
 modules/cmd_3_setwhois.py d64cdd23cb43732538eeb733863a0d07
 modules/cmd_3_spamscan.py 6e2889b2e448cba2e68b0b7078c3db90
