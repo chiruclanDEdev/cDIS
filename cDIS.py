@@ -985,7 +985,7 @@ class cDISModule:
         iKeys = iChar - 1
         sPass = ""
         
-        iCount = 0;
+        iCount = 0
         while (iCount < iLength):
             iCount += 1
             iCase = random.randint(0, 1)
