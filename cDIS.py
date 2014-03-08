@@ -999,8 +999,9 @@ class cDISModule:
         del sChar
         del iChar
         del iKeys
+        del iCount
         
-        return sPass
+        return [sPass, self.encode(sPass)]
 
     def mail(self, receiver, subject, message):
         try:
