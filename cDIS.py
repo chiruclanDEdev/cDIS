@@ -979,12 +979,28 @@ class cDISModule:
     def encode_md5(self, string):
         return hashlib.md5(bytes(string, "UTF-8")).hexdigest()
         
-    def createPassword(self, key = time.time()):
-        password = list()
-        password.append(hmac.new(bytes(str(key), "UTF-8"), bytes(str(time.time()), "UTF-8"), hashlib.md5).hexdigest())
-        password.append(self.encode(password[0]))
+    def createPassword(self, iLength = 6):
+        sChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        iChar = len(sChar)
+        iKeys = iChar - 1
+        sPass = ""
         
-        return password
+        iCount = 0;
+        while (iCount < iLength):
+            iCount += 1
+            iCase = random.randint(0, 1)
+            iRand = random.randint(0, iKeys)
+            
+            if (iRand == 0):
+                sPass += sChar[iRand].lower()
+            else:
+                sPass += sChar[iRand].upper()
+        
+        del sChar
+        del iChar
+        del iKeys
+        
+        return sPass
 
     def mail(self, receiver, subject, message):
         try:

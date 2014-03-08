@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from cDIS import cDISModule
+from cDIS import cDISModule, config
 from time import time
 
 class cmd_3_hello(cDISModule):
@@ -39,7 +39,7 @@ class cmd_3_hello(cDISModule):
                         
                 if not exists:
                     if arg[0].find("@") != -1 and arg[0].find(".") != -1 and arg[0].lower() == arg[1].lower():
-                        password = self.createPassword(arg[0] + arg[1])
+                        password = self.createPassword(config.getint("USERS", "passlen"))
                         self.query("""INSERT INTO "users" ("name", "pass", "email", "flags", "modes", "suspended") VALUES (%s, %s, %s,'n','+i','0')""", self.nick(source), password[1], arg[0])
                         self.msg(source, "The account %s has been created successfully. You can login now with /msg %s@%s AUTH account password" % (self.nick(source), self.bot_nick, self.services_name))
                         

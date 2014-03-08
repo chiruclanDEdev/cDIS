@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from cDIS import cDISModule
+from cDIS import cDISModule, config
 from time import time
 
 class cmd_4_resetpass(cDISModule):
@@ -34,7 +34,7 @@ class cmd_4_resetpass(cDISModule):
                 entry = True
                 
                 if data["suspended"] == "0":
-                    password = self.createPassword(data["name"] + data["pass"] + data["email"])
+                    password = self.createPassword(config.getint("USERS", "passlen"))
                     self.query("""UPDATE "users" SET "pass" = %s WHERE "name" = %s AND "email" = %s""", password[1], data["name"], data["email"])
                     self.msg(uid, "The new password of the user {0} is {1}. He/She should change it as soon as possible!".format(data["name"], password[0]))
                 else:

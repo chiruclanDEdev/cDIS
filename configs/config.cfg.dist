@@ -22,6 +22,9 @@ description = chiruclan.de IRC services
 [OPERS]
 notifications = True
 
+[USERS]
+passlen = 6
+
 [OFFICIAL_CHANNELS]
 help = #help
 support = #feds

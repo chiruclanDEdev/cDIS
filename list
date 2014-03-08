@@ -1,9 +1,9 @@
 HOWTO 3cde7026ef1e5e828fadefe688ffe799
 README.md 959fc567766fc3542738ca6c785ef204
 cDIS a35aa3574e92ce4cc1e0fd15e19e2793
-cDIS.py 02b7371b7254fa399efc437c4d65b078
+cDIS.py 6a01e16ab6b41c22862753d96b9b623a
 configs/bots.cfg.dist c0f048974d9b5c3fc7f0ee47cdbc8de4
-configs/config.cfg.dist be633efff9b48cbfc696314399a6d65d
+configs/config.cfg.dist 567f1ae07775a3ccba13764358418567
 docs/copyright-header.txt 9f83b050073a4bdd3266855cc0676ede
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py ef72e7f4afea13648b5b279d2d464029
@@ -28,14 +28,14 @@ modules/cmd_3_email.py 6be4cc469c9e4c7ac3dd71de9818b6ee
 modules/cmd_3_fantasy.py fbc4311aa1164e8cd18abe7b17571991
 modules/cmd_3_feedback.py 865790bb1d765accdd57ef33c4d7ef26
 modules/cmd_3_halfop.py 24c61f3b57877499b2505b9fe8949a7b
-modules/cmd_3_hello.py 27c7afcdca270f54e1a457583b2ae2b1
+modules/cmd_3_hello.py be29cd77337f37ac3f3d546ff90d8f1d
 modules/cmd_3_invite.py 95f5ed944b819c71a3f1cb0ffb1448f0
 modules/cmd_3_kick.py c5013321347ae86db7e5c64fcecfa4d3
 modules/cmd_3_newpass.py c7d33c9cea3f36f56c785f523fb0cb3f
 modules/cmd_3_op.py bf8524fd2c556f76246f0a1b3e1b6b73
 modules/cmd_3_owner.py f83d3fc46d6bb7784589fdb50cafd029
 modules/cmd_3_protect.py 613aaad063e7ae35af8e28f4e0662e16
-modules/cmd_3_resetpass.py 3a92251e585973cd573a0d011719f439
+modules/cmd_3_resetpass.py 3561244a18b8a42a02840759b8a6cba7
 modules/cmd_3_settopic.py 437bf388ea8cf5adfc8b74647b71eeae
 modules/cmd_3_setwhois.py d64cdd23cb43732538eeb733863a0d07
 modules/cmd_3_spamscan.py 6e2889b2e448cba2e68b0b7078c3db90
@@ -65,7 +65,7 @@ modules/cmd_4_listmodules.py 8d1c7895e1358ed1b86239e3a05c998a
 modules/cmd_4_login.py ad204062beae8c609803058de14345af
 modules/cmd_4_mode.py 1bf3d16d0b2e4c15edc6536b3447f86b
 modules/cmd_4_part.py 4c2a9daf8cba1958cfaa24dbeaadc5fc
-modules/cmd_4_resetpass.py a4aee4780933403958f6690311f9c361
+modules/cmd_4_resetpass.py eca8c20ab0c370cedf74b48af10e64b8
 modules/cmd_4_scanport.py bede8e6f850d5d4bd459f7c095bb9765
 modules/cmd_4_suspend.py fd5c885cc5d50fc54c3c3b5fd2301a0b
 modules/cmd_4_trust.py f7789f5f2134da8155ad7a763f736896
