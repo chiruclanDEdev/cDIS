@@ -991,7 +991,7 @@ class cDISModule:
             iCase = random.randint(0, 1)
             iRand = random.randint(0, iKeys)
             
-            if (iRand == 0):
+            if (iCase == 0):
                 sPass += sChar[iRand].lower()
             else:
                 sPass += sChar[iRand].upper()
