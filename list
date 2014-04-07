@@ -8,7 +8,7 @@ docs/copyright-header.txt 9f83b050073a4bdd3266855cc0676ede
 docs/inspircd-needed-modules.txt 35dd4e588a1e4c0be699a099f23d6748
 modules/__init__.py ef72e7f4afea13648b5b279d2d464029
 modules/cmd_0_ticket.py 12825113892e366af0442f02d4d12c7a
-modules/cmd_0_tickets.py b41220558bba3c5fe7a69ddf4b076ef6
+modules/cmd_0_tickets.py c8eae29a0d12cdc72f9c98ce0191cf1a
 modules/cmd_1_notify.py d7b13c326f983e9b3db42e2cd2f0c903
 modules/cmd_1_update.py 66833b4b874db942d4074afc12e29456
 modules/cmd_2_remove.py 9965ce0721de726415c2db7138eb7ae5

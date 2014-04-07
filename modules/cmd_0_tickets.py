@@ -70,7 +70,7 @@ class cmd_0_tickets(cDISModule):
                 accountData = self.GetAccountData(arg[1])
                 
                 if accountData:
-                    for c in self.query("""SELECT COUNT(*) FROM "tickets" WHERE "account" = %s""", accountData["name"]):
+                    for c in self.query("""SELECT COUNT(*) AS "count" FROM "tickets" WHERE "account" = %s""", accountData["name"]):
                         if (c["count"] == 0):
                             sSubject = ' '.join(arg[2:])
                             sMessage = """You've received a support ticket.`Subject: "{0}"`To use it type: \002/MSG {1} TICKET\002""".format(sSubject, self.bot_nick)
